@@ -1,0 +1,18 @@
+{
+ "video": "sample.mp4", "duration_s": 30.0, "width": 1280, "height": 720, "fps": 15,
+ "people": [{
+  "id": 1, "track_ids": [1], "first_seen_s": 0.0, "last_seen_s": 30.0, "thumbnail": null,
+  "total_reps": 6, "exercises": {"squat": 6},
+  "muscle_load": {"quads": 1.0, "glutes": 0.8, "adductors": 0.5, "hamstrings": 0.3,
+                  "lower_back": 0.3, "abs": 0.2},
+  "sets": [{
+   "exercise": "squat", "confidence": 0.8, "exercise_source": "gemini-flash-latest",
+   "start_s": 4.0, "end_s": 26.0, "reps": 6,
+   "rep_times_s": [7.5, 11.0, 14.6, 18.1, 21.7, 25.2],
+   "rep_peak_s": [6.8, 10.3, 13.9, 17.4, 21.0, 24.5]
+  }]
+ },{
+  "id": 2, "track_ids": [3], "first_seen_s": 0.0, "last_seen_s": 18.0, "thumbnail": null,
+  "total_reps": 0, "exercises": {}, "muscle_load": {}, "sets": []
+ }]
+}
