@@ -1,0 +1,8 @@
+ultralytics>=8.4
+torch
+torchvision
+opencv-python-headless
+scipy
+numpy
+lap
+google-genai
