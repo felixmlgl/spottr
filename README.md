@@ -76,12 +76,12 @@ Green skeleton = person in an active set · `+1` flashes on each counted rep · 
 
 ### What Gemini actually sees
 
-The camera stream never leaves the gym. For each detected set, the edge device sends Gemini **one small, face-blurred image**: three frames of a single rep (start → halfway → furthest point), cropped around the lifter. Gemini returns the exercise and equipment as structured JSON.
+The camera stream never leaves the gym. For each detected set, the edge device sends Gemini **one small, blurred image**: three frames of a single rep (start → halfway → furthest point), cropped around the lifter, with their face pixelated and every other person blurred head to toe. Gemini returns the exercise and equipment as structured JSON.
 
 <table>
 <tr>
-<td width="62%"><img src="docs/media/example-2-gemini-input.jpg" alt="Three face-blurred frames of one squat rep sent to Gemini"></td>
-<td width="38%"><img src="docs/media/example-3-gemini-input.jpg" alt="Three face-blurred frames of one dip rep sent to Gemini"></td>
+<td width="62%"><img src="docs/media/example-2-gemini-input.jpg" alt="Three blurred frames of one squat rep sent to Gemini"></td>
+<td width="38%"><img src="docs/media/example-3-gemini-input.jpg" alt="Three blurred frames of one dip rep sent to Gemini"></td>
 </tr>
 <tr>
 <td align="center"><code>{"exercise": "squat", "equipment": "smith_machine", "confidence": 0.95}</code></td>
@@ -101,7 +101,7 @@ The camera stream never leaves the gym. For each detected set, the edge device s
 
 - **Zero hardware for members.** The gym already has the cameras, so the only new hardware is one edge device per camera zone.
 - **Exercise-agnostic counting.** Reps are found from coherent joint motion, not per-exercise rules, so a new exercise needs no new code. The label never affects the count.
-- **Private by design.** Pose runs on the edge. Only one face-blurred snapshot per set goes to Gemini, never the video stream.
+- **Private by design.** Pose runs on the edge. Only one blurred snapshot per set goes to Gemini (lifter's face pixelated, everyone else head to toe), never the video stream. The replay blurs everyone but you too.
 - **Works on bad footage.** Built and tuned on real, crowded, low-resolution gym video, not staged single-person clips.
 
 **Who pays.** Gyms and gym chains: a member-experience and retention feature on top of cameras they already own, plus floor analytics like equipment usage and peak hours.
@@ -117,7 +117,7 @@ flowchart LR
         direction TB
         POSE["YOLO26n-pose + BoT-SORT/ReID<br/>17 keypoints + ID per person"] --> STITCH["Stitch broken tracks"]
         STITCH --> REPS["Stationary? → coherent motion?<br/>→ PCA 1-D signal → peak count → validate"]
-        REPS --> SNAP["1 face-blurred snapshot per set"]
+        REPS --> SNAP["1 blurred snapshot per set"]
     end
     SNAP -->|"one small image"| GEM["✨ Gemini Flash<br/>exercise + equipment (JSON schema)"]
     GEM --> JSON["session.json<br/>sets · reps · rep timestamps · muscle load"]
@@ -139,7 +139,7 @@ flowchart LR
 
 | | Where | What it does |
 |:--|:--|:--|
-| **Exercise recognition** | [`backend/vision/classify.py`](backend/vision/classify.py) | Gemini Flash reads a 3-frame, face-blurred strip of one rep and returns `exercise`, `equipment` and `confidence`, constrained to our 26-exercise vocabulary by a JSON response schema. |
+| **Exercise recognition** | [`backend/vision/classify.py`](backend/vision/classify.py) | Gemini Flash reads a 3-frame strip of one rep (lifter's face and all bystanders blurred) and returns `exercise`, `equipment` and `confidence`, constrained to our 26-exercise vocabulary by a JSON response schema. |
 | **AI coach recap** | [`vite.config.ts`](vite.config.ts) → `/api/recap` | Server-side Gemini call that turns the verified session (exercises, reps, duration) into a short, personalised workout recap in the member app. |
 
 ---
@@ -209,7 +209,7 @@ Everything after pose tracking is numpy/scipy only. See [`backend/README.md`](ba
 ├── backend/vision/        # Python pipeline: track → analyze → classify (Gemini) → render
 │   ├── track.py           #   YOLO26n-pose + BoT-SORT/ReID, 17 keypoints per person per frame
 │   ├── analyze.py         #   stitching, set detection, exercise-agnostic rep counting
-│   ├── classify.py        #   face blurring + Gemini exercise/equipment labelling
+│   ├── classify.py        #   bystander/face blurring + Gemini exercise/equipment labelling
 │   ├── exercises.py       #   exercise vocabulary + muscle-load weights
 │   └── render.py          #   annotated.mp4 + overlay.json for the web replay
 ├── backend/tests/         # synthetic rep-counter test suite

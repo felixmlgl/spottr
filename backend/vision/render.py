@@ -86,6 +86,8 @@ def overlay_json(data, people, fps=15, min_kp_conf=0.3):
     """Downsampled per-frame boxes + skeletons keyed by person id, for drawing on the <video> in the browser.
 
     frames[i] = {"t": s, "p": [[pid, x1, y1, x2, y2, kx0, ky0, ..., kx16, ky16], ...]}, missing keypoints = -1.
+    Detections too short-lived to become a person (passers-by) get pid = -track_id, so the dashboard
+    can still blur them.
     """
     tid2pid = {tid: p["id"] for p in people for tid in p["track_ids"]}
     out, next_t = [], -1.0
@@ -95,9 +97,7 @@ def overlay_json(data, people, fps=15, min_kp_conf=0.3):
         next_t = f["t"] + 1.0 / fps
         rows = []
         for det in f["people"]:
-            pid = tid2pid.get(det["id"])
-            if pid is None:
-                continue
+            pid = tid2pid.get(det["id"], -det["id"])
             kp = [v for x, y, c in det["kp"] for v in ((int(round(x)), int(round(y))) if c >= min_kp_conf else (-1, -1))]
             rows.append([pid] + [int(round(v)) for v in det["box"]] + kp)
         out.append({"t": round(f["t"], 3), "p": rows})
