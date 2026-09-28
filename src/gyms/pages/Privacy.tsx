@@ -9,6 +9,7 @@ interface PrivacyItem {
 }
 
 // Only list something under "Available today" if the current build actually does it.
+// Blur claims mirror src/services/privacyBlur.ts (replay) and backend/vision/classify.py (snapshots, thumbnails).
 const AVAILABLE_TODAY: PrivacyItem[] = [
   {
     title: 'No face recognition',
@@ -23,6 +24,14 @@ const AVAILABLE_TODAY: PrivacyItem[] = [
     body: 'The operator dashboard shows counts, trends and zone occupancy. The at-risk list shows a first name and member number only, with no photos or video.',
   },
   {
+    title: 'Bystanders pixelated in the replay',
+    body: 'In the member app\u2019s session replay, everyone except the selected member is pixelated head to toe as the video is drawn on screen. The selected member is shown unblurred.',
+  },
+  {
+    title: 'Blurred snapshots for exercise labels',
+    body: 'To label an exercise, the pipeline sends Google Gemini one small image per set: three frames of one rep, cropped around the lifter, with the lifter\u2019s face pixelated and everyone else pixelated head to toe. Member thumbnails get the same blur.',
+  },
+  {
     title: 'AI recaps use a text summary',
     body: "Optional workout recaps in the member app are written by Google's Gemini API from a short text summary (exercise names, rep counts, duration), not from video.",
   },
@@ -31,7 +40,7 @@ const AVAILABLE_TODAY: PrivacyItem[] = [
 const IN_DEVELOPMENT: PrivacyItem[] = [
   {
     title: 'All processing on the Spottr edge box',
-    body: 'The goal is that raw video never leaves the gym. Today’s prototype runs on recorded clips, and exercise labels come from a cloud model (Google Gemini).',
+    body: 'The goal is that raw video never leaves the gym. Today\u2019s pipeline runs on recorded clips rather than a live camera stream.',
   },
   {
     title: 'Member opt-in and opt-out',
@@ -45,6 +54,13 @@ const IN_DEVELOPMENT: PrivacyItem[] = [
     title: 'Export and deletion requests',
     body: 'Self-serve export and deletion of a member’s data from the member app.',
   },
+];
+
+// Known gaps in today's blurring (see backend/README.md "Known limitations")
+const BLUR_LIMITS = [
+  'Blurring only covers people the pose model detects. Someone hidden behind equipment, or missed for more than half a second, stays visible.',
+  'In the replay, the blur is applied while drawing. The video file itself is not blurred.',
+  'The annotated review video the pipeline can export is not blurred.',
 ];
 
 const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyItem[] }> = ({ status, items }) => {
@@ -86,6 +102,14 @@ export const Privacy: React.FC = () => (
       subtitle="Spottr is in its pilot phase. This page describes what the current build does and marks what is still being built. We update it as features ship."
     />
     <Section status="available" items={AVAILABLE_TODAY} />
+    <section className="flex flex-col gap-3">
+      <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F]">Limits of today&rsquo;s blurring</h2>
+      <ul className="flex flex-col gap-2 list-disc pl-5 text-sm text-[#6E6E73] leading-relaxed max-w-3xl">
+        {BLUR_LIMITS.map((limit) => (
+          <li key={limit}>{limit}</li>
+        ))}
+      </ul>
+    </section>
     <Section status="development" items={IN_DEVELOPMENT} />
     <p className="text-sm text-[#6E6E73]">
       Questions about data handling for your gym?{' '}
