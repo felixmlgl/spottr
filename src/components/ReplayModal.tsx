@@ -27,6 +27,9 @@ import {
 } from '../types/schema';
 import { videoSourceService } from '../services/videoSource';
 import { blurBystanders, overlayRowsAtTime } from '../services/privacyBlur';
+import { drawRawOverlay } from '../services/rawOverlay';
+
+type OverlayMode = 'raw' | 'styled';
 
 interface ReplayModalProps {
   isOpen: boolean;
@@ -53,6 +56,8 @@ export const ReplayModal: React.FC<ReplayModalProps> = ({
 
   const [selectedPersonId, setSelectedPersonId] = useState<string>('1');
   const [showAllPeople, setShowAllPeople] = useState<boolean>(false);
+  // Raw = overlay.json as exported, drawn like the backend's annotated video; Styled = our prettified overlay
+  const [overlayMode, setOverlayMode] = useState<OverlayMode>('raw');
 
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(30);
@@ -295,6 +300,14 @@ export const ReplayModal: React.FC<ReplayModalProps> = ({
       );
     }
 
+    if (overlayMode === 'raw') {
+      // Same clock as the privacy blur above
+      if (loadedData) {
+        drawRawOverlay(ctx, loadedData.overlay, loadedData.session, isVideoRenderable && video ? video.currentTime : currentTime);
+      }
+      return;
+    }
+
     const nobodyHasSets = loadedData ? !loadedData.hasSets : false;
 
     // 1. Overlay Detections (Bounding Box + Skeleton)
@@ -375,7 +388,7 @@ export const ReplayModal: React.FC<ReplayModalProps> = ({
         });
       }
     });
-  }, [detections, selectedPersonId, activeVideoUrl, videoLoadError, selectedClipId, currentTime, loadedData]);
+  }, [detections, selectedPersonId, activeVideoUrl, videoLoadError, selectedClipId, currentTime, loadedData, overlayMode]);
 
   useEffect(() => {
     let animId: number;
@@ -455,9 +468,32 @@ export const ReplayModal: React.FC<ReplayModalProps> = ({
           </div>
         )}
 
+        {/* Overlay mode toggle */}
+        <div className="flex items-center justify-between gap-3 -mb-3">
+          <span className="text-xs text-[#6E6E73]">
+            {overlayMode === 'raw'
+              ? `Raw overlay.json${loadedData?.overlay?.fps ? ` · ${loadedData.overlay.fps} fps` : ''} · keypoints under 0.3 confidence removed by the backend`
+              : 'Styled overlay'}
+          </span>
+          <div className="flex items-center p-1 bg-[#F5F5F7] rounded-full shrink-0" role="group" aria-label="Overlay style">
+            {(['styled', 'raw'] as OverlayMode[]).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setOverlayMode(mode)}
+                aria-pressed={overlayMode === mode}
+                className={`px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors ${
+                  overlayMode === mode ? 'bg-[#1D1D1F] text-white' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                }`}
+              >
+                {mode === 'raw' ? 'Raw' : 'Styled'}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Video Area (Sized to clip's exact aspect ratio e.g. 640/352 or 1280/720) */}
         <div
-          className="w-full rounded-[24px] overflow-hidden bg-black relative shadow-lg"
+          className={`w-full ${overlayMode === 'raw' ? 'rounded-none' : 'rounded-[24px]'} overflow-hidden bg-black relative shadow-lg`}
           style={{ aspectRatio: `${clipWidth} / ${clipHeight}` }}
         >
           {/* Real video element */}
@@ -491,7 +527,7 @@ export const ReplayModal: React.FC<ReplayModalProps> = ({
           />
 
           {/* Camera Title Pill */}
-          <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-medium pointer-events-auto">
+          <div className={`absolute ${overlayMode === 'raw' ? 'bottom-4' : 'top-4'} left-4 flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-medium pointer-events-auto`}>
             <span className="w-2 h-2 rounded-full bg-[#34C759] animate-pulse" />
             <span>{loadedData?.scenario.title || currentClip.title}</span>
             <span className="text-[10px] text-zinc-400 font-mono">
