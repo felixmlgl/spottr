@@ -52,6 +52,9 @@ export interface PipelineOverlayFrame {
 export interface PipelineOverlay {
   frames: PipelineOverlayFrame[];
   edges?: [number, number][];
+  fps?: number;
+  width?: number;
+  height?: number;
 }
 
 export interface LoadedPipelineData {
