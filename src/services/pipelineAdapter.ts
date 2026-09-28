@@ -46,7 +46,7 @@ export interface PipelineSession {
 
 export interface PipelineOverlayFrame {
   t: number;
-  p: number[][]; // [person_id, x1, y1, x2, y2, kx0, ky0, ..., kx16, ky16]
+  p: number[][]; // [person_id, x1, y1, x2, y2, kx0, ky0, ..., kx16, ky16]; person_id < 0 = passer-by, blur only
 }
 
 export interface PipelineOverlay {

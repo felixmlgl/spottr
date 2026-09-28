@@ -6,7 +6,7 @@ Gym camera video → who is where → sets → rep counts → exercise labels �
 video ─► YOLO26n-pose + BoT-SORT (track.py)         17 keypoints + track ID per person per frame
       ─► stitch broken tracks, per-person analysis   (analyze.py, numpy/scipy only)
            stationary? → coherent motion? → PCA 1-D signal → peak count → validate
-      ─► Gemini Flash on 1 face-blurred snapshot/set (classify.py) → exercise label
+      ─► Gemini Flash on 1 blurred snapshot/set (classify.py) → exercise label
       ─► session.json + overlay.json + annotated.mp4 (run.py, render.py)
 ```
 
@@ -33,7 +33,7 @@ Gemini: put `GEMINI_API_KEY=...` in `.env` (or env). Model defaults to `gemini-f
   "video": "clip.mp4", "duration_s": 73.0, "width": 640, "height": 352, "fps": 54.6,
   "people": [{
     "id": 3, "track_ids": [4, 21, 117], "first_seen_s": 0.0, "last_seen_s": 73.0,
-    "thumbnail": "people/p3.jpg",                // face-blurred crop for "pick a person"
+    "thumbnail": "people/p3.jpg",                // blurred crop for "pick a person"
     "total_reps": 5, "exercises": {"squat": 5},
     "muscle_load": {"quads": 1.0, "glutes": 0.8, ...},   // 0..1, for the heat map (ids in vision/exercises.py)
     "sets": [{
@@ -50,7 +50,8 @@ Gemini: put `GEMINI_API_KEY=...` in `.env` (or env). Model defaults to `gemini-f
 
 `out/<clip>/overlay.json`: skeletons at 15 fps for drawing on a `<video>` / canvas in "start simulation":
 `frames[i] = {"t": seconds, "p": [[person_id, x1, y1, x2, y2, kx0, ky0, … kx16, ky16], …]}` (pixels in the
-original video, `-1` = keypoint not visible, COCO-17 order, `edges` lists the bones).
+original video, `-1` = keypoint not visible, COCO-17 order, `edges` lists the bones). A negative `person_id`
+(`-track_id`) is a passer-by too short-lived to count as a person; it's only there so the replay can blur them.
 
 `out/<clip>/annotated.mp4`: debug/demo render with skeletons, live rep counters and a session panel.
 
@@ -100,5 +101,6 @@ Everything after `track.py` is numpy/scipy only. Measure the real Pi fps before 
 ## Known limitations
 
 * Track identity across long occlusions or multiple cameras isn't solved; a person can split into 2 IDs.
-* Face blurring only covers people the pose model detected.
+* Blurring only covers people the pose model detected (bystanders head to toe, the lifter's face). Someone
+  hidden behind equipment or missed for longer than 0.5 s stays visible.
 * Heuristic exercise labels are a fallback only (squat / press / curl / other); Gemini does the real labelling.

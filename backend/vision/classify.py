@@ -1,7 +1,8 @@
 """Stage 3: exercise label per set from a vision-language model (Gemini Flash).
 
 Once per set we send three frames of one rep (rest -> halfway -> furthest point), cropped around the
-lifter, faces blurred, ~384 px tall. That single low-res image is all that leaves the device.
+lifter, ~384 px tall. The lifter's face is blurred and every other person is blurred head to toe.
+That single low-res image is all that leaves the device.
 """
 import json
 import os
@@ -11,6 +12,7 @@ import cv2
 import numpy as np
 
 from .exercises import EXERCISE_IDS
+from .render import EDGES
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
@@ -26,7 +28,7 @@ SCHEMA = {
     "required": ["exercise", "equipment", "confidence"],
 }
 
-PROMPT = """Three frames from a fixed gym security camera, cropped around one person (faces blurred on purpose).
+PROMPT = """Three frames from a fixed gym security camera, cropped around one person (their face and all other people are blurred on purpose).
 Left to right: start position, halfway, and furthest point of ONE repetition of an exercise they are repeating.
 Joints moving the most: {joints}.
 Which exercise is this person doing? Pick the closest id from the allowed list; use "other" only if nothing fits.
@@ -46,11 +48,72 @@ def load_api_key():
     return None
 
 
-def blur_faces(img, people, min_conf=0.3):
-    """Pixelate every face in the frame, located from the pose model's nose/eye/ear keypoints."""
-    out = img.copy()
+def _pixelate(img, x0, y0, x1, y1, block):
     H, W = img.shape[:2]
+    x0, y0, x1, y1 = max(0, int(x0)), max(0, int(y0)), min(W, int(x1)), min(H, int(y1))
+    if x1 <= x0 or y1 <= y0:
+        return
+    roi = img[y0:y1, x0:x1]
+    small = cv2.resize(roi, (max(1, (x1 - x0) // block), max(1, (y1 - y0) // block)), interpolation=cv2.INTER_AREA)
+    img[y0:y1, x0:x1] = cv2.resize(small, (x1 - x0, y1 - y0), interpolation=cv2.INTER_NEAREST)
+
+
+def people_at(data, fi, hold_s=0.5):
+    """Detections in frame fi, plus anyone the pose model dropped for a moment (occlusion, turning away)
+    at their nearest detection within hold_s, so they don't pop out of the blur for a few frames."""
+    frames = data["frames"]
+    t = frames[fi]["t"]
+    out = list(frames[fi]["people"])
+    seen = {p["id"] for p in out}
+    for d in range(1, len(frames)):
+        near = [j for j in (fi - d, fi + d) if 0 <= j < len(frames) and abs(frames[j]["t"] - t) <= hold_s]
+        if not near:
+            break
+        for j in near:
+            for p in frames[j]["people"]:
+                if p["id"] not in seen:
+                    seen.add(p["id"])
+                    out.append(p)
+    return out
+
+
+def _body_mask(shape, p, min_conf):
+    """Rough silhouette from the pose keypoints: filled torso, thick limbs, round joints."""
+    kp = np.array(p["kp"])
+    ok = kp[:, 2] >= min_conf
+    pts = [tuple(int(round(v)) for v in xy) for xy in kp[:, :2]]
+    th = max(3, int(0.07 * (p["box"][3] - p["box"][1])))
+    mask = np.zeros(shape[:2], np.uint8)
+    torso = [5, 6, 12, 11]
+    if ok[torso].all():
+        cv2.fillConvexPoly(mask, np.array([pts[i] for i in torso], np.int32), 255)
+    for a, b in EDGES:
+        if ok[a] and ok[b]:
+            cv2.line(mask, pts[a], pts[b], 255, th)
+    for i in np.where(ok)[0]:
+        cv2.circle(mask, pts[i], th, 255, -1)
+    return mask > 0
+
+
+def blur_people(img, people, keep=(), min_conf=0.3):
+    """Pixelate everyone in the frame. Bystanders lose their whole body (padded pose box, coarse blocks);
+    the tracks in `keep` (the lifter being analysed) only lose their face, located from the nose/eye/ear
+    keypoints, so their movement stays readable."""
+    out = img.copy()
+    keep = set(keep)
+    # Far to near (feet lower in the frame = closer to the camera), so whoever is in front ends up on top:
+    # a bystander behind the lifter is pixelated, then the lifter's silhouette is painted back over them.
+    for p in sorted(people, key=lambda p: (p["box"][3], p["id"] not in keep)):
+        if p["id"] in keep:
+            m = _body_mask(img.shape, p, min_conf)
+            out[m] = img[m]
+            continue
+        x0, y0, x1, y1 = p["box"]
+        pw, ph = 0.08 * (x1 - x0), 0.04 * (y1 - y0)
+        _pixelate(out, x0 - pw, y0 - ph, x1 + pw, y1 + ph, block=max(6, int((y1 - y0) / 10)))
     for p in people:
+        if p["id"] not in keep:
+            continue
         kp = np.array(p["kp"])
         face = kp[:5][kp[:5, 2] >= min_conf]
         if len(face) == 0:
@@ -59,12 +122,7 @@ def blur_faces(img, people, min_conf=0.3):
         bh = p["box"][3] - p["box"][1]
         spread = np.ptp(face[:, 0]) if len(face) > 1 else 0
         r = int(max(1.2 * spread, 0.09 * bh, 6))
-        x0, y0, x1, y1 = max(0, int(cx - r)), max(0, int(cy - r)), min(W, int(cx + r)), min(H, int(cy + r))
-        if x1 <= x0 or y1 <= y0:
-            continue
-        roi = out[y0:y1, x0:x1]
-        small = cv2.resize(roi, (max(1, (x1 - x0) // 6), max(1, (y1 - y0) // 6)), interpolation=cv2.INTER_AREA)
-        out[y0:y1, x0:x1] = cv2.resize(small, (x1 - x0, y1 - y0), interpolation=cv2.INTER_NEAREST)
+        _pixelate(out, cx - r, cy - r, cx + r, cy + r, block=6)
     return out
 
 
@@ -93,7 +151,7 @@ def snapshot_detections(track, s, rep_index=1):
 
 
 def make_snapshot(frames, data, track, det_idx, height=384):
-    """Tile the given detections of one person (face-blurred crops) side by side. Returns a BGR image.
+    """Tile the given detections of one person (bystanders blurred out) side by side. Returns a BGR image.
 
     frames: {frame_index: BGR image} containing track.fi[det_idx].
     """
@@ -106,7 +164,7 @@ def make_snapshot(frames, data, track, det_idx, height=384):
     tiles = []
     for i in det_idx:
         fi = int(track.fi[i])
-        frame = blur_faces(frames[fi], data["frames"][fi]["people"])
+        frame = blur_people(frames[fi], people_at(data, fi), keep=track.ids)
         crop = frame[y0:y1, x0:x1]
         scale = height / crop.shape[0]
         tiles.append(cv2.resize(crop, (int(crop.shape[1] * scale), height), interpolation=cv2.INTER_CUBIC))

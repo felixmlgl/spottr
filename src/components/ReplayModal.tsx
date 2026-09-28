@@ -26,6 +26,7 @@ import {
   WorkoutSummary as WorkoutSummaryType,
 } from '../types/schema';
 import { videoSourceService } from '../services/videoSource';
+import { blurBystanders, overlayRowsAtTime } from '../services/privacyBlur';
 
 interface ReplayModalProps {
   isOpen: boolean;
@@ -271,6 +272,18 @@ export const ReplayModal: React.FC<ReplayModalProps> = ({
 
     if (isVideoRenderable && video) {
       ctx.drawImage(video, 0, 0, w, h);
+
+      // Privacy: everyone except the selected member is pixelated head to toe
+      if (loadedData) {
+        blurBystanders(
+          ctx,
+          video,
+          overlayRowsAtTime(loadedData.overlay, video.currentTime),
+          Number(selectedPersonId),
+          loadedData.session.width || w,
+          loadedData.session.height || h
+        );
+      }
     } else {
       // Clean high-fidelity gym view when video is loading or fallback
       videoSourceService.renderSimulatedCCTVFrame(

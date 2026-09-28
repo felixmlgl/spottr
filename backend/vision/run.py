@@ -22,24 +22,43 @@ def log(*a):
     print(*a, file=sys.stderr, flush=True)
 
 
+def covered_by_front(box, others, own_ids):
+    """Share of `box` under the boxes of people standing in front of it (feet lower in the frame).
+    blur_people pixelates those boxes over whoever is behind them."""
+    x1, y1, x2, y2 = box
+    cov = 0.0
+    for q in others:
+        qx1, qy1, qx2, qy2 = q["box"]
+        if q["id"] in own_ids or qy2 < y2:
+            continue
+        cov += max(0, min(x2, qx2) - max(x1, qx1)) * max(0, min(y2, qy2) - max(y1, qy1))
+    return min(1.0, cov / max(1.0, (x2 - x1) * (y2 - y1)))
+
+
 def save_thumbnails(video_path, data, people, out_dir):
-    """One face-blurred crop per person, from the middle of their track, for the 'pick a person' UI."""
-    from .classify import blur_faces, read_frames
+    """One crop per person for the 'pick a person' UI: their own face blurred, everyone else head to toe."""
+    from .classify import blur_people, people_at, read_frames
     out_dir.mkdir(parents=True, exist_ok=True)
     picks = []
     for p in people:
         tr = p["_track"]
-        # Prefer a frame inside their first set; otherwise the largest box.
-        if p["sets"]:
-            i = int(np.argmin(np.abs(tr.t - p["sets"][0]["rep_rest_s"][0])))
+        # Prefer a frame inside their first set; otherwise the largest box. Either way, first pick among
+        # frames where nobody stands in front of them, or they'd be blurred out of their own thumbnail.
+        s = p["sets"][0] if p["sets"] else None
+        cand = np.where((tr.t >= s["start_s"]) & (tr.t <= s["end_s"]))[0] if s else []
+        if len(cand):
+            pref = np.abs(tr.t[cand] - s["rep_rest_s"][0])
         else:
-            i = int(np.argmax(tr.box[:, 3] - tr.box[:, 1]))
+            cand = np.arange(len(tr.t))
+            pref = -(tr.box[cand, 3] - tr.box[cand, 1])
+        cover = [covered_by_front(tr.box[i], people_at(data, int(tr.fi[i])), tr.ids) for i in cand]
+        i = int(cand[np.lexsort((pref, np.round(cover, 1)))[0]])
         picks.append((p, tr, i, int(tr.fi[i])))
     frames = read_frames(video_path, [fi for *_, fi in picks])
     for p, tr, i, fi in picks:
         if fi not in frames:
             continue
-        frame = blur_faces(frames[fi], data["frames"][fi]["people"])
+        frame = blur_people(frames[fi], people_at(data, fi), keep=tr.ids)
         x1, y1, x2, y2 = tr.box[i]
         pw, ph = 0.2 * (x2 - x1), 0.08 * (y2 - y1)
         crop = frame[int(max(0, y1 - ph)):int(y2 + ph), int(max(0, x1 - pw)):int(x2 + pw)]
