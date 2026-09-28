@@ -1,0 +1,472 @@
+{
+ "video": "squat.mp4",
+ "duration_s": 73.07,
+ "width": 640,
+ "height": 352,
+ "fps": 30.0,
+ "pipeline": {
+  "pose_model": "yolo26n-pose.pt",
+  "imgsz": 960,
+  "tracker": "botsort+reid",
+  "processing_fps": 13.4
+ },
+ "people": [
+  {
+   "id": 1,
+   "track_ids": [
+    1
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 73.07,
+   "thumbnail": "people/p1.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 2,
+   "track_ids": [
+    2,
+    24,
+    115
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 73.07,
+   "thumbnail": "people/p2.jpg",
+   "total_reps": 5,
+   "exercises": {
+    "squat": 5
+   },
+   "muscle_load": {
+    "chest": 0.0,
+    "front_delts": 0.0,
+    "side_delts": 0.0,
+    "rear_delts": 0.0,
+    "traps": 0.0,
+    "lats": 0.0,
+    "upper_back": 0.0,
+    "lower_back": 0.3,
+    "biceps": 0.0,
+    "triceps": 0.0,
+    "forearms": 0.0,
+    "abs": 0.2,
+    "obliques": 0.0,
+    "glutes": 0.8,
+    "quads": 1.0,
+    "hamstrings": 0.3,
+    "calves": 0.0,
+    "adductors": 0.5
+   },
+   "sets": [
+    {
+     "start_s": 25.2,
+     "end_s": 41.15,
+     "reps": 5,
+     "rep_times_s": [
+      27.0,
+      30.7,
+      34.1,
+      37.6,
+      41.15
+     ],
+     "rep_peak_s": [
+      26.3,
+      29.9,
+      33.25,
+      36.7,
+      40.35
+     ],
+     "rep_rest_s": [
+      23.15,
+      28.05,
+      31.65,
+      35.05,
+      38.5
+     ],
+     "rep_mid_s": [
+      25.2,
+      29.05,
+      32.4,
+      35.85,
+      39.55
+     ],
+     "period_s": 3.53,
+     "amplitude": 0.669,
+     "regularity": 0.97,
+     "periodicity": 0.73,
+     "joint_range": 0.187,
+     "moving_joints": [
+      "right_wrist",
+      "left_wrist",
+      "right_elbow",
+      "left_elbow"
+     ],
+     "exercise": "squat",
+     "confidence": 0.95,
+     "exercise_source": "gemini-flash-lite-latest",
+     "snapshot": "snapshots/p2_set1.jpg",
+     "equipment": "smith_machine"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "track_ids": [
+    3
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 55.23,
+   "thumbnail": "people/p3.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 4,
+   "track_ids": [
+    4,
+    29,
+    33,
+    75
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 59.93,
+   "thumbnail": "people/p4.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 5,
+   "track_ids": [
+    6
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 10.37,
+   "thumbnail": "people/p5.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 6,
+   "track_ids": [
+    8,
+    46
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 35.2,
+   "thumbnail": "people/p6.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 7,
+   "track_ids": [
+    9,
+    37
+   ],
+   "first_seen_s": 0.0,
+   "last_seen_s": 31.53,
+   "thumbnail": "people/p7.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 8,
+   "track_ids": [
+    10
+   ],
+   "first_seen_s": 0.37,
+   "last_seen_s": 2.4,
+   "thumbnail": "people/p8.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 9,
+   "track_ids": [
+    14
+   ],
+   "first_seen_s": 3.0,
+   "last_seen_s": 5.13,
+   "thumbnail": "people/p9.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 10,
+   "track_ids": [
+    16,
+    22,
+    41,
+    61,
+    71
+   ],
+   "first_seen_s": 8.83,
+   "last_seen_s": 59.83,
+   "thumbnail": "people/p10.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 11,
+   "track_ids": [
+    23,
+    25,
+    31,
+    66,
+    83,
+    94
+   ],
+   "first_seen_s": 13.57,
+   "last_seen_s": 66.9,
+   "thumbnail": "people/p11.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 12,
+   "track_ids": [
+    36,
+    38,
+    44
+   ],
+   "first_seen_s": 26.0,
+   "last_seen_s": 36.4,
+   "thumbnail": "people/p12.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 13,
+   "track_ids": [
+    39,
+    64
+   ],
+   "first_seen_s": 27.1,
+   "last_seen_s": 53.97,
+   "thumbnail": "people/p13.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 14,
+   "track_ids": [
+    48
+   ],
+   "first_seen_s": 35.93,
+   "last_seen_s": 45.87,
+   "thumbnail": "people/p14.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 15,
+   "track_ids": [
+    52
+   ],
+   "first_seen_s": 42.73,
+   "last_seen_s": 54.3,
+   "thumbnail": "people/p15.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 16,
+   "track_ids": [
+    55,
+    60,
+    63,
+    69
+   ],
+   "first_seen_s": 46.73,
+   "last_seen_s": 62.43,
+   "thumbnail": "people/p16.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 17,
+   "track_ids": [
+    56,
+    65,
+    80,
+    91,
+    95
+   ],
+   "first_seen_s": 46.77,
+   "last_seen_s": 73.07,
+   "thumbnail": "people/p17.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 18,
+   "track_ids": [
+    67,
+    73,
+    84
+   ],
+   "first_seen_s": 54.4,
+   "last_seen_s": 67.07,
+   "thumbnail": "people/p18.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 19,
+   "track_ids": [
+    72
+   ],
+   "first_seen_s": 57.1,
+   "last_seen_s": 73.07,
+   "thumbnail": "people/p19.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 20,
+   "track_ids": [
+    76,
+    97
+   ],
+   "first_seen_s": 58.87,
+   "last_seen_s": 69.6,
+   "thumbnail": "people/p20.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 21,
+   "track_ids": [
+    77,
+    120
+   ],
+   "first_seen_s": 58.97,
+   "last_seen_s": 73.07,
+   "thumbnail": "people/p21.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 22,
+   "track_ids": [
+    82,
+    88,
+    113
+   ],
+   "first_seen_s": 61.03,
+   "last_seen_s": 72.23,
+   "thumbnail": "people/p22.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 23,
+   "track_ids": [
+    90,
+    99,
+    106
+   ],
+   "first_seen_s": 62.97,
+   "last_seen_s": 71.13,
+   "thumbnail": "people/p23.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 24,
+   "track_ids": [
+    92
+   ],
+   "first_seen_s": 63.57,
+   "last_seen_s": 68.0,
+   "thumbnail": "people/p24.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 25,
+   "track_ids": [
+    100
+   ],
+   "first_seen_s": 65.97,
+   "last_seen_s": 68.33,
+   "thumbnail": "people/p25.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 26,
+   "track_ids": [
+    108,
+    117
+   ],
+   "first_seen_s": 67.17,
+   "last_seen_s": 71.27,
+   "thumbnail": "people/p26.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  },
+  {
+   "id": 27,
+   "track_ids": [
+    112
+   ],
+   "first_seen_s": 68.37,
+   "last_seen_s": 73.03,
+   "thumbnail": "people/p27.jpg",
+   "total_reps": 0,
+   "exercises": {},
+   "muscle_load": {},
+   "sets": []
+  }
+ ]
+}

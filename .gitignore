@@ -6,3 +6,19 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Python backend
+.venv/
+__pycache__/
+backend/out/
+backend/models/*.pt
+backend/models/*_ncnn_model/
+*.mov
+*.mp4
+
+# Shared example videos and Raspberry Pi recordings
+!/videos/**/*.mov
+!/videos/**/*.mp4
+
+# README demo clips
+!/docs/media/*.mp4
