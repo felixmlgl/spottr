@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Inter, Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --color-ink: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-surface: #f5f5f7;
+  --color-line: #e5e5ea;
+  --color-brand: #34c759;
+  --color-brand-hover: #2db14f;
+  --color-brand-text: #1e7b34;
+  --color-on-dark-muted: #a1a1a6;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-brand-text);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  ::selection {
+    background: rgb(52 199 89 / 0.25);
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-[1120px] px-5 md:px-8;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.12em] text-brand-text uppercase md:text-[13px];
+  }
+  .h2 {
+    @apply text-[30px] leading-[1.08] font-bold tracking-[-0.03em] text-balance md:text-5xl;
+  }
+  .lead {
+    @apply text-[17px] leading-relaxed text-muted md:text-[19px];
+  }
+  .btn {
+    @apply inline-flex h-[52px] items-center justify-center gap-2 rounded-full px-7 text-base font-semibold transition-colors duration-150 active:scale-[0.98] md:h-12;
+  }
+  .btn-primary {
+    @apply bg-brand text-ink hover:bg-brand-hover;
+  }
+  .btn-primary:focus-visible {
+    outline-color: var(--color-ink);
+  }
+  .btn-secondary {
+    @apply border border-ink bg-white text-ink hover:bg-surface;
+  }
+  .card {
+    @apply rounded-3xl bg-surface p-6 md:p-8;
+  }
+  .text-link {
+    @apply font-medium text-brand-text underline decoration-1 underline-offset-[3px] hover:decoration-2;
+  }
+  .kp {
+    fill: #fff;
+    stroke: var(--color-brand);
+    stroke-width: 2;
+  }
+}
+
+/* Reveal-on-scroll and the hero "+1" chip only animate when motion is welcome */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 400ms ease-out,
+      transform 400ms ease-out;
+  }
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .rep-chip {
+    animation: chip-in 450ms 600ms ease-out both;
+  }
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 40" width="168" height="40" role="img" aria-label="Spottr">
+  <title>Spottr</title>
+  <text x="0" y="31" font-family="Inter, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="-1.2" fill="#1D1D1F">Spottr</text>
+  <!-- keypoint dot replaces nothing: sits as a "tracked" marker after the final r -->
+  <circle cx="160" cy="27.5" r="3.6" fill="#34C759"/>
+</svg>

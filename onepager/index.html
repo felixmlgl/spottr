@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spottr: Automatic workout tracking from gym cameras</title>
+    <meta
+      name="description"
+      content="Spottr turns the cameras your gym already has into automatic workout trackers. No app, no wearables, every set and rep logged."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <!-- Production URL: update if the Vercel project gets a different domain -->
+    <link rel="canonical" href="https://spottr.vercel.app/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Spottr" />
+    <meta property="og:url" content="https://spottr.vercel.app/" />
+    <meta property="og:title" content="Spottr: Automatic workout tracking from gym cameras" />
+    <meta
+      property="og:description"
+      content="No app, no wearables. Spottr turns existing gym cameras into automatic workout trackers and logs every set and rep."
+    />
+    <meta property="og:image" content="https://spottr.vercel.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Spottr: Every set. Every rep. Logged. Gym camera view with a skeleton overlay counting squats." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spottr: Automatic workout tracking from gym cameras" />
+    <meta
+      name="twitter:description"
+      content="No app, no wearables. Spottr turns existing gym cameras into automatic workout trackers and logs every set and rep."
+    />
+    <meta name="twitter:image" content="https://spottr.vercel.app/og-image.jpg" />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <link rel="preload" as="image" type="image/webp"
+      imagesrcset="./assets/hero-replay-tight-640.webp 640w, ./assets/hero-replay-tight-960.webp 960w"
+      imagesizes="calc(100vw - 40px)" media="(max-width: 767px)" fetchpriority="high" />
+
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="stylesheet" href="./src/main.css" />
+  </head>
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+
+    <header class="sticky top-0 z-40 border-b border-black/[0.05] bg-white/85 backdrop-blur-xl">
+      <div class="container-page flex h-14 items-center justify-between">
+        <a href="#top" class="flex h-11 items-center text-[22px] font-bold tracking-[-0.035em]" aria-label="Spottr, back to top">
+          Spottr<span class="ml-[1px] inline-block size-[6px] rounded-full bg-brand" aria-hidden="true"></span>
+        </a>
+        <!-- [TODO: contact email] -->
+        <a href="mailto:[TODO: contact email]?subject=Spottr%20demo" class="btn btn-primary !h-11 !px-4 text-sm">Book a demo</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section id="top" class="overflow-hidden">
+        <div class="container-page grid items-center gap-10 pt-10 pb-16 md:grid-cols-12 md:gap-8 md:pt-24 md:pb-28">
+          <div class="md:col-span-6">
+            <p class="eyebrow">Automatic workout tracking for gyms</p>
+            <h1 class="mt-4 max-w-[12ch] text-[40px] leading-[1.02] font-bold tracking-[-0.035em] text-balance md:max-w-none md:text-[64px] lg:text-[72px]">
+              Your gym's cameras already see every set.
+            </h1>
+            <p class="lead mt-5 max-w-[34rem]">
+              Spottr turns existing gym cameras into automatic workout trackers: no app, no wearables, every set and rep logged.
+            </p>
+            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="mailto:[TODO: contact email]?subject=Spottr%20demo" class="btn btn-primary">Book a demo</a>
+              <!-- [TODO: Tally/Google Form link] -->
+              <a href="[TODO: Tally/Google Form link]" class="btn btn-secondary" target="_blank" rel="noopener">Get updates</a>
+            </div>
+          </div>
+
+          <figure class="md:col-span-6">
+            <div class="relative">
+              <div class="relative overflow-hidden rounded-[20px] bg-ink shadow-[0_1px_2px_rgba(0,0,0,.04),0_12px_40px_-12px_rgba(0,0,0,.18)]">
+                <picture>
+                  <source media="(max-width: 767px)" type="image/webp"
+                    srcset="./assets/hero-replay-tight-640.webp 640w, ./assets/hero-replay-tight-960.webp 960w" sizes="calc(100vw - 40px)" />
+                  <source type="image/webp"
+                    srcset="./assets/hero-replay-640.webp 640w, ./assets/hero-replay-1024.webp 1024w, ./assets/hero-replay-1600.webp 1600w" sizes="(min-width: 1120px) 528px, 50vw" />
+                  <img src="./assets/hero-replay-1024.jpg" width="1024" height="516" fetchpriority="high"
+                    class="block h-auto w-full"
+                    alt="Gym camera view from the Spottr session replay: one member squats with a green skeleton overlay labelled 'P2 squat x1', the other people in the gym are pixelated." />
+                </picture>
+                <!-- Viewfinder corner brackets -->
+                <span class="pointer-events-none absolute top-3 left-3 size-5 border-t-2 border-l-2 border-white/90" aria-hidden="true"></span>
+                <span class="pointer-events-none absolute top-3 right-3 size-5 border-t-2 border-r-2 border-white/90" aria-hidden="true"></span>
+                <span class="pointer-events-none absolute bottom-3 left-3 size-5 border-b-2 border-l-2 border-white/90" aria-hidden="true"></span>
+                <span class="pointer-events-none absolute right-3 bottom-3 size-5 border-r-2 border-b-2 border-white/90" aria-hidden="true"></span>
+              </div>
+              <div class="rep-chip absolute -bottom-5 left-4 flex items-center gap-3 rounded-2xl bg-white px-4 py-2.5 shadow-[0_8px_30px_-8px_rgba(0,0,0,.25)] md:-left-5" aria-hidden="true">
+                <span class="text-[28px] leading-none font-extrabold tracking-[-0.04em] text-ink tabular-nums">+1</span>
+                <span class="text-sm leading-tight font-semibold">rep<br /><span class="font-medium text-muted">Squat</span></span>
+                <span class="size-2.5 rounded-full bg-brand"></span>
+              </div>
+            </div>
+            <figcaption class="mt-9 flex items-start gap-2 text-sm text-muted">
+              <svg class="mt-0.5 size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+              Session replay from our prototype. Bystanders are pixelated; only the selected member is shown.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Problem -->
+      <section class="border-t border-line py-16 md:py-28" aria-labelledby="problem-title">
+        <div class="container-page">
+          <p class="eyebrow reveal">The problem</p>
+          <h2 id="problem-title" class="h2 reveal mt-3 max-w-2xl">Why gyms lose track</h2>
+          <ul class="mt-10 grid gap-8 md:mt-14 md:grid-cols-3 md:gap-10">
+            <li class="reveal border-t border-line pt-6">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" /><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" /><path d="m15 11-6 6" /><path d="m9 11 6 6" /></svg>
+              <h3 class="mt-4 text-lg font-semibold tracking-[-0.015em] md:text-xl">Members don't track consistently</h3>
+              <p class="mt-2 text-muted">Logging every set in an app is a chore, so most people skip it. Progress stays invisible.</p>
+            </li>
+            <li class="reveal border-t border-line pt-6">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" /><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" /><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" /><path d="m2 2 20 20" /></svg>
+              <h3 class="mt-4 text-lg font-semibold tracking-[-0.015em] md:text-xl">Gyms can't see their own floor</h3>
+              <p class="mt-2 text-muted">Operators know who walked in. They don't know what members actually did, or which equipment gets used.</p>
+            </li>
+            <li class="reveal border-t border-line pt-6">
+              <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><line x1="22" x2="16" y1="11" y2="11" /></svg>
+              <h3 class="mt-4 text-lg font-semibold tracking-[-0.015em] md:text-xl">Members drop out</h3>
+              <p class="mt-2 text-muted">People who can't see progress lose motivation and quietly stop coming.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- How it works -->
+      <section id="how" class="bg-surface py-16 md:py-28" aria-labelledby="how-title">
+        <div class="container-page">
+          <p class="eyebrow reveal">How it works</p>
+          <h2 id="how-title" class="h2 reveal mt-3 max-w-2xl">Camera in, workout log out</h2>
+
+          <ol class="relative mt-10 grid gap-5 md:mt-14 md:grid-cols-3 md:gap-6">
+            <!-- The connecting "bone": vertical on mobile, horizontal on desktop -->
+            <li aria-hidden="true" class="pointer-events-none absolute top-6 bottom-6 left-[11px] w-[2px] bg-brand md:top-[34px] md:right-[16%] md:bottom-auto md:left-[16%] md:h-[2px] md:w-auto"></li>
+
+            <li class="reveal relative pl-10 md:pl-0">
+              <span class="absolute top-[26px] left-[4px] size-4 rounded-full border-2 border-brand bg-white md:top-[26px] md:left-1/2 md:-translate-x-1/2" aria-hidden="true"></span>
+              <div class="rounded-3xl bg-white p-6 md:mt-14 md:p-7">
+                <svg viewBox="0 0 96 96" class="size-24" aria-hidden="true">
+                  <rect x="6" y="10" width="84" height="76" rx="14" fill="#f5f5f7" />
+                  <g fill="none" stroke="#1d1d1f" stroke-width="2.5" stroke-linecap="round">
+                    <path d="M12 26V16h10" /><path d="M74 16h10v10" /><path d="M84 70v10H74" /><path d="M22 80H12V70" />
+                  </g>
+                  <g fill="none" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M40 34h16M40 34l-3 13-1 12M56 34l3 13 1 12M42 56h12M42 56l-1 12 0 10M54 56l1 12 0 10M48 34v-6" />
+                  </g>
+                  <g class="kp"><circle cx="48" cy="24" r="4" /><circle cx="40" cy="34" r="3" /><circle cx="56" cy="34" r="3" /><circle cx="37" cy="47" r="3" /><circle cx="59" cy="47" r="3" /><circle cx="36" cy="59" r="3" /><circle cx="60" cy="59" r="3" /><circle cx="42" cy="56" r="3" /><circle cx="54" cy="56" r="3" /><circle cx="41" cy="68" r="3" /><circle cx="55" cy="68" r="3" /><circle cx="41" cy="78" r="3" /><circle cx="55" cy="78" r="3" /></g>
+                </svg>
+                <p class="eyebrow mt-5">01</p>
+                <h3 class="mt-1.5 text-lg font-semibold tracking-[-0.015em] md:text-xl">Camera</h3>
+                <p class="mt-2 text-muted">Spottr reads video from cameras the gym already has.</p>
+              </div>
+            </li>
+
+            <li class="reveal relative pl-10 md:pl-0">
+              <span class="absolute top-[26px] left-[4px] size-4 rounded-full border-2 border-brand bg-white md:left-1/2 md:-translate-x-1/2" aria-hidden="true"></span>
+              <div class="rounded-3xl bg-white p-6 md:mt-14 md:p-7">
+                <svg viewBox="0 0 96 96" class="size-24" aria-hidden="true">
+                  <rect x="6" y="10" width="84" height="76" rx="14" fill="#f5f5f7" />
+                  <g fill="none" stroke="#1d1d1f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 38h52" stroke-width="3" />
+                    <path d="M38 46h20M38 46l-6-6 2 -2M58 46l6-6-2-2M48 46v-6M40 64h16M38 46l2 18M58 46l-2 18M40 64l-10 6 6 12M56 64l10 6-6 12" />
+                  </g>
+                  <g class="kp"><circle cx="48" cy="36" r="4" /><circle cx="38" cy="46" r="3" /><circle cx="58" cy="46" r="3" /><circle cx="32" cy="40" r="3" /><circle cx="64" cy="40" r="3" /><circle cx="40" cy="64" r="3" /><circle cx="56" cy="64" r="3" /><circle cx="30" cy="70" r="3" /><circle cx="66" cy="70" r="3" /><circle cx="36" cy="82" r="3" /><circle cx="60" cy="82" r="3" /></g>
+                  <rect x="60" y="14" width="26" height="18" rx="9" fill="#34c759" />
+                  <text x="73" y="27" text-anchor="middle" font-size="12" font-weight="800" fill="#1d1d1f" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Arial, sans-serif">+1</text>
+                </svg>
+                <p class="eyebrow mt-5">02</p>
+                <h3 class="mt-1.5 text-lg font-semibold tracking-[-0.015em] md:text-xl">Spottr recognizes the exercise and counts reps</h3>
+                <p class="mt-2 text-muted">A vision model follows body keypoints, not faces, then counts reps, groups them into sets and labels the exercise.</p>
+              </div>
+            </li>
+
+            <li class="reveal relative pl-10 md:pl-0">
+              <span class="absolute top-[26px] left-[4px] size-4 rounded-full border-2 border-brand bg-white md:left-1/2 md:-translate-x-1/2" aria-hidden="true"></span>
+              <div class="rounded-3xl bg-white p-6 md:mt-14 md:p-7">
+                <svg viewBox="0 0 96 96" class="size-24" aria-hidden="true">
+                  <rect x="6" y="10" width="84" height="76" rx="14" fill="#f5f5f7" />
+                  <g fill="#fff"><rect x="14" y="22" width="68" height="18" rx="6" /><rect x="14" y="44" width="68" height="18" rx="6" /><rect x="14" y="66" width="68" height="12" rx="6" opacity=".6" /></g>
+                  <g fill="#1d1d1f"><rect x="20" y="28" width="26" height="6" rx="3" /><rect x="20" y="50" width="20" height="6" rx="3" /></g>
+                  <g fill="#c7c7cc"><rect x="54" y="28" width="12" height="6" rx="3" /><rect x="54" y="50" width="12" height="6" rx="3" /></g>
+                  <circle cx="74" cy="31" r="4" fill="#34c759" /><circle cx="74" cy="53" r="4" fill="#34c759" />
+                </svg>
+                <p class="eyebrow mt-5">03</p>
+                <h3 class="mt-1.5 text-lg font-semibold tracking-[-0.015em] md:text-xl">Workout logged automatically</h3>
+                <p class="mt-2 text-muted">Each member's sets, reps and progress appear in their app. No taps needed.</p>
+              </div>
+            </li>
+          </ol>
+
+          <p class="reveal mt-8 flex max-w-3xl items-start gap-2.5 text-sm leading-relaxed text-muted md:mt-10">
+            <svg class="mt-0.5 size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+            <span>Spottr tracks body pose, not faces, and does not do face recognition. Today it runs on recorded clips. We're building toward running on a device inside the gym, so video would stay on site. [TODO: confirm with team]</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- For gyms / For members -->
+      <section class="py-16 md:py-28" aria-labelledby="benefits-title">
+        <div class="container-page">
+          <p class="eyebrow reveal">Who it's for</p>
+          <h2 id="benefits-title" class="h2 reveal mt-3 max-w-2xl">Built for the gym and the people in it</h2>
+          <div class="mt-10 grid gap-5 md:mt-14 md:grid-cols-2 md:gap-6">
+            <div class="card reveal">
+              <p class="eyebrow">For gyms</p>
+              <ul class="mt-5 space-y-5">
+                <li class="flex gap-3"><span class="mt-[9px] size-2 shrink-0 rounded-full bg-brand" aria-hidden="true"></span><div><h3 class="font-semibold">See what happens on the floor</h3><p class="mt-1 text-muted">Know which exercises members do and how often, from data instead of guesses.</p></div></li>
+                <li class="flex gap-3"><span class="mt-[9px] size-2 shrink-0 rounded-full bg-brand" aria-hidden="true"></span><div><h3 class="font-semibold">Offer a premium experience</h3><p class="mt-1 text-muted">Give members automatic tracking and visible progress, without selling them a gadget.</p></div></li>
+                <li class="flex gap-3"><span class="mt-[9px] size-2 shrink-0 rounded-full bg-brand" aria-hidden="true"></span><div><h3 class="font-semibold">Keep members coming back</h3><p class="mt-1 text-muted">Members who see progress have a reason to return. Works with the cameras you already have.</p></div></li>
+              </ul>
+            </div>
+            <div class="card reveal">
+              <p class="eyebrow">For members</p>
+              <ul class="mt-5 space-y-5">
+                <li class="flex gap-3"><span class="mt-[9px] size-2 shrink-0 rounded-full bg-brand" aria-hidden="true"></span><div><h3 class="font-semibold">Just train</h3><p class="mt-1 text-muted">Your sets and reps are logged without you touching your phone.</p></div></li>
+                <li class="flex gap-3"><span class="mt-[9px] size-2 shrink-0 rounded-full bg-brand" aria-hidden="true"></span><div><h3 class="font-semibold">See your progress</h3><p class="mt-1 text-muted">Review past workouts, replay a set with a skeleton overlay, and track progress over time.</p></div></li>
+                <li class="flex gap-3"><span class="mt-[9px] size-2 shrink-0 rounded-full bg-brand" aria-hidden="true"></span><div><h3 class="font-semibold">Know what's recovered</h3><p class="mt-1 text-muted">A muscle map shows which muscle groups are ready to train again.</p></div></li>
+              </ul>
+            </div>
+          </div>
+
+          <figure class="reveal mx-auto mt-5 max-w-[820px] overflow-hidden rounded-3xl border border-line md:mt-6">
+            <picture>
+              <source type="image/webp" srcset="./assets/recovery-map-640.webp 640w, ./assets/recovery-map-1024.webp 1024w" sizes="(min-width: 860px) 820px, 100vw" />
+              <img src="./assets/recovery-map-1024.jpg" width="1024" height="601" loading="lazy" decoding="async" class="block h-auto w-full"
+                alt="Readiness map from the Spottr member app: front and back body silhouettes, upper body marked ready in green, legs marked very fatigued in red." />
+            </picture>
+            <figcaption class="border-t border-line px-5 py-3 text-sm text-muted md:px-6">Readiness map in the member app prototype.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Origin -->
+      <section class="pb-16 md:pb-28" aria-labelledby="origin-title">
+        <div class="container-page">
+          <div class="reveal relative overflow-hidden rounded-[32px] bg-ink px-6 py-12 text-white md:px-14 md:py-20">
+            <svg class="pointer-events-none absolute -right-6 -bottom-6 h-[115%] opacity-[0.07] md:right-10 md:opacity-[0.14]" viewBox="0 0 96 120" aria-hidden="true">
+              <g fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M38 36h20M38 36l-6-6 2-2M58 36l6-6-2-2M48 36v-8M40 58h16M38 36l2 22M58 36l-2 22M40 58l-10 8 6 14M56 58l10 8-6 14" />
+              </g>
+              <g fill="#34c759"><circle cx="48" cy="24" r="3.5" /><circle cx="38" cy="36" r="2.5" /><circle cx="58" cy="36" r="2.5" /><circle cx="40" cy="58" r="2.5" /><circle cx="56" cy="58" r="2.5" /><circle cx="30" cy="66" r="2.5" /><circle cx="66" cy="66" r="2.5" /><circle cx="36" cy="80" r="2.5" /><circle cx="60" cy="80" r="2.5" /></g>
+            </svg>
+            <p class="text-xs font-semibold tracking-[0.12em] text-brand uppercase md:text-[13px]">Origin</p>
+            <h2 id="origin-title" class="h2 relative mt-3 max-w-2xl">Built at the Berkeley x DeepMind Hackathon</h2>
+            <p class="relative mt-5 max-w-xl text-[17px] leading-relaxed text-on-dark-muted md:text-[19px]">
+              Spottr started as a hackathon project. We kept building because gyms already have the cameras and members still log workouts by hand.
+              <span class="text-white">[TODO: hackathon date, what we placed or won, team size]</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team -->
+      <section class="border-t border-line py-16 md:py-28" aria-labelledby="team-title">
+        <div class="container-page">
+          <p class="eyebrow reveal">Team</p>
+          <h2 id="team-title" class="h2 reveal mt-3">The team</h2>
+          <p class="lead reveal mt-4 max-w-xl">A small team building Spottr. [TODO: number of team members]</p>
+          <ul class="mt-10 grid grid-cols-2 gap-4 md:mt-12 md:grid-cols-4 md:gap-6">
+            <!-- [TODO: one card per team member: Name, Role, LinkedIn URL] -->
+            <li class="card reveal flex flex-col items-start !p-5 md:!p-6">
+              <span class="flex size-16 items-center justify-center rounded-full bg-white md:size-20" aria-hidden="true"><svg viewBox="0 0 24 24" class="size-7 text-muted" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></svg></span>
+              <h3 class="mt-4 font-semibold">[TODO: Name]</h3>
+              <p class="mt-0.5 text-sm text-muted">[TODO: Role]</p>
+              <a href="[TODO: LinkedIn URL]" class="text-link mt-1 inline-flex min-h-11 items-center text-sm" target="_blank" rel="noopener">LinkedIn</a>
+            </li>
+            <li class="card reveal flex flex-col items-start !p-5 md:!p-6">
+              <span class="flex size-16 items-center justify-center rounded-full bg-white md:size-20" aria-hidden="true"><svg viewBox="0 0 24 24" class="size-7 text-muted" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></svg></span>
+              <h3 class="mt-4 font-semibold">[TODO: Name]</h3>
+              <p class="mt-0.5 text-sm text-muted">[TODO: Role]</p>
+              <a href="[TODO: LinkedIn URL]" class="text-link mt-1 inline-flex min-h-11 items-center text-sm" target="_blank" rel="noopener">LinkedIn</a>
+            </li>
+            <li class="card reveal flex flex-col items-start !p-5 md:!p-6">
+              <span class="flex size-16 items-center justify-center rounded-full bg-white md:size-20" aria-hidden="true"><svg viewBox="0 0 24 24" class="size-7 text-muted" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></svg></span>
+              <h3 class="mt-4 font-semibold">[TODO: Name]</h3>
+              <p class="mt-0.5 text-sm text-muted">[TODO: Role]</p>
+              <a href="[TODO: LinkedIn URL]" class="text-link mt-1 inline-flex min-h-11 items-center text-sm" target="_blank" rel="noopener">LinkedIn</a>
+            </li>
+            <li class="card reveal flex flex-col items-start !p-5 md:!p-6">
+              <span class="flex size-16 items-center justify-center rounded-full bg-white md:size-20" aria-hidden="true"><svg viewBox="0 0 24 24" class="size-7 text-muted" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></svg></span>
+              <h3 class="mt-4 font-semibold">[TODO: Name]</h3>
+              <p class="mt-0.5 text-sm text-muted">[TODO: Role]</p>
+              <a href="[TODO: LinkedIn URL]" class="text-link mt-1 inline-flex min-h-11 items-center text-sm" target="_blank" rel="noopener">LinkedIn</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Footer CTA -->
+      <section id="contact" class="bg-surface py-16 md:py-28" aria-labelledby="cta-title">
+        <div class="container-page text-center">
+          <h2 id="cta-title" class="h2 reveal mx-auto max-w-xl">Want Spottr in your gym?</h2>
+          <p class="lead reveal mx-auto mt-4 max-w-xl">Book a demo and we'll show you how it works on your floor, or leave your email and we'll send updates.</p>
+          <div class="reveal mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <a href="mailto:[TODO: contact email]?subject=Spottr%20demo" class="btn btn-primary">Book a demo</a>
+            <a href="[TODO: Tally/Google Form link]" class="btn btn-secondary" target="_blank" rel="noopener">Get updates</a>
+          </div>
+          <p class="reveal mt-8 text-sm text-muted">
+            Contact: <a href="mailto:[TODO: contact email]" class="text-link inline-flex min-h-11 items-center">[TODO: contact email]</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-line">
+      <div class="container-page flex flex-col gap-3 py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
+        <p class="flex items-baseline gap-2">
+          <span class="flex items-baseline text-base font-bold tracking-[-0.035em] text-ink">Spottr<span class="ml-[1px] inline-block size-[5px] rounded-full bg-brand" aria-hidden="true"></span></span>
+          <span>© 2026 Spottr</span>
+        </p>
+        <p class="max-w-md md:text-right">Spottr is an early-stage project. The product is a working prototype, and we're starting conversations with our first gyms.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

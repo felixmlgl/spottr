@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Spottr">
+  <title>Spottr</title>
+  <rect width="32" height="32" rx="8" fill="#1D1D1F"/>
+  <path d="M22 9.5 H12.5 A3.5 3.5 0 0 0 12.5 16.5 H19.5 A3.5 3.5 0 0 1 19.5 23.5 H10" fill="none" stroke="#34C759" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="22.5" cy="9.5" r="3" fill="#FFFFFF"/>
+  <circle cx="9.5" cy="23.5" r="3" fill="#FFFFFF"/>
+</svg>
