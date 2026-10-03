@@ -1,28 +1,16 @@
 import React, { useState } from 'react';
-import {
-  Calendar,
-  Check,
-  ChevronRight,
-  Plus,
-  Minus,
-  Trash2,
-  X,
-  Search,
-  Dumbbell,
-  Target,
-  Sparkles,
-} from 'lucide-react';
+import { ChevronRight, Plus, Minus, Trash2, X, Search } from 'lucide-react';
 import { PlannedExercise, PlannedWorkout, TrainingPlan } from '../types/schema';
 import { AVAILABLE_EXERCISES } from '../data/exerciseMuscles';
 import { saveTrainingPlan } from '../services/planService';
-import { PAST_WORKOUTS } from '../mocks/memberData';
 
-interface PlanTabProps {
+interface WeeklyPlanProps {
   plan: TrainingPlan;
   onUpdatePlan: (updatedPlan: TrainingPlan) => void;
 }
 
-export const PlanTab: React.FC<PlanTabProps> = ({ plan, onUpdatePlan }) => {
+/** This week's status, the editable weekly routine and the day editor (shown inside the Recovery tab). */
+export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) => {
   const [selectedDayKey, setSelectedDayKey] = useState<keyof TrainingPlan['days'] | null>(null);
   const [editingDay, setEditingDay] = useState<PlannedWorkout | null>(null);
   const [isAddingExercise, setIsAddingExercise] = useState<boolean>(false);
@@ -130,20 +118,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ plan, onUpdatePlan }) => {
   );
 
   return (
-    <div className="flex flex-col gap-10 pb-16 animate-in fade-in duration-200">
-      {/* Header */}
-      <div className="pt-4">
-        <p className="text-sm font-medium text-[#6E6E73] tracking-wide mb-1">
-          Weekly schedule
-        </p>
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F]">
-          Training plan
-        </h1>
-        <p className="text-base text-[#6E6E73] mt-2">
-          Automatic camera tracking cross-referenced with your weekly goals.
-        </p>
-      </div>
-
+    <div className="flex flex-col gap-8">
       {/* "This Week" 7-Day Status Bar */}
       <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-7 flex flex-col gap-4">
         <div className="flex items-center justify-between">
@@ -203,116 +178,6 @@ export const PlanTab: React.FC<PlanTabProps> = ({ plan, onUpdatePlan }) => {
             <span className="w-2.5 h-2.5 rounded-full bg-white border border-[#34C759]" />
             <span>Partial</span>
           </span>
-        </div>
-      </div>
-
-      {/* Plan Adherence & Latest Session Comparison Card */}
-      <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 flex flex-col gap-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">
-              Adherence review
-            </span>
-            <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">
-              5 of 6 planned workouts done
-            </h2>
-            <p className="text-sm text-[#6E6E73] mt-1">
-              83% weekly completion rate &bull; Consistent execution
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3 bg-white px-4 py-3 rounded-2xl shadow-xs self-start sm:self-auto">
-            <div className="relative w-12 h-12 flex items-center justify-center">
-              <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                <path
-                  className="text-[#E5E5EA]"
-                  strokeWidth="3.5"
-                  stroke="currentColor"
-                  fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-                <path
-                  className="text-[#34C759]"
-                  strokeDasharray="83, 100"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                  stroke="currentColor"
-                  fill="none"
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                />
-              </svg>
-              <span className="absolute text-xs font-bold text-[#1D1D1F]">
-                83%
-              </span>
-            </div>
-            <div>
-              <p className="text-xs text-[#6E6E73]">On-target sets</p>
-              <p className="text-sm font-semibold text-[#1D1D1F]">
-                19 of 21 sets hit
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Per-Exercise Target vs Done Breakdown for Latest Workout */}
-        <div className="pt-4 border-t border-black/[0.05]">
-          <h3 className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide mb-3">
-            Today's target vs camera verified reps
-          </h3>
-          <div className="bg-white rounded-2xl divide-y divide-black/[0.04] overflow-hidden">
-            <div className="p-4 flex items-center justify-between">
-              <div>
-                <h4 className="text-sm font-semibold text-[#1D1D1F]">
-                  Barbell back squat
-                </h4>
-                <p className="text-xs text-[#6E6E73]">
-                  Planned: 4 sets &times; 8 reps
-                </p>
-              </div>
-              <div className="text-right">
-                <span className="text-sm font-semibold text-[#34C759] flex items-center gap-1 justify-end">
-                  <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                  <span>Done: 4&times;8 (32 reps)</span>
-                </span>
-                <span className="text-[11px] text-[#6E6E73]">100% target</span>
-              </div>
-            </div>
-
-            <div className="p-4 flex items-center justify-between">
-              <div>
-                <h4 className="text-sm font-semibold text-[#1D1D1F]">
-                  Romanian deadlift
-                </h4>
-                <p className="text-xs text-[#6E6E73]">
-                  Planned: 3 sets &times; 8 reps
-                </p>
-              </div>
-              <div className="text-right">
-                <span className="text-sm font-semibold text-[#34C759] flex items-center gap-1 justify-end">
-                  <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                  <span>Done: 3&times;8 (24 reps)</span>
-                </span>
-                <span className="text-[11px] text-[#6E6E73]">100% target</span>
-              </div>
-            </div>
-
-            <div className="p-4 flex items-center justify-between">
-              <div>
-                <h4 className="text-sm font-semibold text-[#1D1D1F]">
-                  Walking lunge
-                </h4>
-                <p className="text-xs text-[#6E6E73]">
-                  Planned: 3 sets &times; 8 reps (24 reps)
-                </p>
-              </div>
-              <div className="text-right">
-                <span className="text-sm font-semibold text-[#1D1D1F]">
-                  Done: 2&times;4 (8 reps)
-                </span>
-                <span className="text-[11px] text-[#FF9500]">Short on volume</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 

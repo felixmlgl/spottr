@@ -196,6 +196,27 @@ def rerack(seed):
     return "squats x8 with unrack + rerack", build([fr], dur), [8]
 
 
+def ragged_tail(seed):
+    """A clean set, then (without leaving the spot) slow, uneven torso moves: shifting on the knees, getting up.
+    Used to drag the whole window's periodicity below the threshold and drop the set; now the evenly paced
+    reps are kept."""
+    rng = np.random.default_rng(seed)
+    reps, t_end = rep_schedule(4.0, 10, 1.8, rng, pause=(0.1, 0.3))
+    tail = [(t_end + 1.0, t_end + 3.5), (t_end + 6.0, t_end + 9.5), (t_end + 10.5, t_end + 11.7)]
+    dur = tail[-1][1] + 4
+    clean = phase_from(reps, curl)
+
+    def pose(t):
+        for a, b in tail:
+            if a <= t < b:
+                d = np.zeros((17, 2))
+                d[:13, 1] -= 0.15 * (1 - np.cos(2 * np.pi * (t - a) / (b - a))) / 2  # torso rises, feet stay
+                return d
+        return clean(t)
+    fr = person_frames(dur, pose, still(800, 900), 280, 0.012, rng)
+    return "curl x10 + uneven tail (same spot)", build([fr], dur), [10]
+
+
 def crowd(seed):
     """A squatter, a curler and a walker in the same video."""
     rng = np.random.default_rng(seed)
@@ -225,6 +246,7 @@ SCENARIOS = [
     lambda: walker(11),
     lambda: fidgeter(12),
     lambda: two_sets(13),
+    lambda: ragged_tail(18),
     lambda: crowd(14),
 ]
 

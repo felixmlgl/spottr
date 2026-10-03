@@ -348,6 +348,28 @@ export function getPipelineDetectionsAtTime(
 /**
  * Loads pipeline session and overlay data for a clip
  */
+/** Base URL of a clip's pipeline output folder (session.json, overlay.json, people/, snapshots/) */
+export function clipDataBaseUrl(clip: PipelineClip): string {
+  return clip.data ? `${BASE_URL}${clip.data}` : '';
+}
+
+/**
+ * Loads only session.json (a few KB), enough to list a clip's people and sets without the large overlay.json.
+ * Falls back to the bundled sample session like loadPipelineClip.
+ */
+export async function loadPipelineSession(clip: PipelineClip): Promise<PipelineSession> {
+  const dataBaseUrl = clipDataBaseUrl(clip);
+  if (!clip.localData && dataBaseUrl) {
+    try {
+      const res = await fetch(`${dataBaseUrl}/session.json`);
+      if (res.ok) return await res.json();
+    } catch {
+      // Fall through to the sample session
+    }
+  }
+  return sampleSession as unknown as PipelineSession;
+}
+
 export async function loadPipelineClip(clip: PipelineClip): Promise<LoadedPipelineData> {
   // 1. Local fallback data clip (sample)
   if (clip.localData) {
@@ -378,7 +400,7 @@ export async function loadPipelineClip(clip: PipelineClip): Promise<LoadedPipeli
 
   // 2. Remote pipeline clip
   const videoUrl = clip.video ? `${BASE_URL}${clip.video}` : '';
-  const dataBaseUrl = clip.data ? `${BASE_URL}${clip.data}` : '';
+  const dataBaseUrl = clipDataBaseUrl(clip);
 
   try {
     let sessionData: PipelineSession | null = null;
