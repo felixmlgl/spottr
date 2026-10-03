@@ -1,6 +1,6 @@
 /**
  * Minimal client-side router (pathname + History API).
- * Used to split the member app ("/") from the gym operator demo ("/gyms/*").
+ * Splits the welcome page ("/"), the member demo ("/demo") and the gym operator demo ("/gyms/*").
  */
 
 import React, { useEffect, useState } from 'react';

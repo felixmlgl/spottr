@@ -26,7 +26,7 @@ import { loadTrainingPlan, saveTrainingPlan } from './services/planService';
 import { useSettings } from './services/settings';
 
 const appUrl = (clipId: string, personId: string) =>
-  `/?clip=${encodeURIComponent(clipId)}&person=${encodeURIComponent(personId)}`;
+  `/demo?clip=${encodeURIComponent(clipId)}&person=${encodeURIComponent(personId)}`;
 
 // Whether the replay was opened from inside the app, so "Back" can pop history instead of pushing a new entry
 let replayOpenedInApp = false;
