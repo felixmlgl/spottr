@@ -6,7 +6,7 @@ const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/overview', label: 'Overview' },
   { to: '/gyms/floor', label: 'Floor' },
   { to: '/gyms/members', label: 'Members' },
-  { to: '/', label: 'Member app', external: true },
+  { to: '/demo', label: 'Member app', external: true },
   { to: '/gyms/privacy', label: 'Privacy' },
 ];
 
