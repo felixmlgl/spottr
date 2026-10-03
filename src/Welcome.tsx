@@ -76,7 +76,7 @@ export const Welcome: React.FC = () => {
       <div className="absolute inset-0 bg-black/15" aria-hidden />
 
       <div className="relative z-10 flex h-full flex-col items-center px-4">
-        <div className="flex flex-1 items-center justify-center pt-[4vh]">
+        <div className="flex flex-1 items-center justify-center pt-[4vh] pb-[calc(12vh+57px)]">
           <h1>
             <img
               src="/welcome/spottr-logo.png"
@@ -88,7 +88,7 @@ export const Welcome: React.FC = () => {
 
         <Link
           to="/demo"
-          className="mb-[12vh] rounded-full border border-white/40 bg-white/55 px-7 py-4 text-[15px] font-medium text-[#1D1D1F] shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-colors hover:bg-white/75"
+          className="absolute bottom-[27vh] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/40 bg-white/55 px-7 py-4 text-[15px] font-medium text-[#1D1D1F] shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-colors hover:bg-white/75"
         >
           Try our demo
         </Link>
