@@ -7,18 +7,23 @@ import React, { useEffect, useState } from 'react';
 
 const NAVIGATE_EVENT = 'spottr:navigate';
 
-export function navigate(to: string) {
-  if (to === window.location.pathname) return;
+export function navigate(to: string, { replace = false }: { replace?: boolean } = {}) {
+  if (to === window.location.pathname + window.location.search) return;
+  if (replace) {
+    window.history.replaceState({}, '', to);
+    window.dispatchEvent(new Event(NAVIGATE_EVENT));
+    return;
+  }
   window.history.pushState({}, '', to);
   window.dispatchEvent(new Event(NAVIGATE_EVENT));
   window.scrollTo(0, 0);
 }
 
-export function usePathname(): string {
-  const [pathname, setPathname] = useState(() => window.location.pathname);
+function useLocationValue<T>(read: () => T): T {
+  const [value, setValue] = useState(read);
 
   useEffect(() => {
-    const update = () => setPathname(window.location.pathname);
+    const update = () => setValue(read);
     window.addEventListener('popstate', update);
     window.addEventListener(NAVIGATE_EVENT, update);
     return () => {
@@ -27,7 +32,16 @@ export function usePathname(): string {
     };
   }, []);
 
-  return pathname;
+  return value;
+}
+
+export function usePathname(): string {
+  return useLocationValue(() => window.location.pathname);
+}
+
+/** Current query string; re-renders on navigate() and back/forward. */
+export function useSearch(): string {
+  return useLocationValue(() => window.location.search);
 }
 
 interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {

@@ -45,9 +45,10 @@ class Params:
     min_amplitude: float = 0.06     # body heights; ignores fidgeting
     min_reps: int = 3
     max_period_cv: float = 0.5      # reps within a set should have roughly regular tempo
+    even_tempo_tol: float = 0.35    # fallback: rep gaps within this fraction of the median gap count as even
     min_periodicity: float = 0.4    # autocorrelation at the rep period; gestures/fidgeting score < 0.35
     min_joint_range: float = 0.10   # some joint must travel >= this many body heights (kills whole-body jiggle)
-    max_base_motion: float = 0.12   # box bottom (feet) must stay put; moving = walking or a flaky occluded track
+    max_base_motion: float = 0.13   # box bottom (feet) must stay put; moving = walking or a flaky occluded track
     synced_base_corr: float = 0.8   # ...unless it moves in lockstep with the reps (dips, pull-ups: whole body travels)
     max_synced_base_motion: float = 0.6
 
@@ -282,6 +283,24 @@ def periodicity(seg, period):
     return float((ac[lags] / ac[0]).max()) if len(lags) else 0.0
 
 
+def longest_even_run(peaks, tol):
+    """Indices (into peaks) of the longest run of consecutive peaks whose gaps are all within tol of the median
+    gap. Used to rescue a set whose tail (slower last reps, getting up, racking the weight) breaks validation."""
+    iv = np.diff(peaks)
+    if len(iv) == 0:
+        return np.arange(len(peaks))
+    even = np.abs(iv / np.median(iv) - 1) <= tol
+    best, start = (0, 0), None
+    for i, ok in enumerate(np.append(even, False)):
+        if ok and start is None:
+            start = i
+        elif not ok and start is not None:
+            if i - start > best[1] - best[0]:
+                best = (start, i)
+            start = None
+    return np.arange(best[0], best[1] + 1)
+
+
 def _p_range(v):
     v = v[np.isfinite(v)]
     return float(np.percentile(v, 95) - np.percentile(v, 5)) if len(v) > 5 else 0.0
@@ -309,6 +328,39 @@ def heuristic_exercise(raw, peaks):
                 return "shoulder_press", 0.35
             return "bicep_curl", 0.3
         return "other", 0.2
+
+
+def validate_set(grp, res, s, raw, box, a, w0, H0, used, p):
+    """Checks one candidate set (grp = indices into res["peaks"]); returns its stats, or None if rejected.
+
+    s: oriented 1-D signal of the active window starting at w0; raw / box are indexed from the still run start a.
+    """
+    fs = p.fs
+    if len(grp) < p.min_reps:
+        return None
+    gp = res["peaks"][grp]
+    iv = np.diff(gp) / fs
+    cv = float(iv.std() / iv.mean()) if len(iv) > 1 else 0.0
+    if cv > p.max_period_cv:
+        return None
+    st, en = res["starts"][grp], res["ends"][grp]
+    period = float(np.median(np.diff(gp)))
+    per_score = periodicity(s[st[0]:en[-1] + 1], period)
+    if per_score < p.min_periodicity:
+        return None
+    r0, r1 = w0 + st[0], w0 + en[-1] + 1  # set window, index into raw / segment
+    joint_range = max(max(_p_range(raw[r0:r1, k, 0]), _p_range(raw[r0:r1, k, 1])) for k in used)
+    base = box[a + r0:a + r1, 3]
+    base_motion = _p_range(base) / H0
+    if base_motion > p.max_base_motion:
+        ok = np.isfinite(base)
+        sync = abs(np.corrcoef(base[ok], s[st[0]:en[-1] + 1][ok])[0, 1]) if ok.sum() > 5 else 0.0
+        if sync < p.synced_base_corr or base_motion > p.max_synced_base_motion:
+            return None
+    if joint_range < p.min_joint_range:
+        return None
+    return {"grp": grp, "peaks": gp, "starts": st, "ends": en, "intervals": iv, "cv": cv,
+            "periodicity": per_score, "joint_range": joint_range}
 
 
 def analyze_track(tr, p):
@@ -346,29 +398,17 @@ def analyze_track(tr, p):
             pk = res["peaks"]
             breaks = np.where(np.diff(pk) / fs > p.max_period_s)[0] + 1
             for grp in np.split(np.arange(len(pk)), breaks):
-                if len(grp) < p.min_reps:
+                found = validate_set(grp, res, s, raw, box, a, w0, H0, used, p)
+                if found is None:
+                    # One bad stretch (slow last reps, standing up afterwards) shouldn't sink the whole set:
+                    # retry on its longest evenly paced run of reps, with every check applied again.
+                    even = grp[longest_even_run(pk[grp], p.even_tempo_tol)]
+                    if len(even) < len(grp):
+                        found = validate_set(even, res, s, raw, box, a, w0, H0, used, p)
+                if found is None:
                     continue
-                gp = pk[grp]
-                iv = np.diff(gp) / fs
-                cv = float(iv.std() / iv.mean()) if len(iv) > 1 else 0.0
-                if cv > p.max_period_cv:
-                    continue
-                st, en = res["starts"][grp], res["ends"][grp]
-                period = float(np.median(np.diff(gp)))
-                per_score = periodicity(s[st[0]:en[-1] + 1], period)
-                if per_score < p.min_periodicity:
-                    continue
-                r0, r1 = w0 + st[0], w0 + en[-1] + 1  # set window, index into raw / segment
-                joint_range = max(max(_p_range(raw[r0:r1, k, 0]), _p_range(raw[r0:r1, k, 1])) for k in used)
-                base = box[a + r0:a + r1, 3]
-                base_motion = _p_range(base) / H0
-                if base_motion > p.max_base_motion:
-                    ok = np.isfinite(base)
-                    sync = abs(np.corrcoef(base[ok], s[st[0]:en[-1] + 1][ok])[0, 1]) if ok.sum() > 5 else 0.0
-                    if sync < p.synced_base_corr or base_motion > p.max_synced_base_motion:
-                        continue
-                if joint_range < p.min_joint_range:
-                    continue
+                grp, gp, st, en = found["grp"], found["peaks"], found["starts"], found["ends"]
+                iv, cv = found["intervals"], found["cv"]
                 off = a + w0  # index into tg
                 loading = np.linalg.norm(Vt[0].reshape(-1, 2), axis=1)
                 top = [KP_NAMES[used[i]] for i in np.argsort(-loading)[:4]]
@@ -384,8 +424,8 @@ def analyze_track(tr, p):
                     "period_s": round(float(np.median(iv)) if len(iv) else 0.0, 2),
                     "amplitude": round(float(res["rng"]), 3),
                     "regularity": round(1 - cv, 2),
-                    "periodicity": round(per_score, 2),
-                    "joint_range": round(joint_range, 3),
+                    "periodicity": round(found["periodicity"], 2),
+                    "joint_range": round(found["joint_range"], 3),
                     "moving_joints": top,
                     "exercise": ex,
                     "confidence": conf,

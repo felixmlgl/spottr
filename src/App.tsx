@@ -1,203 +1,168 @@
 /**
  * Spottr - Gym Member Experience
  * Your gym's cameras count for you.
- * Apple-style light design for gym members to view auto-logged workouts, weekly plan,
- * muscle recovery readiness, volume progress, and live session replay.
+ *
+ * The demo starts on an intro screen where you pick a camera clip and the person to follow. The selection lives in
+ * the URL (/?clip=squat&person=2), so a refresh or shared link reopens the same member. The member app then has
+ * four tabs (Main, Recovery, History, Settings); the annotated replay is a sub-view (&view=replay), not a tab.
  */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import { Navigation, TabId } from './components/Navigation';
-import { TodayTab } from './components/TodayTab';
-import { PlanTab } from './components/PlanTab';
+import { MainTab } from './components/MainTab';
 import { RecoveryTab } from './components/RecoveryTab';
-import { ProgressTab } from './components/ProgressTab';
-import { WorkoutsTab } from './components/WorkoutsTab';
-import { ReplayModal } from './components/ReplayModal';
-import { SCENARIOS } from './mocks/scenarios';
-import { PAST_WORKOUTS } from './mocks/memberData';
-import { PastWorkout, ScenarioMetadata, TrainingPlan, WorkoutSummary } from './types/schema';
-import { getTrackingProvider } from './services/tracking';
+import { HistoryTab } from './components/HistoryTab';
+import { SettingsTab } from './components/SettingsTab';
+import { ReplayView } from './components/ReplayView';
+import { DemoIntro } from './components/intro/DemoIntro';
+import { TrainingPlan } from './types/schema';
+import { navigate, useSearch } from './router';
+import { findClip, useClipData } from './hooks/useClipData';
+import { clipDataBaseUrl, pipelinePersonToWorkoutSummary } from './services/pipelineAdapter';
+import { mainExercise, summaryToWorkout, workoutHistory } from './services/memberSession';
 import { summaryService } from './services/summary';
 import { loadTrainingPlan, saveTrainingPlan } from './services/planService';
+import { useSettings } from './services/settings';
+
+const appUrl = (clipId: string, personId: string) =>
+  `/?clip=${encodeURIComponent(clipId)}&person=${encodeURIComponent(personId)}`;
+
+// Whether the replay was opened from inside the app, so "Back" can pop history instead of pushing a new entry
+let replayOpenedInApp = false;
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<TabId>('today');
-  const [isReplayOpen, setIsReplayOpen] = useState<boolean>(false);
+  const params = new URLSearchParams(useSearch());
+  const clip = findClip(params.get('clip'));
+  const personParam = params.get('person');
+  const view = params.get('view');
 
-  // Training Plan state (persisted with localStorage)
+  const [currentTab, setCurrentTab] = useState<TabId>('main');
   const [plan, setPlan] = useState<TrainingPlan>(() => loadTrainingPlan());
+  const [settings, updateSettings] = useSettings();
+  const [recap, setRecap] = useState<string>('');
 
-  // Scenarios and Tracking
-  const [scenarios] = useState<ScenarioMetadata[]>(SCENARIOS);
-  const [currentScenarioId, setCurrentScenarioId] = useState<string>(SCENARIOS[0].id);
-  const [selectedPersonId, setSelectedPersonId] = useState<string>(
-    SCENARIOS[0].persons[0].person_id
+  const data = useClipData(clip && personParam ? clip.id : null);
+  const person = data?.session.people.find((p) => String(p.id) === personParam);
+
+  const summary = useMemo(
+    () => (data && person ? pipelinePersonToWorkoutSummary(person, data.session) : null),
+    [data, person]
   );
 
-  // Playback & simulation state
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
+  useEffect(() => {
+    if (!summary) return;
+    let alive = true;
+    setRecap('');
+    summaryService.generateRecap(summary).then((text) => alive && setRecap(text));
+    return () => {
+      alive = false;
+    };
+  }, [summary]);
 
-  // Dynamic latest workout for Today tab
-  const [latestWorkout, setLatestWorkout] = useState<PastWorkout>(PAST_WORKOUTS[0]);
-  const [aiRecap, setAiRecap] = useState<string>('');
+  const history = useMemo(
+    () => (summary ? workoutHistory(summaryToWorkout(summary, recap)) : []),
+    [summary, recap]
+  );
 
-  const scenario = scenarios.find((s) => s.id === currentScenarioId) || scenarios[0];
-  const duration = scenario.duration_s;
+  const selectTab = (tab: TabId) => {
+    setCurrentTab(tab);
+    window.scrollTo(0, 0);
+  };
 
-  const trackingProvider = getTrackingProvider();
-  const detections = trackingProvider.getDetectionsAtTime(scenario.id, currentTime);
-
-  // Handle plan update
   const handleUpdatePlan = (updatedPlan: TrainingPlan) => {
     setPlan(updatedPlan);
     saveTrainingPlan(updatedPlan);
   };
 
-  // Handle scenario switch
-  const handleSelectScenario = (scenarioId: string) => {
-    setCurrentScenarioId(scenarioId);
-    const newScenario = scenarios.find((s) => s.id === scenarioId) || scenarios[0];
-    setSelectedPersonId(newScenario.persons[0].person_id);
-    setCurrentTime(0);
-    setIsPlaying(false);
+  // Intro: nothing chosen yet, "Change" pressed, or a stale link to someone who isn't in the clip
+  const pickRequested = !clip || !personParam || view === 'pick';
+  if (pickRequested || (data && !person)) {
+    return (
+      <DemoIntro
+        initialClipId={clip?.id}
+        initialPersonId={person ? personParam : null}
+        onContinue={(clipId, personId) => {
+          setCurrentTab('main');
+          navigate(appUrl(clipId, personId));
+        }}
+      />
+    );
+  }
+
+  const baseUrl = appUrl(clip.id, personParam);
+  const openReplay = () => {
+    replayOpenedInApp = true;
+    navigate(`${baseUrl}&view=replay`);
   };
+  const changeSelection = () => navigate(`${baseUrl}&view=pick`);
 
-  // Simulation playback loop
-  const animFrameRef = useRef<number | null>(null);
-  const lastTimeRef = useRef<number>(performance.now());
+  if (view === 'replay') {
+    return (
+      <ReplayView
+        data={data}
+        personId={personParam}
+        settings={settings}
+        onBack={() => {
+          if (replayOpenedInApp) {
+            replayOpenedInApp = false;
+            window.history.back();
+          } else {
+            navigate(baseUrl, { replace: true });
+          }
+        }}
+      />
+    );
+  }
 
-  const updateSimulation = useCallback(() => {
-    const now = performance.now();
-    const deltaSeconds = ((now - lastTimeRef.current) / 1000) * playbackSpeed;
-    lastTimeRef.current = now;
+  if (!data || !person || !summary) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-[#6E6E73]" />
+      </div>
+    );
+  }
 
-    setCurrentTime((prev) => {
-      const next = prev + deltaSeconds;
-      if (next >= duration) {
-        setIsPlaying(false);
-        return duration;
-      }
-      return next;
-    });
-
-    if (isPlaying) {
-      animFrameRef.current = requestAnimationFrame(updateSimulation);
-    }
-  }, [isPlaying, duration, playbackSpeed]);
-
-  useEffect(() => {
-    if (isPlaying) {
-      lastTimeRef.current = performance.now();
-      animFrameRef.current = requestAnimationFrame(updateSimulation);
-    } else {
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-    }
-    return () => {
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
-    };
-  }, [isPlaying, updateSimulation]);
-
-  const handleTogglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleSeek = (time: number) => {
-    setCurrentTime(time);
-  };
-
-  const handleReset = () => {
-    setCurrentTime(0);
-    setIsPlaying(false);
-  };
-
-  // When session completes or user taps "View summary" in Replay View:
-  const handleApplySessionToSummary = (summary: WorkoutSummary) => {
-    const exercises = summary.sessions.length > 0
-      ? summary.sessions.map((s) => ({
-          name: s.exercise_name,
-          exercise_id: s.exercise_id,
-          sets: 1,
-          reps_per_set: [s.rep_count],
-          total_reps: s.rep_count,
-        }))
-      : [
-          {
-            name: 'Squat',
-            exercise_id: 'squat',
-            sets: 1,
-            reps_per_set: [summary.total_reps],
-            total_reps: summary.total_reps,
-          },
-        ];
-
-    const updatedWorkout: PastWorkout = {
-      ...latestWorkout,
-      total_reps: summary.total_reps,
-      duration_minutes: Math.max(1, Math.round(summary.total_duration_s / 60) || 1),
-      display_date: 'Today, Just now',
-      exercises,
-      muscle_load: summary.muscle_load,
-    };
-
-    setLatestWorkout(updatedWorkout);
-
-    // Generate fresh smart recap
-    summaryService.generateRecap(summary).then((text) => {
-      setAiRecap(text);
-    });
-
-    setCurrentTab('today');
-  };
+  const thumbnail = person.thumbnail ? `${clipDataBaseUrl(clip)}/${person.thumbnail}` : null;
+  const personLabel = `Person ${person.id} · ${mainExercise(person) ?? clip.title}`;
 
   return (
     <div className="min-h-screen bg-white text-[#1D1D1F] flex flex-col font-sans selection:bg-[#34C759]/20 selection:text-[#1D1D1F]">
-      {/* Navigation Top Bar & Mobile Bottom Bar */}
       <Navigation
         currentTab={currentTab}
-        onSelectTab={(tab) => setCurrentTab(tab)}
-        onOpenReplay={() => setIsReplayOpen(true)}
+        onSelectTab={selectTab}
+        personLabel={personLabel}
+        thumbnail={thumbnail}
+        onChangeSelection={changeSelection}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-[1100px] w-full mx-auto px-6 py-8">
-        {currentTab === 'today' && (
-          <TodayTab
-            latestWorkout={latestWorkout}
-            plan={plan}
-            onWatchReplay={() => setIsReplayOpen(true)}
-            onNavigateToPlan={() => setCurrentTab('plan')}
-            aiRecap={aiRecap}
-          />
-        )}
-
-        {currentTab === 'plan' && (
-          <PlanTab
-            plan={plan}
-            onUpdatePlan={handleUpdatePlan}
+      <main className="flex-1 max-w-[1100px] w-full mx-auto px-4 sm:px-6 pt-8 pb-24 md:pb-8">
+        {currentTab === 'main' && (
+          <MainTab
+            person={person}
+            history={history}
+            onWatchReplay={openReplay}
+            onOpenHistory={() => selectTab('history')}
           />
         )}
 
         {currentTab === 'recovery' && (
-          <RecoveryTab plan={plan} />
+          <RecoveryTab plan={plan} onUpdatePlan={handleUpdatePlan} todayLoad={summary.muscle_load} />
         )}
 
-        {currentTab === 'progress' && (
-          <ProgressTab />
-        )}
+        {currentTab === 'history' && <HistoryTab workouts={history} todayRecap={recap} onWatchReplay={openReplay} />}
 
-        {currentTab === 'workouts' && (
-          <WorkoutsTab />
+        {currentTab === 'settings' && (
+          <SettingsTab
+            clipTitle={clip.title}
+            personId={personParam}
+            thumbnail={thumbnail}
+            settings={settings}
+            onChangeSettings={updateSettings}
+            onChangeSelection={changeSelection}
+          />
         )}
       </main>
-
-      {/* Replay View Modal */}
-      <ReplayModal
-        isOpen={isReplayOpen}
-        onClose={() => setIsReplayOpen(false)}
-        onApplySessionToSummary={handleApplySessionToSummary}
-      />
     </div>
   );
 }
