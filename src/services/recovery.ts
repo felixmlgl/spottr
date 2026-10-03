@@ -40,7 +40,14 @@ export interface RecoveryCalculationResult {
   };
 }
 
-export function calculateMuscleRecovery(plan?: TrainingPlan): RecoveryCalculationResult {
+/**
+ * @param todayLoad muscle load of today's camera-tracked session (0..1 per muscle). When given, it replaces the
+ *   mock "trained today" legs, so recovery follows whatever the selected demo person actually trained.
+ */
+export function calculateMuscleRecovery(
+  plan?: TrainingPlan,
+  todayLoad?: Partial<Record<MuscleId, number>>
+): RecoveryCalculationResult {
   // Current simulated timestamp: Sep 27, 2026 at 1:00 PM (13:00)
   const referenceTime = new Date('2026-09-27T13:00:00Z').getTime();
 
@@ -80,6 +87,16 @@ export function calculateMuscleRecovery(plan?: TrainingPlan): RecoveryCalculatio
     hamstrings: 2.5, // Trained today in RDL
     calves: 2.5,
   };
+
+  if (todayLoad) {
+    // Mock legs were last trained before today on Sunday Sep 20 (~7 days ago)
+    (['lower_back', 'glutes', 'quads', 'hamstrings', 'calves'] as MuscleId[]).forEach((m) => {
+      lastTrainedHours[m] = 168;
+    });
+    (Object.entries(todayLoad) as [MuscleId, number][]).forEach(([m, load]) => {
+      if (load >= 0.25 && m in lastTrainedHours) lastTrainedHours[m] = 2.5;
+    });
+  }
 
   const results: Record<MuscleId, RecoveryStatus> = {} as Record<MuscleId, RecoveryStatus>;
 
@@ -129,11 +146,27 @@ export function calculateMuscleRecovery(plan?: TrainingPlan): RecoveryCalculatio
   if (plan) {
     const mondayWorkout = plan.days.mon;
     if (mondayWorkout && !mondayWorkout.is_rest) {
-      recommendation = {
-        headline: `${mondayWorkout.title} is ready for tomorrow`,
-        details: `Your upper body pull & push muscles are refreshed. Following your ${mondayWorkout.title} plan tomorrow allows your lower body 48 more hours to supercompensate.`,
-        actionHint: `On track for ${mondayWorkout.title}`,
-      };
+      const tired = recoveringList.slice(0, 3).map((m) => m.name.toLowerCase());
+      // Primary muscles of tomorrow's planned exercises that haven't recovered yet
+      const clashing = recoveringList.filter((m) =>
+        mondayWorkout.exercises.some((ex) => getExerciseMuscleMapping(ex.exercise_id).primary.includes(m.muscle_id))
+      );
+      recommendation = clashing.length
+        ? {
+            headline: `Go easy on tomorrow's ${mondayWorkout.title}`,
+            details: `Your ${clashing
+              .slice(0, 3)
+              .map((m) => m.name.toLowerCase())
+              .join(', ')} ${clashing.length === 1 ? 'is' : 'are'} still recovering from today. Lighter sets, or swap ${mondayWorkout.title} with a day that trains other muscles.`,
+            actionHint: `${clashing.length} planned muscle${clashing.length === 1 ? '' : 's'} still recovering`,
+          }
+        : {
+            headline: `${mondayWorkout.title} is ready for tomorrow`,
+            details: tired.length
+              ? `Your ${tired.join(', ')} ${tired.length === 1 ? 'is' : 'are'} still recovering, and tomorrow's ${mondayWorkout.title} plan leaves them to rest.`
+              : `Every muscle group is recovered. You're clear to follow your ${mondayWorkout.title} plan tomorrow.`,
+            actionHint: `On track for ${mondayWorkout.title}`,
+          };
     }
   }
 

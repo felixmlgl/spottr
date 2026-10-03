@@ -123,10 +123,109 @@
    "first_seen_s": 0.0,
    "last_seen_s": 38.4,
    "thumbnail": "people/p2.jpg",
-   "total_reps": 0,
-   "exercises": {},
-   "muscle_load": {},
-   "sets": []
+   "total_reps": 12,
+   "exercises": {
+    "tricep_extension": 12
+   },
+   "muscle_load": {
+    "chest": 0.0,
+    "front_delts": 0.0,
+    "side_delts": 0.0,
+    "rear_delts": 0.0,
+    "traps": 0.0,
+    "lats": 0.0,
+    "upper_back": 0.0,
+    "lower_back": 0.0,
+    "biceps": 0.0,
+    "triceps": 1.0,
+    "forearms": 0.0,
+    "abs": 0.0,
+    "obliques": 0.0,
+    "glutes": 0.0,
+    "quads": 0.0,
+    "hamstrings": 0.0,
+    "calves": 0.0,
+    "adductors": 0.0
+   },
+   "sets": [
+    {
+     "start_s": 1.15,
+     "end_s": 24.6,
+     "reps": 12,
+     "rep_times_s": [
+      2.25,
+      4.5,
+      6.5,
+      8.35,
+      10.15,
+      12.1,
+      13.9,
+      15.75,
+      17.75,
+      19.75,
+      22.15,
+      24.6
+     ],
+     "rep_peak_s": [
+      1.55,
+      3.8,
+      5.85,
+      7.8,
+      9.65,
+      11.65,
+      13.45,
+      15.25,
+      17.35,
+      19.3,
+      21.6,
+      24.15
+     ],
+     "rep_rest_s": [
+      0.5,
+      3.1,
+      5.25,
+      7.25,
+      9.0,
+      11.05,
+      12.65,
+      14.7,
+      16.75,
+      18.15,
+      20.85,
+      23.45
+     ],
+     "rep_mid_s": [
+      1.15,
+      3.45,
+      5.5,
+      7.6,
+      9.3,
+      11.35,
+      13.1,
+      14.9,
+      17.05,
+      18.85,
+      21.3,
+      23.8
+     ],
+     "period_s": 2.0,
+     "amplitude": 0.339,
+     "regularity": 0.89,
+     "periodicity": 0.49,
+     "joint_range": 0.341,
+     "moving_joints": [
+      "left_wrist",
+      "left_elbow",
+      "left_knee",
+      "right_elbow"
+     ],
+     "exercise": "tricep_extension",
+     "confidence": 0.95,
+     "exercise_source": "gemini-flash-lite-latest",
+     "snapshot": "snapshots/p2_set1.jpg",
+     "equipment": "cable"
+    }
+   ]
   },
   {
    "id": 3,
