@@ -22,3 +22,6 @@ backend/models/*_ncnn_model/
 
 # README demo clips
 !/docs/media/*.mp4
+
+# Welcome page background clips
+!/public/welcome/*.mp4
