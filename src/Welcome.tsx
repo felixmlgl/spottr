@@ -79,7 +79,7 @@ export const Welcome: React.FC = () => {
         <div className="flex flex-1 items-center justify-center pt-[4vh] pb-[calc(12vh+57px)]">
           <h1>
             <img
-              src="/welcome/spottr-logo.png"
+              src="/welcome/spottr-logo.svg"
               alt="Spottr"
               className="w-[min(34vw,560px)] min-w-[220px] h-auto drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]"
             />
@@ -88,7 +88,7 @@ export const Welcome: React.FC = () => {
 
         <Link
           to="/demo"
-          className="absolute bottom-[27vh] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/40 bg-white/55 px-7 py-4 text-[15px] font-medium text-[#1D1D1F] shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-colors hover:bg-white/75"
+          className="absolute bottom-[27vh] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/40 bg-white/55 px-6 py-3 text-[14px] font-medium text-[#1D1D1F] shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-colors hover:bg-white/75"
         >
           Try our demo
         </Link>
