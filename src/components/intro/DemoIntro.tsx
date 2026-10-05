@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, Info } from 'lucide-react';
+import { ArrowRight, Dumbbell, Info, LayoutDashboard, X } from 'lucide-react';
 import { PIPELINE_CLIPS } from '../../config';
 import { findClip, prefetchClip, useClipData, useClipSessions } from '../../hooks/useClipData';
 import { PipelinePerson, clipDataBaseUrl } from '../../services/pipelineAdapter';
 import { defaultPersonId, mainExercise, sortPeopleForPicker, trackedSeconds } from '../../services/memberSession';
 import { PersonSpotlight } from './PersonSpotlight';
+import { navigate } from '../../router';
 
 interface DemoIntroProps {
   initialClipId?: string | null;
@@ -53,6 +54,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
   const [clipId, setClipId] = useState<string | null>(findClip(initialClipId)?.id ?? null);
   const [personId, setPersonId] = useState<string | null>(initialPersonId ?? null);
   const [hoverId, setHoverId] = useState<string | null>(null);
+  const [choosingView, setChoosingView] = useState(false);
   const step2Ref = useRef<HTMLElement>(null);
 
   const clip = findClip(clipId);
@@ -72,15 +74,16 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
   }, [session]);
 
   const pickClip = (id: string) => {
-    if (id === clipId) return;
+    if (id === clipId) {
+      step2Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     prefetchClip(id);
     setClipId(id);
     setPersonId(null);
     setHoverId(null);
-    // On small screens step 2 starts below the fold
-    if (window.matchMedia('(max-width: 639px)').matches) {
-      requestAnimationFrame(() => step2Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-    }
+    // Jump to step 2 once it has rendered, so nobody has to scroll for it
+    requestAnimationFrame(() => requestAnimationFrame(() => step2Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
   };
 
   const thumbUrl = (p: PipelinePerson) => (clip && p.thumbnail ? `${clipDataBaseUrl(clip)}/${p.thumbnail}` : null);
@@ -241,7 +244,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
               : 'Choose a person'}
           </p>
           <button
-            onClick={() => canContinue && onContinue(clipId!, personId!)}
+            onClick={() => canContinue && setChoosingView(true)}
             disabled={!canContinue}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold transition-transform active:scale-95 disabled:opacity-30 disabled:active:scale-100 cursor-pointer disabled:cursor-default shrink-0"
           >
@@ -250,6 +253,52 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
           </button>
         </div>
       </div>
+
+      {/* Final step: member app or gym admin dashboard */}
+      {choosingView && (
+        <div
+          className="fixed inset-0 z-40 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          onClick={() => setChoosingView(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="view-choice-title"
+            className="relative w-full max-w-lg bg-white rounded-[28px] p-6 sm:p-8 shadow-xl animate-in fade-in duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setChoosingView(false)}
+              aria-label="Close"
+              className="absolute top-4 right-4 p-2 rounded-full text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <h2 id="view-choice-title" className="text-2xl font-extrabold tracking-tight">
+              How do you want to see Spottr?
+            </h2>
+            <p className="text-sm text-[#6E6E73] mt-1">Pick a side of the gym to explore.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+              <button
+                onClick={() => onContinue(clipId!, personId!)}
+                className="text-left rounded-2xl bg-[#F5F5F7] hover:bg-[#EBEBEF] p-4 transition-colors cursor-pointer"
+              >
+                <Dumbbell className="w-5 h-5 text-[#34C759]" />
+                <p className="mt-3 text-base font-bold">As a gym-goer</p>
+                <p className="text-xs text-[#6E6E73] mt-0.5">Your workout, recovery and history.</p>
+              </button>
+              <button
+                onClick={() => navigate('/gyms')}
+                className="text-left rounded-2xl bg-[#F5F5F7] hover:bg-[#EBEBEF] p-4 transition-colors cursor-pointer"
+              >
+                <LayoutDashboard className="w-5 h-5 text-[#0071E3]" />
+                <p className="mt-3 text-base font-bold">As the gym admin</p>
+                <p className="text-xs text-[#6E6E73] mt-0.5">Floor, members and insights for the gym.</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
