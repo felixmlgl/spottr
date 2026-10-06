@@ -35,7 +35,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
       <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between gap-4">
         <Link to="/gyms" className="flex items-baseline gap-1.5 shrink-0">
-          <span className="text-xl font-bold tracking-tight text-[#1D1D1F]">Spottr</span>
+          <span className="font-logo text-xl tracking-tight text-[#1D1D1F]">spottr</span>
           <span className="text-sm font-medium text-[#6E6E73]">for Gyms</span>
         </Link>
 
