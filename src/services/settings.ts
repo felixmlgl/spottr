@@ -5,16 +5,20 @@
 import { useState } from 'react';
 
 export type OverlayMode = 'raw' | 'styled';
+export type BodyModel = 'male' | 'female';
 
 export interface AppSettings {
   /** Raw = overlay.json drawn like the backend's annotated video; Styled = our prettified overlay */
   overlayMode: OverlayMode;
   repSound: boolean;
+  /** Which figure the muscle maps draw */
+  bodyModel: BodyModel;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   overlayMode: 'raw',
   repSound: true,
+  bodyModel: 'male',
 };
 
 const SETTINGS_STORAGE_KEY = 'spottr_settings';

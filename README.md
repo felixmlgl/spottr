@@ -163,7 +163,7 @@ flowchart LR
 The React front end is what a gym member sees after training:
 
 - **Today:** the auto-logged workout and the Gemini coach recap
-- **Plan:** a weekly training plan with the workouts logged so far
+- **Plan:** a suggested next session built around muscles that have recovered and gone longest untrained, plus a red-to-green recovery map where tapping a muscle shows exercises that fit it right now, three at a time
 - **Recovery:** a body heat map of muscle load (from `muscle_load` in `session.json`) and readiness per muscle group
 - **Progress / Workouts:** volume trends and workout history
 - **Replay:** the real demo clips with pipeline skeletons drawn live over the video, a person picker, and a rep counter that ticks on each detected rep

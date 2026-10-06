@@ -1,6 +1,6 @@
-import { MuscleId, RecoveryStatus, TrainingPlan } from '../types/schema';
-import { PAST_WORKOUTS } from '../mocks/memberData';
-import { EXERCISE_MUSCLE_MAP, getExerciseMuscleMapping, MUSCLE_NAMES } from '../data/exerciseMuscles';
+import { MuscleId, PastWorkout, RecoveryStatus, TrainingPlan } from '../types/schema';
+import { getExerciseMuscleMapping, MUSCLE_NAMES } from '../data/exerciseMuscles';
+import { DEMO_TODAY, workoutMuscles } from './memberSession';
 
 // Required recovery hours
 const LARGE_MUSCLES: MuscleId[] = [
@@ -40,67 +40,49 @@ export interface RecoveryCalculationResult {
   };
 }
 
+/** "Now" in the demo: 1:00 PM on the demo's today. Workouts are dated by day only, so each one counts as ending at 10:30. */
+const REFERENCE_TIME = Date.parse(`${DEMO_TODAY}T13:00:00Z`);
+const WORKOUT_END = 'T10:30:00Z';
+
+/** A muscle counts as trained in a workout once its load (0..1) reaches this. */
+export const TRAINED_LOAD = 0.25;
+
+/** Hours since training for a muscle that isn't trained anywhere in the history. */
+export const UNTRAINED_HOURS = 28 * 24;
+
+const ALL_MUSCLES = Object.keys(MUSCLE_NAMES) as MuscleId[];
+
+/** Hours between the demo's "now" and the most recent workout that trained each muscle. */
+export function hoursSinceTrained(history: PastWorkout[]): Record<MuscleId, number> {
+  const hours = Object.fromEntries(ALL_MUSCLES.map((m) => [m, UNTRAINED_HOURS])) as Record<MuscleId, number>;
+  history.forEach((w) => {
+    const ago = (REFERENCE_TIME - Date.parse(`${w.date}${WORKOUT_END}`)) / 3_600_000;
+    (Object.entries(workoutMuscles(w)) as [MuscleId, number][]).forEach(([m, load]) => {
+      if (load >= TRAINED_LOAD && m in hours && ago < hours[m]) hours[m] = ago;
+    });
+  });
+  return hours;
+}
+
+/** Weekday a muscle is back to full, e.g. "tomorrow" or "Wednesday", counted from the demo's "now". */
+export function readyDayLabel(hoursRemaining: number): string {
+  const ready = new Date(REFERENCE_TIME + hoursRemaining * 3_600_000);
+  const days = Math.round((Date.parse(ready.toISOString().slice(0, 10)) - Date.parse(DEMO_TODAY)) / 86_400_000);
+  if (days <= 0) return 'later today';
+  if (days === 1) return 'tomorrow';
+  return ready.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' });
+}
+
 /**
- * @param todayLoad muscle load of today's camera-tracked session (0..1 per muscle). When given, it replaces the
- *   mock "trained today" legs, so recovery follows whatever the selected demo person actually trained.
+ * @param history the member's workouts, today's camera-tracked session first. Recovery follows whatever each
+ *   workout actually trained, so it changes with the selected demo person.
  */
-export function calculateMuscleRecovery(
-  plan?: TrainingPlan,
-  todayLoad?: Partial<Record<MuscleId, number>>
-): RecoveryCalculationResult {
-  // Current simulated timestamp: Sep 27, 2026 at 1:00 PM (13:00)
-  const referenceTime = new Date('2026-09-27T13:00:00Z').getTime();
-
-  const allMuscles: MuscleId[] = [
-    'chest',
-    'front_delts',
-    'rear_delts',
-    'biceps',
-    'triceps',
-    'forearms',
-    'abs',
-    'obliques',
-    'traps',
-    'lats',
-    'lower_back',
-    'glutes',
-    'quads',
-    'hamstrings',
-    'calves',
-  ];
-
-  // Track the most recent time and load for each muscle across past workouts
-  const lastTrainedHours: Record<MuscleId, number> = {
-    chest: 52, // Friday Sep 25 (~48-52h ago)
-    front_delts: 52,
-    rear_delts: 96,
-    biceps: 96, // Wednesday Sep 23 (~96h ago)
-    triceps: 52,
-    forearms: 96,
-    abs: 140,
-    obliques: 140,
-    traps: 96,
-    lats: 168,
-    lower_back: 2.5, // Trained today in RDL/squats
-    glutes: 2.5,     // Trained today in squats
-    quads: 2.5,      // Trained today in squats/lunges
-    hamstrings: 2.5, // Trained today in RDL
-    calves: 2.5,
-  };
-
-  if (todayLoad) {
-    // Mock legs were last trained before today on Sunday Sep 20 (~7 days ago)
-    (['lower_back', 'glutes', 'quads', 'hamstrings', 'calves'] as MuscleId[]).forEach((m) => {
-      lastTrainedHours[m] = 168;
-    });
-    (Object.entries(todayLoad) as [MuscleId, number][]).forEach(([m, load]) => {
-      if (load >= 0.25 && m in lastTrainedHours) lastTrainedHours[m] = 2.5;
-    });
-  }
+export function calculateMuscleRecovery(history: PastWorkout[], plan?: TrainingPlan): RecoveryCalculationResult {
+  const lastTrainedHours = hoursSinceTrained(history);
 
   const results: Record<MuscleId, RecoveryStatus> = {} as Record<MuscleId, RecoveryStatus>;
 
-  allMuscles.forEach((muscle) => {
+  ALL_MUSCLES.forEach((muscle) => {
     const requiredHours = BASE_RECOVERY_HOURS[muscle];
     const hoursAgo = lastTrainedHours[muscle];
 

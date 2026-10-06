@@ -1,7 +1,18 @@
-import React, { useId, useRef, useState } from 'react';
-import { MuscleId } from '../types/schema';
+import React, { createContext, useContext, useId, useRef, useState } from 'react';
+import { MuscleId, RecoveryStatus } from '../types/schema';
 import { MUSCLE_NAMES } from '../data/exerciseMuscles';
 import { BODY_BACK, BODY_FRONT, BodySlug, BodyView } from '../data/bodyPaths';
+import { FEMALE_BODY_BACK, FEMALE_BODY_FRONT } from '../data/bodyPathsFemale';
+import type { RecoveryCalculationResult } from '../services/recovery';
+import type { BodyModel } from '../services/settings';
+
+/** The figure every BodyMap below draws; the app provides the member's setting */
+export const BodyModelContext = createContext<BodyModel>('male');
+
+const BODIES: Record<BodyModel, { front: BodyView; back: BodyView }> = {
+  male: { front: BODY_FRONT, back: BODY_BACK },
+  female: { front: FEMALE_BODY_FRONT, back: FEMALE_BODY_BACK },
+};
 
 export interface BodyMapProps {
   /**
@@ -10,7 +21,7 @@ export interface BodyMapProps {
    */
   values?: Partial<Record<MuscleId, number>>;
   /**
-   * Explicit color override per muscle (e.g. for recovery mode: #34C759, #FFCC00, #FF9500, #FF3B30)
+   * Explicit color override per muscle; recovery mode otherwise blends red → green from the value
    */
   colorMap?: Partial<Record<MuscleId, string>>;
   /**
@@ -23,6 +34,60 @@ export interface BodyMapProps {
   getTooltipText?: (muscleId: MuscleId) => string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  /**
+   * Makes the map a muscle picker: the parent owns the selection and gets every tap or keypress on a muscle.
+   * Without it, clicking a muscle just toggles its details pill.
+   */
+  selectedMuscle?: MuscleId | null;
+  onSelectMuscle?: (muscleId: MuscleId) => void;
+}
+
+/**
+ * Recovery colors from just trained to ready: red → orange → yellow → green. Green starts at 85%, where a muscle
+ * counts as ready to train.
+ */
+const RECOVERY_STOPS: [number, string][] = [
+  [0, '#FF3B30'],
+  [0.35, '#FF9500'],
+  [0.65, '#FFCC00'],
+  [0.85, '#34C759'],
+];
+
+/** Color for a muscle that is `recovered` (0..1) of the way back, blended between the neighbouring stops */
+export const recoveryColor = (recovered: number): string => {
+  const v = Math.min(1, Math.max(0, recovered));
+  const upper = RECOVERY_STOPS.findIndex(([at]) => at >= v);
+  if (upper === 0) return RECOVERY_STOPS[0][1];
+  if (upper === -1) return RECOVERY_STOPS[RECOVERY_STOPS.length - 1][1];
+  const [a, from] = RECOVERY_STOPS[upper - 1];
+  const [b, to] = RECOVERY_STOPS[upper];
+  return mixHex(from, to, (v - a) / (b - a));
+};
+
+const recoveryLabel = (item: RecoveryStatus) => {
+  if (item.status === 'ready') return 'Ready to train';
+  if (item.status === 'recovering') return 'Recovering';
+  return item.recovery_percent < 25 ? 'Very fatigued' : 'Fatigued';
+};
+
+/** BodyMap props that color every muscle by how recovered it is */
+export function recoveryMapProps(
+  recovery: RecoveryCalculationResult
+): Pick<BodyMapProps, 'mode' | 'values' | 'getTooltipText'> {
+  const values: Partial<Record<MuscleId, number>> = {};
+  Object.values(recovery.muscles).forEach((item) => {
+    values[item.muscle_id] = item.recovery_percent / 100;
+  });
+  return {
+    mode: 'recovery',
+    values,
+    getTooltipText: (muscleId) => {
+      const item = recovery.muscles[muscleId];
+      if (!item) return '';
+      if (item.status === 'ready') return recoveryLabel(item);
+      return `${recoveryLabel(item)} · ready in ~${item.hours_remaining}h`;
+    },
+  };
 }
 
 /** Which of our muscle ids each MuscleMap body part shows, per view. Unmapped parts stay neutral. */
@@ -59,24 +124,23 @@ const INTENSITY_LEVELS = {
 } as const;
 type IntensityLevel = keyof typeof INTENSITY_LEVELS;
 
-const RECOVERY_LEGEND = [
-  { label: 'Ready', color: '#34C759' },
-  { label: 'Recovering', color: '#FFCC00' },
-  { label: 'Fatigued', color: '#FF9500' },
-  { label: 'Very fatigued', color: '#FF3B30' },
-];
-
 const MUSCLE_BASE = '#DCDCE1';
+const PICKED_STROKE = '#1D1D1F';
 const BODY_BASE = '#E7E7EB';
 const HAIR = '#C7C7CC';
 
-/** Mix a hex color with white; amount 0..1 */
-const tint = (hex: string, amount: number) => {
-  const n = parseInt(hex.slice(1), 16);
-  const mix = (c: number) => Math.round(c + (255 - c) * amount);
-  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(mix);
-  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1)}`;
+/** Blend hex color `a` toward `b`; amount 0..1 */
+const mixHex = (a: string, b: string, amount: number) => {
+  const [na, nb] = [a, b].map((hex) => parseInt(hex.slice(1), 16));
+  const [r, g, bl] = [16, 8, 0].map((shift) => {
+    const ca = (na >> shift) & 255;
+    return Math.round(ca + (((nb >> shift) & 255) - ca) * amount);
+  });
+  return `#${((1 << 24) | (r << 16) | (g << 8) | bl).toString(16).slice(1)}`;
 };
+
+/** Mix a hex color with white; amount 0..1 */
+const tint = (hex: string, amount: number) => mixHex(hex, '#FFFFFF', amount);
 
 const recoveryGradient = (color: string) => ({ from: tint(color, 0.35), to: color });
 
@@ -87,9 +151,16 @@ export const BodyMap: React.FC<BodyMapProps> = ({
   getTooltipText,
   size = 'md',
   className = '',
+  selectedMuscle: pickedMuscle = null,
+  onSelectMuscle,
 }) => {
+  const figure = BODIES[useContext(BodyModelContext)];
   const [hoveredMuscle, setHoveredMuscle] = useState<MuscleId | null>(null);
-  const [selectedMuscle, setSelectedMuscle] = useState<MuscleId | null>(null);
+  const [ownSelection, setOwnSelection] = useState<MuscleId | null>(null);
+  const isPicker = !!onSelectMuscle;
+  const selectedMuscle = isPicker ? pickedMuscle : ownSelection;
+  const selectMuscle = (mId: MuscleId) =>
+    onSelectMuscle ? onSelectMuscle(mId) : setOwnSelection((prev) => (prev === mId ? null : mId));
   const [pointerPos, setPointerPos] = useState<{ x: number; y: number } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
@@ -106,14 +177,7 @@ export const BodyMap: React.FC<BodyMapProps> = ({
 
   // Solid color for a muscle (tooltip dots); null when untrained
   const getMuscleColor = (mId: MuscleId): string | null => {
-    if (mode === 'recovery') {
-      if (colorMap && colorMap[mId]) return colorMap[mId]!;
-      const val = values[mId] ?? 1.0;
-      if (val < 0.25) return '#FF3B30'; // very fatigued
-      if (val < 0.5) return '#FF9500'; // fatigued
-      if (val < 0.85) return '#FFCC00'; // recovering
-      return '#34C759'; // ready
-    }
+    if (mode === 'recovery') return colorMap?.[mId] ?? recoveryColor(values[mId] ?? 1);
     const level = intensityLevel(mId);
     return level ? INTENSITY_LEVELS[level].to : null;
   };
@@ -126,37 +190,16 @@ export const BodyMap: React.FC<BodyMapProps> = ({
   };
 
   // Tooltip string generator:
-  // Recovery mode: "Hamstrings · Fatigued · ready in ~70h" (or "Hamstrings · Ready to train")
+  // Recovery mode: "Hamstrings · Fatigued · ready in ~70h" (or "Hamstrings · Ready to train"), from getTooltipText
   // Trained mode: "Hamstrings · Heavy / Moderate / Light / Untrained"
   const getTooltipString = (mId: MuscleId): string => {
     const muscleName = MUSCLE_NAMES[mId] || mId;
 
     if (mode === 'recovery') {
-      const custom = getTooltipText ? getTooltipText(mId) : '';
-      if (custom && custom.toLowerCase().includes('ready to train')) {
-        return `${muscleName} · Ready to train`;
-      }
-
-      // Extract hours if available in custom string (e.g. "72% (18h left)")
-      const hoursMatch = custom.match(/(\d+)h/);
-      let hours = hoursMatch ? hoursMatch[1] : null;
-
-      const c = colorMap ? colorMap[mId] : undefined;
-      const val = values[mId] ?? 1.0;
-
-      if (c === '#FF3B30' || val < 0.25) {
-        if (!hours) hours = '70';
-        return `${muscleName} · Very fatigued · ready in ~${hours}h`;
-      }
-      if (c === '#FF9500' || val < 0.5) {
-        if (!hours) hours = '48';
-        return `${muscleName} · Fatigued · ready in ~${hours}h`;
-      }
-      if (c === '#FFCC00' || val < 0.85) {
-        if (!hours) hours = '18';
-        return `${muscleName} · Recovering · ready in ~${hours}h`;
-      }
-      return `${muscleName} · Ready to train`;
+      const custom = getTooltipText?.(mId);
+      if (custom) return `${muscleName} · ${custom}`;
+      const val = values[mId] ?? 1;
+      return `${muscleName} · ${val >= 0.85 ? 'Ready to train' : val >= 0.45 ? 'Recovering' : 'Fatigued'}`;
     }
 
     const level = intensityLevel(mId);
@@ -203,7 +246,10 @@ export const BodyMap: React.FC<BodyMapProps> = ({
           const mId = muscles[slug];
           const gradient = mId ? lit.get(mId) : undefined;
           const isActive = !!mId && activeMuscle === mId;
-          const dimmed = !!activeMuscle && !isActive && !!gradient;
+          // A picker keeps its selection outlined and only dims on hover, so the map stays readable
+          const isPicked = isPicker && !!mId && selectedMuscle === mId;
+          const focus = isPicker ? hoveredMuscle : activeMuscle;
+          const dimmed = !!focus && focus !== mId && !!gradient;
           const fill = gradient ? `url(#${gradId(mId!)})` : slug === 'hair' ? HAIR : mId ? MUSCLE_BASE : BODY_BASE;
 
           return (
@@ -212,8 +258,24 @@ export const BodyMap: React.FC<BodyMapProps> = ({
               fill={fill}
               filter={gradient ? `url(#bm-${uid}-${view}-glow)` : undefined}
               style={{ opacity: dimmed ? 0.45 : 1, transition: 'opacity 180ms ease' }}
-              className={mId ? 'cursor-pointer' : undefined}
-              onClick={mId ? () => setSelectedMuscle((prev) => (prev === mId ? null : mId)) : undefined}
+              className={mId ? 'cursor-pointer outline-none' : undefined}
+              onClick={mId ? () => selectMuscle(mId) : undefined}
+              {...(isPicker && mId
+                ? {
+                    role: 'button',
+                    tabIndex: 0,
+                    'aria-label': MUSCLE_NAMES[mId],
+                    'aria-pressed': isPicked,
+                    onKeyDown: (e: React.KeyboardEvent) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        selectMuscle(mId);
+                      }
+                    },
+                    onFocus: () => setHoveredMuscle(mId),
+                    onBlur: () => setHoveredMuscle(null),
+                  }
+                : {})}
               onMouseEnter={
                 mId
                   ? (e) => {
@@ -229,8 +291,8 @@ export const BodyMap: React.FC<BodyMapProps> = ({
                 <path
                   key={i}
                   d={d}
-                  stroke={isActive ? '#FFFFFF' : 'none'}
-                  strokeWidth={isActive ? 4 : 0}
+                  stroke={isPicked ? PICKED_STROKE : isActive ? '#FFFFFF' : 'none'}
+                  strokeWidth={isPicked ? 3 : isActive ? 4 : 0}
                   strokeLinejoin="round"
                 />
               ))}
@@ -241,13 +303,10 @@ export const BodyMap: React.FC<BodyMapProps> = ({
     );
   };
 
-  const legend =
-    mode === 'recovery'
-      ? RECOVERY_LEGEND.map(({ label, color }) => ({ label, ...recoveryGradient(color) }))
-      : [
-          { label: 'Untrained', from: MUSCLE_BASE, to: MUSCLE_BASE },
-          ...Object.values(INTENSITY_LEVELS).map(({ label, from, to }) => ({ label, from, to })),
-        ];
+  const intensityLegend = [
+    { label: 'Untrained', from: MUSCLE_BASE, to: MUSCLE_BASE },
+    ...Object.values(INTENSITY_LEVELS).map(({ label, from, to }) => ({ label, from, to })),
+  ];
 
   return (
     <div
@@ -259,8 +318,8 @@ export const BodyMap: React.FC<BodyMapProps> = ({
       <div className="flex items-start justify-center gap-4 sm:gap-10 w-full">
         {(
           [
-            ['front', 'Front', BODY_FRONT, FRONT_MUSCLES],
-            ['back', 'Back', BODY_BACK, BACK_MUSCLES],
+            ['front', 'Front', figure.front, FRONT_MUSCLES],
+            ['back', 'Back', figure.back, BACK_MUSCLES],
           ] as const
         ).map(([view, label, body, muscles]) => (
           <div key={view} className="flex-1 flex flex-col items-center" style={{ maxWidth }}>
@@ -310,15 +369,28 @@ export const BodyMap: React.FC<BodyMapProps> = ({
 
       {/* Legend */}
       <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-[#6E6E73] pt-3 border-t border-black/[0.04] w-full">
-        {legend.map(({ label, from, to }) => (
-          <span key={label} className="flex items-center gap-1.5">
+        {mode === 'recovery' ? (
+          <span className="flex items-center gap-2">
+            <span>Fatigued</span>
             <span
-              className="w-2.5 h-2.5 rounded-full"
-              style={{ background: `linear-gradient(180deg, ${from}, ${to})` }}
+              className="w-32 h-2.5 rounded-full"
+              style={{
+                background: `linear-gradient(90deg, ${RECOVERY_STOPS.map(([at, color]) => `${color} ${at * 100}%`).join(', ')})`,
+              }}
             />
-            <span>{label}</span>
+            <span>Ready</span>
           </span>
-        ))}
+        ) : (
+          intensityLegend.map(({ label, from, to }) => (
+            <span key={label} className="flex items-center gap-1.5">
+              <span
+                className="w-2.5 h-2.5 rounded-full"
+                style={{ background: `linear-gradient(180deg, ${from}, ${to})` }}
+              />
+              <span>{label}</span>
+            </span>
+          ))
+        )}
       </div>
     </div>
   );

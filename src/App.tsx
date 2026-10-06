@@ -4,13 +4,15 @@
  *
  * The demo starts on an intro screen where you pick a camera clip and the person to follow. The selection lives in
  * the URL (/?clip=squat&person=2), so a refresh or shared link reopens the same member. The member app then has
- * four tabs (Main, Recovery, History, Settings); the annotated replay is a sub-view (&view=replay), not a tab.
+ * five tabs (Main, Plan, Recovery, History, Settings); the annotated replay is a sub-view (&view=replay), not a tab.
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Navigation, TabId } from './components/Navigation';
+import { BodyModelContext } from './components/BodyMap';
 import { MainTab } from './components/MainTab';
+import { PlanTab } from './components/PlanTab';
 import { RecoveryTab } from './components/RecoveryTab';
 import { HistoryTab } from './components/HistoryTab';
 import { SettingsTab } from './components/SettingsTab';
@@ -136,33 +138,35 @@ export default function App() {
         onChangeSelection={changeSelection}
       />
 
-      <main className="flex-1 max-w-[1100px] w-full mx-auto px-4 sm:px-6 pt-8 pb-24 md:pb-8">
-        {currentTab === 'main' && (
-          <MainTab
-            person={person}
-            history={history}
-            onWatchReplay={openReplay}
-            onOpenHistory={() => selectTab('history')}
-          />
-        )}
+      <BodyModelContext.Provider value={settings.bodyModel}>
+        <main className="flex-1 max-w-[1100px] w-full mx-auto px-4 sm:px-6 pt-8 pb-24 md:pb-8">
+          {currentTab === 'main' && (
+            <MainTab
+              person={person}
+              history={history}
+              onWatchReplay={openReplay}
+              onOpenHistory={() => selectTab('history')}
+            />
+          )}
 
-        {currentTab === 'recovery' && (
-          <RecoveryTab plan={plan} onUpdatePlan={handleUpdatePlan} todayLoad={summary.muscle_load} />
-        )}
+          {currentTab === 'plan' && <PlanTab history={history} />}
 
-        {currentTab === 'history' && <HistoryTab workouts={history} todayRecap={recap} onWatchReplay={openReplay} />}
+          {currentTab === 'recovery' && <RecoveryTab plan={plan} onUpdatePlan={handleUpdatePlan} history={history} />}
 
-        {currentTab === 'settings' && (
-          <SettingsTab
-            clipTitle={clip.title}
-            personId={personParam}
-            thumbnail={thumbnail}
-            settings={settings}
-            onChangeSettings={updateSettings}
-            onChangeSelection={changeSelection}
-          />
-        )}
-      </main>
+          {currentTab === 'history' && <HistoryTab workouts={history} todayRecap={recap} onWatchReplay={openReplay} />}
+
+          {currentTab === 'settings' && (
+            <SettingsTab
+              clipTitle={clip.title}
+              personId={personParam}
+              thumbnail={thumbnail}
+              settings={settings}
+              onChangeSettings={updateSettings}
+              onChangeSelection={changeSelection}
+            />
+          )}
+        </main>
+      </BodyModelContext.Provider>
     </div>
   );
 }
