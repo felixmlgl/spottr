@@ -29,6 +29,8 @@ const DemoButton: React.FC = () => (
 );
 
 export const Welcome: React.FC = () => {
+  // Alternate logo preview at "/#logo2"
+  const logoSrc = window.location.hash === '#logo2' ? '/welcome/spottr-logo-v2.svg' : '/welcome/spottr-logo.png';
   const [active, setActive] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
@@ -88,9 +90,9 @@ export const Welcome: React.FC = () => {
         <div className="flex flex-1 items-center justify-center pt-[4vh] pb-[12vh]">
           <h1>
             <img
-              src="/welcome/spottr-logo.png"
+              src={logoSrc}
               alt="Spottr"
-              className="w-[min(34vw,560px)] min-w-[220px] h-auto drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]"
+              className="w-[min(28.9vw,476px)] min-w-[187px] h-auto drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]"
             />
           </h1>
         </div>
