@@ -1,30 +1,20 @@
 import React, { useState } from 'react';
 import { ChevronDown, Clock, CheckCircle2, Sparkles } from 'lucide-react';
-import { BodyMap } from './BodyMap';
+import { BodyMap, recoveryColor, recoveryMapProps } from './BodyMap';
 import { WeeklyPlan } from './WeeklyPlan';
 import { calculateMuscleRecovery } from '../services/recovery';
-import { TrainingPlan, MuscleId } from '../types/schema';
+import { TrainingPlan, PastWorkout } from '../types/schema';
 
 interface RecoveryTabProps {
   plan: TrainingPlan;
   onUpdatePlan: (updatedPlan: TrainingPlan) => void;
-  /** Muscle load of today's tracked session */
-  todayLoad?: Partial<Record<MuscleId, number>>;
+  /** Today's camera-tracked session first, then older workouts */
+  history: PastWorkout[];
 }
 
-export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, todayLoad }) => {
+export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, history }) => {
   const [showDetails, setShowDetails] = useState(false);
-  const recoveryData = calculateMuscleRecovery(plan, todayLoad);
-
-  const colorMap: Partial<Record<MuscleId, string>> = {};
-  const valuesMap: Partial<Record<MuscleId, number>> = {};
-  Object.values(recoveryData.muscles).forEach((item) => {
-    valuesMap[item.muscle_id] = item.recovery_percent / 100;
-    if (item.recovery_percent < 25) colorMap[item.muscle_id] = '#FF3B30';
-    else if (item.status === 'fatigued') colorMap[item.muscle_id] = '#FF9500';
-    else if (item.status === 'recovering') colorMap[item.muscle_id] = '#FFCC00';
-    else colorMap[item.muscle_id] = '#34C759';
-  });
+  const recoveryData = calculateMuscleRecovery(history, plan);
 
   const tomorrow = plan.days.mon;
 
@@ -65,25 +55,17 @@ export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, to
                   key={m.muscle_id}
                   className="px-3 py-1.5 rounded-full bg-white text-xs font-medium text-[#6E6E73] shadow-2xs flex items-center gap-1.5"
                 >
-                  <span className={`w-2 h-2 rounded-full ${m.status === 'fatigued' ? 'bg-[#FF9500]' : 'bg-[#FFCC00]'}`} />
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: recoveryColor(m.recovery_percent / 100) }}
+                  />
                   {m.name}
                 </span>
               ))}
             </div>
           </div>
 
-          <BodyMap
-            values={valuesMap}
-            colorMap={colorMap}
-            mode="recovery"
-            size="md"
-            getTooltipText={(muscleId) => {
-              const item = recoveryData.muscles[muscleId];
-              if (!item) return '';
-              if (item.status === 'ready') return 'Ready to train';
-              return `${item.recovery_percent}% (${item.hours_remaining}h left)`;
-            }}
-          />
+          <BodyMap {...recoveryMapProps(recoveryData)} size="md" />
         </div>
 
         <div className="flex items-center justify-end pt-4 border-t border-black/[0.05]">

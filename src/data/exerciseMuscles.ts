@@ -148,6 +148,10 @@ export const EXERCISE_MUSCLE_MAP: Record<string, ExerciseMuscleMapping> = {
  */
 export function getExerciseMuscleMapping(exerciseKey: string): ExerciseMuscleMapping {
   const normalized = exerciseKey.toLowerCase().trim();
+  const listed = AVAILABLE_EXERCISES.find((item) => item.id === normalized);
+  if (listed) {
+    return listed;
+  }
   if (EXERCISE_MUSCLE_MAP[normalized]) {
     return EXERCISE_MUSCLE_MAP[normalized];
   }
@@ -222,23 +226,126 @@ export function computeSessionMuscleIntensities(
   return normalized;
 }
 
+export interface LibraryExercise extends ExerciseMuscleMapping {
+  id: string;
+  name: string;
+  category: 'Legs' | 'Chest' | 'Shoulders' | 'Arms' | 'Back' | 'Core';
+  defaultSets: number;
+  defaultReps: number;
+}
+
+const ex = (
+  id: string,
+  name: string,
+  category: LibraryExercise['category'],
+  defaultSets: number,
+  defaultReps: number,
+  primary: MuscleId[],
+  secondary: MuscleId[] = []
+): LibraryExercise => ({ id, name, category, defaultSets, defaultReps, primary, secondary });
+
 /**
- * Standard exercise library for the Plan builder
+ * Exercise library for the routine editor and the Plan tab's suggestions, with the muscles each one works.
+ * Within a muscle, earlier entries are preferred, so the staple lifts come first.
  */
-export const AVAILABLE_EXERCISES = [
-  { id: 'squat', name: 'Barbell back squat', category: 'Legs', defaultSets: 4, defaultReps: 8 },
-  { id: 'rdl', name: 'Romanian deadlift', category: 'Legs', defaultSets: 3, defaultReps: 8 },
-  { id: 'lunge', name: 'Walking lunge', category: 'Legs', defaultSets: 3, defaultReps: 10 },
-  { id: 'leg-press', name: 'Leg press', category: 'Legs', defaultSets: 3, defaultReps: 12 },
-  { id: 'leg-curl', name: 'Hamstring leg curl', category: 'Legs', defaultSets: 3, defaultReps: 10 },
-  { id: 'calf-raise', name: 'Standing calf raise', category: 'Legs', defaultSets: 4, defaultReps: 15 },
-  { id: 'bench-press', name: 'Barbell bench press', category: 'Chest', defaultSets: 4, defaultReps: 8 },
-  { id: 'incline-db', name: 'Incline dumbbell press', category: 'Chest', defaultSets: 3, defaultReps: 10 },
-  { id: 'bicep-curl', name: 'Dumbbell bicep curl', category: 'Arms', defaultSets: 4, defaultReps: 10 },
-  { id: 'tricep-extension', name: 'Tricep cable pushdown', category: 'Arms', defaultSets: 3, defaultReps: 12 },
-  { id: 'lateral-raise', name: 'Dumbbell lateral raise', category: 'Shoulders', defaultSets: 4, defaultReps: 12 },
-  { id: 'shoulder-press', name: 'Overhead barbell press', category: 'Shoulders', defaultSets: 3, defaultReps: 8 },
-  { id: 'pullup', name: 'Pull-up', category: 'Back', defaultSets: 3, defaultReps: 8 },
-  { id: 'barbell-row', name: 'Barbell bent-over row', category: 'Back', defaultSets: 4, defaultReps: 8 },
-  { id: 'plank', name: 'Core plank hold', category: 'Core', defaultSets: 3, defaultReps: 45 },
+export const AVAILABLE_EXERCISES: LibraryExercise[] = [
+  // Legs
+  ex('squat', 'Barbell back squat', 'Legs', 4, 8, ['quads', 'glutes'], ['hamstrings', 'lower_back', 'calves']),
+  ex('deadlift', 'Deadlift', 'Legs', 3, 5, ['glutes', 'hamstrings', 'lower_back'], ['quads', 'lats', 'traps', 'forearms']),
+  ex('rdl', 'Romanian deadlift', 'Legs', 3, 8, ['hamstrings', 'glutes'], ['lower_back', 'lats']),
+  ex('lunge', 'Walking lunge', 'Legs', 3, 10, ['quads', 'glutes'], ['hamstrings', 'calves']),
+  ex('leg-press', 'Leg press', 'Legs', 3, 12, ['quads', 'glutes'], ['calves']),
+  ex('leg-extension', 'Leg extension', 'Legs', 3, 12, ['quads']),
+  ex('leg-curl', 'Hamstring leg curl', 'Legs', 3, 10, ['hamstrings'], ['calves']),
+  ex('hip-thrust', 'Barbell hip thrust', 'Legs', 3, 10, ['glutes'], ['hamstrings']),
+  ex('calf-raise', 'Standing calf raise', 'Legs', 4, 15, ['calves']),
+  ex('front-squat', 'Front squat', 'Legs', 4, 6, ['quads', 'glutes'], ['abs', 'lower_back']),
+  ex('goblet-squat', 'Goblet squat', 'Legs', 3, 12, ['quads', 'glutes'], ['abs']),
+  ex('hack-squat', 'Hack squat', 'Legs', 3, 10, ['quads', 'glutes']),
+  ex('bulgarian-split-squat', 'Bulgarian split squat', 'Legs', 3, 10, ['quads', 'glutes'], ['hamstrings']),
+  ex('step-up', 'Dumbbell step-up', 'Legs', 3, 10, ['quads', 'glutes'], ['hamstrings', 'calves']),
+  ex('good-morning', 'Good morning', 'Legs', 3, 10, ['hamstrings', 'lower_back'], ['glutes']),
+  ex('single-leg-rdl', 'Single-leg Romanian deadlift', 'Legs', 3, 10, ['hamstrings', 'glutes'], ['lower_back']),
+  ex('seated-leg-curl', 'Seated leg curl', 'Legs', 3, 12, ['hamstrings']),
+  ex('nordic-curl', 'Nordic hamstring curl', 'Legs', 3, 6, ['hamstrings']),
+  ex('glute-bridge', 'Glute bridge', 'Legs', 3, 15, ['glutes'], ['hamstrings']),
+  ex('cable-kickback', 'Cable glute kickback', 'Legs', 3, 12, ['glutes'], ['hamstrings']),
+  ex('seated-calf-raise', 'Seated calf raise', 'Legs', 4, 15, ['calves']),
+  ex('single-leg-calf-raise', 'Single-leg calf raise', 'Legs', 3, 12, ['calves']),
+  ex('leg-press-calf-raise', 'Leg press calf raise', 'Legs', 4, 15, ['calves']),
+  ex('donkey-calf-raise', 'Donkey calf raise', 'Legs', 3, 15, ['calves']),
+  ex('smith-calf-raise', 'Smith machine calf raise', 'Legs', 4, 12, ['calves']),
+
+  // Chest
+  ex('bench-press', 'Barbell bench press', 'Chest', 4, 8, ['chest'], ['triceps', 'front_delts']),
+  ex('incline-db', 'Incline dumbbell press', 'Chest', 3, 10, ['chest', 'front_delts'], ['triceps']),
+  ex('push-up', 'Push-up', 'Chest', 3, 15, ['chest'], ['triceps', 'front_delts', 'abs']),
+  ex('chest-fly', 'Cable chest fly', 'Chest', 3, 12, ['chest'], ['front_delts']),
+  ex('dip', 'Dip', 'Chest', 3, 10, ['triceps', 'chest'], ['front_delts']),
+  ex('db-bench', 'Dumbbell bench press', 'Chest', 4, 10, ['chest'], ['triceps', 'front_delts']),
+  ex('decline-bench', 'Decline bench press', 'Chest', 3, 8, ['chest'], ['triceps', 'front_delts']),
+  ex('pec-deck', 'Pec deck fly', 'Chest', 3, 12, ['chest'], ['front_delts']),
+
+  // Shoulders
+  ex('lateral-raise', 'Dumbbell lateral raise', 'Shoulders', 4, 12, ['front_delts', 'rear_delts'], ['traps']),
+  ex('shoulder-press', 'Overhead barbell press', 'Shoulders', 3, 8, ['front_delts'], ['triceps', 'traps']),
+  ex('rear-delt-fly', 'Rear delt fly', 'Shoulders', 3, 15, ['rear_delts'], ['traps']),
+  ex('db-shoulder-press', 'Seated dumbbell shoulder press', 'Shoulders', 3, 10, ['front_delts'], ['triceps', 'traps']),
+  ex('arnold-press', 'Arnold press', 'Shoulders', 3, 10, ['front_delts'], ['triceps']),
+  ex('front-raise', 'Dumbbell front raise', 'Shoulders', 3, 12, ['front_delts']),
+  ex('cable-lateral-raise', 'Cable lateral raise', 'Shoulders', 3, 15, ['front_delts', 'rear_delts'], ['traps']),
+  ex('face-pull', 'Cable face pull', 'Shoulders', 3, 15, ['rear_delts', 'traps']),
+  ex('reverse-pec-deck', 'Reverse pec deck', 'Shoulders', 3, 15, ['rear_delts'], ['traps']),
+  ex('upright-row', 'Upright row', 'Shoulders', 3, 10, ['traps', 'front_delts', 'rear_delts'], ['biceps']),
+
+  // Arms
+  ex('bicep-curl', 'Dumbbell bicep curl', 'Arms', 4, 10, ['biceps'], ['forearms']),
+  ex('tricep-extension', 'Tricep cable pushdown', 'Arms', 3, 12, ['triceps']),
+  ex('barbell-curl', 'Barbell curl', 'Arms', 3, 10, ['biceps'], ['forearms']),
+  ex('hammer-curl', 'Hammer curl', 'Arms', 3, 10, ['biceps', 'forearms']),
+  ex('preacher-curl', 'Preacher curl', 'Arms', 3, 10, ['biceps'], ['forearms']),
+  ex('cable-curl', 'Cable curl', 'Arms', 3, 12, ['biceps'], ['forearms']),
+  ex('zottman-curl', 'Zottman curl', 'Arms', 3, 10, ['biceps', 'forearms']),
+  ex('reverse-curl', 'Reverse barbell curl', 'Arms', 3, 12, ['forearms', 'biceps']),
+  ex('wrist-curl', 'Wrist curl', 'Arms', 3, 15, ['forearms']),
+  ex('reverse-wrist-curl', 'Reverse wrist curl', 'Arms', 3, 15, ['forearms']),
+  ex('behind-back-wrist-curl', 'Behind-the-back wrist curl', 'Arms', 3, 15, ['forearms']),
+  ex('skull-crusher', 'Skull crusher', 'Arms', 3, 10, ['triceps']),
+  ex('overhead-tricep-extension', 'Overhead tricep extension', 'Arms', 3, 12, ['triceps']),
+  ex('tricep-kickback', 'Tricep kickback', 'Arms', 3, 12, ['triceps']),
+  ex('close-grip-bench', 'Close-grip bench press', 'Arms', 3, 8, ['triceps', 'chest'], ['front_delts']),
+  ex('diamond-push-up', 'Diamond push-up', 'Arms', 3, 12, ['triceps', 'chest'], ['front_delts']),
+  ex('bench-dip', 'Bench dip', 'Arms', 3, 12, ['triceps'], ['chest', 'front_delts']),
+
+  // Back
+  ex('pullup', 'Pull-up', 'Back', 3, 8, ['lats', 'biceps'], ['traps', 'forearms']),
+  ex('lat-pulldown', 'Lat pulldown', 'Back', 3, 10, ['lats'], ['biceps', 'rear_delts']),
+  ex('seated-row', 'Seated cable row', 'Back', 3, 10, ['lats', 'traps'], ['rear_delts', 'biceps']),
+  ex('barbell-row', 'Barbell bent-over row', 'Back', 4, 8, ['lats', 'rear_delts', 'traps'], ['biceps', 'lower_back']),
+  ex('shrug', 'Dumbbell shrug', 'Back', 3, 12, ['traps'], ['forearms']),
+  ex('chin-up', 'Chin-up', 'Back', 3, 8, ['lats', 'biceps'], ['forearms', 'rear_delts']),
+  ex('db-row', 'One-arm dumbbell row', 'Back', 3, 10, ['lats', 'rear_delts'], ['biceps', 'traps']),
+  ex('t-bar-row', 'T-bar row', 'Back', 3, 8, ['lats', 'traps', 'rear_delts'], ['biceps', 'lower_back']),
+  ex('straight-arm-pulldown', 'Straight-arm pulldown', 'Back', 3, 12, ['lats']),
+  ex('barbell-shrug', 'Barbell shrug', 'Back', 3, 12, ['traps'], ['forearms']),
+  ex('rack-pull', 'Rack pull', 'Back', 3, 5, ['traps', 'lower_back', 'glutes'], ['hamstrings', 'forearms']),
+  ex('back-extension', 'Back extension', 'Back', 3, 12, ['lower_back'], ['glutes', 'hamstrings']),
+  ex('superman', 'Superman', 'Back', 3, 12, ['lower_back'], ['glutes']),
+
+  // Core
+  ex('crunch', 'Crunch', 'Core', 3, 15, ['abs'], ['obliques']),
+  ex('plank', 'Core plank hold', 'Core', 3, 45, ['abs', 'obliques'], ['lower_back']),
+  ex('hanging-leg-raise', 'Hanging leg raise', 'Core', 3, 10, ['abs'], ['obliques', 'forearms']),
+  ex('cable-crunch', 'Cable crunch', 'Core', 3, 12, ['abs'], ['obliques']),
+  ex('ab-wheel', 'Ab wheel rollout', 'Core', 3, 10, ['abs'], ['lower_back', 'lats']),
+  ex('sit-up', 'Sit-up', 'Core', 3, 15, ['abs'], ['obliques']),
+  ex('reverse-crunch', 'Reverse crunch', 'Core', 3, 15, ['abs']),
+  ex('v-up', 'V-up', 'Core', 3, 12, ['abs'], ['obliques']),
+  ex('bicycle-crunch', 'Bicycle crunch', 'Core', 3, 20, ['abs', 'obliques']),
+  ex('russian-twist', 'Russian twist', 'Core', 3, 20, ['obliques'], ['abs']),
+  ex('woodchopper', 'Cable woodchopper', 'Core', 3, 12, ['obliques'], ['abs']),
+  ex('side-bend', 'Dumbbell side bend', 'Core', 3, 15, ['obliques']),
+  ex('oblique-knee-raise', 'Hanging oblique knee raise', 'Core', 3, 10, ['obliques', 'abs'], ['forearms']),
+  ex('side-plank-dip', 'Side plank hip dip', 'Core', 3, 15, ['obliques'], ['abs']),
+  ex('bird-dog', 'Bird dog', 'Core', 3, 10, ['lower_back', 'abs'], ['glutes']),
 ];

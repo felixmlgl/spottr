@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import { MEMBER_PROFILE } from '../mocks/memberData';
 import { Link } from '../router';
-import { AppSettings, OverlayMode } from '../services/settings';
+import { AppSettings, BodyModel, OverlayMode } from '../services/settings';
 
 interface SettingsTabProps {
   clipTitle: string;
@@ -66,6 +66,25 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         </div>
         <ArrowRight className="w-4 h-4 text-[#6E6E73]" />
       </Link>
+    </Section>
+
+    <Section title="Muscle maps">
+      <Row label="Body model" hint="The figure used for muscles worked and recovery.">
+        <div className="flex items-center p-1 bg-white rounded-full shadow-2xs" role="group" aria-label="Body model">
+          {(['male', 'female'] as BodyModel[]).map((model) => (
+            <button
+              key={model}
+              onClick={() => onChangeSettings({ bodyModel: model })}
+              aria-pressed={settings.bodyModel === model}
+              className={`px-3 py-1 rounded-full text-xs font-medium cursor-pointer ${
+                settings.bodyModel === model ? 'bg-[#1D1D1F] text-white' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+              }`}
+            >
+              {model === 'male' ? 'Male' : 'Female'}
+            </button>
+          ))}
+        </div>
+      </Row>
     </Section>
 
     <Section title="Replay">
