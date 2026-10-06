@@ -1,5 +1,6 @@
 import {StrictMode, Suspense, lazy} from 'react';
 import {createRoot} from 'react-dom/client';
+import {Analytics} from '@vercel/analytics/react';
 import App from './App.tsx';
 import {Welcome} from './Welcome.tsx';
 import {usePathname} from './router.tsx';
@@ -17,11 +18,19 @@ function Root() {
   const pathname = usePathname();
   if (pathname === '/') return <Welcome />;
   const isGyms = pathname === '/gyms' || pathname.startsWith('/gyms/');
-  if (!isGyms) return <App />;
   return (
-    <Suspense fallback={<div className="min-h-screen bg-white" />}>
-      <GymsApp pathname={pathname} />
-    </Suspense>
+    <>
+      {isGyms ? (
+        <Suspense fallback={<div className="min-h-screen bg-white" />}>
+          <GymsApp pathname={pathname} />
+        </Suspense>
+      ) : (
+        <App />
+      )}
+      {/* Page views come from our router (pushState + popstate) rather than the script's
+          auto-tracking, which only patches pushState and misses back/forward. */}
+      <Analytics route={pathname} path={pathname} />
+    </>
   );
 }
 
