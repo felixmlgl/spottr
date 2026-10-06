@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useId, useRef, useState } from 'react';
+import React, { createContext, useContext, useId, useState } from 'react';
 import { MuscleId, RecoveryStatus } from '../types/schema';
 import { MUSCLE_NAMES } from '../data/exerciseMuscles';
 import { BODY_BACK, BODY_FRONT, BodySlug, BodyView } from '../data/bodyPaths';
@@ -161,8 +161,6 @@ export const BodyMap: React.FC<BodyMapProps> = ({
   const selectedMuscle = isPicker ? pickedMuscle : ownSelection;
   const selectMuscle = (mId: MuscleId) =>
     onSelectMuscle ? onSelectMuscle(mId) : setOwnSelection((prev) => (prev === mId ? null : mId));
-  const [pointerPos, setPointerPos] = useState<{ x: number; y: number } | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
 
   const maxWidth = size === 'sm' ? 120 : size === 'lg' ? 210 : 165;
@@ -206,16 +204,7 @@ export const BodyMap: React.FC<BodyMapProps> = ({
     return `${muscleName} · ${level ? INTENSITY_LEVELS[level].label : 'Untrained'}`;
   };
 
-  const trackPointer = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    setPointerPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleMuscleLeave = () => {
-    setHoveredMuscle(null);
-    setPointerPos(null);
-  };
+  const handleMuscleLeave = () => setHoveredMuscle(null);
 
   const activeMuscle = hoveredMuscle || selectedMuscle;
 
@@ -276,15 +265,7 @@ export const BodyMap: React.FC<BodyMapProps> = ({
                     onBlur: () => setHoveredMuscle(null),
                   }
                 : {})}
-              onMouseEnter={
-                mId
-                  ? (e) => {
-                      setHoveredMuscle(mId);
-                      trackPointer(e);
-                    }
-                  : undefined
-              }
-              onMouseMove={mId ? trackPointer : undefined}
+              onMouseEnter={mId ? () => setHoveredMuscle(mId) : undefined}
               onMouseLeave={mId ? handleMuscleLeave : undefined}
             >
               {paths.map((d, i) => (
@@ -309,11 +290,7 @@ export const BodyMap: React.FC<BodyMapProps> = ({
   ];
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative flex flex-col items-center select-none w-full ${className}`}
-      onMouseLeave={handleMuscleLeave}
-    >
+    <div className={`flex flex-col items-center select-none w-full ${className}`} onMouseLeave={handleMuscleLeave}>
       {/* Figures Row: Front and Back side by side */}
       <div className="flex items-start justify-center gap-4 sm:gap-10 w-full">
         {(
@@ -329,38 +306,16 @@ export const BodyMap: React.FC<BodyMapProps> = ({
         ))}
       </div>
 
-      {/* Floating Tooltip that follows pointer (Desktop) */}
-      {hoveredMuscle && pointerPos && (
-        <div
-          className="hidden md:flex pointer-events-none absolute z-30 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-xl shadow-lg ring-1 ring-black/[0.05] text-xs items-center gap-2"
-          style={{
-            left: `${pointerPos.x}px`,
-            top: `${Math.max(10, pointerPos.y - 42)}px`,
-            transform: 'translateX(-50%)',
-          }}
-        >
-          <span
-            className="w-2.5 h-2.5 rounded-full shrink-0"
-            style={{ backgroundColor: getMuscleColor(hoveredMuscle) || '#C7C7CC' }}
-          />
-          <span className="font-semibold text-[#1D1D1F]">{getTooltipString(hoveredMuscle)}</span>
-        </div>
-      )}
-
-      {/* Active muscle pill (mobile taps, desktop clicks). Fixed-height slot so the card never resizes;
-          on desktop the floating tooltip covers hover, so the pill only shows a clicked muscle there. */}
-      <div className="mt-3 h-9 flex items-center justify-center">
+      {/* Details for the hovered (or else selected) muscle. It sits in a fixed-height slot below the figures, so it
+          never covers the body and the card never resizes. */}
+      <div className="mt-3 h-9 w-full flex items-center justify-center">
         {activeMuscle ? (
-          <div
-            className={`px-4 py-2 rounded-full bg-white shadow-sm ring-1 ring-black/[0.04] text-xs flex items-center gap-2.5 animate-in fade-in duration-150 ${
-              hoveredMuscle && hoveredMuscle !== selectedMuscle ? 'md:hidden' : ''
-            }`}
-          >
+          <div className="max-w-full px-4 py-2 rounded-full bg-white shadow-sm ring-1 ring-black/[0.04] text-xs flex items-center gap-2.5 animate-in fade-in duration-150">
             <span
               className="w-2.5 h-2.5 rounded-full shrink-0"
               style={{ backgroundColor: getMuscleColor(activeMuscle) || '#C7C7CC' }}
             />
-            <span className="font-semibold text-[#1D1D1F]">{getTooltipString(activeMuscle)}</span>
+            <span className="font-semibold text-[#1D1D1F] truncate">{getTooltipString(activeMuscle)}</span>
           </div>
         ) : (
           <span className="text-[11px] text-[#8E8E93]">Tap a muscle for details</span>
