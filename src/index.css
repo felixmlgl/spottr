@@ -9,3 +9,9 @@
     -moz-osx-font-smoothing: grayscale;
   }
 }
+
+/* Spottr wordmark in the app headers (Hoefler Text Black ships with macOS/iOS) */
+@utility font-logo {
+  font-family: "Hoefler Text", "Baskerville", Georgia, serif;
+  font-weight: 900;
+}

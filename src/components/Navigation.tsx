@@ -31,10 +31,10 @@ export const Navigation: React.FC<NavigationProps> = ({
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         <button
-          className="text-xl font-bold tracking-tight text-[#1D1D1F] cursor-pointer"
+          className="font-logo text-xl tracking-tight text-[#1D1D1F] cursor-pointer"
           onClick={() => onSelectTab('main')}
         >
-          Spottr
+          spottr
         </button>
 
         <nav className="hidden md:flex items-center p-1 bg-[#F5F5F7] rounded-full">
