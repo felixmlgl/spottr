@@ -2,8 +2,9 @@
  * Spottr - Gym Member Experience
  * Your gym's cameras count for you.
  *
- * The demo starts on an intro screen where you pick a camera clip and the person to follow. The selection lives in
- * the URL (/?clip=squat&person=2), so a refresh or shared link reopens the same member. The member app then has
+ * The demo (/demo) first asks how to see Spottr: as a gym-goer (then pick a camera clip and the person to follow) or
+ * as the gym admin (straight to /gyms). The selection lives in the URL (/demo?clip=squat&person=2), so a refresh or
+ * shared link reopens the same member without going through the intro again. The member app then has
  * five tabs (Main, Plan, Recovery, History, Settings); the annotated replay is a sub-view (&view=replay), not a tab.
  */
 
@@ -77,17 +78,25 @@ export default function App() {
     saveTrainingPlan(updatedPlan);
   };
 
-  // Intro: nothing chosen yet, "Change" pressed, or a stale link to someone who isn't in the clip
+  // Intro: a bare /demo starts with the role choice. The person picker comes after "As a gym-goer", from "Change"
+  // (&view=pick), for a clip-only link, or for a stale link to someone who isn't in the clip.
+  const roleStep = !clip && !personParam && view !== 'pick';
   const pickRequested = !clip || !personParam || view === 'pick';
-  if (pickRequested || (data && !person)) {
+  if (roleStep || pickRequested || (data && !person)) {
     return (
       <DemoIntro
+        step={roleStep ? 'role' : 'person'}
         initialClipId={clip?.id}
         initialPersonId={person ? personParam : null}
         onContinue={(clipId, personId) => {
           setCurrentTab('main');
           navigate(appUrl(clipId, personId));
         }}
+        onChooseMember={() => navigate('/demo?view=pick')}
+        onChooseAdmin={() => navigate('/gyms')}
+        // Leaving the choice without picking a side goes back to the welcome page
+        onCloseRole={() => navigate('/', { replace: true })}
+        onBackToRole={() => navigate('/demo')}
       />
     );
   }

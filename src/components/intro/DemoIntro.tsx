@@ -1,16 +1,23 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, Dumbbell, Info, LayoutDashboard, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Dumbbell, Info, LayoutDashboard, X } from 'lucide-react';
 import { PIPELINE_CLIPS } from '../../config';
 import { findClip, prefetchClip, useClipData, useClipSessions } from '../../hooks/useClipData';
 import { PipelinePerson, clipDataBaseUrl } from '../../services/pipelineAdapter';
 import { defaultPersonId, mainExercise, sortPeopleForPicker, trackedSeconds } from '../../services/memberSession';
 import { PersonSpotlight } from './PersonSpotlight';
-import { navigate } from '../../router';
 
 interface DemoIntroProps {
+  /** "role": the "How do you want to see Spottr?" choice comes first; "person": clip + person picker */
+  step: 'role' | 'person';
   initialClipId?: string | null;
   initialPersonId?: string | null;
   onContinue: (clipId: string, personId: string) => void;
+  onChooseMember: () => void;
+  onChooseAdmin: () => void;
+  /** Dismissing the role choice without picking a side */
+  onCloseRole: () => void;
+  /** "Back" from the person picker */
+  onBackToRole: () => void;
 }
 
 /**
@@ -49,12 +56,20 @@ const ClipPoster: React.FC<{ src: string }> = ({ src }) => {
 
 const formatDuration = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 
-export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPersonId, onContinue }) => {
+export const DemoIntro: React.FC<DemoIntroProps> = ({
+  step,
+  initialClipId,
+  initialPersonId,
+  onContinue,
+  onChooseMember,
+  onChooseAdmin,
+  onCloseRole,
+  onBackToRole,
+}) => {
   const sessions = useClipSessions();
   const [clipId, setClipId] = useState<string | null>(findClip(initialClipId)?.id ?? null);
   const [personId, setPersonId] = useState<string | null>(initialPersonId ?? null);
   const [hoverId, setHoverId] = useState<string | null>(null);
-  const [choosingView, setChoosingView] = useState(false);
   const step2Ref = useRef<HTMLElement>(null);
 
   const clip = findClip(clipId);
@@ -64,6 +79,14 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
   const people = useMemo(() => (session ? sortPeopleForPicker(session.people) : []), [session]);
   const lifters = people.filter((p) => (p.sets?.length || 0) > 0);
   const others = people.filter((p) => !(p.sets?.length || 0));
+
+  // Escape closes the role choice
+  useEffect(() => {
+    if (step !== 'role') return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onCloseRole();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [step, onCloseRole]);
 
   // Pre-select the top lifter once a clip's people are known (unless a valid person is already chosen)
   useEffect(() => {
@@ -133,6 +156,16 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
   return (
     <div className="min-h-screen bg-white text-[#1D1D1F] pb-28">
       <header className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center">
+        {step === 'person' && (
+          <button
+            onClick={onBackToRole}
+            aria-label="Back to choosing how to see Spottr"
+            className="-ml-2 mr-2 inline-flex items-center gap-1 h-11 px-2 rounded-full text-sm font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </button>
+        )}
         <span className="font-logo text-xl tracking-tight">spottr</span>
         <span className="ml-2 px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wide">
           Demo
@@ -150,6 +183,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
         </div>
 
         {/* Step 1: clip */}
+        {step === 'person' && (
         <section className="flex flex-col gap-4">
           <h2 className="text-sm font-semibold text-[#6E6E73] uppercase tracking-wide">1 · Choose a camera clip</h2>
           <div className="grid grid-cols-3 gap-2 sm:gap-4">
@@ -187,9 +221,10 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
             })}
           </div>
         </section>
+        )}
 
         {/* Step 2: person */}
-        {clip && (
+        {step === 'person' && clip && (
           <section ref={step2Ref} className="flex flex-col gap-4 scroll-mt-4 animate-in fade-in duration-200">
             <h2 className="text-sm font-semibold text-[#6E6E73] uppercase tracking-wide">2 · Who should Spottr follow?</h2>
 
@@ -234,6 +269,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
       </main>
 
       {/* Continue bar */}
+      {step === 'person' && (
       <div className="fixed bottom-0 inset-x-0 z-30 bg-white/90 backdrop-blur-xl border-t border-black/[0.06]">
         <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <p className="text-sm text-[#6E6E73] truncate">
@@ -244,7 +280,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
               : 'Choose a person'}
           </p>
           <button
-            onClick={() => canContinue && setChoosingView(true)}
+            onClick={() => canContinue && onContinue(clipId!, personId!)}
             disabled={!canContinue}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold transition-transform active:scale-95 disabled:opacity-30 disabled:active:scale-100 cursor-pointer disabled:cursor-default shrink-0"
           >
@@ -253,12 +289,13 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
           </button>
         </div>
       </div>
+      )}
 
-      {/* Final step: member app or gym admin dashboard */}
-      {choosingView && (
+      {/* First step: member app or gym admin dashboard */}
+      {step === 'role' && (
         <div
           className="fixed inset-0 z-40 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-          onClick={() => setChoosingView(false)}
+          onClick={onCloseRole}
         >
           <div
             role="dialog"
@@ -268,9 +305,9 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              onClick={() => setChoosingView(false)}
+              onClick={onCloseRole}
               aria-label="Close"
-              className="absolute top-4 right-4 p-2 rounded-full text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
+              className="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -280,7 +317,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
             <p className="text-sm text-[#6E6E73] mt-1">Pick a side of the gym to explore.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
               <button
-                onClick={() => onContinue(clipId!, personId!)}
+                onClick={onChooseMember}
                 className="text-left rounded-2xl bg-[#F5F5F7] hover:bg-[#EBEBEF] p-4 transition-colors cursor-pointer"
               >
                 <Dumbbell className="w-5 h-5 text-[#34C759]" />
@@ -288,7 +325,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
                 <p className="text-xs text-[#6E6E73] mt-0.5">Your workout, recovery and history.</p>
               </button>
               <button
-                onClick={() => navigate('/gyms')}
+                onClick={onChooseAdmin}
                 className="text-left rounded-2xl bg-[#F5F5F7] hover:bg-[#EBEBEF] p-4 transition-colors cursor-pointer"
               >
                 <LayoutDashboard className="w-5 h-5 text-[#0071E3]" />
