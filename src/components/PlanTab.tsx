@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Camera, RefreshCw, Sparkles } from 'lucide-react';
+import { Camera, ChevronRight, RefreshCw, Sparkles } from 'lucide-react';
 import { MuscleId, PastWorkout } from '../types/schema';
 import { MUSCLE_NAMES } from '../data/exerciseMuscles';
 import { calculateMuscleRecovery, readyDayLabel, RecoveryCalculationResult } from '../services/recovery';
@@ -13,6 +13,10 @@ import {
   suggestNextSession,
 } from '../services/nextSession';
 import { BodyMap, recoveryColor, recoveryMapProps } from './BodyMap';
+import { MyPlan, formatTarget, joinAmp } from './plan/MyPlan';
+import { usePlan } from '../services/planStorage';
+import { bestFitDay, dayGroups, dayMuscles, dayReadiness, upcomingDay, UpcomingDay } from '../services/planSchedule';
+import { planExerciseInfo } from '../data/planExercises';
 
 interface PlanTabProps {
   /** Today's camera-tracked session first, then older workouts */
@@ -55,6 +59,33 @@ const pageOf = <T,>(items: T[], page: number) =>
   items.length <= PAGE_SIZE
     ? items
     : Array.from({ length: PAGE_SIZE }, (_, i) => items[(page * PAGE_SIZE + i) % items.length]);
+
+const SINGULAR: MuscleId[] = ['chest', 'lower_back'];
+
+/** Why this day is next, and whether its muscles are ready for it. */
+function upcomingReason({ day, last }: UpcomingDay, recovery: RecoveryCalculationResult, fitName: string | null) {
+  const when = last
+    ? daysAgo(last.workout.date) === 0
+      ? 'today'
+      : daysAgo(last.workout.date) === 1
+      ? 'yesterday'
+      : `on ${last.workout.display_date}`
+    : '';
+  const order = last
+    ? `Your last session ${when} matched ${last.day.name}, so ${day.name} is next in your plan.`
+    : `None of your recent workouts match a day in your plan yet, so it starts with ${day.name}.`;
+  if (!day.exercises.length) return `${order} This day has no exercises yet.`;
+
+  const { recovering, hoursUntilReady } = dayReadiness(day, recovery);
+  if (!recovering.length) return `${order} Everything it trains is recovered.`;
+  const names = joinList(recovering.slice(0, 3).map((m) => MUSCLE_NAMES[m].toLowerCase()));
+  const plural = recovering.length > 1 || !SINGULAR.includes(recovering[0]);
+  const more = recovering.length > 3 ? ' and more' : '';
+  const alternative = fitName && fitName !== day.name ? ` If you'd rather wait, ${fitName} fits better today.` : '';
+  return `${order} Your ${names}${more} ${plural ? 'are' : 'is'} still recovering (back to full ${readyDayLabel(
+    hoursUntilReady
+  )}).${alternative}`;
+}
 
 const NumberBadge: React.FC<{ n: number }> = ({ n }) => (
   <span className="w-7 h-7 rounded-full bg-[#F5F5F7] text-xs font-bold text-[#1D1D1F] flex items-center justify-center shrink-0">
@@ -161,13 +192,24 @@ const MusclePanel: React.FC<MusclePanelProps> = ({ muscle, recovery, history }) 
 
 export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
   const [pickedMuscle, setPickedMuscle] = useState<MuscleId | null>(null);
+  const [plan, setPlan] = usePlan();
 
   const recovery = useMemo(() => calculateMuscleRecovery(history), [history]);
   const session = useMemo(() => suggestNextSession(recovery), [recovery]);
   const thisWeek = useMemo(() => recentWorkouts(history, 7), [history]);
 
+  // With a plan, the next session is the plan's next day; without one, the recovery-based suggestion
+  const upcoming = useMemo(() => (plan ? upcomingDay(plan, history) : null), [plan, history]);
+  const fit = useMemo(() => (plan ? bestFitDay(plan, recovery) : null), [plan, recovery]);
+  const fitReadiness = fit ? dayReadiness(fit, recovery) : null;
+
   // Until the member taps one, the map opens on the muscle the next session is built around
-  const muscle = pickedMuscle ?? session.spotlight;
+  const upcomingMuscles = upcoming ? dayMuscles(upcoming.day) : [];
+  const muscle =
+    pickedMuscle ??
+    (upcoming && upcomingMuscles.length
+      ? dayReadiness(upcoming.day, recovery).recovering[0] ?? upcomingMuscles[0]
+      : session.spotlight);
 
   return (
     <div className="flex flex-col gap-8 pb-16 animate-in fade-in duration-200">
@@ -178,7 +220,58 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
         </p>
       </div>
 
-      {/* Next session */}
+      {/* Next session: from the plan when there is one */}
+      {upcoming ? (
+        <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 flex flex-col gap-6">
+          <div>
+            <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#34C759]" />
+              Next session
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1D1D1F] mt-1">
+              {upcoming.day.name}
+              {upcoming.day.exercises.length > 0 && (
+                <span className="text-[#6E6E73] font-semibold"> · {joinAmp(dayGroups(upcoming.day))}</span>
+              )}
+            </h2>
+            <p className="text-base text-[#6E6E73] mt-2 leading-relaxed max-w-3xl">
+              {upcomingReason(upcoming, recovery, fit?.name ?? null)}
+            </p>
+          </div>
+
+          {upcoming.day.exercises.length > 0 && (
+            <div className="bg-white rounded-2xl divide-y divide-black/[0.04] overflow-hidden">
+              {upcoming.day.exercises.map((e, i) => {
+                const info = planExerciseInfo(e.exerciseKey);
+                return (
+                  <div key={e.id} className="p-4 flex items-center gap-4">
+                    <NumberBadge n={i + 1} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-[#1D1D1F] truncate">{info.name}</p>
+                      <p className="text-xs text-[#6E6E73] truncate">{muscleList(info.primary)}</p>
+                    </div>
+                    <span className="text-sm font-semibold tabular-nums text-[#1D1D1F] shrink-0">{formatTarget(e)}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="text-xs text-[#6E6E73] flex items-center gap-1.5">
+              <Camera className="w-3.5 h-3.5 shrink-0" />
+              The gym cameras count your reps as you go, so there's nothing to log.
+            </p>
+            <button
+              onClick={() => document.getElementById('my-plan')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="inline-flex items-center gap-1 min-h-11 text-sm font-medium text-[#1D1D1F] hover:text-[#34C759] cursor-pointer shrink-0 self-start sm:self-auto"
+            >
+              Edit plan
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      ) : (
       <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 flex flex-col gap-6">
         <div>
           <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide flex items-center gap-1.5">
@@ -215,6 +308,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
           The gym cameras count your reps as you go, so there's nothing to log.
         </p>
       </div>
+      )}
 
       {/* Recovery map: tap a muscle to see exercises for it */}
       <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 flex flex-col gap-6">
@@ -227,6 +321,21 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
               : 'No workouts logged this week.'}{' '}
             Red muscles still need rest, green ones are ready. Tap a muscle to see exercises that fit.
           </p>
+          {fit && fitReadiness && (
+            <p className="mt-3 inline-flex flex-wrap items-center gap-x-1.5 gap-y-1 px-3 py-2 rounded-xl bg-white text-sm text-[#1D1D1F]">
+              <span
+                className={`w-2 h-2 rounded-full shrink-0 ${fitReadiness.recovering.length ? 'bg-[#FF9500]' : 'bg-[#34C759]'}`}
+                aria-hidden="true"
+              />
+              Best fit from your plan today: <span className="font-semibold">{fit.name}</span>
+              <span className="text-[#6E6E73]">
+                ·{' '}
+                {fitReadiness.recovering.length
+                  ? `${fitReadiness.recovering.length} of its muscles still recovering`
+                  : 'everything it trains is recovered'}
+              </span>
+            </p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.1fr] gap-8 items-start">
@@ -234,6 +343,15 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
           <MusclePanel key={muscle} muscle={muscle} recovery={recovery} history={history} />
         </div>
       </div>
+
+      {/* The member's editable plan */}
+      <section id="my-plan" className="bg-[#F5F5F7] rounded-[24px] p-4 sm:p-8 flex flex-col gap-5 scroll-mt-20">
+        <div className="px-2 sm:px-0 pt-2 sm:pt-0">
+          <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">Your rotation</span>
+          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">My plan</h3>
+        </div>
+        <MyPlan plan={plan} onChange={setPlan} upcomingDayId={upcoming?.day.id ?? null} recovery={recovery} />
+      </section>
 
       <p className="text-xs text-[#86868B] text-center">
         Suggestions use simplified recovery estimates and are not medical advice.
