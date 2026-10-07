@@ -13,14 +13,14 @@ interface MainTabProps {
   /** Today's camera-tracked session first, then older workouts */
   history: PastWorkout[];
   onWatchReplay: () => void;
-  onOpenHistory: () => void;
+  onOpenProgress: () => void;
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const formatDay = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 const formatSeconds = (s: number) => (s < 60 ? `${Math.round(s)} s` : `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`);
 
-export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay, onOpenHistory }) => {
+export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay, onOpenProgress }) => {
   const latest = history[0];
   const latestMuscles = workoutMuscles(latest);
   const topMuscles = (Object.entries(latestMuscles) as [MuscleId, number][])
@@ -100,10 +100,10 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
             <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">Reps per day</h3>
           </div>
           <button
-            onClick={onOpenHistory}
+            onClick={onOpenProgress}
             className="inline-flex items-center gap-1 text-sm font-medium text-[#1D1D1F] hover:text-[#34C759] cursor-pointer shrink-0 pt-1"
           >
-            See history
+            See progress
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>

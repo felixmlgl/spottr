@@ -6,7 +6,7 @@ import { PastWorkout } from '../types/schema';
 import { BodyMap } from './BodyMap';
 import { workoutMuscles } from '../services/memberSession';
 
-interface HistoryTabProps {
+interface ProgressTabProps {
   /** Today's camera-tracked session first, then older workouts */
   workouts: PastWorkout[];
   todayRecap: string;
@@ -19,7 +19,7 @@ const exerciseOptions = [
   { id: 'bicep-curl' as const, label: 'Bicep curl' },
 ];
 
-export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, onWatchReplay }) => {
+export const ProgressTab: React.FC<ProgressTabProps> = ({ workouts, todayRecap, onWatchReplay }) => {
   const [selectedWorkout, setSelectedWorkout] = useState<PastWorkout | null>(null);
   const [selectedExercise, setSelectedExercise] = useState<(typeof exerciseOptions)[number]['id']>('squat');
 
@@ -31,7 +31,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
   return (
     <div className="flex flex-col gap-10 pb-16 animate-in fade-in duration-200">
       <div className="pt-4">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F]">History</h1>
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F]">Progress</h1>
         <p className="text-base text-[#6E6E73] mt-2">
           {workouts.length} sessions logged over the past 4 weeks.
         </p>

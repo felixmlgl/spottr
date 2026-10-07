@@ -322,7 +322,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({
               >
                 <Dumbbell className="w-5 h-5 text-[#34C759]" />
                 <p className="mt-3 text-base font-bold">As a gym-goer</p>
-                <p className="text-xs text-[#6E6E73] mt-0.5">Your workout, recovery and history.</p>
+                <p className="text-xs text-[#6E6E73] mt-0.5">Your workout, recovery and progress.</p>
               </button>
               <button
                 onClick={onChooseAdmin}

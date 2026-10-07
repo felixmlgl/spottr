@@ -5,7 +5,7 @@
  * The demo (/demo) first asks how to see Spottr: as a gym-goer (then pick a camera clip and the person to follow) or
  * as the gym admin (straight to /gyms). The selection lives in the URL (/demo?clip=squat&person=2), so a refresh or
  * shared link reopens the same member without going through the intro again. The member app then has
- * five tabs (Main, Plan, Recovery, History, Settings); the annotated replay is a sub-view (&view=replay), not a tab.
+ * five tabs (Main, Plan, Recovery, Progress, Settings); the annotated replay is a sub-view (&view=replay), not a tab.
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -15,7 +15,7 @@ import { BodyModelContext } from './components/BodyMap';
 import { MainTab } from './components/MainTab';
 import { PlanTab } from './components/PlanTab';
 import { RecoveryTab } from './components/RecoveryTab';
-import { HistoryTab } from './components/HistoryTab';
+import { ProgressTab } from './components/ProgressTab';
 import { SettingsTab } from './components/SettingsTab';
 import { ReplayView } from './components/ReplayView';
 import { DemoIntro } from './components/intro/DemoIntro';
@@ -154,7 +154,7 @@ export default function App() {
               person={person}
               history={history}
               onWatchReplay={openReplay}
-              onOpenHistory={() => selectTab('history')}
+              onOpenProgress={() => selectTab('progress')}
             />
           )}
 
@@ -162,7 +162,7 @@ export default function App() {
 
           {currentTab === 'recovery' && <RecoveryTab plan={plan} onUpdatePlan={handleUpdatePlan} history={history} />}
 
-          {currentTab === 'history' && <HistoryTab workouts={history} todayRecap={recap} onWatchReplay={openReplay} />}
+          {currentTab === 'progress' && <ProgressTab workouts={history} todayRecap={recap} onWatchReplay={openReplay} />}
 
           {currentTab === 'settings' && (
             <SettingsTab

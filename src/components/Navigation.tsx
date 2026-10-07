@@ -1,7 +1,7 @@
 import React from 'react';
-import { Home, ClipboardList, Activity, History, Settings } from 'lucide-react';
+import { Home, ClipboardList, Activity, TrendingUp, Settings } from 'lucide-react';
 
-export type TabId = 'main' | 'plan' | 'recovery' | 'history' | 'settings';
+export type TabId = 'main' | 'plan' | 'recovery' | 'progress' | 'settings';
 
 interface NavigationProps {
   currentTab: TabId;
@@ -16,7 +16,7 @@ const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
   { id: 'main', label: 'Main', icon: Home },
   { id: 'plan', label: 'Plan', icon: ClipboardList },
   { id: 'recovery', label: 'Recovery', icon: Activity },
-  { id: 'history', label: 'History', icon: History },
+  { id: 'progress', label: 'Progress', icon: TrendingUp },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
