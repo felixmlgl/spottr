@@ -17,7 +17,7 @@
   <img class="logo" src="assets/spottr-logo.svg" alt="Spottr" style="align-self:flex-start;margin-top:30px">
   <h1 style="margin-top:70px">Spottr turns the cameras a gym already has into an automatic workout log.</h1>
   <p class="body-2" style="margin-top:44px">Automatic workout tracking from existing gym cameras.<br>Draft, 2026</p>
-  <svg class="wave" style="bottom:230px;width:1100px" viewBox="0 0 1100 120" preserveAspectRatio="none"><path d="M0 60 C 80 60 100 20 160 20 S 240 100 320 100 S 400 40 480 40 S 560 80 640 80 S 720 55 800 55 S 900 62 1100 60" fill="none" stroke="#34C759" stroke-width="3"/></svg>
+  <svg class="wave" style="bottom:230px;width:1100px" viewBox="0 0 1100 120" preserveAspectRatio="none"><defs><linearGradient id="wf" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#34C759"/><stop offset="0.6" stop-color="#34C759"/><stop offset="1" stop-color="#34C759" stop-opacity="0"/></linearGradient></defs><path stroke="url(#wf)" d="M0 60 C 80 60 100 20 160 20 S 240 100 320 100 S 400 40 480 40 S 560 80 640 80 S 720 55 800 55 S 900 62 1100 60" fill="none" stroke-width="3"/></svg>
   <div class="todos"><span class="todo">[TODO: presenter names, contact email, and which submission this is (YC W27 application vs a16z pitch)]</span></div>
 </section>
 
@@ -58,21 +58,18 @@
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">Solution</div>
   <h2 class="sm">Spottr is built to log sets from a gym's existing cameras, with nothing for members to wear or type.</h2>
-  <div class="row" style="margin-top:36px;gap:80px;align-items:flex-start">
+  <div class="row" style="margin-top:36px;gap:60px;align-items:flex-start">
     <div>
       <div class="col-title" style="margin-bottom:14px">For members</div>
-      <div class="card" style="width:500px"><img class="shot" src="assets/demo-main.png" alt="Member muscle map"></div>
+      <div class="card" style="width:1080px"><img class="shot" src="assets/demo-main.png" alt="Member app, Today card"></div>
       <div class="demo-tag">Demo data</div>
     </div>
-    <div>
-      <div class="col-title" style="margin-bottom:14px">For gyms</div>
-      <div class="card" style="width:640px"><img class="shot" src="assets/gyms-overview.png" alt="Gym overview"></div>
-      <div class="demo-tag">Demo data</div>
+    <div style="padding-top:60px">
+      <div class="body">The gym pays; members use it.</div>
     </div>
-    <div class="body-2" style="align-self:flex-end;max-width:420px;margin-bottom:60px">The gym pays; members use it.</div>
   </div>
   <div class="todos" style="bottom:120px"><span class="todo">[TODO: how a person on camera is linked to a member account (check-in, app QR, re-ID), unresolved]</span></div>
-  <div class="src">context.md §What Spottr is; 01_product.md §7. Gym dashboard is simulated today.</div>
+  <div class="src">context.md §What Spottr is; 01_product.md §7. The gym-side operator dashboard is simulated today.</div>
 </section>
 
 <!-- 5 HOW IT WORKS -->
@@ -81,9 +78,9 @@
   <div class="label">How it works</div>
   <h2 class="sm">Pose tracking counts reps without per-exercise rules; tested on squats and dips only.</h2>
   <div class="steps">
-    <div class="step"><div class="t">Pose tracking</div><img src="assets/demo-lifter.png" alt="Skeleton overlay on a recorded squat" style="width:auto;height:300px;align-self:flex-start"><div class="demo-tag real" style="align-self:flex-start;margin:0">Real output, face pixelated</div></div>
-    <div class="step"><div class="t">Rep counting</div><div class="body-2" style="font-size:30px">Joint motion</div></div>
-    <div class="step"><div class="t">One blurred snapshot per set names the exercise</div><img src="assets/gemini-input.jpg" alt="Blurred pipeline output"><div class="demo-tag real" style="align-self:flex-start;margin:0">Real pipeline output</div></div>
+    <div class="step"><div class="t">Pose tracking</div><img src="assets/demo-lifter.png" alt="Skeleton overlay on a recorded squat" style="width:auto;height:330px;align-self:center"></div>
+    <div class="step"><div class="t">Rep counting</div><div style="display:flex;flex-direction:column;align-items:center;gap:26px;margin-top:18px"><img src="assets/demo-repchip.png" alt="Rep counter" style="width:200px;border-radius:30px"><img src="assets/demo-setchip.png" alt="Set summary" style="width:330px;border-radius:30px"></div></div>
+    <div class="step"><div class="t">One blurred snapshot per set names the exercise</div><img src="assets/gemini-input.jpg" alt="Blurred pipeline output" style="margin-top:20px"><div class="demo-tag real" style="align-self:flex-start;margin:0">Real pipeline output</div></div>
   </div>
   <div class="body-2" style="margin-top:30px">Replay pixelates detected bystanders. On-site processing is the target.</div>
   <div class="src">Step 2 counts reps from joint motion; the exercise label never changes the count (01_product.md §3). Not every person is guaranteed to be detected, so undetected people are not blurred. Today's Gemini snapshot is one blurred composite per set; processing on a Mac mini in the gym is the target, not deployed (01_product.md §2-§4; Privacy page).</div>
@@ -94,17 +91,17 @@
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">Product</div>
   <h2 class="sm">The replay shows the real pipeline: a skeleton overlay on a recorded squat.</h2>
-  <div class="row" style="margin-top:40px;gap:90px;align-items:flex-start">
+  <div class="row" style="margin-top:34px;gap:60px;align-items:flex-start">
     <div>
-      <div class="card" style="width:400px"><img class="shot" src="assets/demo-lifter.png" alt="Skeleton overlay on the lifter"></div>
-      <div class="demo-tag real">Real output, lifter's face pixelated for this deck</div>
+      <div class="card" style="width:1140px"><img class="shot" src="assets/demo-lifter-seq.png" alt="Three replay frames of one squat rep with skeleton overlay"></div>
+      <div class="demo-tag real" style="border-color:var(--text-3)">Real pipeline output, lifter's face pixelated for this deck</div>
     </div>
-    <div style="flex:1;padding-top:20px">
+    <div style="flex:1;padding-top:6px">
       <div class="col-title">Real</div>
-      <div class="body" data-src="01_product.md §3">Replay of a recorded clip; 5 squats counted (team-stated).</div>
-      <div class="hr" style="margin:40px 0"></div>
+      <div class="body" data-src="01_product.md §3">Recorded clip; 5 squats counted (team-stated).</div>
+      <div class="hr" style="margin:30px 0"></div>
       <div class="col-title">Simulated</div>
-      <div class="body">Operator dashboard and most member tabs.</div>
+      <div class="body">Operator dashboard, most member tabs.</div>
     </div>
   </div>
   <div class="todos" style="bottom:120px"><span class="todo">[TODO: confirm the lifters in squat.mp4 and dip.mp4 are team members or have consented before showing replay frames]</span></div>
@@ -159,13 +156,13 @@
   <h2 class="sm">Central-case gross margin is 44.6% at $399 with one box; about 37% with two.</h2>
   <div class="row" style="margin-top:50px;gap:36px;align-items:stretch">
     <div class="stat3 main"><div class="mid" data-src="05_business_model.md §4.2">44.6%</div><div class="d">$399 tier, one box (central case)</div></div>
-    <div class="stat3"><div class="mid" data-src="05_business_model.md §4.2">37.4%</div><div class="d">two boxes</div></div>
-    <div class="stat3"><div class="mid" data-src="05_business_model.md §4.2">27.1%</div><div class="d">$299 tier, one box</div></div>
+    <div class="stat3"><div class="mid" data-src="05_business_model.md §4.2">37.4%</div><div class="d">$399 tier, two boxes</div></div>
+    <div class="stat3"><div class="mid" data-src="05_business_model.md §4.2">27.1%</div><div class="d">$299 tier, Flash, one box</div></div>
   </div>
   <div class="body-2" style="margin-top:36px" data-src="05_business_model.md §2.4">Hardware $1,489-2,388 per gym.</div>
   <div style="margin-top:20px"><span class="tag">Illustrative; no customer has paid</span></div>
   <div class="todos" style="bottom:130px"><span class="todo">[TODO: confirm pricing model with founders (per-location tiers $299/$499, hardware included, 60-day pilot to LOI)]</span></div>
-  <div class="src">Per month: $399 revenue, $221 costs, $178 gross profit (one box). Assumes a 400-member gym and Gemini Flash at the 2027 price; $299 tier on Flash-Lite would be 54.2%. Hardware is carried by Spottr. Break-even: keep 5.8-9.3 members a year (retention effect unproven). 05_business_model.md §2.4, §3, §4.2.</div>
+  <div class="src">Per month: <span data-src="05_business_model.md §4.2">$399 revenue, $221 costs, $178 gross profit</span> (one box). Assumes a 400-member gym, Gemini Flash at the 2027 price and hardware amortised over 36 months (assumption); <span data-src="05_business_model.md §4.2">$299 on Flash-Lite would be 54.2%</span>. Hardware is carried by Spottr. <span data-src="05_business_model.md §3">Break-even: keep 5.8-9.3 members a year</span> (retention effect unproven).</div>
 </section>
 
 <!-- 10 COMPETITION -->
@@ -212,13 +209,13 @@
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">The ask</div>
   <h2 class="sm">We are raising <span class="hl" data-src="context.md §Deck audience and goal">$300k</span> so three founders can work full-time in the US and take Spottr onto real gym cameras.</h2>
-  <div style="margin-top:34px"><span class="tag">Plan, not commitments</span></div>
-  <div class="timeline" style="margin:130px 0 0">
+  <div class="timeline" style="margin:190px 0 0">
     <div class="ms first" style="left:0"><span>Mac mini benchmark</span><i class="todo">[TODO: date]</i></div>
     <div class="ms" style="left:540px"><span>First real-camera install</span><i class="todo">[TODO: date]</i></div>
     <div class="ms" style="left:1070px"><span data-src="03_market.md §3.4">5-15 pilots</span><i class="todo">[TODO: date]</i></div>
     <div class="ms last" style="left:1652px"><span>Accuracy and retention read-out</span><i class="todo">[TODO: date]</i></div>
   </div>
+  <div style="margin-top:150px"><span class="tag">Plan, not commitments</span></div>
   <div class="todos" style="bottom:150px">
     <span class="todo">[TODO: instrument and cap (SAFE? post-money cap?)] [TODO: how $300k relates to YC's $500k / the a16z program] [TODO: use-of-funds percentages] [TODO: incorporation timing]</span>
   </div>

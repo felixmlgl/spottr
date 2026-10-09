@@ -13,7 +13,7 @@ Status: `verified` = taken from a research source with the cited section (third-
 | 3 | Median revenue +10.7%, EBITDA 22.1% (2025, HFA Global Report 2026) | 03_market.md §1.3 | verified |
 | 3 | AI label about $0.001-0.005 per set ($0.0008 Flash-Lite to $0.0046 Flash 2027); model prices rose in 2026 and step up on 2027-01-01 | 03_market.md §4.1-4.2; recomputation in qa_report.md §5 | assumption (token counts not measured) |
 | 5 | Pipeline stages; blur rules; target architecture not deployed | 01_product.md §2-§4 | verified (repo) |
-| 6 | Replay shows real output on recorded clips (squat x5, dips x10) | 01_product.md §1, §3 | verified (counts team-stated) |
+| 6 | Replay shows real output on a recorded squat clip; 5 squats counted (dips x10 appears on slide 7) | 01_product.md §1, §3 | verified (counts team-stated) |
 | 7 | Built in a 3-hour hackathon sprint, 2026-09-27 | context.md §Stage and traction | verified (team-stated) |
 | 7 | 17/17 synthetic tests pass (synthetic skeletons, not video) | 01_product.md §1 | verified (re-run 2026-10-05) |
 | 7 | 5 squats, 10 dips counted; 0 false sets on crowd clip and 13-14 fps (source footer) | 01_product.md §3 | verified for 3 clips; not a benchmark |
@@ -24,7 +24,7 @@ Status: `verified` = taken from a research source with the cited section (third-
 | 8 | Year-5 base case 116 gyms, $0.56M ARR | 03_market.md §3.4 | assumption |
 | 9 | $299 / $499 tiers, blended $399, 12-month term | 05_business_model.md §3 | assumption (unvalidated hypothesis) |
 | 9 | $399 revenue, $221.0 costs, $178.0 gross profit, 44.6% margin (central: $399 tier, Flash 2027 price, one box) | 05_business_model.md §4.2 | assumption |
-| 9 | Two boxes per gym: 37.4% | 05_business_model.md §4.2 | assumption |
+| 9 | $399 tier, two boxes per gym: 37.4% (36-month hardware amortisation is itself an assumption) | 05_business_model.md §4.2 | assumption |
 | 9 | $299 tier on Flash, one box: 27.1% (54.2% on Flash-Lite) | 05_business_model.md §4.2 | assumption |
 | 9 | Break-even: keep 5.8-9.3 members a year | 05_business_model.md §3 | assumption (retention effect unproven) |
 | 9 | Hardware $1,489 (one box) to $2,388 (two boxes) per gym, carried by Spottr | 05_business_model.md §2.4 | assumption |
@@ -37,4 +37,4 @@ Status: `verified` = taken from a research source with the cited section (third-
 | 13 | 60-day pilot converting to a paid LOI | 05_business_model.md §5 | assumption (design, not benchmark) |
 | 13 | No retention-improvement evidence yet | 03_market.md §4.6; 02_problem_customer.md §8 | verified (absence found) |
 
-Screenshots: slides 4 and 5 (member map, KPI tiles) show mock data ("Demo data"); slides 5 and 6 show the lifter crop only (no other members), face pixelated for this deck. Slide 4 and 6 show mock data ("Demo data"); the replay frame is real pipeline output on a recorded clip with the lifter's head pixelated for this deck. Consent for the lifter footage is undocumented (TODO on slide 6).
+Screenshots: slide 4 shows mock member-app data ("Demo data"). Slides 5 and 6 show real pipeline output on a recorded squat clip, cropped to the lifter only (no other members) with the head pixelated for this deck; the Gemini composite on slide 5 is the pipeline's own blurred output. Consent for the lifter footage is undocumented (TODO on slide 6).
