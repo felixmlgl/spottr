@@ -1,0 +1,1 @@
+{ "name": "spottr-deck-scripts", "private": true, "type": "module", "devDependencies": { "playwright": "1.64.0" } }

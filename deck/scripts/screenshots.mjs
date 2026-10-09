@@ -1,0 +1,19 @@
+// Captures demo/gyms screens into deck/site/assets. Requires `npm run dev` on port 3000.
+import { chromium } from 'playwright';
+const out = new URL('../site/assets/', import.meta.url).pathname;
+const b = await chromium.launch({ channel: 'chrome' });
+const p = await b.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+await p.goto('http://localhost:3000/demo?clip=squat&person=2'); await p.waitForTimeout(1500);
+const m = p.getByText('As a gym-goer'); if (await m.count()) { await m.click(); await p.waitForTimeout(1500); }
+// Main tab: crop below header (header avatar shows a face thumbnail)
+await p.screenshot({ path: out + 'demo-main.png', clip: { x: 190, y: 100, width: 1060, height: 640 } });
+await p.getByText('Watch how we counted').click(); await p.waitForTimeout(2000);
+await p.getByText(/Set 1 · 5 squat/).click(); await p.waitForTimeout(1000);
+await p.getByRole('button', { name: 'Play' }).click(); await p.waitForTimeout(3500);
+await p.getByRole('button', { name: 'Pause' }).click().catch(() => {});
+await p.waitForTimeout(500);
+// video area only (no page footer text, no header)
+await p.screenshot({ path: out + 'demo-replay-raw.png', clip: { x: 244, y: 178, width: 952, height: 524 } });
+await p.goto('http://localhost:3000/gyms/overview'); await p.waitForTimeout(2500);
+await p.screenshot({ path: out + 'gyms-overview.png', clip: { x: 190, y: 100, width: 1060, height: 760 } });
+await b.close();
