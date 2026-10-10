@@ -1,0 +1,9 @@
+# Spottr shared-world tracking service. Python 3.12.
+ultralytics>=8.4      # YOLO26 pose + BoT-SORT (per-camera detection/tracking only)
+opencv-python-headless
+numpy
+scipy                 # Hungarian assignment, signal processing
+lap
+av                    # audio decoding for time-offset estimation
+fastapi
+uvicorn

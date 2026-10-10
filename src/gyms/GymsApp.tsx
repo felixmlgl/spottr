@@ -12,11 +12,13 @@ import { Floor } from './pages/Floor';
 import { Members } from './pages/Members';
 import { Privacy } from './pages/Privacy';
 import { RequestPilot } from './pages/RequestPilot';
+import { WorldMapPage } from './world/WorldMapPage';
 
 const PAGES: Record<string, { title: string; component: React.FC }> = {
   '/gyms': { title: 'Spottr for Gyms', component: Landing },
   '/gyms/overview': { title: 'Overview · Spottr for Gyms', component: Overview },
   '/gyms/floor': { title: 'Floor · Spottr for Gyms', component: Floor },
+  '/gyms/world-map': { title: 'World map · Spottr for Gyms', component: WorldMapPage },
   '/gyms/members': { title: 'Members · Spottr for Gyms', component: Members },
   '/gyms/privacy': { title: 'Privacy · Spottr for Gyms', component: Privacy },
   '/gyms/pilot': { title: 'Request a pilot · Spottr for Gyms', component: RequestPilot },

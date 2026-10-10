@@ -25,3 +25,10 @@ backend/models/*_ncnn_model/
 
 # Welcome page background clips
 !/public/welcome/*.mp4
+
+# Shared-world tracking service (world-service/): models and heavy run outputs stay local
+world-service/models/*.pt
+world-service/out/
+world-service/.venv/
+# Exported, face-pixelated demo clips for /gyms/world-map
+!/public/world-demo/**/*.mp4

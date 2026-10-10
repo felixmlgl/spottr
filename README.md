@@ -213,10 +213,12 @@ Everything after pose tracking is numpy/scipy only. See [`backend/README.md`](ba
 │   ├── exercises.py       #   exercise vocabulary + muscle-load weights
 │   └── render.py          #   annotated.mp4 + overlay.json for the web replay
 ├── backend/tests/         # synthetic rep-counter test suite
+├── world-service/         # two-camera shared floor map: one identity per person across views (see its README)
+├── public/world-demo/     # exported world-service output + face-pixelated clips for /gyms/world-map
 ├── public/demo-data/      # pipeline output for the demo clips (sessions, skeletons, thumbnails)
 ├── public/videosCorrect/  # demo clips (crowd, squat, dip)
 ├── docs/media/            # README videos, GIFs and Gemini input snapshots
-├── src/                   # React 19 + Vite member app
+├── src/                   # React 19 + Vite member app, gym operator demo in src/gyms/ (world map: src/gyms/world/)
 │   ├── components/        #   Today, Plan, Recovery, Progress, Workouts, Replay, BodyMap
 │   └── services/          #   pipeline adapter, tracking, rep counter, summary/recap
 └── vite.config.ts         # /api/recap: server-side Gemini route

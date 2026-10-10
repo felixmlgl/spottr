@@ -1,0 +1,35 @@
+{
+  "schema_version": "spottr.calibration_clicks/1",
+  "site": "Great Hall",
+  "note": "Pixel clicks on each camera's background plate (out/<run>/plates/<cam>.jpg, 1280x720). Clicked by the developer acting as operator. No surveyed floor plan exists, so world coordinates for these points are derived from the people-based bootstrap; with a real floor plan the operator would place each landmark on the plan instead and the homography would be fitted from these clicks alone.",
+  "cameras": {
+    "cam1": {
+      "landmarks": [
+        {"id": "c1_door_l", "name": "Far door, left threshold corner", "pixel": [350, 284]},
+        {"id": "c1_door_r", "name": "Far door, right threshold corner", "pixel": [444, 283]},
+        {"id": "c1_piano_rug_l", "name": "Piano rug, far-left corner", "pixel": [486, 314]},
+        {"id": "c1_piano_rug_r", "name": "Piano rug, near-right corner", "pixel": [609, 359]},
+        {"id": "c1_bench_foot", "name": "Long bench, near-end foot", "pixel": [487, 534]},
+        {"id": "c1_sofa_l", "name": "Yellow sofa, front-left foot", "pixel": [778, 552]}
+      ],
+      "wall_base": {
+        "far_end": [[210, 283], [470, 283]],
+        "long_side": [[690, 300], [930, 455]]
+      }
+    },
+    "cam2": {
+      "landmarks": [
+        {"id": "c2_door_l", "name": "Double door, left threshold corner", "pixel": [388, 293]},
+        {"id": "c2_door_r", "name": "Double door, right threshold corner", "pixel": [503, 292]},
+        {"id": "c2_laptop_rug_l", "name": "Laptop-table rug, far-left corner", "pixel": [566, 379]},
+        {"id": "c2_laptop_rug_n", "name": "Laptop-table rug, near corner", "pixel": [601, 447]},
+        {"id": "c2_blue_rug", "name": "Blue runner rug, far-left corner", "pixel": [332, 379]},
+        {"id": "c2_wingback_rug", "name": "Wingback rug, near-left corner", "pixel": [745, 633]}
+      ],
+      "wall_base": {
+        "far_end": [[330, 300], [560, 302]],
+        "long_side": [[870, 375], [1230, 610]]
+      }
+    }
+  }
+}

@@ -1,0 +1,1259 @@
+{
+  "schema_version": "spottr.calibration/1",
+  "calibration_id": "great_hall_bootstrap",
+  "site": "Great Hall",
+  "units": "m",
+  "frame": "x along the room's long walls, y across (SVG convention, y down); origin at the fitted outline's corner",
+  "floor_map": {
+    "width_m": 23.59,
+    "height_m": 12.14,
+    "landmarks": [
+      {
+        "id": "c1_door_l",
+        "name": "Far door, left threshold corner",
+        "camera_id": "cam1",
+        "world": [
+          23.39,
+          3.73
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c1_door_r",
+        "name": "Far door, right threshold corner",
+        "camera_id": "cam1",
+        "world": [
+          22.84,
+          6.26
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c1_piano_rug_l",
+        "name": "Piano rug, far-left corner",
+        "camera_id": "cam1",
+        "world": [
+          19.1,
+          6.94
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c1_piano_rug_r",
+        "name": "Piano rug, near-right corner",
+        "camera_id": "cam1",
+        "world": [
+          15.0,
+          8.79
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c1_bench_foot",
+        "name": "Long bench, near-end foot",
+        "camera_id": "cam1",
+        "world": [
+          9.47,
+          5.63
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c1_sofa_l",
+        "name": "Yellow sofa, front-left foot",
+        "camera_id": "cam1",
+        "world": [
+          8.12,
+          8.62
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c2_door_l",
+        "name": "Double door, left threshold corner",
+        "camera_id": "cam2",
+        "world": [
+          -0.97,
+          7.62
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c2_door_r",
+        "name": "Double door, right threshold corner",
+        "camera_id": "cam2",
+        "world": [
+          -0.45,
+          5.25
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c2_laptop_rug_l",
+        "name": "Laptop-table rug, far-left corner",
+        "camera_id": "cam2",
+        "world": [
+          5.43,
+          4.88
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c2_laptop_rug_n",
+        "name": "Laptop-table rug, near corner",
+        "camera_id": "cam2",
+        "world": [
+          8.26,
+          4.88
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c2_blue_rug",
+        "name": "Blue runner rug, far-left corner",
+        "camera_id": "cam2",
+        "world": [
+          4.52,
+          8.49
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      },
+      {
+        "id": "c2_wingback_rug",
+        "name": "Wingback rug, near-left corner",
+        "camera_id": "cam2",
+        "world": [
+          12.84,
+          4.45
+        ],
+        "world_source": "derived from bootstrap (no surveyed floor plan)"
+      }
+    ],
+    "scale_note": "metric scale from average adult eye height; no surveyed floor plan",
+    "outline": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        23.59,
+        0.0
+      ],
+      [
+        23.59,
+        12.14
+      ],
+      [
+        0.0,
+        12.14
+      ]
+    ],
+    "outline_measured": [
+      [
+        21.18,
+        12.39
+      ],
+      [
+        24.69,
+        -0.55
+      ],
+      [
+        1.81,
+        0.31
+      ],
+      [
+        -1.48,
+        11.55
+      ]
+    ],
+    "outline_note": "rectangle fitted to the four measured wall lines; outline_measured is their raw intersection",
+    "walls": {
+      "cam1:far_end": [
+        [
+          24.53,
+          0.04
+        ],
+        [
+          22.65,
+          6.97
+        ]
+      ],
+      "cam1:long_side": [
+        [
+          19.05,
+          12.32
+        ],
+        [
+          9.55,
+          11.96
+        ]
+      ],
+      "cam2:far_end": [
+        [
+          -0.67,
+          8.79
+        ],
+        [
+          0.67,
+          4.21
+        ]
+      ],
+      "cam2:long_side": [
+        [
+          6.42,
+          0.13
+        ],
+        [
+          13.57,
+          -0.13
+        ]
+      ]
+    }
+  },
+  "cameras": [
+    {
+      "camera_id": "cam1",
+      "label": "Perspective 1",
+      "video": "Perspective 1 Great Hall.mp4",
+      "image_size": [
+        1280,
+        720
+      ],
+      "time_offset_s": 0.0,
+      "position_world": [
+        2.42,
+        4.89
+      ],
+      "heading_deg": 20.0,
+      "horizontal_fov_deg": 85.1,
+      "camera_model": {
+        "type": "pinhole_floor",
+        "fx": 696.9,
+        "fy": 696.9,
+        "cx": 640.0,
+        "cy": 360.0,
+        "pitch_deg": 18.85,
+        "roll_deg": 1.05,
+        "height_m": 4.48,
+        "distortion": null,
+        "source": "self_calibration_people+joint_crosscam_refinement",
+        "initial_fit": {
+          "samples": 195,
+          "median_eye_residual_px": 10.64,
+          "p90_eye_residual_px": 22.63,
+          "scale_prior": "average adult eye height 1.57 m (sd 0.09 m)",
+          "focal_prior": "f = 0.78 x image width (sd 0.16), phone main camera",
+          "plumb_vanishing_point": [
+            605.7,
+            2366.3
+          ],
+          "predicted_vanishing_point": [
+            609.1,
+            2384.7
+          ],
+          "scale_uncertainty_pct": 1.3
+        }
+      },
+      "homography_image_to_world": [
+        [
+          0.0148171851,
+          -0.0086563912,
+          -38.228631286
+        ],
+        [
+          -0.0396497429,
+          -0.0403383293,
+          19.6780947581
+        ],
+        [
+          0.0001658376,
+          -0.0090689964,
+          1.0
+        ]
+      ],
+      "coverage_polygon_px": [
+        [
+          971.5,
+          582.2999877929688
+        ],
+        [
+          956.9000244140625,
+          626.2000122070312
+        ],
+        [
+          905.5,
+          651.2999877929688
+        ],
+        [
+          612.5,
+          741.9000244140625
+        ],
+        [
+          548.0,
+          742.2999877929688
+        ],
+        [
+          322.79998779296875,
+          730.9000244140625
+        ],
+        [
+          177.89999389648438,
+          694.0999755859375
+        ],
+        [
+          93.69999694824219,
+          640.9000244140625
+        ],
+        [
+          93.69999694824219,
+          640.0999755859375
+        ],
+        [
+          281.8999938964844,
+          351.6000061035156
+        ],
+        [
+          391.70001220703125,
+          300.20001220703125
+        ],
+        [
+          396.6000061035156,
+          298.79998779296875
+        ],
+        [
+          398.70001220703125,
+          298.70001220703125
+        ],
+        [
+          412.6000061035156,
+          299.6000061035156
+        ],
+        [
+          631.5999755859375,
+          319.20001220703125
+        ],
+        [
+          723.2000122070312,
+          373.3999938964844
+        ],
+        [
+          951.0999755859375,
+          561.2999877929688
+        ],
+        [
+          957.0,
+          566.5
+        ]
+      ],
+      "coverage_polygon_world": [
+        [
+          7.01,
+          10.27
+        ],
+        [
+          6.52,
+          9.63
+        ],
+        [
+          6.4,
+          8.93
+        ],
+        [
+          6.33,
+          6.14
+        ],
+        [
+          6.48,
+          5.67
+        ],
+        [
+          7.13,
+          4.06
+        ],
+        [
+          7.9,
+          2.92
+        ],
+        [
+          8.84,
+          2.06
+        ],
+        [
+          8.85,
+          2.06
+        ],
+        [
+          17.32,
+          2.65
+        ],
+        [
+          21.13,
+          4.8
+        ],
+        [
+          21.26,
+          4.93
+        ],
+        [
+          21.25,
+          4.98
+        ],
+        [
+          21.05,
+          5.32
+        ],
+        [
+          17.67,
+          10.19
+        ],
+        [
+          13.56,
+          10.62
+        ],
+        [
+          7.38,
+          10.34
+        ],
+        [
+          7.28,
+          10.34
+        ]
+      ],
+      "landmarks": [
+        {
+          "landmark_id": "c1_door_l",
+          "pixel": [
+            350,
+            284
+          ]
+        },
+        {
+          "landmark_id": "c1_door_r",
+          "pixel": [
+            444,
+            283
+          ]
+        },
+        {
+          "landmark_id": "c1_piano_rug_l",
+          "pixel": [
+            486,
+            314
+          ]
+        },
+        {
+          "landmark_id": "c1_piano_rug_r",
+          "pixel": [
+            609,
+            359
+          ]
+        },
+        {
+          "landmark_id": "c1_bench_foot",
+          "pixel": [
+            487,
+            534
+          ]
+        },
+        {
+          "landmark_id": "c1_sofa_l",
+          "pixel": [
+            778,
+            552
+          ]
+        }
+      ],
+      "source": "bootstrap_people",
+      "wall_base_px": {
+        "far_end": [
+          [
+            210,
+            283
+          ],
+          [
+            470,
+            283
+          ]
+        ],
+        "long_side": [
+          [
+            690,
+            300
+          ],
+          [
+            930,
+            455
+          ]
+        ]
+      },
+      "quality": "fair",
+      "quality_reasons": [
+        "co-observed people agree within 0.573 m (p90), not within 0.5 m",
+        "room walls meet 15.7 deg away from square: far-field distortion, positions near the far walls are less reliable",
+        "metric scale rests on an average eye-height prior (~5 % uncertainty)",
+        "landmark world positions are derived, not surveyed: they do not independently test accuracy"
+      ]
+    },
+    {
+      "camera_id": "cam2",
+      "label": "Perspective 2",
+      "video": "perspective2 Great Hall.mp4",
+      "image_size": [
+        1280,
+        720
+      ],
+      "time_offset_s": -0.105,
+      "position_world": [
+        20.4,
+        7.22
+      ],
+      "heading_deg": -166.7,
+      "horizontal_fov_deg": 64.8,
+      "camera_model": {
+        "type": "pinhole_floor",
+        "fx": 1008.3,
+        "fy": 1008.3,
+        "cx": 640.0,
+        "cy": 360.0,
+        "pitch_deg": 18.07,
+        "roll_deg": -0.26,
+        "height_m": 5.24,
+        "distortion": null,
+        "source": "self_calibration_people+joint_crosscam_refinement",
+        "initial_fit": {
+          "samples": 197,
+          "median_eye_residual_px": 13.11,
+          "p90_eye_residual_px": 34.39,
+          "scale_prior": "average adult eye height 1.57 m (sd 0.09 m)",
+          "focal_prior": "f = 0.78 x image width (sd 0.16), phone main camera",
+          "plumb_vanishing_point": [
+            636.2,
+            3750.9
+          ],
+          "predicted_vanishing_point": [
+            616.2,
+            3762.5
+          ],
+          "scale_uncertainty_pct": 1.3
+        }
+      },
+      "homography_image_to_world": [
+        [
+          -0.0402903714,
+          -0.6479942715,
+          212.9454249168
+        ],
+        [
+          0.1564920866,
+          -0.2242956674,
+          -53.3878124373
+        ],
+        [
+          -0.0001357562,
+          -0.0293757477,
+          1.0
+        ]
+      ],
+      "coverage_polygon_px": [
+        [
+          901.5999755859375,
+          693.5
+        ],
+        [
+          897.0,
+          728.7000122070312
+        ],
+        [
+          887.4000244140625,
+          739.0999755859375
+        ],
+        [
+          811.2000122070312,
+          750.2999877929688
+        ],
+        [
+          377.1000061035156,
+          763.2000122070312
+        ],
+        [
+          94.69999694824219,
+          770.2999877929688
+        ],
+        [
+          85.5999984741211,
+          767.0
+        ],
+        [
+          74.80000305175781,
+          757.0
+        ],
+        [
+          69.0,
+          751.2999877929688
+        ],
+        [
+          63.20000076293945,
+          745.2999877929688
+        ],
+        [
+          90.9000015258789,
+          629.0999755859375
+        ],
+        [
+          238.3000030517578,
+          391.8999938964844
+        ],
+        [
+          240.0,
+          390.79998779296875
+        ],
+        [
+          472.79998779296875,
+          317.20001220703125
+        ],
+        [
+          796.4000244140625,
+          351.1000061035156
+        ],
+        [
+          798.9000244140625,
+          351.70001220703125
+        ],
+        [
+          862.0,
+          492.8999938964844
+        ],
+        [
+          862.7999877929688,
+          495.0
+        ],
+        [
+          897.4000244140625,
+          635.5
+        ]
+      ],
+      "coverage_polygon_world": [
+        [
+          13.99,
+          3.48
+        ],
+        [
+          14.39,
+          3.73
+        ],
+        [
+          14.49,
+          3.85
+        ],
+        [
+          14.47,
+          4.48
+        ],
+        [
+          13.83,
+          7.71
+        ],
+        [
+          13.4,
+          9.76
+        ],
+        [
+          13.35,
+          9.84
+        ],
+        [
+          13.2,
+          9.96
+        ],
+        [
+          13.13,
+          10.02
+        ],
+        [
+          13.04,
+          10.08
+        ],
+        [
+          11.34,
+          10.3
+        ],
+        [
+          4.8,
+          9.87
+        ],
+        [
+          4.75,
+          9.84
+        ],
+        [
+          1.39,
+          6.03
+        ],
+        [
+          4.95,
+          0.8
+        ],
+        [
+          5.0,
+          0.77
+        ],
+        [
+          10.38,
+          2.14
+        ],
+        [
+          10.44,
+          2.15
+        ],
+        [
+          13.21,
+          3.12
+        ]
+      ],
+      "landmarks": [
+        {
+          "landmark_id": "c2_door_l",
+          "pixel": [
+            388,
+            293
+          ]
+        },
+        {
+          "landmark_id": "c2_door_r",
+          "pixel": [
+            503,
+            292
+          ]
+        },
+        {
+          "landmark_id": "c2_laptop_rug_l",
+          "pixel": [
+            566,
+            379
+          ]
+        },
+        {
+          "landmark_id": "c2_laptop_rug_n",
+          "pixel": [
+            601,
+            447
+          ]
+        },
+        {
+          "landmark_id": "c2_blue_rug",
+          "pixel": [
+            332,
+            379
+          ]
+        },
+        {
+          "landmark_id": "c2_wingback_rug",
+          "pixel": [
+            745,
+            633
+          ]
+        }
+      ],
+      "source": "bootstrap_people",
+      "wall_base_px": {
+        "far_end": [
+          [
+            330,
+            300
+          ],
+          [
+            560,
+            302
+          ]
+        ],
+        "long_side": [
+          [
+            870,
+            375
+          ],
+          [
+            1230,
+            610
+          ]
+        ]
+      },
+      "quality": "fair",
+      "quality_reasons": [
+        "co-observed people agree within 0.573 m (p90), not within 0.5 m",
+        "room walls meet 15.7 deg away from square: far-field distortion, positions near the far walls are less reliable",
+        "metric scale rests on an average eye-height prior (~5 % uncertainty)",
+        "landmark world positions are derived, not surveyed: they do not independently test accuracy"
+      ]
+    }
+  ],
+  "sync": {
+    "reference_camera": "cam1",
+    "offsets_s": {
+      "cam1": 0.0,
+      "cam2": -0.105
+    },
+    "method": "audio prior + moving-people trajectory agreement",
+    "audio_prior": {
+      "offset_s": -0.1,
+      "z": 4.6,
+      "consistent_windows": 0,
+      "confidence": "low"
+    },
+    "trajectory_scan_best": {
+      "offset_s": -0.105,
+      "moving_matches": 2003.0,
+      "mean_residual_m": 0.296,
+      "next_best_elsewhere": 1164.0
+    },
+    "confidence": "high",
+    "scan": [
+      [
+        -4.0,
+        123.0,
+        0.401
+      ],
+      [
+        -3.8,
+        123.0,
+        0.404
+      ],
+      [
+        -3.6,
+        117.0,
+        0.375
+      ],
+      [
+        -3.4,
+        148.0,
+        0.387
+      ],
+      [
+        -3.2,
+        177.0,
+        0.389
+      ],
+      [
+        -3.0,
+        214.0,
+        0.394
+      ],
+      [
+        -2.8,
+        214.0,
+        0.356
+      ],
+      [
+        -2.6,
+        234.0,
+        0.337
+      ],
+      [
+        -2.4,
+        212.0,
+        0.355
+      ],
+      [
+        -2.2,
+        200.0,
+        0.398
+      ],
+      [
+        -2.0,
+        173.0,
+        0.394
+      ],
+      [
+        -1.8,
+        174.0,
+        0.387
+      ],
+      [
+        -1.6,
+        191.0,
+        0.375
+      ],
+      [
+        -1.4,
+        195.0,
+        0.378
+      ],
+      [
+        -1.2,
+        192.0,
+        0.353
+      ],
+      [
+        -1.0,
+        264.0,
+        0.387
+      ],
+      [
+        -0.8,
+        513.0,
+        0.417
+      ],
+      [
+        -0.6,
+        1050.0,
+        0.413
+      ],
+      [
+        -0.4,
+        1640.0,
+        0.36
+      ],
+      [
+        -0.2,
+        1950.0,
+        0.305
+      ],
+      [
+        0.0,
+        1977.0,
+        0.299
+      ],
+      [
+        0.2,
+        1732.0,
+        0.351
+      ],
+      [
+        0.4,
+        1164.0,
+        0.384
+      ],
+      [
+        0.6,
+        680.0,
+        0.395
+      ],
+      [
+        0.8,
+        437.0,
+        0.396
+      ],
+      [
+        1.0,
+        348.0,
+        0.395
+      ],
+      [
+        1.2,
+        323.0,
+        0.372
+      ],
+      [
+        1.4,
+        309.0,
+        0.351
+      ],
+      [
+        1.6,
+        288.0,
+        0.35
+      ],
+      [
+        1.8,
+        277.0,
+        0.331
+      ],
+      [
+        2.0,
+        288.0,
+        0.301
+      ],
+      [
+        2.2,
+        272.0,
+        0.324
+      ],
+      [
+        2.4,
+        276.0,
+        0.34
+      ],
+      [
+        2.6,
+        212.0,
+        0.325
+      ],
+      [
+        2.8,
+        176.0,
+        0.324
+      ],
+      [
+        3.0,
+        163.0,
+        0.354
+      ],
+      [
+        3.2,
+        136.0,
+        0.379
+      ],
+      [
+        3.4,
+        98.0,
+        0.382
+      ],
+      [
+        3.6,
+        83.0,
+        0.399
+      ],
+      [
+        3.8,
+        111.0,
+        0.402
+      ],
+      [
+        4.0,
+        120.0,
+        0.359
+      ],
+      [
+        -0.6,
+        1050.0,
+        0.413
+      ],
+      [
+        -0.567,
+        1127.0,
+        0.405
+      ],
+      [
+        -0.534,
+        1251.0,
+        0.396
+      ],
+      [
+        -0.501,
+        1319.0,
+        0.386
+      ],
+      [
+        -0.468,
+        1447.0,
+        0.378
+      ],
+      [
+        -0.435,
+        1530.0,
+        0.371
+      ],
+      [
+        -0.402,
+        1634.0,
+        0.36
+      ],
+      [
+        -0.369,
+        1716.0,
+        0.356
+      ],
+      [
+        -0.336,
+        1792.0,
+        0.342
+      ],
+      [
+        -0.303,
+        1851.0,
+        0.33
+      ],
+      [
+        -0.27,
+        1906.0,
+        0.32
+      ],
+      [
+        -0.237,
+        1930.0,
+        0.312
+      ],
+      [
+        -0.204,
+        1962.0,
+        0.306
+      ],
+      [
+        -0.171,
+        1974.0,
+        0.302
+      ],
+      [
+        -0.138,
+        1991.0,
+        0.298
+      ],
+      [
+        -0.105,
+        2003.0,
+        0.296
+      ],
+      [
+        -0.072,
+        1999.0,
+        0.296
+      ],
+      [
+        -0.039,
+        1984.0,
+        0.293
+      ],
+      [
+        -0.006,
+        1978.0,
+        0.299
+      ],
+      [
+        0.027,
+        1972.0,
+        0.301
+      ],
+      [
+        0.06,
+        1948.0,
+        0.314
+      ],
+      [
+        0.093,
+        1926.0,
+        0.325
+      ],
+      [
+        0.126,
+        1882.0,
+        0.336
+      ],
+      [
+        0.159,
+        1813.0,
+        0.343
+      ],
+      [
+        0.192,
+        1724.0,
+        0.347
+      ],
+      [
+        0.225,
+        1681.0,
+        0.359
+      ],
+      [
+        0.258,
+        1545.0,
+        0.355
+      ],
+      [
+        0.291,
+        1489.0,
+        0.371
+      ],
+      [
+        0.324,
+        1405.0,
+        0.379
+      ],
+      [
+        0.357,
+        1266.0,
+        0.381
+      ],
+      [
+        0.39,
+        1218.0,
+        0.387
+      ],
+      [
+        0.423,
+        1101.0,
+        0.388
+      ],
+      [
+        0.456,
+        1005.0,
+        0.389
+      ],
+      [
+        0.489,
+        904.0,
+        0.388
+      ],
+      [
+        0.522,
+        828.0,
+        0.393
+      ],
+      [
+        0.555,
+        772.0,
+        0.394
+      ],
+      [
+        0.588,
+        706.0,
+        0.393
+      ]
+    ]
+  },
+  "cross_camera_alignment": {
+    "method": "RANSAC rigid on co-observed people (1 s bins), then joint least-squares refinement of both cameras",
+    "joint_refinement": {
+      "pairs": 424,
+      "pair_median_m": 0.34,
+      "pair_p90_m": 0.573,
+      "eye_median_px": [
+        10.24,
+        13.43
+      ]
+    },
+    "rotation_deg": -173.37,
+    "inlier_pairs": 1045,
+    "mean_residual_m": 0.395
+  },
+  "quality": {
+    "grade": "fair",
+    "reasons": [
+      "co-observed people agree within 0.573 m (p90), not within 0.5 m",
+      "room walls meet 15.7 deg away from square: far-field distortion, positions near the far walls are less reliable",
+      "metric scale rests on an average eye-height prior (~5 % uncertainty)",
+      "landmark world positions are derived, not surveyed: they do not independently test accuracy"
+    ],
+    "cross_camera_floor_agreement_m": {
+      "median": 0.34,
+      "p90": 0.573,
+      "pairs": 424,
+      "what": "same person at the same time, projected by each camera (people with visible feet or seated estimates)"
+    },
+    "eye_height_residual_px": [
+      10.24,
+      13.43
+    ],
+    "wall_rectangularity_deviation_deg": 15.7,
+    "plumb_vanishing_points": {
+      "cam1": {
+        "measured": [
+          605.7,
+          2366.3
+        ],
+        "model": [
+          602.6,
+          2400.9
+        ]
+      },
+      "cam2": {
+        "measured": [
+          636.2,
+          3750.9
+        ],
+        "model": [
+          654.0,
+          3450.3
+        ]
+      }
+    }
+  }
+}
