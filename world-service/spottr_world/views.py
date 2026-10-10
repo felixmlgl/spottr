@@ -69,6 +69,7 @@ class Run:
             "floor_map": {
                 "width_m": fm["width_m"], "height_m": fm["height_m"],
                 "outline": fm.get("outline"),
+                "outline_measured": fm.get("outline_measured"),
                 "walls": fm.get("walls", {}),
                 "landmarks": fm.get("landmarks", []),
                 "scale_note": fm.get("scale_note"),

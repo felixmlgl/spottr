@@ -304,9 +304,15 @@ def finalize_room(doc: dict, clicks: dict, run_dir: Path, log=print) -> dict:
     a_end, b_end = W[(ids[0], "far_end")], W[(ids[1], "far_end")]
     corners = np.array([_line_intersection(*a_side, *a_end), _line_intersection(*a_end, *b_side),
                         _line_intersection(*b_side, *b_end), _line_intersection(*b_end, *a_side)])
-    lo = corners.min(0)
+    # Display outline: the rectangle that best fits the four measured walls (a hall is rectangular; the
+    # measured quadrilateral is kept as outline_measured and its skew is reported as a quality signal).
+    ys = sorted(float(np.mean(seg[:, 1])) for seg in (a_side, b_side))
+    xs = sorted(float(np.mean(seg[:, 0])) for seg in (a_end, b_end))
+    rect = np.array([[xs[0], ys[0]], [xs[1], ys[0]], [xs[1], ys[1]], [xs[0], ys[1]]])
+    lo = rect.min(0)
     T = np.array([[1, 0, -lo[0]], [0, 1, -lo[1]], [0, 0, 1.0]]) @ R
     corners = corners - lo
+    rect = rect - lo
 
     def wall_angle(seg):
         d = seg[1] - seg[0]
@@ -334,14 +340,16 @@ def finalize_room(doc: dict, clicks: dict, run_dir: Path, log=print) -> dict:
             landmarks.append({"id": l["id"], "name": l["name"], "camera_id": cid,
                               "world": [round(float(w[0]), 2), round(float(w[1]), 2)],
                               "world_source": "derived from bootstrap (no surveyed floor plan)"})
-    width, height = corners.max(0)
+    width, height = rect.max(0)
     doc["floor_map"].update({
         "width_m": round(float(width), 2), "height_m": round(float(height), 2),
-        "outline": corners.round(2).tolist(),
+        "outline": rect.round(2).tolist(),
+        "outline_measured": corners.round(2).tolist(),
+        "outline_note": "rectangle fitted to the four measured wall lines; outline_measured is their raw intersection",
         "walls": {f"{cid}:{name}": np.round(v - lo, 2).tolist() for (cid, name), v in W.items()},
         "landmarks": landmarks,
     })
-    doc["frame"] = "x along the room's long walls, y across (SVG convention, y down); origin at the outline's min corner"
+    doc["frame"] = "x along the room's long walls, y across (SVG convention, y down); origin at the fitted outline's corner"
 
     # --- quality report: only checks that are independent of the fit itself
     jr = doc["cross_camera_alignment"]["joint_refinement"]
