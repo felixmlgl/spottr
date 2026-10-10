@@ -5,6 +5,7 @@ import { Link } from '../router';
 const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/overview', label: 'Overview' },
   { to: '/gyms/floor', label: 'Floor' },
+  { to: '/gyms/world-map', label: 'World map' },
   { to: '/gyms/members', label: 'Members' },
   { to: '/demo', label: 'Member app', external: true },
   { to: '/gyms/privacy', label: 'Privacy' },
