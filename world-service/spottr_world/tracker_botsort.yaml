@@ -1,0 +1,15 @@
+# BoT-SORT for a fixed, high-mounted camera processed at 15 fps (stride 2 on 30 fps footage).
+# No camera motion compensation (cameras measured static: < 0.4 px drift over 9 min).
+# track_buffer keeps a local ID through ~4 s of occlusion (someone walking in front, chair backs).
+tracker_type: botsort
+track_high_thresh: 0.3
+track_low_thresh: 0.1
+new_track_thresh: 0.35
+track_buffer: 60
+match_thresh: 0.8
+fuse_score: True
+gmc_method: none
+proximity_thresh: 0.5
+appearance_thresh: 0.8
+with_reid: True
+model: auto
