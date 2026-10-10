@@ -1,0 +1,43 @@
+{
+  "schema_version": "spottr.ground_truth/1",
+  "segment": {"from_s": 420.0, "to_s": 480.0, "timeline": "shared (camera 1 clock; camera 2 = local - 0.105 s)"},
+  "role": "held-out: annotated after all parameters were fixed on the 30-90 s segment; nothing was tuned on it",
+  "source_run": "great_hall (yolo26s-pose @1280, BoT-SORT, stride 2)",
+  "method": "Crop timelines: every local track in the window, 10 crops sampled along it with shared-time stamps and image position (gt_tool tracks), plus frame sheets every 6 s. Tracks are assigned to people by clothing, position and timing. No system identities were shown during review.",
+  "reviewer_note": "Single reviewer (developer). Clothing in this window is distinctive, so cross-camera pairs are mostly unambiguous; uncertain tracks are marked probable or left unannotated (ignored by the metrics).",
+  "unannotated_tracks": [{"camera_id": "cam2", "local_track_id": 155, "note": "0.3 s, dark top, identity unclear"}],
+  "persons": [
+    {"gt_id": "P1", "description": "cyan patterned jacket, cap, dark trousers, backpack", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 191}, {"camera_id": "cam2", "local_track_id": 150}]},
+    {"gt_id": "P1b", "description": "light-blue jacket against the window glare, probably P1 later on", "certainty": "probable",
+     "tracks": [{"camera_id": "cam2", "local_track_id": 153}, {"camera_id": "cam2", "local_track_id": 154}]},
+    {"gt_id": "P2", "description": "beige blazer, dark trousers", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 192}, {"camera_id": "cam2", "local_track_id": 152}]},
+    {"gt_id": "P3", "description": "navy printed T-shirt, white trousers", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 193}, {"camera_id": "cam2", "local_track_id": 151}]},
+    {"gt_id": "P4", "description": "red top, curly dark hair, seated reading (cut off by camera 2's bottom edge)", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 194}, {"camera_id": "cam1", "local_track_id": 197},
+                {"camera_id": "cam2", "local_track_id": 50}, {"camera_id": "cam2", "local_track_id": 163}]},
+    {"gt_id": "C", "description": "navy 'Cal' sweatshirt, cap, white shorts (same man as C in 30-90 s); seated on the sofa, gets up ~470 s", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 178}, {"camera_id": "cam2", "local_track_id": 160},
+                {"camera_id": "cam2", "local_track_id": 162}]},
+    {"gt_id": "Cb", "description": "navy top, light shorts very close to camera 1 at 479-480 s, probably C", "certainty": "probable",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 204}]},
+    {"gt_id": "P6", "description": "woman, black top, jeans, maroon bag", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 196}, {"camera_id": "cam2", "local_track_id": 156}]},
+    {"gt_id": "P7", "description": "two-tone red/navy top, cream trousers, ponytail", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 198}, {"camera_id": "cam2", "local_track_id": 159},
+                {"camera_id": "cam2", "local_track_id": 161}]},
+    {"gt_id": "P8", "description": "grey hoodie, light jeans, backpack", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 200}, {"camera_id": "cam2", "local_track_id": 158}]},
+    {"gt_id": "D", "description": "black hoodie, seated near camera 1 (camera 1 only)", "certainty": "certain",
+     "tracks": [{"camera_id": "cam1", "local_track_id": 1}]},
+    {"gt_id": "L", "description": "white T-shirt at the laptop table (camera 2 only)", "certainty": "certain",
+     "tracks": [{"camera_id": "cam2", "local_track_id": 147}]}
+  ],
+  "scenarios": [
+    {"id": 1, "name": "one person seen by both cameras simultaneously", "gt_ids": ["P1", "P2", "P3", "P6", "P7", "P8"]},
+    {"id": 4, "name": "people crossing paths", "gt_ids": ["P1", "P2", "P3"], "note": "449-457 s: three people enter together and walk side by side"},
+    {"id": 6, "name": "one camera loses a person while the other continues", "gt_ids": ["P4"], "note": "P4 is cut off by camera 2's frame edge: no floor point there"}
+  ]
+}

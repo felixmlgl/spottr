@@ -1,0 +1,329 @@
+{
+  "schema_version": "spottr.ground_truth/1",
+  "segment": {
+    "from_s": 30.0,
+    "to_s": 90.0,
+    "timeline": "shared (camera 1 clock; camera 2 = local - 0.105 s)"
+  },
+  "source_run": "great_hall (yolo26s-pose @1280, BoT-SORT, stride 2)",
+  "method": "Manual review of both camera views side by side every 4 s (gt_tool sheet, camera-local track IDs only, no system identities shown), plus each local track's first/last box and time span. Each local track is assigned to one real person. Labels are anonymous letters; descriptions are clothing only, for the reviewer. Second pass: every local track was re-checked against person crops sampled along it (crop timelines), which corrected four assignments from the first pass (see revision_log).",
+  "reviewer_note": "Reviewed by the developer in two passes (frame sheets, then crop timelines), not double-annotated.",
+  "persons": [
+    {
+      "gt_id": "A",
+      "description": "man, tan shirt, light jeans, white trainers; walks to the window side and back, sits in the wingback group, stands up at ~68 s and sits again",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 2
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 14,
+          "note": "duplicate box on A"
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 23
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 33,
+          "note": "duplicate box on A"
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 2
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 10
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 11
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 29
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 42
+        }
+      ]
+    },
+    {
+      "gt_id": "B",
+      "description": "woman, cream tank top, dark trousers, in the wingback group (camera 2 only; hidden from camera 1)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam2",
+          "local_track_id": 6
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 37
+        }
+      ]
+    },
+    {
+      "gt_id": "C",
+      "description": "man, navy 'Cal' sweatshirt, cap, white shorts; enters through camera 2's far double doors (under camera 1), sits at the long table",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 15
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 17
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 23
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 24
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 26
+        }
+      ]
+    },
+    {
+      "gt_id": "D",
+      "description": "person, black hoodie with red logo, seated near camera 1 (cut off by its bottom edge; not visible to camera 2)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 1
+        }
+      ]
+    },
+    {
+      "gt_id": "E",
+      "description": "man, grey hoodie, backpack, jeans; walks from camera 2's end toward camera 1, sits at a side table",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 11
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 22
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 24
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 15
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 21
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 25
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 34
+        }
+      ]
+    },
+    {
+      "gt_id": "F",
+      "description": "woman, all black, white tote bag; walks toward camera 2 and leaves under camera 2",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 18
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 20
+        }
+      ]
+    },
+    {
+      "gt_id": "G",
+      "description": "woman, white top, jeans; walks around the far end and toward camera 1",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 26
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 28
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 31
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 40
+        }
+      ]
+    },
+    {
+      "gt_id": "H",
+      "description": "person, dark track jacket with white stripes, in the wingback group (camera 2 only; mostly hidden behind A)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam2",
+          "local_track_id": 4
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 27
+        }
+      ]
+    },
+    {
+      "gt_id": "I",
+      "description": "person at the table nearest camera 2 (not detected by camera 1)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam2",
+          "local_track_id": 1
+        }
+      ]
+    },
+    {
+      "gt_id": "J",
+      "description": "second person at the table nearest camera 2 (not detected by camera 1)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam2",
+          "local_track_id": 3
+        }
+      ]
+    },
+    {
+      "gt_id": "K",
+      "description": "person, grey printed sweatshirt, glasses, in the wingback group (camera 1 only)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam1",
+          "local_track_id": 3
+        },
+        {
+          "camera_id": "cam1",
+          "local_track_id": 17
+        }
+      ]
+    },
+    {
+      "gt_id": "L",
+      "description": "person, white T-shirt, at the laptop table on the rug far from camera 2 (camera 2 only)",
+      "certainty": "certain",
+      "tracks": [
+        {
+          "camera_id": "cam2",
+          "local_track_id": 12
+        },
+        {
+          "camera_id": "cam2",
+          "local_track_id": 13
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "id": 1,
+      "name": "one person seen by both cameras simultaneously",
+      "gt_ids": [
+        "A",
+        "C",
+        "E",
+        "F",
+        "G"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "person moving between the two perspectives",
+      "gt_ids": [
+        "F",
+        "C",
+        "G"
+      ],
+      "note": "F walks from the middle and leaves under camera 2; C enters under camera 1 (seen only by camera 2) and walks into both views; G the reverse"
+    },
+    {
+      "id": 3,
+      "name": "temporary occlusion",
+      "gt_ids": [
+        "H",
+        "A",
+        "B"
+      ],
+      "note": "H and B are hidden behind A/chairs in camera 2 and detected intermittently; camera 1 produces duplicate boxes on A"
+    },
+    {
+      "id": 4,
+      "name": "people crossing paths",
+      "gt_ids": [
+        "C",
+        "E",
+        "F"
+      ],
+      "note": "54-62 s: C and E walk side by side while F passes them; C and F both wear dark tops. No two people in this segment are dressed near-identically."
+    },
+    {
+      "id": 5,
+      "name": "exit and return",
+      "gt_ids": [
+        "A"
+      ],
+      "note": "A leaves the wingback group at ~68 s and sits down again ~6 s later (new local tracks in both cameras). No full exit from the room and later return occurs inside this segment."
+    },
+    {
+      "id": 6,
+      "name": "one camera loses a person while the other continues",
+      "gt_ids": [
+        "F",
+        "C",
+        "G"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "neighbours that must stay separate",
+      "gt_ids": [
+        "K",
+        "H",
+        "B",
+        "D",
+        "L"
+      ],
+      "note": "seated people 0.5-1 m apart, each seen by only one camera: any cross-camera link between them is a false merge"
+    }
+  ],
+  "revision_log": [
+    "A: the 'shirtless' walker is the tan-shirt man seen from behind; cam1:14 and cam1:33 are duplicate boxes on A (not H); cam2:42 is A.",
+    "K added: grey sweatshirt + glasses in the wingback group, seen only by camera 1 (cam1:3, cam1:17), previously mislabelled as B.",
+    "B (white tank top) and H (track jacket) are seen only by camera 2.",
+    "D split: cam1:1 (black hoodie, red logo) and cam2:12/13 (white T-shirt) are different people (D and L)."
+  ]
+}
