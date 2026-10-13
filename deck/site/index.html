@@ -31,7 +31,7 @@
     <div class="stat"><div class="mid" data-src="02_problem_customer.md §1a"><span class="hl">23 vs 16</span></div><div class="cap">months: engaged vs others</div></div>
     <div class="stat"><div class="mid" data-src="03_market.md §1.2">2.1 → 1.5</div><div class="cap">weekly visits, 2019-24</div></div>
   </div>
-  <div style="margin-top:70px" class="card"><div class="body" style="padding:28px 36px" data-src="07_founder_input.md §2"><span class="assump">Gym owner, paraphrased:</span> the area overview helped most.</div></div>
+  <div style="margin-top:70px" class="card"><div class="body" style="padding:28px 36px" data-src="07_founder_input.md §2"><span class="assump">Gym owner, paraphrased:</span> the area overview was especially helpful.</div></div>
   <div class="src">HFA 2025 Benchmarking (175 operators, data year 2024); Les Mills 2025 (2.6M member journeys, correlational: 23 vs 16 months is seven months longer). HFA 2026 reports a decade-low churn for 2025. Owner feedback is one conversation, a paraphrase, not a quote (07_founder_input.md §2).</div>
 </section>
 
@@ -39,36 +39,34 @@
 <section class="slide" data-n="3">
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">Why now</div>
-  <h2 class="sm">Strength training is booming, gyms are growing, and the cost of AI capability keeps falling.</h2>
+  <h2 class="sm">Strength training is booming, gyms are growing, and LLM cost per capability keeps falling.</h2>
   <div style="margin-top:44px">
     <div class="big" data-src="08_web_update.md §1.1"><span class="hl">81M</span></div>
     <div class="body-2" style="margin-top:22px">US members 2025, record, +5.2%</div>
   </div>
-  <div class="row cols3" style="margin-top:50px">
-    <div class="stat"><div class="body" data-src="08_web_update.md §1.3">Free weights: fastest-growing equipment category</div></div>
-    <div class="stat"><div class="body" data-src="08_web_update.md §1.8">AI cost per capability: about 10x cheaper a year</div></div>
+  <div class="row" style="margin-top:50px">
+    <div class="stat"><div class="body" data-src="08_web_update.md §1.8">~10x cheaper a year for a fixed capability (language models, not vision)</div></div>
   </div>
   <div class="todos" style="bottom:150px"><span class="todo">[TODO: share of mid-tier gyms with IP cameras covering the weight floor and RTSP access, add only after first site visits]</span></div>
-  <div class="src">HFA, 81M release (9 Apr 2026); free-weight ranking attributed to HFA, to be re-checked in the original (08_web_update.md §1.3). AI cost: a16z "LLMflation" (2024) for language models, not vision; Epoch AI finds 9-900x a year by task; frontier model prices have risen (08_web_update.md §1.8-1.11).</div>
+  <div class="src">HFA 81M release (9 Apr 2026). AI cost: a16z "LLMflation" (2024) measures language-model benchmarks; Epoch AI finds 9-900x a year by task. Frontier and Flash prices have risen and step up again on 2027-01-01, so Spottr's own cost line is not falling (08_web_update.md §1.8-1.11).</div>
 </section>
 
 <!-- 4 SOLUTION -->
 <section class="slide" data-n="4">
   <div class="brand">Spottr</div><div class="pageno"></div>
-  <div class="label">Solution</div>
+  <div class="label">Solution · the gym pays, members use it</div>
   <h2 class="sm">Spottr is built to log sets from a gym's existing cameras, with nothing for members to wear or type.</h2>
-  <div class="row" style="margin-top:34px;gap:70px;align-items:flex-start">
-    <div>
+  <div class="row" style="margin-top:34px;gap:60px;align-items:flex-start">
+    <div style="flex:1">
       <div class="col-title" style="margin-bottom:14px">For members</div>
-      <div class="card" style="width:760px"><img class="shot" src="assets/demo-main.png" alt="Member app, Today card"></div>
+      <div class="card" style="height:400px;background:#f4f4f6"><img src="assets/demo-main.png" alt="Member app, Today card" style="width:100%;height:100%;object-fit:contain"></div>
       <div class="demo-tag">Demo data</div>
     </div>
-    <div>
-      <div class="col-title" style="margin-bottom:14px">For gyms</div>
-      <div class="card" style="width:480px"><img class="shot" src="assets/gyms-floor.png" alt="Gym floor and area overview"></div>
+    <div style="flex:1">
+      <div class="col-title" style="margin-bottom:14px">For gyms: zone overview</div>
+      <div class="card" style="height:400px;display:flex;align-items:center;justify-content:center"><img src="assets/gyms-floor.png" alt="Gym zone overview" style="height:100%;width:auto"></div>
       <div class="demo-tag">Demo data</div>
     </div>
-    <div class="body-2" style="align-self:center;max-width:300px;font-size:30px">The gym pays; members use it.</div>
   </div>
   <div class="todos" style="bottom:120px"><span class="todo">Open: how a person on camera is linked to a member account (check-in, app QR or re-ID) is not solved yet.</span></div>
   <div class="src">context.md §What Spottr is; 07_founder_input.md §4. The gym-side dashboard is simulated today.</div>
@@ -114,16 +112,16 @@
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">Where we are</div>
   <h2 class="sm">Our core runs on recorded clips, not yet a live gym camera.</h2>
-  <div class="row" style="margin-top:50px;gap:80px">
-    <div style="flex:1.5">
+  <div class="row" style="margin-top:50px;gap:60px">
+    <div style="flex:1">
       <div class="col-title">Built</div>
-      <div class="body" style="line-height:1.6">
-        <span data-src="01_product.md §1"><span class="hl">17/17</span> synthetic tests</span><br>
-        <span data-src="07_founder_input.md §6">20 gyms emailed, 8 replied</span><br>
-        <span data-src="07_founder_input.md §6">1 chain in pilot talks, none agreed</span>
-      </div>
+      <div class="body" style="line-height:1.6"><span data-src="01_product.md §1"><span class="hl">17/17</span> synthetic tests</span></div>
     </div>
-    <div style="flex:1;border-left:1px solid var(--hairline);padding-left:60px">
+    <div style="flex:1.4;border-left:1px solid var(--hairline);padding-left:50px">
+      <div class="col-title">Outreach, founder-reported</div>
+      <div class="body" style="line-height:1.6" data-src="07_founder_input.md §6">20 gyms emailed, 8 replied<br>1 chain in pilot talks, none agreed</div>
+    </div>
+    <div style="flex:1;border-left:1px solid var(--hairline);padding-left:50px">
       <div class="col-title">Not yet</div>
       <div class="body">Live cameras, LOIs, revenue</div>
     </div>
@@ -131,65 +129,64 @@
   <div class="todos" style="bottom:130px">
     <span class="todo">[TODO: named VCs or ex-YC founders who gave positive feedback, only with their permission]</span>
   </div>
-  <div class="src">Built in a 3-hour hackathon sprint (Berkeley x Google DeepMind, 2026-09-27; no placement). <span data-src="01_product.md §3">5 squats, 10 dips counted</span>; <span data-src="01_product.md §3">0 false sets on a crowd clip; 13-14 fps on one stream</span> (team-stated, 3 clips, not a benchmark). The chain is with its corporate team; the location's general manager was positive. No pilot agreed, no LOI (07_founder_input.md §6).</div>
+  <div class="src">Built in a 3-hour hackathon sprint (Berkeley x Google DeepMind, 2026-09-27; no placement). <span data-src="01_product.md §3">5 squats, 10 dips counted; 0 false sets on a crowd clip; 13-14 fps</span> (team-stated, 3 clips). The chain is with its corporate team; the location's GM was positive. No pilot agreed, no LOI.</div>
 </section>
 
 <!-- 8 MARKET -->
 <section class="slide" data-n="8">
   <div class="brand">Spottr</div><div class="pageno"></div>
-  <div class="label">Market · chains, then Bay Area, US, international; freemium for members</div>
-  <h2 class="sm">Start with chains: about $1B a year in the US, $2.2B with Europe (derived).</h2>
+  <div class="label">Market · chains first</div>
+  <h2 class="sm">Our chain SAM is about $141M a year, $70M camera-suitable (derived).</h2>
   <div style="margin-top:34px">
-    <div class="frow"><div class="v" data-src="08_web_update.md §3.1">$995M · $2.2B</div><div class="d"><span class="assump">TAM</span> US · US + Europe</div></div>
     <div class="frow"><div class="v hl-row" data-src="08_web_update.md §3.2"><span class="hl">$141M · $70M</span></div><div class="d"><span class="assump">SAM</span> US chains: all · camera-suitable</div></div>
-    <div class="frow" style="border-bottom:1px solid var(--hairline)"><div class="v" data-src="08_web_update.md §3.3">$1.9M</div><div class="d"><span class="assump">SOM</span> Bay Area chains, camera-suitable</div></div>
+    <div class="frow"><div class="v" data-src="08_web_update.md §3.1">$995M · $2.2B</div><div class="d"><span class="assump">TAM</span> all clubs: US · US + Europe</div></div>
+    <div class="frow" style="border-bottom:1px solid var(--hairline)"><div class="v" data-src="08_web_update.md §3.3">$1.9M</div><div class="d"><span class="assump">Assumed</span> Bay Area chain slice</div></div>
   </div>
-  <div style="margin-top:22px"><span class="tag">Derived at $1,500 a location a month; 50% camera suitability is an assumption</span></div>
+  <div style="margin-top:22px"><span class="tag">Derived at $1,500 a location a month; camera suitability (50%) is an assumption</span></div>
   <div class="todos" style="bottom:130px"><span class="todo">[TODO: validate chain location counts and camera coverage with the chain in talks]</span></div>
-  <div class="src">08_web_update.md §3: $18,000 per location per year x 55,281 US clubs (<span data-src="08_web_update.md §2.1">William Blair/HFA, 2023</span>); Europe 67,515 clubs (EuropeActive 2026). SAM: 7,825 named US chain locations (vendor counts, about +/-5%), 50% camera-suitable (30-70% gives $42-99M). SOM: about 104 Bay Area locations (assumption). Price is a founder target, untested.</div>
+  <div class="src">$18,000 per location a year (08_web_update.md §3). TAM counts all 55,281 US clubs and 67,515 European clubs, any type; the definitions differ. SAM: 7,825 chain locations (vendor counts, about +/-5%). Path: Bay Area, US, international; freemium for members.</div>
 </section>
 
 <!-- 9 BUSINESS MODEL -->
 <section class="slide" data-n="9">
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">Business model</div>
-  <h2 class="sm">At $1,500 per location a month, hardware included, derived gross margin is about 83%.</h2>
+  <h2 class="sm">At a $1,500 target price, derived margins would be about 80% or more; the price is untested.</h2>
   <div class="row" style="margin-top:50px;gap:36px;align-items:stretch">
-    <div class="stat3 main"><div class="mid" data-src="05_business_model.md §4.2">83.1%</div><div class="d">400-member gym, one box</div></div>
-    <div class="stat3"><div class="mid" data-src="05_business_model.md §4.2">81.2%</div><div class="d">two boxes</div></div>
-    <div class="stat3"><div class="mid" data-src="05_business_model.md §4.2">58.3%</div><div class="d">large gym (~1,900 members), one box</div></div>
+    <div class="stat3 main"><div class="mid" data-src="derived: 05_business_model.md §4.2 cost lines + 07_founder_input.md §8 price">83.1%</div><div class="d">400-member gym, one box</div></div>
+    <div class="stat3"><div class="mid" data-src="derived: 05_business_model.md §4.2 cost lines + 07_founder_input.md §8 price">81.2%</div><div class="d">two boxes</div></div>
+    <div class="stat3"><div class="mid" data-src="derived: 07_founder_input.md §8 price / 05_business_model.md §3 anchor">3.8x</div><div class="d">our earlier $399 price; software comparators $75-999</div></div>
   </div>
-  <div class="body-2" style="margin-top:36px" data-src="05_business_model.md §2.4">Hardware $1,489-2,388 per gym.</div>
-  <div style="margin-top:20px"><span class="tag">Illustrative, price untested; no customer has paid</span></div>
+  <div style="margin-top:30px"><span class="tag">Illustrative, price untested; no customer has paid</span></div>
   <div class="todos" style="bottom:150px"><span class="todo">[TODO: validate $1,500 per location per month with the chain in talks]</span></div>
-  <div class="src">Derived from the 05_business_model.md §4.2 monthly cost lines (hardware over 36 months, Gemini Flash at the 2027 price, hosting, support, device management) with payments at 2.9% of $1,500: costs <span data-src="05_business_model.md §4.2">$252.9 (one box), $281.8 (two), $625.9 (large gym, Gemini about $472)</span>. Price from 07_founder_input.md §8.</div>
+  <div class="src">Derived from the 05_business_model.md §4.2 monthly cost lines (hardware over 36 months, Gemini Flash at the 2027 price) with payments at 2.9% of $1,500: costs <span data-src="derived: 05_business_model.md §4.2 + 07_founder_input.md §8">$252.9 (one box), $281.8 (two)</span>. Hardware $1,489-2,388 per gym, carried by Spottr. Comparators: 08_web_update.md §3.1.</div>
 </section>
 
 <!-- 10 COMPETITION -->
 <section class="slide" data-n="10">
   <div class="brand">Spottr</div><div class="pageno"></div>
   <div class="label">Competition</div>
-  <h2 class="sm">Rivals need own hardware or wearables; Spottr targets existing cameras.</h2>
+  <h2 class="sm">Rivals need own hardware or wearables; Spottr is designed for existing cameras.</h2>
   <div class="row" style="margin-top:30px;gap:50px;align-items:flex-start">
-    <div style="position:relative;width:1120px;height:520px">
-      <div class="matrix" style="position:absolute;left:46px;top:0;width:1074px;height:450px">
+    <div style="position:relative;width:1180px;height:520px">
+      <div class="matrix" style="position:absolute;left:46px;top:0;width:1134px;height:450px">
         <div class="dot" style="left:40px;top:40px">EGYM, Technogym</div>
         <div class="dot" style="left:40px;top:110px">Exersight</div>
-        <div class="dot" style="left:40px;top:250px">WHOOP, Apple Watch</div>
-        <div class="dot" style="left:520px;top:350px">Hevy, Strong</div>
-        <div class="dot" style="left:600px;top:200px">GroeFit</div>
-        <div class="dot sp" style="left:740px;top:50px">Spottr (target)</div>
+        <div class="dot" style="left:40px;top:290px">Wearables</div>
+        <div class="dot" style="left:680px;top:380px">Hevy, Strong</div>
+        <div class="dot" style="left:680px;top:300px">GroeFit</div>
+        <div class="dot sp" style="left:780px;top:50px">Spottr (target)</div>
         <div class="ax" style="left:0;bottom:-40px">Own hardware / wearable</div>
         <div class="ax" style="right:0;bottom:-40px">Existing infrastructure</div>
       </div>
-      <div class="ax" style="left:0;top:0;height:450px;writing-mode:vertical-rl;transform:rotate(180deg);text-align:center">Manual · Automatic per set</div>
+      <div class="ax" style="left:0;top:0;height:450px;writing-mode:vertical-rl;transform:rotate(180deg);text-align:center">Manual · Auto sets</div>
     </div>
     <div style="flex:1;padding-top:10px">
       <div class="col-title">Spottr</div>
-      <div class="body" style="line-height:1.55">Existing cameras, nothing to wear<br>Automatic sets and reps<br>Area overview for gyms (demo)<br>Bystander blurring</div>
+      <div class="body" style="line-height:1.5">Designed for existing cameras; tested on recorded clips<br>Automatic sets and reps; bystander blurring</div>
     </div>
   </div>
-  <div class="src" data-src="04_competition.md §1">04_competition.md §1, §4, §6, §8. Positions are our reading, not measured. Spottr features are shown on recorded clips and demo data only; blurring is in the replay and Gemini snapshots. Incumbents could add camera tracking later; the YC directory is not yet scanned (04_competition.md §9).</div>
+  <div class="src" data-src="04_competition.md §1">04_competition.md §1, §4, §6, §8. Positions are our reading, not measured. GroeFit offers occupancy and churn analytics, not set tracking. The area overview is demo data; live camera ingestion is not built. Incumbents could add camera tracking later; the YC directory is not yet scanned (04_competition.md §9).</div>
 </section>
 
 <!-- 11 TEAM -->
@@ -212,13 +209,13 @@
   <div class="label">The ask</div>
   <h2 class="sm">We are raising a <span class="hl" data-src="07_founder_input.md §10">$300k</span> pre-seed to put three full-time founders on real gym cameras.</h2>
   <div class="timeline" style="margin:170px 0 0">
-    <div class="ms first" style="left:0"><i class="mo">Oct 2026</i><span>Raise closes</span></div>
+    <div class="ms first" style="left:0"><i class="mo">Oct 2026</i><span>Target close</span></div>
     <div class="ms" style="left:420px"><i class="mo">Jan 2027</i><span>Mac mini benchmark</span></div>
     <div class="ms" style="left:840px"><i class="mo">Apr 2027</i><span>First live install</span></div>
     <div class="ms" style="left:1250px"><i class="mo">Jul 2027</i><span data-src="03_market.md §3.4">5-15 pilots</span></div>
     <div class="ms last" style="left:1652px"><i class="mo">Oct 2027</i><span>Accuracy, retention read-out</span></div>
   </div>
-  <div style="margin-top:130px"><span class="tag">Plan, not commitments</span></div>
+  <div style="margin-top:170px"><span class="tag">Plan, not commitments</span></div>
   <div class="todos" style="bottom:130px"><span class="todo">[TODO: instrument and cap; use-of-funds percentages]</span></div>
   <div class="src">Raise closes end of October 2026, then 12 months (07_founder_input.md §10); month labels are our plan. Use of funds: runway, hardware, pilots, product. Hardware for 5-15 pilots about <span data-src="05_business_model.md §2.4">$7k-36k</span> (derived: 5 x $1,489 to 15 x $2,388). Next: a seed round after pilots.</div>
 </section>

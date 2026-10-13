@@ -10,15 +10,19 @@ await p.goto('http://localhost:3000/demo?clip=squat&person=2'); await p.waitForT
 const m = p.getByText('As a gym-goer'); if (await m.count()) { await m.click(); await p.waitForTimeout(1500); }
 // slide 4: the Today card (muscle map + recap), no header avatar
 await p.screenshot({ path: out + 'demo-main.png', clip: { x: 194, y: 266, width: 1052, height: 464 } });
-await p.getByText('Watch how we counted').click(); await p.waitForTimeout(2000);
-await p.getByText('Details').click(); await p.getByText('Styled', { exact: true }).click(); await p.mouse.click(5, 5);
-await p.getByText(/Set 1 · 5 squat/).click(); await p.waitForTimeout(800);
-const box = await p.locator('canvas').first().boundingBox();
-await p.getByRole('button', { name: 'Play' }).click();
-for (let i = 0; i < 16; i++) { await p.waitForTimeout(200); await p.screenshot({ path: `/tmp/fr/s${String(i).padStart(2, '0')}.png`, clip: box }); }
-await p.getByRole('button', { name: 'Pause' }).click().catch(() => {});
-await p.screenshot({ path: out + 'demo-setchip.png', clip: { x: 392, y: 754, width: 172, height: 40 } });
+for (const [mode, prefix] of [['Styled', 's'], ['Raw', 'r']]) {
+  await p.goto('http://localhost:3000/demo?clip=squat&person=2'); await p.waitForTimeout(1500);
+  const m2 = p.getByText('As a gym-goer'); if (await m2.count()) { await m2.click(); await p.waitForTimeout(1500); }
+  await p.getByText('Watch how we counted').click(); await p.waitForTimeout(2000);
+  await p.getByText('Details').click(); await p.getByText(mode, { exact: true }).click(); await p.mouse.click(5, 5);
+  await p.getByText(/Set 1 · 5 squat/).click(); await p.waitForTimeout(800);
+  const box = await p.locator('canvas').first().boundingBox();
+  await p.getByRole('button', { name: 'Play' }).click();
+  for (let i = 0; i < 16; i++) { await p.waitForTimeout(200); await p.screenshot({ path: `/tmp/fr/${prefix}${String(i).padStart(2, '0')}.png`, clip: box }); }
+  await p.getByRole('button', { name: 'Pause' }).click().catch(() => {});
+  if (prefix === 's') await p.screenshot({ path: out + 'demo-setchip.png', clip: { x: 392, y: 754, width: 172, height: 40 } });
+}
 // slide 4: gym floor / zone overview (mock data)
 await p.goto('http://localhost:3000/gyms/floor'); await p.waitForTimeout(3000);
-await p.screenshot({ path: out + 'gyms-floor.png', clip: { x: 194, y: 274, width: 696, height: 604 } });
+await p.screenshot({ path: out + 'gyms-floor.png', clip: { x: 223, y: 410, width: 638, height: 395 } });
 await b.close();
