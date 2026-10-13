@@ -1,42 +1,45 @@
-# Visual QA report, final (round 3, after commit b325a72)
+# Visual QA report, final (commit 251194b)
 
-Re-rendered 13 slides at 1920x1080 and 1280x720 (deck/qa/visual/1920, /1280); slides 1, 4, 5, 6, 9, 12 viewed again in full, the others verified via metrics (deck/qa/visual/metrics.json, qa.mjs) since their markup did not change.
+All 13 slides re-rendered at 1920x1080 and 1280x720 (deck/qa/visual/1920, /1280); slides 3, 4, 6, 8, 9, 10 viewed again in full, the others checked via metrics (their markup is unchanged since round 4). Metrics: deck/qa/visual/metrics.json (qa.mjs).
 
 ## Verdict
-No critical or medium blockers left. Two cosmetic defects on the replay/flow slides (white gaps in the slide 6 filmstrip, stray artefact on slide 5) and an unbalanced slide 4 remain as minor/medium polish items.
+Ready as a draft. No critical issues; two medium word-count overruns (slides 8 and 10) remain, plus cosmetic items. Every previous layout defect (slide 4 mismatch, slide 10 grid-line collision, slide 6 head crop, slide 9 empty captions) is fixed.
 
-Checks: arrow-key nav OK (1,2,3,2,13,13,1,1). PDF: 13 pages = 13 slides, MediaBox 1440x810 pt (16:9), each slide 1080 px tall in print. No "FPS | RTSP ONVIF" text. "Demo data" tag on the slide 4 mock screenshot. Visible words per slide 21-38 (slide 9 = 38 by my count including the card captions; all other slides <=35). All non-TODO text passes AA; body text >=28 px, captions/pills 22 px. Nothing outside the 1920x1080 frame (slide 1 blob intentional). Accent green: one highlight per slide (slide 5 has one green-outlined pill, slide 6 none).
+## Checks
+- Arrow-key nav OK (1,2,3,2,13,13,1,1).
+- PDF: 13 pages = 13 slides, MediaBox 1440x810 pt (16:9), each slide 1080 px tall in print.
+- No overflow or text outside the 1920x1080 frame (slide 1 blob intentional); content, TODO pills and footers do not overlap.
+- Body text >=28 px; captions, pills and TODOs 22 px. All text passes AA. Green only as underline/outline/dot, at most one highlight per slide.
+- Bystanders / other gym members: none visible in any frame (slide 4: member app and zone heat map, no people; slides 5 and 6: the lifter only, cropped). "Demo data" tag on both mock screenshots (slide 4); real output tagged "Real pipeline output". No FPS / RTSP label anywhere.
+- Visible words per slide: 25, 33, 32, 25, 34, 26, 35, 47, 37, 45, 23, 36, 32.
 
-## Previous issues
+## Previous round-4 issues
+| # | status |
+|---|---|
+| 1 slide 8 words and eyebrow | partly fixed (eyebrow short, rows reduced to three, footer shorter; still 47 words) |
+| 2 slide 10 words and grid collisions | partly fixed (labels off the grid lines; right panel still 45 words) |
+| 3 slide 4 mismatched cards | fixed (equal cards, pay line moved to the eyebrow, floor map readable) |
+| 4 slide 6 soft frames, head crop | partly fixed (headroom restored, thinner overlay; frames still soft) |
+| 5 slide 9 words | fixed in layout (3rd card now a 3.8x comparison); 37 words |
+| 6 slide 12 words/spacing | not fixed (36 words, pill close to last label) |
+| 7 empty lower halves | not fixed (2, 3, 7, 13) |
+| 8 tight three-line footers | fixed (footers now two lines on 7-9) |
+| 9 remote font @import | not fixed |
 
-| # | status | note |
-|---|---|---|
-| R1 #1-#14 | fixed (as in round 2) | timeline margins, contrast, words, crowd footage, curve, bars, counter etc. |
-| R1 #15 empty lower halves (s2, 3, 7, 13) | not fixed | content still sits in the upper half, 40-50% empty above the TODO pill |
-| R1 #16 Google Fonts @import | not fixed | still remote font import, no local fallback files |
-| R2 #17 slide 4 unbalanced | partly fixed | single large member card now, but the "The gym pays; members use it." line still floats at top right with nothing under it, and the gym card was dropped |
-| R2 #18 slide 6 small proof | fixed | large 3-frame hero with skeleton overlays, Real/Simulated text beside it |
-| R2 #19 slide 5 empty middle card | fixed | rep counter and set chip now fill the card; one green pill only |
-| R2 #20 slide 11 thin cards | not fixed | expected until roles are filled |
-| R2 #21 slide 1 wave abrupt end | fixed | wave fades out |
-| R2 #22 slide 12 spacing / pill | fixed | timeline moved up, pill under it |
-
-## Open issues (final)
+## Open issues
 
 | # | severity | slide | issue | screenshot | fix |
 |---|---|---|---|---|---|
-| 1 | medium | 6 | The 3-frame filmstrip has two white vertical gaps between frames inside the rounded card; reads as a rendering bug. The middle frame shows a garbled green overlay label above the pixelated head and a stray red block at the top edge; frames are very soft (upscaled, low-res). | 1920/slide-06.png | Use a card background that matches (or tight gap), crop out the label/red edge, or use sharper frames. |
-| 2 | medium | 4 | The line "The gym pays; members use it." floats top-right of the card with no anchor, leaving the right third empty; the "Demo data" pill sits ~10 px above the TODO pill (cramped). | 1920/slide-04.png | Make it a left-aligned subline under the headline or a side caption aligned with the card top; add space above the TODO. |
-| 3 | minor | 5 | Rep-counter crop has a pinkish blurred background and a tiny stray sliver left of the restart icon (x~795); first image is a soft upscale. | 1920/slide-05.png | Re-crop the counter without the stray edge and over a neutral background. |
-| 4 | minor | 9 | Headline plus three captions give 38 visible words (limit 35). | 1920/slide-09.png | Shorten card captions (e.g. "$399, one box"). |
-| 5 | minor | 2, 3, 7, 13 | Lower half empty, TODO pill is the heaviest element at the bottom. | 1920/slide-13.png | Vertically centre content or accept for the draft. |
-| 6 | minor | all | Fonts via remote @import; offline render falls back to system sans. | styles.css | Self-host Inter woff2. |
-| 7 | minor | 11 | Martin and Gard cards nearly empty (content pending). | 1920/slide-11.png | Fill when roles are confirmed. |
+| 1 | medium | 8 | 47 visible words (headline, three rows with labels, long assumption pill). | 1920/slide-08.png | Drop the Bay Area row or shorten the pill; labels to one word. |
+| 2 | medium | 10 | 45 visible words; the right "Spottr" panel is a five-line wrapped paragraph that competes with the chart. | 1920/slide-10.png | Reduce the panel to one short line or remove it. |
+| 3 | minor | 4 | Both screenshots have a white inner margin on the left/right inside the card (gym card shows blank bands each side of the grid), so cards look under-filled. | 1920/slide-04.png | Crop images tight to their content. |
+| 4 | minor | 6 | Frames still soft; the first frame's "P2 squat x0" overlay label is garbled at the top edge. | 1920/slide-06.png | Crop the label out or use sharper frames. |
+| 5 | minor | 3 | Slide is now a single number and one line; lower half empty (like 2, 7, 13). | 1920/slide-03.png | Accept for the draft or centre vertically. |
+| 6 | minor | 9, 12 | 37 and 36 words (limit 35); slide 12 pill hugs the last milestone label. | 1920/slide-09.png | Trim captions; move the pill into the footer. |
+| 7 | minor | all | Remote Google Fonts @import, no local fallback. | styles.css | Self-host Inter. |
 
 Counts: critical 0, medium 2, minor 5.
 
-## Critique (3 weakest slides)
-1. Slide 6: the proof slide now has the right size, but the white gaps, soft frames and garbled overlay label undercut it.
-2. Slide 4: one card plus an orphan line; the gym side of the "gym pays" story has no visual.
-3. Slide 5: much better, but image quality is soft and the rep-counter crop looks pasted in; slides 2/3/7/13 stay top-heavy.
-Strongest: slides 2, 9, 10 (big numbers, clean cards, clean 2x2); 1 and 12 are now tidy.
+## Critique
+Weakest three: slide 10 (word-heavy, wrapped side panel), slide 8 (densest, 47 words), slide 6 (soft frames, garbled overlay label).
+Next weakest: slide 3 and 13 (top-heavy, thin content). Strongest: slides 2, 9 and 4 (balanced cards, big numbers), 1 and 12 for calm type.
