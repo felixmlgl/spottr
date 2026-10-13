@@ -235,3 +235,9 @@ Exact text to appear on slides:
 - **Perch deal:** US$18M upfront vs $15M vs total up to $28M (`04_competition.md §1` A2). Plan keeps it in notes only.
 - **Gemini cost:** model ambiguous (`gemini-flash-latest` default vs Flash-Lite used for demo data) and token counts unmeasured (`03_market.md §3.5`). Plan labels the per-set AI cost as an estimate and shows the central margin on Flash at the 2027 price.
 - **Name clash:** a voice-first logging app called "Spotr" exists (`04_competition.md §4`). Flagged to founders; not on slides.
+
+---
+
+## Round 3 changes (2026-10-12, founder answers + web research)
+
+Inputs: `07_founder_input.md` and `08_web_update.md` (deck/research, untracked). Changes: title lists all three founders and info@tryspottr.app; problem slide uses a paraphrased gym-owner insight (area overview); why-now uses 81M members (+5.2%), free weights fastest-growing, AI capability cost about 10x cheaper a year; solution slide pairs the member card with the /gyms floor view and keeps the person-to-member linking as "Open"; lifter consent confirmed, so replay frames are unpixelated and cropped to the lifter only; traction states 20 emailed, 8 replied, 1 chain in pilot talks, no pilot agreed; market is chain-led (TAM $995M US / $2.2B US+Europe, SAM $141M / $70M, SOM $1.9M, all derived at $1,500 per location per month); business model uses $1,500 per location and derived margins 83.1% / 81.2% / 58.3%; competition 2x2 re-axed (automatic per set vs existing infrastructure) with Spottr top right and a feature list; ask is a $300k pre-seed with a 12-month timeline from end of October 2026; team shows CEO/CTO/CPO (CPO title tbc); the last slide now tests the $1,500 price with the chain pilot. Every number is in CLAIMS.md as verified, founder statement, derived or assumption.

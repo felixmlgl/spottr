@@ -138,3 +138,7 @@ h2.sm { font-size: 56px; }
 .stat3.main { border: 2px solid var(--accent); }
 .ms .todo { font-size: 22px; padding: 4px 10px; }
 .ms span { font-size: 28px; }
+
+.mo { font-style: normal; font-size: 22px; font-weight: 500; color: var(--text-3); letter-spacing: .04em; text-transform: uppercase; }
+.ms .mo { position: absolute; top: -54px; left: -40px; white-space: nowrap; }
+.ms.first .mo { left: 0; } .ms.last .mo { left: auto; right: 0; }
