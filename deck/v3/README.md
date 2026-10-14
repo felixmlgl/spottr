@@ -4,6 +4,7 @@ A new deck, not an edit of v2 (`deck/v2/` is unchanged). Content: v2 + `deck/CLA
 
 - Open: `deck/v3/index.html` (arrow keys or click). `index.html?cut=short` is the 7-slide cut for speedrun and cold sends.
 - Export: `cd deck/scripts && npm i && node export-pdf-v3.mjs` → `deck/export/spottr-deck-v3.pdf` (11 slides + appendix, 20 pages), `deck/export/spottr-deck-v3-short.pdf` (7 pages), PNGs in `deck/qa/render-v3/` and `deck/qa/render-v3-short/`.
+- One-file HTML (CSS and images inlined, opens anywhere; fonts need internet): `node bundle-v3.mjs` → `deck/export/spottr-deck-v3.html`.
 - Word counts: `node wordcount-v3.mjs`.
 - Assets (`assets/`): `replay-dip-end.png` from `node replay-frames-v3.mjs` (recorded dip clip at the end of the set, pipeline keypoints and count, background people pixelated); `qr-demo.svg` from `node qr-v3.mjs`; the two blurred snapshots are the pipeline's own files from `public/demo-data/*/snapshots/`; `member-bodymap.png` and `floor-zones.png` are crops of the v2 screenshots in `deck/site/assets/`.
 
