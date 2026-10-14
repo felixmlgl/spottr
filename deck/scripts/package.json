@@ -1,1 +1,1 @@
-{ "name": "spottr-deck-scripts", "private": true, "type": "module", "devDependencies": { "playwright": "1.64.0" } }
+{"name":"spottr-deck-scripts","private":true,"type":"module","devDependencies":{"playwright":"1.64.0","qrcode":"1.5.4"}}
