@@ -32,3 +32,5 @@ world-service/out/
 world-service/.venv/
 # Exported, face-pixelated demo clips for /gyms/world-map
 !/public/world-demo/**/*.mp4
+# Two-camera demo clips for the "Two angles" option in /demo
+!/public/world-demo-angles/**/*.mp4

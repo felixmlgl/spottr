@@ -63,7 +63,7 @@ class Run:
         fm = cal["floor_map"]
         return {
             "api_version": API_VERSION,
-            "site": {"name": cal["site"], "label": "Great Hall", "anonymised": True},
+            "site": {"name": cal["site"], "label": cal["site"], "anonymised": True},
             "units": "m",
             "frame": cal.get("frame"),
             "floor_map": {
