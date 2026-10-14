@@ -58,7 +58,10 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
   ];
   const xs = [...outline.map((p) => p[0]), ...config.cameras.map((c) => c.position[0])];
   const ys = [...outline.map((p) => p[1]), ...config.cameras.map((c) => c.position[1])];
-  const pad = 1.6;
+  // Markers are drawn in metres sized for a hall; shrink them for small rooms (k = 1 from ~16 m up)
+  const k = Math.min(1, Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / 16);
+  const pad = 1.6 * Math.max(k, 0.6);
+  const bar = k < 0.75 ? 1 : 2;
   const vb = [Math.min(...xs) - pad, Math.min(...ys) - pad, Math.max(...xs) - Math.min(...xs) + 2 * pad, Math.max(...ys) - Math.min(...ys) + 2 * pad];
   const byId = new Map(people.map((p) => [p.global_person_id, p]));
   const visible = people.filter((p) => p.state !== 'exited' || p.global_person_id === selected);
@@ -75,7 +78,7 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
       viewBox={vb.join(' ')}
       className="w-full h-auto select-none touch-manipulation"
       role="group"
-      aria-label="Bird's-eye map of the Great Hall with one marker per person"
+      aria-label={`Bird's-eye map of the ${config.site.label} with one marker per person`}
       onClick={() => onSelect(null)}
     >
       <defs>
@@ -125,7 +128,9 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
       )}
 
       {config.cameras.map((c) => (
-        <CameraIcon key={c.camera_id} cam={c} highlighted={hoverCamera === c.camera_id} />
+        <g key={c.camera_id} transform={`translate(${c.position[0]} ${c.position[1]}) scale(${k}) translate(${-c.position[0]} ${-c.position[1]})`}>
+          <CameraIcon cam={c} highlighted={hoverCamera === c.camera_id} />
+        </g>
       ))}
 
       {/* association links (debug): each camera currently observing a person */}
@@ -171,7 +176,7 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
             fill="none"
             stroke={personColor(p.global_person_id)}
             strokeOpacity={dim ? 0.08 : 0.35}
-            strokeWidth={0.12}
+            strokeWidth={0.12 * k}
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -192,7 +197,7 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
         return (
           <g
             key={p.global_person_id}
-            transform={`translate(${p.x} ${p.y})`}
+            transform={`translate(${p.x} ${p.y}) scale(${k})`}
             opacity={op}
             className="cursor-pointer"
             role="button"
@@ -260,12 +265,12 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
       })}
 
       {/* scale bar */}
-      <g transform={`translate(${vb[0] + 0.8} ${vb[1] + vb[3] - 0.7})`}>
-        <line x1={0} y1={0} x2={2} y2={0} stroke="#8E8E93" strokeWidth={0.06} />
-        <line x1={0} y1={-0.15} x2={0} y2={0.15} stroke="#8E8E93" strokeWidth={0.06} />
-        <line x1={2} y1={-0.15} x2={2} y2={0.15} stroke="#8E8E93" strokeWidth={0.06} />
-        <text x={2.3} y={0.12} fontSize={0.36} fill="#8E8E93">
-          2 m (approx.)
+      <g transform={`translate(${vb[0] + 0.8 * k} ${vb[1] + vb[3] - 0.7 * k})`}>
+        <line x1={0} y1={0} x2={bar} y2={0} stroke="#8E8E93" strokeWidth={0.06 * k} />
+        <line x1={0} y1={-0.15 * k} x2={0} y2={0.15 * k} stroke="#8E8E93" strokeWidth={0.06 * k} />
+        <line x1={bar} y1={-0.15 * k} x2={bar} y2={0.15 * k} stroke="#8E8E93" strokeWidth={0.06 * k} />
+        <text x={bar + 0.3 * k} y={0.12 * k} fontSize={0.36 * k} fill="#8E8E93">
+          {bar} m (approx.)
         </text>
       </g>
     </svg>
