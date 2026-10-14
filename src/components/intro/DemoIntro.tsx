@@ -1,11 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, Dumbbell, Info, LayoutDashboard, X } from 'lucide-react';
+import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowRight, Dumbbell, Info, LayoutDashboard, Map, X } from 'lucide-react';
 import { PIPELINE_CLIPS } from '../../config';
 import { findClip, prefetchClip, useClipData, useClipSessions } from '../../hooks/useClipData';
 import { PipelinePerson, clipDataBaseUrl } from '../../services/pipelineAdapter';
 import { defaultPersonId, mainExercise, sortPeopleForPicker, trackedSeconds } from '../../services/memberSession';
 import { PersonSpotlight } from './PersonSpotlight';
 import { navigate } from '../../router';
+
+const TwoAngles = lazy(() => import('./TwoAngles').then((m) => ({ default: m.TwoAngles })));
+
+/** Third option: two cameras of one room fused into one floor map (world service), not a member clip. */
+const ANGLES = 'angles';
+const ANGLES_CLIPS = ['/world-demo-angles/segments/session/cam1.mp4', '/world-demo-angles/segments/session/cam2.mp4'];
 
 interface DemoIntroProps {
   initialClipId?: string | null;
@@ -51,13 +57,14 @@ const formatDuration = (s: number) => `${Math.floor(s / 60)}:${String(Math.round
 
 export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPersonId, onContinue }) => {
   const sessions = useClipSessions();
-  const [clipId, setClipId] = useState<string | null>(findClip(initialClipId)?.id ?? null);
+  const [clipId, setClipId] = useState<string | null>(initialClipId === ANGLES ? ANGLES : findClip(initialClipId)?.id ?? null);
   const [personId, setPersonId] = useState<string | null>(initialPersonId ?? null);
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [choosingView, setChoosingView] = useState(false);
   const step2Ref = useRef<HTMLElement>(null);
 
   const clip = findClip(clipId);
+  const isAngles = clipId === ANGLES;
   const session = clipId ? sessions[clipId] : undefined;
   const data = useClipData(clipId);
 
@@ -145,7 +152,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
             See what the gym camera logged.
           </h1>
           <p className="text-base text-[#6E6E73] mt-2 max-w-xl">
-            Pick a real gym clip, then pick the member you want to follow. Spottr shows you their workout as they would see it.
+            Pick a gym clip, then pick the member you want to follow. Spottr shows you their workout as they would see it.
           </p>
         </div>
 
@@ -185,8 +192,38 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
                 </button>
               );
             })}
+            <button
+              onClick={() => pickClip(ANGLES)}
+              aria-pressed={isAngles}
+              className={`text-left rounded-[18px] sm:rounded-[22px] p-1.5 sm:p-2 pb-3 sm:pb-4 bg-[#F5F5F7] transition-all cursor-pointer ${
+                isAngles ? 'ring-2 ring-[#34C759] bg-white shadow-sm' : 'hover:bg-[#EBEBEF]'
+              }`}
+            >
+              <div className="aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#1D1D1F] grid grid-cols-2 gap-px">
+                {ANGLES_CLIPS.map((src) => (
+                  <ClipPoster key={src} src={src} />
+                ))}
+              </div>
+              <div className="px-1 sm:px-2 pt-2 sm:pt-3">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="text-sm sm:text-base font-bold">Two angles</span>
+                  <span className="text-xs text-[#6E6E73] font-mono">0:07</span>
+                </div>
+                <p className="hidden sm:block text-xs text-[#6E6E73] mt-0.5">2 cameras · 1 shared floor map</p>
+              </div>
+            </button>
           </div>
         </section>
+
+        {/* Step 2 (two angles): one shared world from both cameras */}
+        {isAngles && (
+          <section ref={step2Ref} className="flex flex-col gap-4 scroll-mt-4 animate-in fade-in duration-200">
+            <h2 className="text-sm font-semibold text-[#6E6E73] uppercase tracking-wide">2 · Two cameras, one floor map</h2>
+            <Suspense fallback={<div className="h-[420px] rounded-[22px] bg-[#F5F5F7] animate-pulse" aria-label="Loading" />}>
+              <TwoAngles />
+            </Suspense>
+          </section>
+        )}
 
         {/* Step 2: person */}
         {clip && (
@@ -237,20 +274,32 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
       <div className="fixed bottom-0 inset-x-0 z-30 bg-white/90 backdrop-blur-xl border-t border-black/[0.06]">
         <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <p className="text-sm text-[#6E6E73] truncate">
-            {!clip
+            {isAngles
+              ? 'Two angles · one floor map'
+              : !clip
               ? 'Choose a clip to start'
               : selected
               ? `${clip.title} clip · Person ${selected.id}${mainExercise(selected) ? ` · ${selected.total_reps} reps` : ''}`
               : 'Choose a person'}
           </p>
-          <button
-            onClick={() => canContinue && setChoosingView(true)}
-            disabled={!canContinue}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold transition-transform active:scale-95 disabled:opacity-30 disabled:active:scale-100 cursor-pointer disabled:cursor-default shrink-0"
-          >
-            Continue
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          {isAngles ? (
+            <button
+              onClick={() => navigate('/gyms/world-map')}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold transition-transform active:scale-95 cursor-pointer shrink-0"
+            >
+              <Map className="w-4 h-4" />
+              Full world map
+            </button>
+          ) : (
+            <button
+              onClick={() => canContinue && setChoosingView(true)}
+              disabled={!canContinue}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold transition-transform active:scale-95 disabled:opacity-30 disabled:active:scale-100 cursor-pointer disabled:cursor-default shrink-0"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
 
