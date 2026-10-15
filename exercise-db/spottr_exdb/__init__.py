@@ -1,0 +1,1 @@
+"""Spottr exercise database build."""
