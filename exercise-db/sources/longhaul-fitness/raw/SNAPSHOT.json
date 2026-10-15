@@ -1,0 +1,33 @@
+{
+  "source_id": "longhaul-fitness",
+  "retrieved_at": "2026-10-15T20:44:45Z",
+  "version": "2c77d52a8c412eb2e8614e2d2f4f2f6edcea2b42",
+  "url": "https://github.com/longhaul-fitness/exercises",
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 1073,
+      "sha256": "73e5486fc9f506c3e8cf19f620dbe16c69090baeac02b3125a96a7a2582992fb"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3437,
+      "sha256": "26d7ccee6f43106ef95386286ac42ccdd0019815914501453dc7312f1e5e4e1c"
+    },
+    {
+      "path": "cardio.json",
+      "bytes": 5676,
+      "sha256": "b6f52cb2a3ab44076b569ae4abe67daf4e2d85c8cdc296607eb13ce0ba0f0a0a"
+    },
+    {
+      "path": "flexibility.json",
+      "bytes": 36969,
+      "sha256": "e8ba5de2ffb66a7413dc38e11a67c68a92d0f8c9e551a5e4ae8eaf2e2f986452"
+    },
+    {
+      "path": "strength.json",
+      "bytes": 339241,
+      "sha256": "93518f7cdfcac8094cdab1abc9acc80a93bb96742fe2883df41a8aff8ab0e0c2"
+    }
+  ]
+}

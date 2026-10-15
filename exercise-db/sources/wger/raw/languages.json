@@ -1,0 +1,299 @@
+[
+  {
+    "model": "core.language",
+    "pk": 1,
+    "fields": {
+      "short_name": "de",
+      "full_name": "Deutsch",
+      "full_name_en": "German"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 2,
+    "fields": {
+      "short_name": "en",
+      "full_name": "English",
+      "full_name_en": "English"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 3,
+    "fields": {
+      "short_name": "bg",
+      "full_name": "Български език",
+      "full_name_en": "Bulgarian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 4,
+    "fields": {
+      "short_name": "es",
+      "full_name": "Español",
+      "full_name_en": "Spanish"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 5,
+    "fields": {
+      "short_name": "ru",
+      "full_name": "Русский",
+      "full_name_en": "Russian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 6,
+    "fields": {
+      "short_name": "nl",
+      "full_name": "Nederlands",
+      "full_name_en": "Dutch"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 7,
+    "fields": {
+      "short_name": "pt",
+      "full_name": "Português",
+      "full_name_en": "Portuguese"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 8,
+    "fields": {
+      "short_name": "el",
+      "full_name": "Ελληνικά",
+      "full_name_en": "Greek"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 9,
+    "fields": {
+      "short_name": "cs",
+      "full_name": "Čeština",
+      "full_name_en": "Czech"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 10,
+    "fields": {
+      "short_name": "sv",
+      "full_name": "Svenska",
+      "full_name_en": "Swedish"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 11,
+    "fields": {
+      "short_name": "no",
+      "full_name": "Norsk",
+      "full_name_en": "Norwegian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 12,
+    "fields": {
+      "short_name": "fr",
+      "full_name": "Français",
+      "full_name_en": "French"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 13,
+    "fields": {
+      "short_name": "it",
+      "full_name": "Italiano",
+      "full_name_en": "Italian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 14,
+    "fields": {
+      "short_name": "pl",
+      "full_name": "Polski",
+      "full_name_en": "Polish"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 15,
+    "fields": {
+      "short_name": "uk",
+      "full_name": "Українська мова",
+      "full_name_en": "Ukrainian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 16,
+    "fields": {
+      "short_name": "tr",
+      "full_name": "Türkçe",
+      "full_name_en": "Turkish"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 17,
+    "fields": {
+      "short_name": "ar",
+      "full_name": "اَللُّغَةُ اَلْعَرَبِيَّة",
+      "full_name_en": "Arabic"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 18,
+    "fields": {
+      "short_name": "az",
+      "full_name": "Azərbaycan dili",
+      "full_name_en": "Azerbaijani"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 19,
+    "fields": {
+      "short_name": "eo",
+      "full_name": "Esperanto",
+      "full_name_en": "Esperanto"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 20,
+    "fields": {
+      "short_name": "fa",
+      "full_name": "زبان فارسی",
+      "full_name_en": "Persian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 21,
+    "fields": {
+      "short_name": "he",
+      "full_name": "עברית",
+      "full_name_en": "Hebrew"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 22,
+    "fields": {
+      "short_name": "hr",
+      "full_name": "Hrvatski jezik",
+      "full_name_en": "Croatian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 23,
+    "fields": {
+      "short_name": "id",
+      "full_name": "Bahasa Indonesia",
+      "full_name_en": "Indonesian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 24,
+    "fields": {
+      "short_name": "zh",
+      "full_name": "漢語",
+      "full_name_en": "Chinese"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 25,
+    "fields": {
+      "short_name": "sk",
+      "full_name": "Slovenský jazyk",
+      "full_name_en": "Slovak"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 26,
+    "fields": {
+      "short_name": "sl",
+      "full_name": "Slovenski jezik",
+      "full_name_en": "Slovenian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 27,
+    "fields": {
+      "short_name": "ko",
+      "full_name": "한국어",
+      "full_name_en": "Korean"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 28,
+    "fields": {
+      "short_name": "th",
+      "full_name": "ภาษาไทย",
+      "full_name_en": "Thai"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 29,
+    "fields": {
+      "short_name": "sr",
+      "full_name": "српски језик",
+      "full_name_en": "Serbian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 30,
+    "fields": {
+      "short_name": "ta",
+      "full_name": "தமிழ்",
+      "full_name_en": "Tamil"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 31,
+    "fields": {
+      "short_name": "ro",
+      "full_name": "Română",
+      "full_name_en": "Romanian"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 32,
+    "fields": {
+      "short_name": "ca",
+      "full_name": "Català",
+      "full_name_en": "Catalan"
+    }
+  },
+  {
+    "model": "core.language",
+    "pk": 33,
+    "fields": {
+      "short_name": "fi",
+      "full_name": "Suomi",
+      "full_name_en": "Finnish"
+    }
+  }
+]

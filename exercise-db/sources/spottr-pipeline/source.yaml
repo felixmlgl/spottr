@@ -1,0 +1,15 @@
+# Spottr's own exercise -> muscle table from the vision pipeline (backend/vision/exercises.py,
+# EXERCISES: the heat-map weights per exercise label, written by the Spottr team).
+# Read-only snapshot of the file at a commit; backend/ itself is never modified.
+#
+# Internal data owned by Spottr: no third-party rights, nothing to attribute.
+# Records are attached through taxonomy/pipeline_labels.yaml (record id = pipeline label), and
+# their muscle mapping is final for the exercises they cover (config.yaml authoritative_sources).
+id: spottr-pipeline
+name: Spottr vision pipeline muscle table
+url: https://github.com/felixmlgl/spottr/blob/main/backend/vision/exercises.py
+license: LicenseRef-Spottr-Internal
+license_url: null
+attribution: null
+share_alike: 0
+commercial_use_ok: 1

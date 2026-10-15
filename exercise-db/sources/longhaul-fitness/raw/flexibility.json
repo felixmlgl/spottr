@@ -1,0 +1,733 @@
+[
+  {
+    "pk": "82c48a55-f4f8-483f-9767-11cb6053dcb3",
+    "name": "Prone Assisted Neck Bridge",
+    "slug": "prone-assisted-neck-bridge",
+    "primaryMuscles": ["lower back"],
+    "secondaryMuscles": ["glute", "hamstring", "trap"],
+    "steps": [
+      "Place a yoga or exercise mat on the floor for head padding.",
+      "Position the top of your head on the floor with your arms bent at the elbows, hands on the ground by both sides of your head, supporting your upper body.",
+      "Support your lower body by balancing on the balls of your toes.",
+      "Hinge at the hips to maintain a neutral spine throughout the movement.",
+      "Hold the bridge position for up to 8 seconds or as long as comfortable.",
+      "Lower your heels back down to the floor and extend your arms at the elbows to finish one repetition.",
+      "Repeat the exercise for the desired number of repetitions."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "64c13d9c-16e6-489b-a999-e2b44edb3cb4",
+    "name": "One-Arm Tabletop Spine Twist",
+    "slug": "one-arm-tabletop-spine-twist",
+    "primaryMuscles": ["lower back", "oblique"],
+    "secondaryMuscles": ["shoulder - back", "trap"],
+    "steps": [
+      "Kneel down and sit back onto your heels.",
+      "Place both elbows on the ground in front of you.",
+      "Raise one arm and place your hand behind your head.",
+      "Rotate your upper body towards the side with the raised arm, looking up.",
+      "Hold the stretch for the desired time.",
+      "Slowly return to the starting position.",
+      "Repeat the stretch for the same time on the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "70ee43ca-112b-482c-9403-57d00d03bf5c",
+    "name": "One-Leg Wide Lunge",
+    "slug": "one-leg-wide-lunge",
+    "primaryMuscles": ["glute", "hamstring"],
+    "secondaryMuscles": ["quad"],
+    "steps": [
+      "Start in a plank or push-up position with both hands on the floor.",
+      "Step one foot forward, placing it just outside your hand on the same side.",
+      "Keep the back leg extended straight behind you with toes tucked under.",
+      "Lower your hips towards the floor to stretch the front leg's hamstrings and glutes. Your back knee may touch the floor.",
+      "Push your hips forward to stretch the hip flexors of the back leg.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "38484d69-3853-4a57-9220-430b0e228e42",
+    "name": "One-Leg Seated Rock-Paper-Scissor Toes",
+    "slug": "one-leg-seated-rock-paper-scissor-toes",
+    "primaryMuscles": ["calf"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit on a chair or on the floor. Raise one foot off the floor, holding the leg up by the raised knee.",
+      "Curl all toes to create the 'rock' position.",
+      "Return to neutral with toes relaxed.",
+      "Spread all toes apart into the 'paper' position.",
+      "Extend the big toe while keeping other toes curled for the 'scissors' position part one.",
+      "Curl the big toe and extend the other four toes for the 'scissors' position part two.",
+      "Continue alternating between the 'rock', 'paper', and both 'scissors' positions for the desired number of repetitions before switching to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "180aa683-0df8-4e12-ae0d-2e247e8c1889",
+    "name": "One-Leg Seated Knee-to-Chest \u2013 Foam Roller",
+    "slug": "one-leg-seated-knee-to-chest-foam-roller",
+    "primaryMuscles": ["glute", "lower back"],
+    "secondaryMuscles": ["hamstring", "quad"],
+    "steps": [
+      "Sit on the floor and place a foam roller behind your lower back.",
+      "Lean back slowly onto the foam roller, positioning it under your lumbar spine.",
+      "Hug one knee to your chest, keeping the other leg straight on the floor to avoid arching your lower back.",
+      "Find a tender spot and hold gentle pressure on it for the desired time. Hold each position instead of rolling.",
+      "Switch sides and hold the stretch for the same amount of time on the other leg."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "765372ba-e08c-4103-9e7a-b7dc532fe86e",
+    "name": "Seated Calf Massage \u2013 Lacrosse Ball",
+    "slug": "seated-calf-massage-lacrosse-ball",
+    "primaryMuscles": ["calf"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit on the floor and place a massage ball under your calf muscle.",
+      "Apply gentle pressure by pressing your leg down onto the ball.",
+      "Slowly flex your foot upward (dorsiflex) to stretch the calf while keeping pressure on the ball.",
+      "Then point your foot downward (plantarflex) to massage the calf.",
+      "Repeat the flexing and pointing movement slowly to massage the muscle.",
+      "Hold the massage for the desired time and switch to the other calf if needed."
+    ],
+    "notes": "Increase the pressure of your calf on the ball by adding your other leg's ankle onto the pressured leg's shin to press down."
+  },
+  {
+    "pk": "61fa9545-1e8c-4308-8824-2eaa44825b22",
+    "name": "One-Arm Front Bend Wall Push",
+    "slug": "one-arm-front-bend-wall-push",
+    "primaryMuscles": ["chest", "lat", "shoulder - front"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Stand facing a wall and place one hand flat against it at shoulder height.",
+      "Step back slightly and bend forward at the hips, keeping your arm straight and pressed into the wall.",
+      "Lift your arm upward along the wall to increase the stretch in the front of your shoulder.",
+      "Keep your back flat and your core engaged to avoid arching.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "a45c44a3-693e-4c60-b2db-b5a13f1f677c",
+    "name": "One-Leg Lying Ankle Nerve Floss",
+    "slug": "one-leg-lying-ankle-nerve-floss",
+    "primaryMuscles": ["calf", "hamstring"],
+    "secondaryMuscles": ["glute"],
+    "steps": [
+      "Lie on your back on a padded surface with one thigh lifted to 90 degrees and supported by both both hands interlaced on the hamstring.",
+      "Keep the raised knee as straight as possible without causing nerve tension.",
+      "Keep the other leg straight and flat on the floor.",
+      "Simultaneously lift your head off the ground and at your chest while pointing your toes away from you (plantarflex).",
+      "Then, lower your head and look towards the ceiling while pulling your raised foot toward you (dorsiflex).",
+      "Repeat the movement for the desired number of repetitions then switch sides."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "803604bd-04f2-44fa-b4e4-57b6b61a4e72",
+    "name": "Lying Overhead Shoulder Rotation \u2013 Dowel",
+    "slug": "lying-overhead-shoulder-rotation-dowel",
+    "primaryMuscles": ["shoulder - front"],
+    "secondaryMuscles": ["rotator cuff - front"],
+    "steps": [
+      "Lie on your back holding a dowel with both hands above your chest, hands shoulder-width apart, with straight arms.",
+      "Lower the dowel over over your head by flexing your shoulders, keeping arms straight.",
+      "Hold the end range stretch for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "1425a757-46dd-41a0-8fcc-67bdb24e3ee0",
+    "name": "Neck Twist \u2013 Lacrosse Ball",
+    "slug": "neck-twist-lacrosse-ball",
+    "primaryMuscles": ["trap"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Place a massage or lacrosse ball against the front and outer side of your neck.",
+      "Use your hand to gently compress the ball into the muscles.",
+      "Slowly rotate your head to the opposite side to increase the stretch on the neck.",
+      "Use small movements to massage the muscle group while maintaining gentle pressure.",
+      "Hold the massage and stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "3785eb2c-64cc-41ff-8ce5-cd95d72f4a31",
+    "name": "Alternating Lying Chin Tuck Neck Twist",
+    "slug": "alternating-lying-chin-tuck-neck-twist",
+    "primaryMuscles": ["trap"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Lie on your back with your forehead and chin parallel to the floor.",
+      "Tuck your chin in gently without lifting your head.",
+      "Rotate your neck slowly all the way to one side.",
+      "Return your head to center and rest briefly.",
+      "Rotate your neck all the way to the opposite side.",
+      "Return your head to center to complete one repetition.",
+      "Alternate the starting side with each new set.",
+      "Repeat the exercise for the desired amount of time or repetitions."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "7ee4abdd-e815-49d1-9d47-ec92a26a6b75",
+    "name": "One-Arm Lying Spine Twist \u2013 Yoga Block",
+    "slug": "one-arm-lying-spine-twist-yoga-block",
+    "primaryMuscles": ["lower back", "oblique"],
+    "secondaryMuscles": ["chest", "trap"],
+    "steps": [
+      "Lie on your side with your top leg supported by a yoga block or foam roller.",
+      "Extend both arms straight in front of you, palms together.",
+      "Lift your top arm up towards the ceiling while keeping your legs stable. Your gaze should follow the top arm while it travels.",
+      "Rotate your upper body, moving your top arm behind your back, face twisted towards the top arm, without lifting your leg off the support.",
+      "Hold the pose for the desired amount of time before repeating the exercise on the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "37b095b9-8e2e-4210-acb8-8c77415ab94d",
+    "name": "One-Leg Lying Outer Thigh Hip Twist",
+    "slug": "one-leg-lying-outer-thigh-hip-twist",
+    "primaryMuscles": ["thigh - outer"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Lie on your back with knees bent and feet flat on the floor.",
+      "Cross one ankle over the opposite thigh just above the knee.",
+      "Keep your upper back and shoulders pressed into the floor.",
+      "Slowly rotate your hips away from the crossed leg, letting the bottom thigh fall toward the floor.",
+      "Use the weight of the crossed leg to deepen the stretch in your outer hip.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "95cb9f28-ab4d-40ec-8c17-fddf859538b9",
+    "name": "One-Leg Foot Plank \u2013 Yoga Block",
+    "slug": "one-leg-foot-plank-yoga-block",
+    "primaryMuscles": ["calf"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Place two yoga blocks on the floor and stand so one foot is supported on the blocks at the heel and toes.",
+      "Shift your weight onto the supported foot.",
+      "Allow the ball of your big toe to drop below the level of the yoga block.",
+      "Activate the muscles in your foot to lift the ball of your big toe back to a neutral position.",
+      "Hold the lifted position for 5 to 7 seconds.",
+      "Rest for the same amount of time.",
+      "Continue repetitions for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "84106cf9-fa3f-4ce8-9a87-f20bb90a3203",
+    "name": "One-Arm Lunging Lower Back Wall Twist",
+    "slug": "one-arm-lunging-spinal-wall-twist",
+    "primaryMuscles": ["lower back", "oblique", "trap"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Start in a split squat position with your front leg against the wall, foot flat on the ground. Place your back leg's knee and toes on the ground.",
+      "Raise the arm on the same side as your front leg parallel to the ground in front of you. Keep the back of your hand and forearm in contact with the wall.",
+      "Rotate your torso slowly away from the front leg side, reaching your other arm back, parallel to the ground, to touch the back of that hand to the wall behind you.",
+      "Keep your hips facing forward and chest open as you rotate.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "aab77e3c-32ac-4676-92f3-bc5a0589891b",
+    "name": "One-Leg Seated Hamstring Roll \u2013 Foam Roller",
+    "slug": "one-leg-seated-hamstring-roll-foam-roller",
+    "primaryMuscles": ["hamstring"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit on the floor and place a foam roller under one hamstring while placing the other leg's foot flat on the ground for stability.",
+      "Lean forward slightly to engage and stretch your hamstring.",
+      "Roll your leg back and forth on the foam roller to find tender spots.",
+      "When you find a tender spot, hold the position.",
+      "Hold the stretch for the desired time, then move to another spot or switch legs."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "fc2c3807-61c2-4b79-a5db-d20820a1892e",
+    "name": "One-Leg Elevated Pigeon Stretch",
+    "slug": "one-leg-elevated-pigeon-stretch",
+    "primaryMuscles": ["glute"],
+    "secondaryMuscles": ["hamstring"],
+    "steps": [
+      "Place your front leg on an elevated surface, such as a bench, with the shin flat on the surface and the knee rotated outward from your hip.",
+      "Extend your back leg straight behind you on the ground.",
+      "Drop your front hip down toward the ground.",
+      "Support your upper body with your hands on the ground to maintain balance.",
+      "Keep your spine neutral and avoid leaning forward or back.",
+      "Take deep breaths, holding the stretch for the desired time, and switch sides."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "0d48ee63-e09c-4bbc-8343-3bc632977a23",
+    "name": "One-Arm Bicep Wall Stretch",
+    "slug": "one-arm-bicep-wall-stretch",
+    "primaryMuscles": ["bicep"],
+    "secondaryMuscles": ["chest", "shoulder - front"],
+    "steps": [
+      "Raise one arm to shoulder height next to your body.",
+      "Rotate your wrist so your palm faces down.",
+      "Place your palm firmly against a doorframe, squat rack, or wall.",
+      "Twist your body away from your anchored arm to stretch your biceps.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "df1179cd-ad11-4374-b414-fe67eba0cd3b",
+    "name": "Segmental Lower Back Flexion",
+    "slug": "segmental-lower-back-flexion",
+    "primaryMuscles": ["trap", "lower back"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit or stand with a neutral spine.",
+      "Flex your neck by bringing your chin towards your chest.",
+      "Slump your shoulders forward and flex your upper back.",
+      "Bend forward incrementally at each segment of the thoracic spine.",
+      "Continue the movement for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "98a43391-4d1f-4de1-8036-c0787307c84e",
+    "name": "One-Leg Incline Reverse Pigeon \u2013 Bench",
+    "slug": "one-leg-incline-reverse-pigeon-bench",
+    "primaryMuscles": ["glute", "hamstring", "thigh - inner"],
+    "secondaryMuscles": ["thigh - outer"],
+    "steps": [
+      "Set up an exercise bench at a 30 to 45 degree incline.",
+      "Place the shin of the leg you want to stretch on the inclined bench with the knee elevated above the foot.",
+      "Position the other leg behind you to support your bodyweight.",
+      "Drop the hip of the leg on the bench towards the ground and use your hands to support your body.",
+      "Keep your spine neutral to focus the stretch on your hips.",
+      "Hinge forward at the hips while maintaining a neutral spine to deepen the stretch.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "6f538926-fbaf-45ac-874f-cd3acb052e6f",
+    "name": "One-Leg Incline Pigeon Stretch \u2013 Bench",
+    "slug": "one-leg-incline-pigeon-stretch-bench",
+    "primaryMuscles": ["glute", "hamstring"],
+    "secondaryMuscles": ["thigh - inner", "thigh - outer"],
+    "steps": [
+      "Set up an exercise bench at a 30 to 45 degree incline.",
+      "Place the outside calf of the leg you want to stretch on the inclined bench with the knee elevated above the foot. This calf should cross the center line of your body.",
+      "Have the other leg supporting your bodyweight behind you.",
+      "Drop the hip towards the ground and use your hands to support your body.",
+      "Keep the spine neutral to isolate the stretch to the hips.",
+      "Optionally, hinge forwards at the hips while maintaining a neutral spine to deepen the stretch.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "b99edace-a641-4113-b730-f8c8de670dc7",
+    "name": "One-Leg Seated Pretzel Stretch",
+    "slug": "one-leg-seated-pretzel-stretch",
+    "primaryMuscles": ["glute", "hamstring"],
+    "secondaryMuscles": ["lower back"],
+    "steps": [
+      "Sit on a chair with your feet flat on the floor.",
+      "Place one ankle on the opposite knee by rotating the leg.",
+      "Push the folded knee towards the floor while leaning forward by hinging at the hips.",
+      "Keep the spine neutral to uncouple motion between the hip and back.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "d3040d3b-c208-45a4-aa70-b31416d060a3",
+    "name": "One-Leg Lying Pretzel Stretch",
+    "slug": "one-leg-lying-pretzel-stretch",
+    "primaryMuscles": ["glute", "hamstring"],
+    "secondaryMuscles": ["lower back"],
+    "steps": [
+      "Lie on your back with your feet flat on the floor, knees bent.",
+      "Place one ankle on the opposite knee by rotating the leg.",
+      "Reach around the leg with the foot on the floor to grab that leg's shin.",
+      "Keep your back on the floor and pull your knee towards your chest.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "8770385f-5661-4027-98c1-adc13f4a9140",
+    "name": "Prone Quad Rolling \u2013 Foam Roller",
+    "slug": "prone-quad-rolling-foam-roller",
+    "primaryMuscles": ["quad"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Lay down, facing the floor, on a foam roller placed on a tender spot on your quadriceps muscle.",
+      "Use your arms and other leg to control the amount of bodyweight you distribute on the foam roller.",
+      "Slowly flex and extend your knee to get an active massage.",
+      "Continue rolling and massaging the quadriceps for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "edd0f4bb-7f54-4f56-a1ee-5e5547cae18c",
+    "name": "Shoulder Teepee \u2013 Dowel",
+    "slug": "shoulder-teepee-dowel",
+    "primaryMuscles": ["shoulder - back", "shoulder - front"],
+    "secondaryMuscles": [
+      "tricep",
+      "bicep",
+      "forearm - inner",
+      "forearm - outer"
+    ],
+    "steps": [
+      "Grab a dowel or broomstick with hands wider than shoulder-width apart, holding it parallel to the ground in front of your waist.",
+      "Raise one end of the dowel above your head and then behind your back, keeping the other hand at hip level.",
+      "Lower the dowel so that it's parallel to the ground behind your back.",
+      "Raise the other hand to pull the dowel up and over your body bringing it parallel to the ground in front of you again.",
+      "Alternate directions, performing the same steps going the other direction.",
+      "Continue alternating the movement on each side for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "f15d4766-7fa4-4802-8146-c53f45a64970",
+    "name": "Seated Crossed Leg Forward Stretch",
+    "slug": "seated-crossed-leg-forward-stretch",
+    "primaryMuscles": ["glute", "lower back"],
+    "secondaryMuscles": ["hamstring", "thigh - inner", "thigh - outer"],
+    "steps": [
+      "Sit on the floor with your legs crossed.",
+      "Place your hands on the floor beside your hips.",
+      "Begin to lean forward, leading with your hands.",
+      "Crawl your hands forward to deepen the stretch.",
+      "Hold the stretch for the desired time while focusing on relaxed breaths."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "f83df073-8d24-4bd5-84b9-96b62aefd860",
+    "name": "One-Leg Bent Knee Calf Stretch \u2013 Yoga Block",
+    "slug": "one-leg-bent-knee-calf-stretch-yoga-block",
+    "primaryMuscles": ["calf"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Stand with one foot slightly ahead of the other as if you'd just taken one step forward.",
+      "Place your forward foot on a yoga block, in the loop of a kettlebell, or anything stable you can step on with the ball of your foot at ankle height. Ensure your heel remains on the ground.",
+      "Lean forward with both legs to create a stretch in the calf of the front leg.",
+      "Bend the knee of the front leg to target the soleus muscle in your calf.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "6713b6cf-8f67-4ee1-b546-436e5f4fba21",
+    "name": "Overhead Shrug Neck Rotation",
+    "slug": "overhead-shrug-neck-rotation",
+    "primaryMuscles": ["trap"],
+    "secondaryMuscles": ["shoulder - back", "shoulder - front"],
+    "steps": [
+      "Raise both arms with your elbows straight overhead.",
+      "Shrug your shoulders upwards.",
+      "Slowly rotate your head and neck completely to one side without dropping the shoulders.",
+      "Rotate your head and neck completely to the opposite side.",
+      "Return to neutral cervical spine rotation.",
+      "Continue these rotations for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "4a9f61c9-eab8-4321-80d0-369abf0ca206",
+    "name": "Front Line Opener",
+    "slug": "front-line-opener",
+    "primaryMuscles": ["chest", "lower back"],
+    "secondaryMuscles": ["abdominal", "shoulder - front"],
+    "steps": [
+      "Stand with your feet hip-width apart.",
+      "Bend forward, rounding your back and neck, tucking your chin. Tuck your chin and round your back far enough so that the crown of your head points directly in front of you.",
+      "Reach towards the floor with your arms internally rotated, touching the back of your wrists to each other in front of you.",
+      "Once you've reached your end range, extend your spine to straighten it and lift your chin to look directly in front.",
+      "As you're extending your spine, rotate your arms out and to your sides, palm facing forward, to open your chest muscles.",
+      "Continue repetitions for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "5f281096-ed92-4b29-b189-7e91c50024be",
+    "name": "One-Arm Kneeling Spine Twist",
+    "slug": "one-arm-kneeling-spine-twist",
+    "primaryMuscles": ["oblique", "lower back"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit on your heels to isolate the movement from your low back.",
+      "Place one palm flat on the floor and the other just behind your head or neck. This is your starting position.",
+      "Rotate your upper body as far as you can or until your elbow points straight up to the ceiling.",
+      "Hold the rotation for the desired amount of time.",
+      "Slowly return to the start position.",
+      "Repeat the exercise on the other side for the same time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "d010a335-71e9-4660-ae1d-fd6f384b5458",
+    "name": "One-Leg Prone Quad Stretch \u2013 Band",
+    "slug": "one-leg-prone-quad-stretch-band",
+    "primaryMuscles": ["quad"],
+    "secondaryMuscles": ["hamstring"],
+    "steps": [
+      "Loop a strength band or pull-up assist band around one ankle.",
+      "Lie down on your stomach.",
+      "Hold the band with both hands, over your back, over the same shoulder as the looped ankle, all the way until it's in front of your forehead as your lying down.",
+      "Pull the band away from your forehead to flex your quad.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "9201b8ec-d8dc-461a-9069-3d3dfe1b4bfd",
+    "name": "One-Leg Seated Calf Release \u2013 Lacrosse Ball",
+    "slug": "one-leg-seated-calf-release-lacrosse-ball",
+    "primaryMuscles": ["calf"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit on a chair with both feet on the floor.",
+      "Lift your target leg and cross it over the other leg so that the target leg's ankle is resting on your other knee.",
+      "Place a massage ball on the inner part of your shin bone.",
+      "Apply pressure with the ball within tolerable limits.",
+      "Start with the ball at the midpoint of your shin and move down towards the foot 1 inch at a time.",
+      "Slowly and repeatedly rotate the ankle to point your foot towards the floor, then the ceiling, then back again to get an active release of the muscle.",
+      "Complete 3-5 slow repetitions per tender spot.",
+      "Continue the massage for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "dab16014-5801-4fd0-bcfd-3db50f9ca801",
+    "name": "One-Leg Seated Ankle Crosses",
+    "slug": "one-leg-seated-ankle-crosses",
+    "primaryMuscles": ["calf"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Sit on a chair or a stable surface with your legs on the ground.",
+      "Pull the target leg's knee towards your chest. Leave the other foot on the ground for stability.",
+      "You're going to draw a bowtie shape, '\u22c8', with your with the toes of your target leg.",
+      "Rotate your foot inwards and then outwards, exploring the full range of motion at the ankle.",
+      "After completing the bowtie shape in one direction, reverse the direction you're drawing with your foot.",
+      "Repeat the shape, forward and backward, for the desired amount of time and switch to target the other leg."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "48adc847-d455-4a36-b9c2-43a91196a194",
+    "name": "Hamstring Floor Sweep",
+    "slug": "hamstring-floor-sweep",
+    "primaryMuscles": ["glute", "hamstring", "lower back"],
+    "secondaryMuscles": ["shoulder - back"],
+    "steps": [
+      "Stand with one leg straight and extended in front of you, bending the other knee.",
+      "Hinge at the hips, keeping your back straight, and sweep the floor with your arms. Your arms should go in a sweeping motion from behind your back leg to the front of your straight, extended leg.",
+      "Step the front leg back, both feet side-by-side, and alternate sides by stepping forward with the opposite leg and bending the other knee.",
+      "Continue alternating sides and repeating the movement for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "9e2af81e-141f-44c9-8115-3370c66d14d1",
+    "name": "Halo Neck Rotation",
+    "slug": "halo-neck-rotation",
+    "primaryMuscles": ["trap"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Stand or sit with your back straight and shoulders relaxed.",
+      "Keep your head looking straight forward.",
+      "Slowly move your neck to draw a halo with the tip of your head, moving it in a circular motion.",
+      "You can start by moving your head in a counter-clockwise direction, then switch to clockwise.",
+      "Continue the movement for the desired amount of time, ensuring you maintain the forward gaze throughout."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "f2fad514-fb0f-4467-8b3d-b65655794591",
+    "name": "One-Arm Prone Rotator Cuff External Rotation",
+    "slug": "one-arm-prone-rotator-cuff-external-rotation",
+    "primaryMuscles": ["rotator cuff - back"],
+    "secondaryMuscles": ["shoulder - back"],
+    "steps": [
+      "Lie on your belly on a padded surface, such as a yoga mat.",
+      "Extend one arm out to the side, in line with your shoulder. Bend your elbow to a 90-degree angle to form a 'cactus' or 'goalpost' shape, with your forearm and palm resting on the floor.",
+      "Keep your elbow pinned to the floor, ensuring it stays in contact with the floor throughout the movement.",
+      "Rotate your hand towards the ceiling as high as possible, keeping the elbow pinned.",
+      "Hold the position for the desired time.",
+      "Repeat exercise on the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "b757312a-49ac-4617-934a-7d02935944b2",
+    "name": "Kneeling Reclining Hero Pose \u2013 Pillow",
+    "slug": "kneeling-reclining-hero-pose-pillow",
+    "primaryMuscles": ["quad"],
+    "secondaryMuscles": ["thigh - inner"],
+    "steps": [
+      "Kneel on a padded and stable surface.",
+      "Place a thick cushion or pillow directly behind you.",
+      "Sit on the floor with your bum between your feet.",
+      "Recline back with your upper body until your upper back is fully supported by the pillow.",
+      "Keep your arms straight overhead.",
+      "Hold the stretch for the desired time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "8e166eae-5d0f-4661-9f9e-996f6859df36",
+    "name": "Wrist Extensor Rotation Stretch",
+    "slug": "wrist-extensor-rotation-stretch",
+    "primaryMuscles": ["forearm - outer"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Bend your hands at the wrists towards you. Place the back of your hands against a stable object like a bench or the floor with your body in a comfortable position that allows you to push down on your wrists.",
+      "Lean your body forwards to push the wrist into extension, staying within tolerable limits.",
+      "Rotate the elbows in and hold the stretch for up to 10 seconds.",
+      "Rotate the elbows out and hold the stretch for up to 10 seconds.",
+      "Continue alternating the movement on each side for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "d6d575f0-d09b-49ed-a5aa-07215fa12158",
+    "name": "One-Arm Posterior Shoulder Pull \u2013 Dowel",
+    "slug": "one-arm-posterior-shoulder-pull-dowel",
+    "primaryMuscles": ["shoulder - back", "rotator cuff - back"],
+    "secondaryMuscles": ["tricep"],
+    "steps": [
+      "Stand tall with a dowel held behind your back using both hands.",
+      "Place one hand on the dowel at the small of your low back and the other hand behind your head on the dowel.",
+      "Use your top arm to gently pull the target hand up between your shoulder blades.",
+      "Hold the stretch for the desired amount of time and switch sides."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "84134ecd-e418-48f4-a52b-1a3aeb72c33c",
+    "name": "One-Arm Kneeling Lower Back Wall Sweep \u2013 Foam Roller",
+    "slug": "one-arm-kneeling-lower-back-wall-sweep-foam-roller",
+    "primaryMuscles": ["lower back"],
+    "secondaryMuscles": ["abdominal", "oblique"],
+    "steps": [
+      "Start in a half kneel position by resting on one knee that's against a wall and the other leg in front of you with the foot place on the ground.",
+      "Place a foam roller or yoga block between your front knee and the wall and hold it in place.",
+      "Raise both hands behind your head and mesh your fingers.",
+      "Rotate your torso so that your chest faces away from the wall and your back is against the wall as much as possible.",
+      "Bend forwards through the torso, maintaining contact with the wall using your elbow that's closest to the wall, until you reach your end range, chest approaching the front knee.",
+      "Slide against the wall, reversing the movement, until you are once again upright.",
+      "Rotate through your torso until your chest faces the wall. Try to make the same elbow maintain contact with the wall throughout the movement.",
+      "Extend your spine towards your back leg as far as is comfortable for you.",
+      "Slide against the wall until you return to an upright position to complete a repetition.",
+      "Continue repetitions for the desired amount of time then switch to the other side."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "c36cfa8f-b7ea-4571-9e53-778459f7db86",
+    "name": "One-Arm Front Shoulder Active Massage \u2013 Lacrosse Ball",
+    "slug": "one-arm-front-shoulder-active-massage-lacrosse-ball",
+    "primaryMuscles": ["shoulder - front"],
+    "secondaryMuscles": ["bicep", "rotator cuff - front"],
+    "steps": [
+      "Stand with a massage ball in one hand and your other arm, the target arm, in a natural position hanging by your side.",
+      "Reach across your body to place a massage ball along a tender spot on the front of your target shoulder.",
+      "Pin the massage ball in place and compress it within tolerable limits.",
+      "Bend your target arm at the elbow so that there's a right angle between your upper and lower arm. This is your starting position.",
+      "Slowly extend your elbow behind you, keeping it close to your torso, to stretch your shoulder.",
+      "Lift your elbow away from your body about 45\u00b0.",
+      "Extend your arm in front of you, straightening the elbow, until you're comfortably reaching forward.",
+      "Return to the starting position, lowering your elbow close to your body, to complete the circlular motion and one repetition.",
+      "Continue repetitions for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "894860a3-3fd5-439a-ae31-a60f4f90e6c2",
+    "name": "Seated Knee To Heel Taps",
+    "slug": "seated-knee-to-heel-taps",
+    "primaryMuscles": ["glute", "thigh - inner", "thigh - outer"],
+    "secondaryMuscles": ["lower back", "oblique", "quad"],
+    "steps": [
+      "Sit on the ground leaning backwards with your arms straight and your hands behind you.",
+      "Place your feet just wider than shoulder distance in front of you with your knees bent at 90\u00b0 angles. This is your starting position.",
+      "Rotate one hip outwards until the knee of that leg reaches the ground.",
+      "Rotate the other hip inwards so that the knee of that leg touches the heel of the leg on the ground.",
+      "Return to the starting position and alternate sides.",
+      "Continue alternating the movement on each side for the desired amount of time."
+    ],
+    "notes": "Keep the 90\u00b0 bend in your knees throughout the exercise."
+  },
+  {
+    "pk": "dd06d4bf-6aa8-4de4-9ad7-f1a4d960cd13",
+    "name": "Assisted Wrist Rotation",
+    "slug": "assisted-wrist-rotation",
+    "primaryMuscles": ["forearm - inner", "forearm - outer"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Raise your arms straight in front of you and clasp your hands together with your thumbs up and fingers interlaced.",
+      "Rotate your wrists together. Imagine tracing an infinity symbol (\u221e) with your knuckles. Aim for the largest rotation possible within tolerable limits.",
+      "Complete 5-8 repetitions in one direction (clockwise).",
+      "Switch direction (counter-clockwise) and repeat.",
+      "Continue alternating the movement in each direction for the desired amount of time."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "50944578-2377-4973-ba99-77c62de0fd8e",
+    "name": "One-Leg Kneeling Couch Quad Stretch",
+    "slug": "one-leg-kneeling-couch-quad-stretch",
+    "primaryMuscles": ["quad"],
+    "secondaryMuscles": [],
+    "steps": [
+      "Stand in front of a couch, chair, or step stool.",
+      "Bend your right knee to place the top of your right foot on the surface behind you.",
+      "Bend your left knee to kneel to lower your body into a single-leg kneeling position.",
+      "Lower your body until you feel a comfortable stretch or your right knee rests on the floor.",
+      "Sit back towards your heel to increase the stretch in your quad.",
+      "Hold the stretch for the desired time and switch to the other side to complete a set."
+    ],
+    "notes": ""
+  },
+  {
+    "pk": "5ea4b519-41ae-45a3-b8ad-c3fd9a15121c",
+    "name": "Hands-And-Knees Segmental Cat Cow",
+    "slug": "hands-and-knees-segmental-cat-cow",
+    "primaryMuscles": ["lower back"],
+    "secondaryMuscles": ["abdominal"],
+    "steps": [
+      "Get on your hands and knees on a padded surface, such as a gym mat or yoga mat.",
+      "Start from the tailbone and shift each vertebra up, towards the ceiling, one at a time. Continue to flex each segment through the lower, middle, and upper spine.",
+      "Once your full spine is in flexion, reverse the motion and push each vertebra, from the top of your spine to the bottom, towards the floor.",
+      "Continue alternating between flexion and extension for the desired amount of time."
+    ],
+    "notes": "This exercise differs from a traditional Cat Cow by focusing on each vertebra's slow and deliberate motion through the stretch, hence the \"Segmental\" descriptor."
+  },
+  {
+    "pk": "4670f1ec-73f7-4f18-bcb5-d68b3e2fa6d7",
+    "name": "One-Arm Seated Lower Back Rotation Stretch",
+    "slug": "one-arm-seated-lower-back-rotation-stretch",
+    "primaryMuscles": ["lower back", "oblique"],
+    "secondaryMuscles": ["hamstring", "shoulder - back"],
+    "steps": [
+      "Sit on a stable surface with your legs extended in front of you.",
+      "Place your opposite forearm between both thighs.",
+      "Lean forward slightly and rotate your torso away from the side you want to stretch.",
+      "Reach your back arm towards the ceiling.",
+      "Use the arm between your thighs to provide additional leverage to assist in your rotation.",
+      "Hold the stretch for the desired time and switch to the other side."
+    ],
+    "notes": ""
+  }
+]

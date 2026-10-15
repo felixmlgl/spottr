@@ -1,0 +1,18 @@
+# longhaul-fitness/exercises: curated exercise list (strength, flexibility, cardio) with primary and
+# secondary muscles, including deltoid heads, rotator cuff and forearm flexors/extensors.
+# License verified from the repo's LICENSE file: "MIT License / Copyright (c) 2023 Longhaul Fitness".
+# The MIT notice must ship with copies of the data: the build writes it to dist/NOTICE.md.
+#
+# Provenance (reports/source_candidates.md): written by the maintainer one exercise per commit; no
+# sign of copying from commercial sites. Since commit 8627fb5 an LLM agent in the repo drafts steps
+# and muscle lists ("This project uses LLMs to detail exercises ... steps to complete, and activated
+# muscles", agent/README.md), so treat its muscle data as reviewed-by-maintainer, not expert-sourced.
+id: longhaul-fitness
+name: Longhaul Fitness exercises
+url: https://github.com/longhaul-fitness/exercises
+license: MIT
+license_url: https://github.com/longhaul-fitness/exercises/blob/main/LICENSE
+attribution: "Exercise data from longhaul-fitness/exercises, Copyright (c) 2023 Longhaul Fitness, MIT License."
+notice_file: raw/LICENSE
+share_alike: 0
+commercial_use_ok: 1

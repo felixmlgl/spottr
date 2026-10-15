@@ -1,0 +1,36 @@
+{
+  "source_id": "free-exercise-db",
+  "retrieved_at": "2026-10-15T20:15:51Z",
+  "version": "f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5",
+  "url": "https://github.com/yuhonas/free-exercise-db",
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 1211,
+      "sha256": "6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6019,
+      "sha256": "4b304ffc491993bfbc91a3caf10b395aa5f5d1f0d1b8b38eb92f7afdae30e783"
+    },
+    {
+      "path": "dist/exercises.json",
+      "bytes": 1005327,
+      "sha256": "5bb747e3fc658f095a60dcbf6d53c96627acdcc6ffb6fffde86f7e26995d40bf"
+    },
+    {
+      "path": "ls-tree-exercises.txt",
+      "bytes": 154091,
+      "sha256": "e1904437e6f86d7b6711fba7248584382d88f5cc8fc6b5c187bfbfb9619543de"
+    },
+    {
+      "path": "schema.json",
+      "bytes": 2765,
+      "sha256": "9ec09dca20ed4dfe419df81ce4956b5d6ffd2723b266e0c9cdd9b627caa77fb6"
+    }
+  ],
+  "commit_date": "2026-09-27T12:26:41+10:00",
+  "method": "git clone --filter=blob:none --no-checkout --depth 1; git checkout HEAD -- dist/exercises.json LICENSE.md README.md schema.json",
+  "ls_tree_file": "ls-tree-exercises.txt = git ls-tree HEAD exercises/"
+}

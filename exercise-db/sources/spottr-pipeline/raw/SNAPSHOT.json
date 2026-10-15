@@ -1,0 +1,23 @@
+{
+  "source_id": "spottr-pipeline",
+  "retrieved_at": "2026-10-15T20:42:12Z",
+  "version": "b3acdf11bbc0c864f2898ba337910810d7367062",
+  "url": "backend/vision/",
+  "files": [
+    {
+      "path": "classify.py",
+      "bytes": 10107,
+      "sha256": "03ba4caccceb22e42c6ca9eac415ae4a7934d2135c165fe99e15ba9150205209"
+    },
+    {
+      "path": "exercises.py",
+      "bytes": 2905,
+      "sha256": "b38f59fc4ebe33a075da5b0d05c88fbec0501cb770820aaa69c5c5bf7aea07cc"
+    }
+  ],
+  "commit_date": "2026-09-27T20:52:53-07:00",
+  "paths": [
+    "backend/vision/exercises.py",
+    "backend/vision/classify.py"
+  ]
+}

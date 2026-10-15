@@ -1,0 +1,18 @@
+# wger Workout Manager: crowd-sourced exercise database (https://wger.de).
+# Data channel: the official wger repository fixtures (Django dumpdata of the wger.de exercise
+# tables), pinned to a commit SHA in raw/SNAPSHOT.json. The REST API is not used because
+# https://wger.de/robots.txt disallows /api/v2 for all user agents (see fetch.py).
+#
+# License is per record (exercise and each translation carry license + license_author):
+# CC-BY-SA-4.0 dominates (wger's default for new entries), older entries are CC-BY-SA-3.0, a few
+# CC0-1.0. The per-record SPDX id and author are in normalized.jsonl (`license`, `author`).
+# wger attributes each object TASL-style ("<title> by <author> is licensed under <license>"),
+# so apps must keep the per-exercise author next to the exercise, plus this source line.
+id: wger
+name: wger Workout Manager
+url: https://wger.de
+license: CC-BY-SA-4.0
+license_url: https://creativecommons.org/licenses/by-sa/4.0/
+attribution: "Exercise data from wger (https://wger.de) by the wger contributors (per-exercise authors listed with each exercise), licensed under CC BY-SA 4.0; some entries CC BY-SA 3.0 or CC0 1.0."
+share_alike: 1
+commercial_use_ok: 1

@@ -1,0 +1,96 @@
+{
+  "source_id": "wger",
+  "retrieved_at": "2026-10-15T20:21:38Z",
+  "version": "8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8",
+  "url": "https://github.com/wger-project/wger/tree/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8",
+  "files": [
+    {
+      "path": "categories.json",
+      "bytes": 1089,
+      "sha256": "938f79dd44b931c7898d8b0e31bc8986ff179a09b74bf29760354f10aae7aa0f"
+    },
+    {
+      "path": "equipment.json",
+      "bytes": 1612,
+      "sha256": "1a4ec8c9c13bb35ea2c5a04c762d2872ececdfb34f1eec1ddee7ae9418cf29e0"
+    },
+    {
+      "path": "exercise-base-data.json",
+      "bytes": 636820,
+      "sha256": "3b003dd64259ef6e06fac5e6cd6fbc7a1170aafebf1ee82b69039454cfc30254"
+    },
+    {
+      "path": "languages.json",
+      "bytes": 5584,
+      "sha256": "968b816042117ea58b4b05702a5f1f76a48bd9d87a529084ea882387cdd906e8"
+    },
+    {
+      "path": "licenses.json",
+      "bytes": 1336,
+      "sha256": "edf3db0c27a00e4650bf6200753f0e02dd851439c95cc846c1aa78c0d07e2c54"
+    },
+    {
+      "path": "muscles.json",
+      "bytes": 3119,
+      "sha256": "33a532aad6632a9e5c1edb80c959489d7980bb5d0a10a8fbe4aef70b7bed79ad"
+    },
+    {
+      "path": "translations.json",
+      "bytes": 3214645,
+      "sha256": "e76dc38796fa4e002855832209772535aac819043c348a88a98fe3949596c207"
+    }
+  ],
+  "channel": "official wger repository fixtures (Django dumpdata of the wger.de exercise tables)",
+  "repo": "https://github.com/wger-project/wger",
+  "ref": "master",
+  "commit_date": "2026-10-15T14:51:28Z",
+  "wger_version": "2.8.0-dev.1",
+  "data_commits": {
+    "exercise-base-data.json": {
+      "sha": "dd225d82d2da618f22787ce1861270523fe82317",
+      "date": "2026-06-02T17:25:35Z",
+      "message": "Update exercise fixtures"
+    },
+    "translations.json": {
+      "sha": "dd225d82d2da618f22787ce1861270523fe82317",
+      "date": "2026-06-02T17:25:35Z",
+      "message": "Update exercise fixtures"
+    },
+    "muscles.json": {
+      "sha": "f15f858c8eb38632610495c3e20e893b7b453824",
+      "date": "2026-04-10T11:40:41Z",
+      "message": "Update exercise data"
+    },
+    "equipment.json": {
+      "sha": "2525c35c122826d74017c8e95a48b9006f1c2a5a",
+      "date": "2026-07-23T10:30:56Z",
+      "message": "Add cable machine to available equipment lists"
+    },
+    "categories.json": {
+      "sha": "f15f858c8eb38632610495c3e20e893b7b453824",
+      "date": "2026-04-10T11:40:41Z",
+      "message": "Update exercise data"
+    },
+    "languages.json": {
+      "sha": "0f09845b0a0d35bcdc3fb31a89bdde434b83245f",
+      "date": "2026-08-16T12:53:02Z",
+      "message": "Add Finnish language support"
+    },
+    "licenses.json": {
+      "sha": "3898b6b0867906d8bbb41c7efef956fd54f9f655",
+      "date": "2020-12-19T17:21:15Z",
+      "message": "Set the license for the ingredients"
+    }
+  },
+  "upstream": {
+    "exercise-base-data.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/exercises/fixtures/exercise-base-data.json",
+    "translations.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/exercises/fixtures/translations.json",
+    "muscles.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/exercises/fixtures/muscles.json",
+    "equipment.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/exercises/fixtures/equipment.json",
+    "categories.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/exercises/fixtures/categories.json",
+    "languages.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/core/fixtures/languages.json",
+    "licenses.json": "https://raw.githubusercontent.com/wger-project/wger/8f72cb2feba9f5f1cc40aa9855b185ab315a3cd8/wger/core/fixtures/licenses.json"
+  },
+  "rest_api_robots_allowed": false,
+  "rest_api_note": "https://wger.de/robots.txt disallows /api/v2 for all user agents"
+}
