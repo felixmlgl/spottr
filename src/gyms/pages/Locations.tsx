@@ -27,7 +27,7 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
   const highestRisk = Math.max(...CHAIN_LOCATIONS.map((x) => x.atRisk / x.members));
   return (
     <Card className="flex flex-col gap-5 !p-6">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-col items-start gap-2">
         <div>
           <p className="text-xs text-[#6E6E73] flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5" aria-hidden />
@@ -47,7 +47,10 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
           <Stat label="Visits this week">{l.visitsThisWeek.toLocaleString('en-US')}</Stat>
           <TrendChip value={l.visitsThisWeek} previous={l.visitsLastWeek} comparison="vs. last week" />
         </div>
-        <Stat label="Sessions per member / week">{l.sessionsPerMember.toFixed(1)}</Stat>
+        <Stat label="Sessions per member">
+          {l.sessionsPerMember.toFixed(1)}
+          <span className="text-sm font-normal text-[#6E6E73]"> / wk</span>
+        </Stat>
         <div>
           <Stat label="Slipping members">{l.atRisk}</Stat>
           <p className={`text-xs mt-1 ${atRiskShare === highestRisk ? 'font-semibold text-[#1D1D1F]' : 'text-[#6E6E73]'}`}>

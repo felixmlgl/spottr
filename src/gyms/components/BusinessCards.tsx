@@ -53,8 +53,8 @@ export const PriceCard: React.FC<{ className?: string }> = ({ className = '' }) 
         <span className="text-4xl font-bold tracking-tight text-[#1D1D1F]">{formatUsd(PRICE_PER_LOCATION_MONTH)}</span>
         <span className="text-sm text-[#6E6E73]">per location / month</span>
       </p>
-      <span className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#6E6E73] bg-white ring-1 ring-black/[0.06]">
-        Target price, not yet tested with customers
+      <span className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#6E6E73] bg-white ring-1 ring-black/[0.06] whitespace-nowrap">
+        Target price, not yet tested
       </span>
     </div>
     <ul className="flex flex-col gap-2">

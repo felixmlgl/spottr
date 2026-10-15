@@ -42,7 +42,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
           <span className="text-sm font-medium text-[#6E6E73]">for Gyms</span>
         </Link>
 
-        <nav aria-label="Gym demo" className="hidden lg:flex items-center p-1 bg-[#F5F5F7] rounded-full">
+        <nav aria-label="Gym demo" className="hidden xl:flex items-center p-1 bg-[#F5F5F7] rounded-full">
           {renderLinks(false)}
         </nav>
 
@@ -58,7 +58,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
       </div>
 
       {/* Compact: horizontally scrollable pill row */}
-      <nav aria-label="Gym demo" className="lg:hidden border-t border-black/[0.04]">
+      <nav aria-label="Gym demo" className="xl:hidden border-t border-black/[0.04]">
         <div className="max-w-[1100px] mx-auto px-4 py-2 overflow-x-auto">
           <div className="inline-flex items-center p-1 bg-[#F5F5F7] rounded-full">{renderLinks(true)}</div>
         </div>

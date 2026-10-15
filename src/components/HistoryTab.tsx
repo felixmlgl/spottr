@@ -21,6 +21,9 @@ interface ExerciseStats {
   doneToday: boolean;
 }
 
+/** Exercises the pipeline has actually been tested on; they lead the trend and bests over sample-only ones */
+const TESTED_EXERCISES = new Set(['squat', 'dip']);
+
 const formatDate = (iso: string) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
@@ -47,8 +50,12 @@ function exerciseStats(workouts: PastWorkout[]): ExerciseStats[] {
       byId.set(ex.exercise_id, stats);
     }
   });
-  // Today's exercises first, then the most frequent
-  return [...byId.values()].sort((a, b) => Number(b.doneToday) - Number(a.doneToday) || b.points.length - a.points.length);
+  // Today's exercises first, then tested ones, then the most frequent
+  const rank = (e: ExerciseStats) => [Number(e.doneToday), Number(TESTED_EXERCISES.has(e.id)), e.points.length];
+  return [...byId.values()].sort((a, b) => {
+    const [ra, rb] = [rank(a), rank(b)];
+    return rb[0] - ra[0] || rb[1] - ra[1] || rb[2] - ra[2];
+  });
 }
 
 const SampleTag: React.FC = () => (

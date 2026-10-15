@@ -62,7 +62,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
       <Link to="/gyms" className="p-5 flex items-center justify-between gap-4 hover:bg-black/[0.02]">
         <div>
           <p className="text-sm font-semibold text-[#1D1D1F]">Gym operator demo</p>
-          <p className="text-xs text-[#6E6E73] mt-0.5">The same cameras, from the gym's side.</p>
+          <p className="text-xs text-[#6E6E73] mt-0.5">A simulated demo gym, from the operator's side.</p>
         </div>
         <ArrowRight className="w-4 h-4 text-[#6E6E73]" />
       </Link>
