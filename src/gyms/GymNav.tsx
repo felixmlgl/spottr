@@ -5,6 +5,7 @@ import { Logo } from '../components/Logo';
 
 const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/overview', label: 'Overview' },
+  { to: '/gyms/locations', label: 'Locations' },
   { to: '/gyms/floor', label: 'Floor' },
   { to: '/gyms/world-map', label: 'Multi-camera tracking' },
   { to: '/gyms/members', label: 'Members' },

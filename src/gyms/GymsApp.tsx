@@ -1,6 +1,6 @@
 /**
  * Spottr for Gyms – operator sales demo, served under /gyms.
- * Fictional gym "Iron District Fitness, Oakland" with deterministic mock data (src/mocks/gym).
+ * Fictional chain "Iron District Fitness" (Oakland simulated in detail) with deterministic mock data (src/mocks/gym).
  */
 
 import React, { useEffect } from 'react';
@@ -8,6 +8,7 @@ import { GymNav } from './GymNav';
 import { ToastProvider } from './components/Toast';
 import { Landing } from './pages/Landing';
 import { Overview } from './pages/Overview';
+import { Locations } from './pages/Locations';
 import { Floor } from './pages/Floor';
 import { Members } from './pages/Members';
 import { Privacy } from './pages/Privacy';
@@ -18,11 +19,12 @@ import { NotFoundContent } from '../NotFound';
 const PAGES: Record<string, { title: string; component: React.FC }> = {
   '/gyms': { title: 'Spottr for Gyms', component: Landing },
   '/gyms/overview': { title: 'Overview · Spottr for Gyms', component: Overview },
+  '/gyms/locations': { title: 'Locations · Spottr for Gyms', component: Locations },
   '/gyms/floor': { title: 'Floor · Spottr for Gyms', component: Floor },
   '/gyms/world-map': { title: 'Multi-camera tracking · Spottr for Gyms', component: WorldMapPage },
   '/gyms/members': { title: 'Members · Spottr for Gyms', component: Members },
   '/gyms/privacy': { title: 'Privacy · Spottr for Gyms', component: Privacy },
-  '/gyms/pilot': { title: 'Request a pilot · Spottr for Gyms', component: RequestPilot },
+  '/gyms/pilot': { title: 'Pilot & pricing · Spottr for Gyms', component: RequestPilot },
 };
 
 const NOT_FOUND = { title: 'Page not found · Spottr for Gyms', component: NotFoundContent };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, BarChart3, Camera, ChevronRight, Cpu, Dumbbell, HeartHandshake, Sparkles } from 'lucide-react';
 import { Link } from '../../router';
+import { BreakEvenCard, PilotStepsCard, PriceCard } from '../components/BusinessCards';
 import { Card } from '../components/ui';
 
 const BENEFITS = [
@@ -30,12 +31,12 @@ const STEPS = [
   {
     icon: Cpu,
     title: 'Spottr box',
-    body: 'A small box on your network turns movement into sets, reps and zone occupancy.',
+    body: 'One or two small boxes on your network, hardware included. They turn movement into sets, reps and zone occupancy.',
   },
   {
     icon: Dumbbell,
     title: 'Insights',
-    body: 'Operators get dashboards and retention alerts. Members get their workouts logged automatically.',
+    body: 'Operators get dashboards and retention alerts. Members get their workouts logged automatically, for free.',
   },
 ];
 
@@ -120,6 +121,28 @@ export const Landing: React.FC = () => (
         <p className="text-xs text-[#6E6E73] mt-3">
           Walk through the operator dashboard for Iron District Fitness, Oakland (fictional gym, simulated data).
         </p>
+      </div>
+    </section>
+
+    {/* Business model */}
+    <section className="flex flex-col gap-8">
+      <div className="text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1D1D1F]">Pilot & pricing</h2>
+        <p className="text-base text-[#6E6E73] mt-2">One price per location. Free for your members.</p>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <PilotStepsCard />
+        <PriceCard />
+        <BreakEvenCard />
+      </div>
+      <div className="text-center">
+        <Link
+          to="/gyms/pilot"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#34C759] text-white font-semibold hover:bg-[#2DB14F] transition-colors"
+        >
+          Request a pilot
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </section>
   </div>
