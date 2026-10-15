@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Spottr pitch deck v4</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="v4.css">
+</head>
+<body>
+<!-- Slide map, sources and pre-send checklist: PLAN.md. ?cut=short shows the 7-slide cut. -->
+<div id="stage">
+
+<!-- 1 TITLE -->
+<section class="slide cream" id="title" data-section="Overview" data-cut="main short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r" style="visibility:hidden"></span></div>
+  <div style="position:absolute;left:110px;top:0;bottom:0;width:840px;display:flex;flex-direction:column;justify-content:center">
+    <div class="kicker">Automatic workout tracking</div>
+    <div class="hype" style="margin-top:30px;font-size:104px;text-transform:none;line-height:.94">Your gym's cameras,<br>now your<br>training log.</div>
+    <div style="margin-top:52px"><span class="name">Live demo · tryspottr.app/demo</span></div>
+    <p class="small" style="margin-top:30px">Felix Müller-Gliemann · Martin · Gard, co-founders<br>info@tryspottr.app · Pre-seed, October 2026</p>
+    <div class="todos" style="margin-top:16px"><span class="todo">[TODO: full names of Martin and Gard]</span></div>
+  </div>
+  <div class="logo-panel"><img class="dots" src="assets/spottr-dots.png" alt="spottr"></div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="slide black" data-section="Problem" data-cut="main short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div class="mega" style="position:absolute;left:110px;top:170px;width:1720px;font-size:150px">The cameras<br>are rolling.<br><span class="g">Nobody's counting.</span></div>
+  <div style="position:absolute;left:110px;right:110px;top:720px;display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:70px;align-items:start">
+    <div><div class="col-h">Members</div><div class="body">Nobody types between sets.</div><div style="margin-top:16px"><span class="tag">Founder observation</span></div></div>
+    <div><div class="col-h">Gyms</div><div class="body">No data on how their floor is used, and a third of members leave each year.</div></div>
+    <div class="todos"><span class="todo">[TODO: one verbatim, approved quote from a gym operator, with name and gym (HC1)]</span></div>
+  </div>
+  <div class="src">Gyms: average annual retention 66.4% (HFA 2025 Benchmarking, 175 operators, data year 2024). Members: founder observations, not a survey.</div>
+</section>
+
+<!-- 3 SOLUTION -->
+<section class="slide white" data-section="Solution" data-cut="main short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Solution · the gym pays, members use it</span></div>
+  <div class="hype" style="margin-top:34px;font-size:76px;width:1700px">Members get every set logged.<br>Gyms see their floor, hour by hour.</div>
+  <div style="position:absolute;left:110px;top:470px;width:470px;display:flex;flex-direction:column;gap:26px">
+    <div class="li"><span class="tag real">Built</span><span>Body pose, not faces. Detected bystanders are pixelated in the replay.</span></div>
+    <div class="li"><span class="tag real">Real</span><span>The phone shows the pipeline's output on a recorded dip clip: 10 reps, muscles worked.</span></div>
+    <div class="li"><span class="tag demo">Demo</span><span>The dashboard shows a simulated gym.</span></div>
+  </div>
+  <div class="browser" style="left:780px;top:470px;width:1030px;height:500px"><div class="bar"><i></i><i></i><i></i><span>tryspottr.app/gyms</span></div><img src="assets/gym-overview.png" alt="Gym dashboard overview with demo data" style="height:456px;object-fit:cover;object-position:top"></div>
+  <div class="phone" style="left:590px;top:430px;transform:scale(.8);transform-origin:top left"><img src="assets/app-today.png" alt="Member app: today's session, logged automatically"></div>
+  <div class="src" style="right:auto;width:440px">Member app: recorded dip clip, lifter's consent confirmed. Gym dashboards are simulated today. Live: tryspottr.app/demo and /gyms.</div>
+</section>
+
+<!-- 4 HOW IT WORKS -->
+<section class="slide cream" data-section="How it works" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">How it works</span></div>
+  <div class="hype" style="margin-top:34px;font-size:92px;width:1700px">Nothing to wear. Nothing to type.<br>No new cameras.</div>
+  <div class="steps3">
+    <div class="card"><svg viewBox="0 0 64 64" fill="none" stroke="#0b0b0b" stroke-width="3.5" stroke-linejoin="round"><rect x="6" y="20" width="36" height="24" rx="5"/><path d="M42 28l14-8v24l-14-8"/><circle cx="18" cy="32" r="4"/></svg>
+      <div class="num">01</div><div class="t">The cameras<br>already there</div><div class="b">Spottr reads the gym's existing IP cameras.</div></div>
+    <div class="arrow">→</div>
+    <div class="card"><svg viewBox="0 0 64 64" fill="none" stroke="#0b0b0b" stroke-width="3.5" stroke-linejoin="round"><rect x="8" y="22" width="48" height="22" rx="6"/><path d="M8 34h48"/><circle cx="46" cy="28" r="1.8" fill="#0b0b0b"/></svg>
+      <div class="num">02</div><div class="t">One Spottr box</div><div class="b">Plugs into the gym's network. Counts every set on site.</div></div>
+    <div class="arrow">→</div>
+    <div class="card go"><svg viewBox="0 0 64 64" fill="none" stroke="#0b0b0b" stroke-width="3.5" stroke-linejoin="round"><rect x="18" y="6" width="28" height="52" rx="6"/><path d="M27 12h10"/><path d="M25 38l6 6 10-14" stroke="#34c759" stroke-width="4.5" stroke-linecap="round"/></svg>
+      <div class="num">03</div><div class="t">Every set logged</div><div class="b">Members see their workout. The gym sees its floor.</div></div>
+  </div>
+  <div style="position:absolute;left:110px;top:900px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <span class="tag real">Built: counting on recorded footage</span><span class="tag build">In development: live camera feed and the box</span>
+  </div>
+  <div class="src">No rule is written per exercise; counting is tested on squats and dips. Pipeline and multi-camera tracking: appendix A2–A5.</div>
+</section>
+
+<!-- 5 PROGRESS -->
+<section class="slide black" data-section="Progress" data-cut="main short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Progress</span></div>
+  <div class="mega" style="margin-top:40px;font-size:112px;width:1720px"><span class="g">40%</span> of the gyms we<br>cold-emailed wrote back.</div>
+  <div style="margin-top:34px;display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+    <span class="tag">Founder-reported</span>
+    <span class="small" style="color:#d9d4c8;font-size:26px">8 of 20 replied. A multi-location San Francisco chain is in pilot talks.</span>
+  </div>
+  <div class="todos" style="margin-top:16px"><span class="todo">[TODO (OC1): with a signed pilot, LOI or corporate email, add "An [N]-location SF chain starts on [date]" + logo with permission]</span></div>
+  <div class="tl" style="position:absolute;left:110px;right:110px;top:800px">
+    <div class="st"><div class="up"><span class="when">27 Sep</span></div><div class="p">Hackathon</div><div class="dn"><span class="lab">Reps counted from pose</span></div></div>
+    <div class="st"><div class="up"><span class="when">6 Oct</span></div><div class="p">Demo launched</div><div class="dn"><span class="lab">Member app + gym dashboard</span></div></div>
+    <div class="st"><div class="up"><span class="when">9 Oct</span></div><div class="p">Multi-camera tracking</div><div class="dn"><span class="lab">One person, one ID across cameras</span></div></div>
+    <div class="st go"><div class="up"><span class="when">So far</span></div><div class="p">Outreach</div><div class="dn"><span class="lab">20 gyms emailed, 8 replied</span></div></div>
+  </div>
+  <div class="src">Outreach: founder-reported; no pilot agreed, no LOI, no revenue yet. Dates: git history of this repo, 2026. Hackathon: Berkeley × Google DeepMind, 3-hour sprint.</div>
+</section>
+
+<!-- SHORT CUT ONLY: market + business model -->
+<section class="slide white" data-section="Market and model" data-cut="short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Market and business model</span></div>
+  <div class="hype" style="margin-top:34px;font-size:92px;width:1700px">A $3.8 billion market at 80%+ margin.</div>
+  <div class="stair" style="top:450px;gap:12px">
+    <div class="stepbar" style="width:100%;height:104px;background:var(--green-pale)"><div class="n" style="font-size:62px">$3.8B</div><div><div class="k">Worldwide</div><div class="d">~210,000 gyms</div></div><div class="lvl">TAM</div></div>
+    <div class="stepbar" style="width:82%;height:104px;background:#b4e8c2"><div class="n" style="font-size:62px">$498M</div><div><div class="k">United States</div><div class="d">~27,600 gyms with usable cameras</div></div><div class="lvl">SAM</div></div>
+    <div class="stepbar" style="width:64%;height:104px;background:var(--green-mid)"><div class="n" style="font-size:62px">$62M</div><div><div class="k">California</div><div class="d">~3,400 gyms with usable cameras</div></div></div>
+    <div class="stepbar" style="width:46%;height:104px;background:var(--green)"><div class="n" style="font-size:62px">$1.9M</div><div><div class="k">Bay Area chains</div><div class="d">~104 locations</div></div><div class="lvl">SOM</div></div>
+  </div>
+  <div style="position:absolute;left:110px;top:920px;display:flex;gap:12px;flex-wrap:wrap">
+    <span class="tag hyp">$1,500 per location per month · untested</span><span class="tag hyp">81–83% margin · costs assumed</span><span class="tag hyp">50% camera share · assumed</span>
+  </div>
+  <div class="src">Bars not to scale. All at $18,000 per location per year. Sources and math: appendix A6–A7 of the full deck.</div>
+</section>
+
+<!-- 6 WHY NOW -->
+<section class="slide white" data-section="Why now" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Why now</span></div>
+  <div class="hype" style="margin-top:34px;font-size:92px;width:1700px">US gyms just had their<br>biggest year ever.</div>
+  <div class="stats" style="top:430px;gap:22px">
+    <div class="stat"><div class="n">81M</div><div class="c">Americans belonged to a gym in 2025. An all-time high, up 5.2%.</div></div>
+    <div class="stat"><div class="n">7B</div><div class="c">Gym visits in 2025, above the pre-pandemic peak.</div></div>
+    <div class="stat"><div class="n">46%</div><div class="c">of US adults own a wearable. It was 13% in 2015.</div></div>
+    <div class="stat minor"><div class="n">280×</div><div class="c">cheaper AI in under two years. Watching every set is now affordable.</div></div>
+  </div>
+  <div class="trend" style="left:850px;top:430px"><div class="stack"><div class="card"><div class="top"><span class="name">“longevity”</span><div class="x">3.8×<small>Google searches, 2026 so far vs 2022</small></div></div><svg id="trend-longevity" viewBox="0 0 900 150" preserveAspectRatio="none"></svg></div></div></div>
+  <div class="trend" style="left:850px;top:690px"><div class="stack"><div class="card"><div class="top"><span class="name">“strength training”</span><div class="x">3.2×<small>Google searches, 2026 so far vs 2022</small></div></div><svg id="trend-strength" viewBox="0 0 900 150" preserveAspectRatio="none"></svg></div></div></div>
+  <div class="src">HFA 2026 US Health &amp; Fitness Consumer Report (Apr 2026) · Rock Health 2025 Consumer Adoption Survey (n = 8,000) · Google Trends, US web search, weekly, yearly averages to 11 Oct 2026 · Stanford AI Index 2025: GPT-3.5-level AI, Nov 2022 to Oct 2024.</div>
+</section>
+
+<!-- 7 COMPETITION -->
+<section class="slide cream" data-section="Competition" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Competition</span></div>
+  <div class="hype" style="margin-top:34px;font-size:92px;width:1700px">Apps need typing. Machines<br>track only themselves.</div>
+  <div class="map" style="left:170px;top:440px;width:1640px;height:470px">
+    <div class="pt" style="left:40px;top:28px"><b>EGYM · Technogym</b><span>Track only their own machines</span></div>
+    <div class="pt" style="left:40px;top:150px"><b>Exersight</b><span>Installs its own cameras</span></div>
+    <div class="pt" style="left:40px;top:330px"><b>Whoop</b><span>On the wrist: strain, not sets</span></div>
+    <div class="pt" style="left:900px;top:350px"><b>Hevy · Gravit</b><span>Members type every set</span></div>
+    <div class="pt" style="left:1080px;top:160px"><b>VPixel (Agmis)</b><span>Existing cameras; no named gyms yet</span></div>
+    <div class="pt us" style="left:1180px;top:20px"><b>Spottr</b><span>Existing cameras + one box</span></div>
+    <div class="ax" style="left:0;bottom:-42px">New hardware or wearable</div>
+    <div class="ax" style="right:0;bottom:-42px">Cameras the gym already has</div>
+  </div>
+  <div class="ax" style="position:absolute;left:110px;top:440px;height:470px;writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)">Manual · Automatic</div>
+  <div class="todos" style="position:absolute;left:1380px;top:548px"><span class="todo" style="font-size:16px">[TODO: our verified edge vs VPixel (HC4)]</span></div>
+  <div class="src">Positions are our reading of public material, not measured (VPixel: Agmis, Health Club Management 2019; Exersight: exersight.com). Details: appendix A8.</div>
+</section>
+
+<!-- 8 MARKET -->
+<section class="slide white" data-section="Market" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Market</span></div>
+  <div class="hype" style="margin-top:34px;font-size:104px;width:1700px">A $3.8 billion market.</div>
+  <div class="stair">
+    <div class="stepbar" style="width:100%;background:var(--green-pale)"><div class="n">$3.8B</div><div><div class="k">Worldwide</div><div class="d">~210,000 gyms and fitness clubs</div></div><div class="lvl">TAM</div></div>
+    <div class="stepbar" style="width:82%;background:#b4e8c2"><div class="n">$498M</div><div><div class="k">United States</div><div class="d">~27,600 clubs with usable cameras</div></div><div class="lvl">SAM</div></div>
+    <div class="stepbar" style="width:64%;background:var(--green-mid)"><div class="n">$62M</div><div><div class="k">California</div><div class="d">~3,400 clubs with usable cameras</div></div><div class="lvl">State</div></div>
+    <div class="stepbar" style="width:46%;background:var(--green)"><div class="n">$1.9M</div><div><div class="k">Bay Area chains</div><div class="d">~104 locations</div></div><div class="lvl">SOM</div></div>
+  </div>
+  <div style="position:absolute;left:1000px;top:842px;width:810px;display:flex;flex-direction:column;gap:12px;align-items:flex-end">
+    <span class="tag hyp">$18K per location per year · target price, untested</span><span class="tag hyp">From the US down: 50% of clubs have usable cameras · assumed</span>
+  </div>
+  <div class="src">Bars not to scale. Worldwide: "nearly 210,000" facilities (IHRSA 2020 Global Report, 2019 data, latest global total). US: 55,281 clubs (HFA). California: its 2019 share of US clubs (12.4%) applied to 55,281. Bay Area: v1 research. Math: appendix A6.</div>
+</section>
+
+<!-- 9 BUSINESS MODEL -->
+<section class="slide cream" data-section="Business model" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Business model</span></div>
+  <div class="hype" style="margin-top:34px;font-size:92px;width:1700px">$18K a year per gym.<br>80%+ margin.</div>
+  <div style="position:absolute;left:110px;top:500px;width:400px">
+    <div class="col-h" style="margin-bottom:6px">Gyms pay</div>
+    <div class="display" style="font-size:96px">$1,500</div>
+    <div class="body" style="margin-top:8px">per location per month, hardware included</div>
+    <div style="margin-top:18px"><span class="tag hyp">Target price · untested</span></div>
+    <div class="col-h" style="margin:44px 0 6px">Members</div>
+    <div class="body">Free logging. Paid AI coach later.</div>
+  </div>
+  <svg id="plate" viewBox="0 0 600 600" style="position:absolute;left:600px;top:420px;width:560px;height:560px" aria-label="Weight plate chart: 81 to 83 percent margin, 17 to 19 percent cost"></svg>
+  <div style="position:absolute;left:1240px;top:510px;width:570px;display:flex;flex-direction:column;gap:40px">
+    <div><div style="display:flex;align-items:center;gap:16px"><span style="width:26px;height:26px;border-radius:50%;background:var(--green)"></span><span class="display" style="font-size:92px">81–83%</span></div><div class="body" style="margin-top:6px">gross margin per location</div></div>
+    <div><div style="display:flex;align-items:center;gap:16px"><span style="width:26px;height:26px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)"></span><span class="display" style="font-size:64px">17–19%</span></div><div class="body" style="margin-top:6px;color:var(--muted)">cost to serve. A bigger floor needs a second box.</div></div>
+    <div><span class="tag hyp">Illustrative · costs assumed</span></div>
+  </div>
+  <div class="src">Per location per month: one box (400-member gym) 83.1%, two boxes 81.2% (CLAIMS.md). Cost lines and break-even: appendix A7. No customer has paid yet. [TODO: package tiers]</div>
+</section>
+
+<!-- 10 TEAM -->
+<section class="slide black" data-section="Team" data-cut="main short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">Team</span></div>
+  <div class="hype" style="margin-top:34px;font-size:84px;width:1700px">From hackathon to multi-camera<br>tracking in 12 days.</div>
+  <div style="position:absolute;left:110px;right:110px;top:420px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:50px">
+    <div class="mate"><div class="shot"><span class="todo" style="font-size:17px">[TODO: headshot → assets/team/felix.jpg]</span><img src="assets/team/felix.jpg" alt="Felix Müller-Gliemann" onerror="this.remove()"></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="name" style="background:#fff;color:#000">Felix Müller-Gliemann</span><span class="role">CEO</span></div>
+      <div class="line">Business, LMU Munich; UC Berkeley Haas exchange. Ex-Founders Associate, AI-native M&amp;A startup. Built the multi-camera tracking.</div></div>
+    <div class="mate"><div class="shot"><span class="todo" style="font-size:17px">[TODO: headshot → assets/team/martin.jpg]</span><img src="assets/team/martin.jpg" alt="Martin" onerror="this.remove()"></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="name" style="background:#fff;color:#000">Martin [surname]</span><span class="role">CTO</span></div>
+      <div class="line">MSc Entrepreneurship. Built the vision pipeline (pose, tracking, rep counting) and the member app.</div></div>
+    <div class="mate"><div class="shot"><span class="todo" style="font-size:17px">[TODO: headshot → assets/team/gard.jpg]</span><img src="assets/team/gard.jpg" alt="Gard" onerror="this.remove()"></div>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="name" style="background:#fff;color:#000">Gard [surname]</span><span class="role">CPO (tbc)</span></div>
+      <div class="line">MSc Robotics. <span class="todo" style="font-size:16px;padding:2px 8px">[TODO: what Gard built or owns]</span></div></div>
+  </div>
+  <div class="src">All three full-time. Hackathon 27 Sep, multi-camera tracking 9 Oct (git history). [TODO: surnames, titles, institutions, how long you've known each other, Gal, LinkedIn]</div>
+</section>
+
+<!-- 11 ASK -->
+<section class="slide cream" data-section="The ask" data-cut="main short">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">The ask</span></div>
+  <div class="hype" style="margin-top:34px;font-size:100px;width:1700px"><span style="background:var(--green);border-radius:14px;padding:0 .06em">$300K</span> to go live<br>in paying gyms.</div>
+  <div class="funds">
+    <div class="stack"><div class="card"><span class="name">Outreach</span><div class="b">Founder-led sales to Bay Area chains. Chain #1 becomes the case study.</div></div></div>
+    <div class="stack"><div class="card"><span class="name">Automation</span><div class="b">Automate install and calibration, so a new location goes live fast.</div></div></div>
+    <div class="stack"><div class="card"><span class="name">Mac minis</span><div class="b">One on-site box per gym for the first 5–15 locations (~$7–36K).</div></div></div>
+  </div>
+  <div style="position:absolute;left:1340px;top:470px;width:470px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+    <span class="tag hyp">Plan, not commitments</span>
+    <span class="todo" style="font-size:17px">[TODO: confirm months after November, use-of-funds split, instrument and cap]</span>
+  </div>
+  <div class="tl" style="position:absolute;left:110px;right:110px;top:845px">
+    <div class="st"><div class="up"><span class="when">Oct 2026</span></div><div class="p">$300K closed</div></div>
+    <div class="st go"><div class="up"><span class="when">End of Nov 2026</span></div><div class="p">First paying gym</div></div>
+    <div class="st"><div class="up"><span class="when">Jan 2027</span></div><div class="p">Chain #1 fully live</div></div>
+    <div class="st"><div class="up"><span class="when">Apr 2027</span></div><div class="p">5–15 paying locations</div></div>
+    <div class="st"><div class="up"><span class="when">Oct 2027</span></div><div class="p">Seed round</div></div>
+  </div>
+  <div class="src">12 months of runway from the close. Hardware: 5 × $1,489 to 15 × $2,388 per location (derived, CLAIMS.md). Today the product runs on recorded footage; the live feed and the box are in development.</div>
+</section>
+
+<!-- 12 CLOSING -->
+<section class="slide cream" data-section="Thank you" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r" style="visibility:hidden"></span></div>
+  <div style="position:absolute;left:110px;top:0;bottom:0;width:840px;display:flex;flex-direction:column;justify-content:center">
+    <div class="kicker">Automatic workout tracking</div>
+    <div class="hype" style="margin-top:30px;font-size:104px;text-transform:none;line-height:.94">Your gym's cameras,<br>now your<br>training log.</div>
+    <p class="small" style="margin-top:46px">Felix Müller-Gliemann · Martin · Gard<br>info@tryspottr.app</p>
+  </div>
+  <div class="logo-panel">
+    <img class="dots" src="assets/spottr-dots.png" alt="spottr" style="width:520px">
+    <div class="card" style="padding:28px 34px;display:flex;align-items:center;gap:30px;border-color:#fff">
+      <img src="assets/qr-demo.svg" alt="QR code: tryspottr.app/demo" style="width:190px;height:190px">
+      <div><div class="col-h" style="margin-bottom:8px">Try it</div><div style="font-family:var(--display);font-weight:800;font-size:34px;letter-spacing:-0.02em">tryspottr.app/demo</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- APPENDIX CONTENTS (linked) -->
+<section class="slide black" id="appendix" data-section="Appendix" data-a="" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div class="mega" style="font-size:230px;margin-top:10px">Appendix</div>
+  <nav class="toc">
+    <a href="#a1"><b>A1</b>Privacy</a>
+    <a href="#a7"><b>A7</b>Unit economics</a>
+    <a href="#a2"><b>A2</b>Technology</a>
+    <a href="#a8"><b>A8</b>Competitors</a>
+    <a href="#a3"><b>A3</b>Exercise labels</a>
+    <a href="#a9"><b>A9</b>Go-to-market</a>
+    <a href="#a4"><b>A4</b>What we have measured</a>
+    <a href="#a10"><b>A10</b>Open questions</a>
+    <a href="#a5"><b>A5</b>Multi-camera tracking</a>
+    <a href="#a11"><b>A11</b>Product</a>
+    <a href="#a6"><b>A6</b>Market math</a>
+  </nav>
+</section>
+
+<!-- A1 PRIVACY -->
+<section class="slide white" id="a1" data-section="Privacy" data-a="A1" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A1 · Privacy</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1400px">We track body pose, not faces. Here is what the build does today.</div>
+  <div style="position:absolute;left:110px;right:110px;top:440px;display:grid;grid-template-columns:1.1fr 1fr;gap:80px">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="col-h" style="margin-bottom:0">Available today</div>
+      <div class="li"><span class="tag real">Today</span><span><b>No face recognition.</b> Sets and reps come from body keypoints over time.</span></div>
+      <div class="li"><span class="tag real">Today</span><span><b>Bystanders pixelated</b> head to toe in the member replay (when detected).</span></div>
+      <div class="li"><span class="tag real">Today</span><span><b>Blurred snapshots only:</b> the model gets one small image per set, lifter's face pixelated, others fully pixelated.</span></div>
+      <div class="li"><span class="tag real">Today</span><span><b>Operators see aggregates:</b> counts, trends, zones. No photos or video.</span></div>
+      <div class="li"><span class="tag real">Today</span><span><b>Recaps generated from text</b> (exercise names, reps), never video.</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="col-h" style="margin-bottom:0">In development</div>
+      <div class="li"><span class="tag build">Building</span><span>All processing on the Spottr box; goal: raw video never leaves the gym.</span></div>
+      <div class="li"><span class="tag build">Building</span><span>Member opt-in and opt-out.</span></div>
+      <div class="li"><span class="tag build">Building</span><span>Retention windows with automatic deletion.</span></div>
+      <div class="li"><span class="tag build">Building</span><span>Self-serve export and deletion.</span></div>
+      <div class="col-h" style="margin:14px 0 0">Known limit</div>
+      <div class="li" style="color:var(--muted)">Blur covers only people the pose model detects; the replay blurs while drawing, the video file itself is not blurred.</div>
+      <div class="todos"><span class="todo">[TODO: GDPR / CCPA framework and consent flow, after legal review]</span></div>
+    </div>
+  </div>
+  <div class="src">Mirrors the /gyms/privacy page ("Available today" vs "In development"), which lists only what the current build does.</div>
+</section>
+
+<!-- A2 TECHNOLOGY -->
+<section class="slide cream" id="a2" data-section="Technology" data-a="A2" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A2 · Technology</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1400px">From camera stream to logged set, with no per-exercise rules.</div>
+  <div class="tl" style="position:absolute;left:110px;right:110px;top:560px">
+    <div class="st"><div class="up"><span class="lab">Gym IP cameras</span></div><div class="p">Cameras</div><div class="dn"><span class="tag build">Live feed: building</span></div></div>
+    <div class="st"><div class="up"><span class="lab">YOLO26 pose, BoT-SORT tracks</span></div><div class="p">Pose + tracking</div><div class="dn"><span class="tag real">Built</span></div></div>
+    <div class="st"><div class="up"><span class="lab">From joint motion; the label never changes the count</span></div><div class="p">Rep counting</div><div class="dn"><span class="tag real">Built</span></div></div>
+    <div class="st"><div class="up"><span class="lab">One blurred snapshot per set to Gemini Flash-Lite</span></div><div class="p">Exercise label</div><div class="dn"><span class="tag real">Built</span></div></div>
+    <div class="st"><div class="up"><span class="lab">Calibration, sync, one ID per person</span></div><div class="p">Shared floor map</div><div class="dn"><span class="tag real">Built</span></div></div>
+  </div>
+  <div style="position:absolute;left:110px;right:110px;top:770px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:60px">
+    <div><div class="col-h">Tested on</div><div class="li" style="display:block">Recorded gym clips (squat, dip, crowd). Multi-camera tracking: two phones filmed in a lounge, not a gym.</div></div>
+    <div><div class="col-h">Designed for</div><div class="li" style="display:block">Gym IP cameras and one on-site box (Mac mini class) per gym; only blurred snapshots and workout data leave the building. <span class="tag build" style="margin-top:8px">Building</span></div></div>
+    <div><div class="col-h">Runs on</div><div class="li" style="display:block">Python vision pipeline · FastAPI world service · React/TypeScript member app and gym dashboard.</div></div>
+  </div>
+  <div class="src">Rep counting is exercise-agnostic by design (backend/vision/analyze.py) and tested on squats and dips. Multi-camera tracking: world-service/docs/REPORT.md.</div>
+</section>
+
+<!-- A3 EXERCISE LABELS (moved from v3 "why now") -->
+<section class="slide white" id="a3" data-section="Exercise labels" data-a="A3" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A3 · Exercise labels</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1500px">One blurred image per set names the exercise. No rule written per exercise.</div>
+  <div style="position:absolute;left:110px;top:520px;display:flex;align-items:center;gap:34px">
+    <div class="stack"><div class="card" style="width:620px;height:273px"><img class="img" src="assets/ai-snapshot-squat.jpg" alt="Blurred squat snapshot sent to the model"><span class="tag real on-img">Sent to the model</span></div></div>
+    <div class="kicker" style="font-size:54px">→</div>
+    <div><span class="name">Squat</span><div class="small" style="margin-top:12px">smith machine<br>confidence 0.95</div></div>
+  </div>
+  <div style="position:absolute;left:1240px;top:520px;display:flex;align-items:center;gap:34px">
+    <div class="stack"><div class="card" style="width:228px;height:273px"><img class="img" src="assets/ai-snapshot-dip.jpg" alt="Blurred dip snapshot sent to the model"></div></div>
+    <div class="kicker" style="font-size:54px">→</div>
+    <div><span class="name">Dip</span><div class="small" style="margin-top:12px">bodyweight<br>confidence 0.95</div></div>
+  </div>
+  <div style="position:absolute;left:110px;top:880px"><span class="tag real">Tested on squats and dips</span></div>
+  <div class="src">Real inputs and outputs from recorded clips (session.json, Gemini Flash-Lite); faces are pixelated before the call. Cost: est. $0.001–0.005 per set from list prices, token counts not yet measured. Pose: 13–14 fps on recorded clips (team-stated, not a benchmark).</div>
+</section>
+
+<!-- A4 EVIDENCE -->
+<section class="slide cream" id="a4" data-section="Evidence" data-a="A4" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A4 · What we have measured</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1500px">Measured: identity tracking across two cameras. Not yet: rep-count accuracy at scale.</div>
+  <table class="tbl" style="margin-top:46px">
+    <tr><th style="width:24%">Test</th><th style="width:40%">Result</th><th>Scope</th></tr>
+    <tr><td>Two-camera identity</td><td>IDF1 0.949 · 0 false merges</td><td>Held-out 60 s, 10 people, single reviewer</td></tr>
+    <tr><td>Cross-camera linking</td><td>Recall 0.70 · 21% "needs confirmation" · 11 ID switches</td><td>Same segment</td></tr>
+    <tr><td>Floor position</td><td>Cameras agree within 0.26 m (median), 0.72 m (p90)</td><td>Same segment; two phones in a lounge, not a gym</td></tr>
+    <tr><td>Rep counting</td><td>5 squats and 10 dips counted · 0 false sets on a crowd clip</td><td>3 recorded clips; team-stated, not a benchmark</td></tr>
+    <tr><td>Speed</td><td>13–14 fps pose + tracking</td><td>Recorded clips, team-stated</td></tr>
+    <tr><td>Synthetic tests</td><td>17/17 pipeline · 10/10 world service</td><td>Synthetic skeletons and scenes, not video</td></tr>
+    <tr class="us"><td>Next</td><td>Labelled rep-count eval: <span class="todo" style="font-size:17px;padding:2px 8px">[N] sets × [M] exercises, % reps exact</span></td><td>Before YC; same review method as the floor map</td></tr>
+  </table>
+  <div class="src">Multi-camera tracking: world-service/docs/REPORT.md §3 (held-out segment 420–480 s). Pipeline: CLAIMS.md, slide-7 rows; fps from session.json (13.4 and 14.2).</div>
+</section>
+
+<!-- A5 MULTI-CAMERA TRACKING (moved from v3 "how it works") -->
+<section class="slide white" id="a5" data-section="Multi-camera tracking" data-a="A5" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A5 · Multi-camera tracking</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1500px">Two cameras, one shared map: every person keeps one ID across views.</div>
+  <div class="stack" style="position:absolute;left:110px;top:440px;width:900px"><div class="card" style="height:516px"><img class="img" src="assets/world-map.png" alt="Two cameras merged into one shared floor map" style="object-fit:contain;background:#fff"></div></div>
+  <div style="position:absolute;left:1100px;top:440px;width:710px;display:flex;flex-direction:column;gap:26px">
+    <div class="stat"><div class="n" style="font-size:80px">0.95</div><div class="c">IDF1 on a held-out minute</div></div>
+    <div class="stat"><div class="n" style="font-size:80px">0</div><div class="c">false merges (two people as one)</div></div>
+    <div class="stat"><div class="n" style="font-size:80px">0.70</div><div class="c">cross-camera recall; the rest shows as "needs confirmation"</div></div>
+    <div><span class="tag real">Real output</span> <span class="small" style="font-size:21px">two recorded phones in a lounge, not a gym</span></div>
+  </div>
+  <div class="src">world-service/docs/REPORT.md: 10 people, 60 s held-out segment, single reviewer. Live gym cameras not tested yet.</div>
+</section>
+
+<!-- A6 MARKET MATH -->
+<section class="slide cream" id="a6" data-section="Market math" data-a="A6" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A6 · Market math</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1500px">Locations × price, with camera share applied from the US down.</div>
+  <table class="tbl" style="margin-top:40px;font-size:22px">
+    <tr><th>Layer</th><th>Locations</th><th>In scope</th><th>Price / year</th><th>Size</th><th>Source</th></tr>
+    <tr><td>Worldwide (TAM)</td><td>~210,000</td><td>all</td><td>$18,000</td><td>$3.8B</td><td>IHRSA 2020 Global Report (2019 data)</td></tr>
+    <tr><td>United States (SAM)</td><td>55,281</td><td>~27,600 (50%)</td><td>$18,000</td><td>$498M</td><td>HFA</td></tr>
+    <tr><td>California</td><td>~6,850 (est.)</td><td>~3,400 (50%)</td><td>$18,000</td><td>$62M</td><td>12.4% of US clubs in 2019 (5,123 of 41,370) × 55,281</td></tr>
+    <tr class="us"><td>Bay Area chains (SOM)</td><td>~208 (implied)</td><td>~104 (50%)</td><td>$18,000</td><td>$1.9M</td><td>v1 research, assumed</td></tr>
+    <tr><td>US chains</td><td>7,825</td><td>~3,900 (50%)</td><td>$18,000</td><td>$70M</td><td>Vendor counts, ±5%</td></tr>
+  </table>
+  <div style="position:absolute;left:110px;right:110px;top:800px;display:grid;grid-template-columns:1fr 1fr;gap:80px">
+    <div class="li" style="display:block"><b>Camera share</b> is assumed, not measured: 30–70% moves the US to $299–697M. The worldwide row counts every club, since any club can add cameras.</div>
+    <div class="li" style="display:block"><b>Price</b> is the founders' target, not yet tested with a customer. The worldwide count is from 2019; facilities grew about 4% from 2023 to 2024 (HFA 2025 Global Report).</div>
+  </div>
+  <div class="src">Sources: IHRSA/HFA press releases (healthandfitness.org); Statista "Number of health clubs in the U.S. by state 2019"; CLAIMS.md slide 8.</div>
+</section>
+
+<!-- A7 UNIT ECONOMICS -->
+<section class="slide white" id="a7" data-section="Unit economics" data-a="A7" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A7 · Unit economics</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1500px">At $1,500 a month, the cost to serve one location is $253–282.</div>
+  <table class="tbl" style="margin-top:40px;font-size:22px;width:1050px">
+    <tr><th>Per location per month</th><th>One box</th><th>Two boxes</th></tr>
+    <tr><td>Gemini labels (2027 list price)</td><td>$99.00</td><td>$99.00</td></tr>
+    <tr><td>Support</td><td>$50.00</td><td>$50.00</td></tr>
+    <tr><td>Payments (2.9%)</td><td>$43.50</td><td>$43.50</td></tr>
+    <tr><td>Hardware (over 36 months)</td><td>$41.40</td><td>$66.30</td></tr>
+    <tr><td>Hosting</td><td>$15.00</td><td>$15.00</td></tr>
+    <tr><td>Device management</td><td>$4.00</td><td>$8.00</td></tr>
+    <tr class="us"><td>Cost · gross margin</td><td>$252.90 · 83.1%</td><td>$281.80 · 81.2%</td></tr>
+  </table>
+  <div style="position:absolute;left:1240px;top:440px;width:570px;display:flex;flex-direction:column;gap:30px">
+    <div><div class="col-h">Break-even for the gym</div><div class="li" style="display:block">Pays for itself if a location keeps <b>[N]</b> members it would have lost. N = $1,500 ÷ monthly dues. <span class="todo" style="font-size:16px;padding:2px 8px">[TODO: dues from the chain or a public price list]</span></div></div>
+    <div><div class="col-h">What gyms pay for software today</div><div class="li" style="display:block">Mindbody Starter $79 per location per month; Glofox €220–515 per month. Camera vendors: Flock $1,500 per camera per year (2018); Density $45 per sensor per month (2016). The chain pilot tests our price first.</div></div>
+  </div>
+  <div class="src">CLAIMS.md slide 9 (400-member gym; cost lines are assumptions; hardware $1,489 one box, $2,388 two boxes). Comparators: deck/benchmark/04_analog_decks.md.</div>
+</section>
+
+<!-- A8 COMPETITORS -->
+<section class="slide cream" id="a8" data-section="Competitors" data-a="A8" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A8 · Competitors</span></div>
+  <div class="headline" style="margin-top:36px;font-size:52px;width:1600px">Automatic trackers bring their own hardware or show no named gyms. Spottr is designed for the cameras a gym already owns.</div>
+  <table class="tbl" style="margin-top:40px;font-size:22px">
+    <tr><th>Player</th><th>What it is</th><th>Tracking</th><th>Hardware</th><th>What it lacks vs Spottr</th></tr>
+    <tr><td>VPixel (Agmis)</td><td>Coaching and retention from gym cameras (since 2019)</td><td>Automatic</td><td>Existing cameras</td><td>No named gyms or prices in its public material</td></tr>
+    <tr><td>Exersight</td><td>Camera-based form feedback, Germany (2025)</td><td>Automatic</td><td>Own cameras</td><td>New cameras per studio; one development site</td></tr>
+    <tr><td>EGYM, Technogym</td><td>Smart strength machines, connected equipment</td><td>Automatic</td><td>Own machines</td><td>Only their own machines</td></tr>
+    <tr><td>GroeFit</td><td>Occupancy and churn analytics</td><td>No set logging</td><td>Software</td><td>No sets and reps</td></tr>
+    <tr><td>Whoop</td><td>Wrist wearable</td><td>Strain-based</td><td>Wearable</td><td>Members wear it; strain, not sets</td></tr>
+    <tr><td>Hevy, Gravit</td><td>Workout logging apps</td><td>Manual</td><td>Phone</td><td>Members type every set</td></tr>
+    <tr class="us"><td>Spottr</td><td>Gym cameras to workout log and floor data</td><td>Automatic</td><td>Existing cameras + one box</td><td><span class="todo" style="font-size:16px;padding:2px 8px">[TODO: verified edge vs VPixel]</span></td></tr>
+  </table>
+  <div class="src">Our reading of public material (deck/benchmark/04_analog_decks.md; CLAIMS.md slide 10). Incumbents could add camera tracking.</div>
+</section>
+
+<!-- A9 GO-TO-MARKET -->
+<section class="slide white" id="a9" data-section="Go-to-market" data-a="A9" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A9 · Go-to-market</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1400px">Chains first: one contract, many locations.</div>
+  <div class="tl" style="position:absolute;left:110px;right:110px;top:540px">
+    <div class="st go"><div class="up"><span class="when">Now</span></div><div class="p">SF chain</div><div class="dn"><span class="lab">Pilot talks; first paying gym</span></div></div>
+    <div class="st"><div class="up"><span class="when">Next</span></div><div class="p">Bay Area chains</div><div class="dn"><span class="lab">Referrals and a case study from chain #1</span></div></div>
+    <div class="st"><div class="up"><span class="when">Then</span></div><div class="p">US chains</div><div class="dn"><span class="lab">One contract, many locations</span></div></div>
+    <div class="st"><div class="up"><span class="when">Later</span></div><div class="p">International</div><div class="dn"><span class="lab">Same box, same cameras</span></div></div>
+  </div>
+  <div style="position:absolute;left:110px;right:110px;top:770px;display:grid;grid-template-columns:1fr 1fr;gap:80px">
+    <div><div class="col-h">Gym channel</div><div class="li" style="display:block">Direct founder outreach to chain operators: 20 gyms emailed, 8 replied (founder-reported).</div></div>
+    <div><div class="col-h">Member channel</div><div class="li" style="display:block">Every partner gym brings its members in free. Premium converts from there (hypothesis).</div></div>
+  </div>
+  <div class="todos" style="position:absolute;left:110px;top:930px"><span class="todo">[TODO: sales cycle length, pilot-to-paid terms, onboarding playbook per location]</span></div>
+</section>
+
+<!-- A10 OPEN QUESTIONS -->
+<section class="slide cream" id="a10" data-section="Open questions" data-a="A10" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A10 · Open questions</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1500px">Three things to prove next: it works live, a chain pays, members stay.</div>
+  <div style="position:absolute;left:110px;right:110px;top:440px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:56px">
+    <div class="stack"><div class="card" style="padding:30px;height:250px"><span class="name">Works live</span><div class="body" style="font-size:26px;margin-top:20px">Real gym cameras, several streams on one box. Needed for the first paying gym.</div></div></div>
+    <div class="stack"><div class="card" style="padding:30px;height:250px"><span class="name">A chain pays</span><div class="body" style="font-size:26px;margin-top:20px">First paying gym by end of November; then chain #1 at a price it has seen.</div></div></div>
+    <div class="stack"><div class="card" style="padding:30px;height:250px"><span class="name">Members stay</span><div class="body" style="font-size:26px;margin-top:20px">No retention evidence yet. The paying gyms measure it.</div></div></div>
+  </div>
+  <div style="position:absolute;left:110px;right:110px;top:760px;display:grid;grid-template-columns:1.2fr 1fr;gap:80px">
+    <div><div class="col-h">Open: who is who</div><div class="li" style="display:block">Linking a person on camera to a member account. Options: QR check-in at the door · Refit ID · face recognition at entry <b>(needs legal review; today we do no face recognition)</b>.</div></div>
+    <div><div class="col-h">Roadmap</div><div class="li" style="display:block">Members: AI coach, PRs, leaderboards. Gyms: live floor map, idle equipment, churn signals.</div></div>
+  </div>
+  <div class="todos" style="position:absolute;left:110px;top:950px"><span class="todo">[TODO: success thresholds the founders commit to: accuracy %, active-member share, pilot-to-paid]</span></div>
+</section>
+
+<!-- A11 PRODUCT -->
+<section class="slide white" id="a11" data-section="Product" data-a="A11" data-cut="main">
+  <div class="meta"><span>Spottr · Pre-seed</span><span class="r"></span></div>
+  <div><span class="pill">A11 · Product</span></div>
+  <div class="headline" style="margin-top:36px;font-size:56px;width:1400px">The product today: member app and gym dashboard.</div>
+  <div class="phone" style="left:110px;top:330px;transform:scale(.88);transform-origin:top left"><img src="assets/app-today.png" alt="Member app: today"></div>
+  <div class="phone" style="left:460px;top:330px;transform:scale(.88);transform-origin:top left"><img src="assets/app-replay.png" alt="Member app: how we counted, 10 reps"></div>
+  <div class="browser" style="left:860px;top:360px;width:950px;height:600px"><div class="bar"><i></i><i></i><i></i><span>tryspottr.app/gyms</span></div><img src="assets/gym-overview.png" alt="Gym dashboard overview" style="height:556px;object-fit:cover;object-position:top"></div>
+  <div class="src">Member app: recorded dip clip with the pipeline's real output (replay pixelates everyone except the lifter). Gym dashboard: simulated demo gym. Live: tryspottr.app/demo and tryspottr.app/gyms.</div>
+</section>
+
+</div>
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var cut = new URLSearchParams(location.search).get('cut') === 'short' ? 'short' : 'main';
+  var all = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var slides = all.filter(function (s) { return (s.getAttribute('data-cut') || 'main').split(' ').indexOf(cut) > -1; });
+  all.forEach(function (s) { if (slides.indexOf(s) < 0) s.classList.add('out'); });
+  if (slides.length) slides[slides.length - 1].classList.add('last');
+  var n = 0;
+  slides.forEach(function (s) {
+    var a = s.getAttribute('data-a'), label = s.getAttribute('data-section');
+    var page = a !== null ? a : String(++n).padStart(2, '0');
+    s.querySelector('.meta .r').textContent = page ? label + '  ·  ' + page : label;
+  });
+  var i = 0;
+  function fit() {
+    var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + k + ')';
+  }
+  function show(k) {
+    i = Math.max(0, Math.min(slides.length - 1, k));
+    all.forEach(function (s) { s.classList.toggle('active', s === slides[i]); });
+    if (history.replaceState) history.replaceState(null, '', location.search + '#' + (i + 1));
+  }
+  // #3 = third slide of the cut; #a5 = the slide with id="a5" (appendix links)
+  function fromHash() {
+    var h = decodeURIComponent(location.hash.slice(1));
+    var byId = slides.findIndex(function (s) { return s.id && s.id === h; });
+    show(byId > -1 ? byId : (parseInt(h, 10) || 1) - 1);
+  }
+  window.addEventListener('hashchange', fromHash);
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(e.key) > -1) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp'].indexOf(e.key) > -1) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0); else if (e.key === 'End') show(slides.length - 1);
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a')) return; // appendix links navigate by hash
+    show(e.clientX > window.innerWidth / 2 ? i + 1 : i - 1);
+  });
+  window.addEventListener('resize', fit);
+  fit(); fromHash();
+
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+
+  // Google Trends, US web search, weekly from 2 Jan 2022 to 11 Oct 2026 (data/google-trends.json)
+  var TRENDS = {
+    'trend-longevity': '19,17,18,20,21,21,22,20,21,20,19,20,20,19,19,19,22,20,19,19,17,17,19,16,18,18,17,18,18,17,18,18,19,21,18,17,18,18,19,19,18,18,18,18,18,20,18,20,22,20,17,17,20,22,24,24,29,25,22,27,41,21,21,21,22,22,24,23,24,21,23,21,23,20,20,20,20,22,20,21,21,21,20,20,20,21,24,25,23,24,23,23,23,22,23,21,23,23,21,31,26,24,22,22,25,26,25,25,26,26,25,25,25,25,23,25,26,24,24,25,26,24,25,25,24,22,24,22,22,23,22,23,21,21,22,20,27,26,26,25,25,24,24,25,24,24,26,24,22,25,26,26,28,28,27,24,27,29,30,29,32,29,29,32,32,30,30,28,30,30,29,31,29,30,29,28,29,29,32,35,33,35,34,37,40,45,47,44,40,35,39,39,36,40,42,39,39,37,41,49,54,53,53,58,64,58,54,57,66,61,60,62,71,88,70,82,79,92,87,87,85,89,95,96,81,94,84,84,92,79,87,100,84,83,73,88,54,60,51,51,58,49,45,45,53,48,48,46,44,43',
+    'trend-strength': '16,15,16,16,16,17,17,17,18,18,16,18,17,17,17,18,17,17,16,16,14,14,15,16,16,16,16,16,17,16,16,16,16,17,16,14,15,16,15,15,16,16,16,16,15,15,13,15,16,15,12,15,20,19,19,19,20,19,18,20,20,20,19,19,18,18,18,20,20,17,17,18,17,17,17,18,17,18,17,18,19,19,19,17,17,17,17,16,17,18,17,17,17,18,18,19,18,18,15,18,18,17,14,16,21,21,20,22,21,20,19,22,22,22,21,21,20,19,21,20,19,20,19,19,19,18,21,20,19,20,18,20,19,19,19,18,17,18,19,19,20,20,19,19,19,19,19,20,18,20,21,17,21,20,18,16,23,23,23,21,22,23,21,23,23,24,23,24,24,24,23,24,23,24,24,21,22,22,24,25,25,25,25,26,27,27,31,27,24,23,23,24,22,25,28,25,24,23,24,26,31,28,30,28,31,31,30,28,37,37,35,37,32,38,35,42,42,49,48,54,57,68,78,87,76,71,71,75,66,72,83,100,86,84,63,61,43,38,33,33,32,30,26,30,30,32,32,28,25,25'
+  };
+  Object.keys(TRENDS).forEach(function (id) {
+    var svg = document.getElementById(id); if (!svg) return;
+    var v = TRENDS[id].split(',').map(Number), W = 900, H = 150, top = 8, base = 124;
+    var x = function (k) { return k / (v.length - 1) * W; }, y = function (val) { return base - val / 100 * (base - top); };
+    var line = v.map(function (val, k) { return (k ? 'L' : 'M') + x(k).toFixed(1) + ' ' + y(val).toFixed(1); }).join(' ');
+    el('path', { d: line + ' L' + W + ' ' + base + ' L0 ' + base + ' Z', fill: 'rgba(52,199,89,.16)' }, svg);
+    el('path', { d: line, fill: 'none', stroke: '#1d7a34', 'stroke-width': 3, 'vector-effect': 'non-scaling-stroke', 'stroke-linejoin': 'round' }, svg);
+    el('line', { x1: 0, x2: W, y1: base, y2: base, stroke: '#0b0b0b', 'stroke-width': 1.5, 'vector-effect': 'non-scaling-stroke' }, svg);
+    [2022, 2023, 2024, 2025, 2026].forEach(function (yr) {
+      var weeks = (Date.UTC(yr, 0, 1) - Date.UTC(2022, 0, 2)) / 6048e5, xx = Math.max(0, x(weeks));
+      var t = el('text', { x: xx + 4, y: H - 4, 'font-size': 15, fill: '#67635a', 'font-family': 'Space Grotesk, sans-serif' }, svg); t.textContent = yr;
+    });
+  });
+
+  // Weight-plate chart: 81.2–83.1% margin (green), 16.9–18.8% cost (cream), range hatched
+  var plate = document.getElementById('plate');
+  if (plate) {
+    var C = 300;
+    var pt = function (r, a) { return [C + r * Math.sin(2 * Math.PI * a), C - r * Math.cos(2 * Math.PI * a)]; };
+    var ring = function (r0, r1, a0, a1) {
+      var L = a1 - a0 > 0.5 ? 1 : 0, p1 = pt(r1, a0), p2 = pt(r1, a1), p3 = pt(r0, a1), p4 = pt(r0, a0);
+      return 'M' + p1 + ' A' + r1 + ' ' + r1 + ' 0 ' + L + ' 1 ' + p2 + ' L' + p3 + ' A' + r0 + ' ' + r0 + ' 0 ' + L + ' 0 ' + p4 + ' Z';
+    };
+    var defs = el('defs', {}, plate);
+    var pat = el('pattern', { id: 'hatch', width: 10, height: 10, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+    el('rect', { width: 10, height: 10, fill: '#f0ece1' }, pat); el('rect', { width: 5, height: 10, fill: '#34c759' }, pat);
+    var steel = el('radialGradient', { id: 'steel', cx: '40%', cy: '35%', r: '70%' }, defs);
+    el('stop', { offset: '0%', 'stop-color': '#f4f4f4' }, steel); el('stop', { offset: '100%', 'stop-color': '#8a8a8a' }, steel);
+    var bore = el('radialGradient', { id: 'bore', cx: '50%', cy: '50%', r: '60%' }, defs);
+    el('stop', { offset: '0%', 'stop-color': '#5a5a5a' }, bore); el('stop', { offset: '100%', 'stop-color': '#c9c9c9' }, bore);
+    el('circle', { cx: C, cy: C, r: 296, fill: '#111' }, plate);                                // rubber
+    el('circle', { cx: C, cy: C, r: 286, fill: 'none', stroke: '#2c2c2c', 'stroke-width': 4 }, plate);
+    el('path', { d: ring(150, 262, 0, 0.812), fill: '#34c759' }, plate);                       // margin
+    el('path', { d: ring(150, 262, 0.812, 0.831), fill: 'url(#hatch)' }, plate);               // range
+    el('path', { d: ring(150, 262, 0.831, 1), fill: '#f0ece1' }, plate);                       // cost
+    el('circle', { cx: C, cy: C, r: 150, fill: '#1b1b1b' }, plate);                            // hub plate
+    el('circle', { cx: C, cy: C, r: 136, fill: 'none', stroke: '#333', 'stroke-width': 3 }, plate);
+    el('circle', { cx: C, cy: C, r: 96, fill: 'url(#steel)' }, plate);                         // steel insert
+    for (var b = 0; b < 6; b++) { var q = pt(76, b / 6); el('circle', { cx: q[0], cy: q[1], r: 6, fill: '#6d6d6d' }, plate); }
+    el('circle', { cx: C, cy: C, r: 52, fill: 'url(#bore)' }, plate);                          // bar sleeve
+    el('circle', { cx: C, cy: C, r: 52, fill: 'none', stroke: '#777', 'stroke-width': 2 }, plate);
+    var label = function (txt, a0, a1, r, color, size) {
+      var p0 = pt(r, a0), p1 = pt(r, a1), id = 'lp' + Math.round(a0 * 1000);
+      el('path', { id: id, d: 'M' + p0 + ' A' + r + ' ' + r + ' 0 0 1 ' + p1, fill: 'none' }, defs);
+      var t = el('text', { 'font-family': 'Inter Tight, sans-serif', 'font-weight': 800, 'font-size': size, fill: color, 'letter-spacing': 2 }, plate);
+      var tp = el('textPath', { href: '#' + id, startOffset: '50%', 'text-anchor': 'middle' }, t); tp.textContent = txt;
+    };
+    label('MARGIN', 0.06, 0.26, 196, '#0b0b0b', 34);
+    label('COST', 0.86, 0.97, 196, '#0b0b0b', 26);
+    label('SPOTTR · $1,500 / LOCATION / MONTH', 0.62, 0.98, 272, '#8f8f8f', 16);
+  }
+})();
+</script>
+</body>
+</html>
