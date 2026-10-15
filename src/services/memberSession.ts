@@ -10,6 +10,11 @@ import { PipelinePerson, PipelineSession, prettifyExerciseName } from './pipelin
 /** The mock history's "today" (the hackathon day); the pipeline session replaces the mock workout on this date. */
 export const DEMO_TODAY = PAST_WORKOUTS[0].date;
 
+const TODAY_WORKOUT_ID = 'pipeline-today';
+
+/** Everything except today's camera-tracked session is sample history (see mocks/memberData.ts). */
+export const isSampleWorkout = (w: PastWorkout) => w.id !== TODAY_WORKOUT_ID;
+
 export const trackedSeconds = (p: PipelinePerson) => Math.max(0, p.last_seen_s - p.first_seen_s);
 
 /** Picker order: most sets first, then most reps, then longest time tracked. */
@@ -59,7 +64,7 @@ export function summaryToWorkout(summary: WorkoutSummary, recap: string): PastWo
   }
 
   return {
-    id: 'pipeline-today',
+    id: TODAY_WORKOUT_ID,
     date: DEMO_TODAY,
     display_date: 'Today',
     week_group: PAST_WORKOUTS[0].week_group,
@@ -67,7 +72,6 @@ export function summaryToWorkout(summary: WorkoutSummary, recap: string): PastWo
     total_reps: summary.total_reps,
     exercises: [...byExercise.values()],
     recap,
-    suggestion: '',
     muscle_load: summary.muscle_load,
   };
 }

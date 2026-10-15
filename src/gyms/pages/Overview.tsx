@@ -51,15 +51,7 @@ const KpiCard: React.FC<{ kpi: Kpi }> = ({ kpi }) => {
         <Icon className="w-4 h-4 stroke-[1.75] shrink-0" />
       </div>
       <div>
-        <p className="text-4xl font-bold tracking-tight text-[#1D1D1F] flex items-center gap-2">
-          {formatKpi(kpi)}
-          {kpi.id === 'now' && (
-            <span className="relative flex w-2.5 h-2.5" aria-hidden>
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[#34C759] opacity-60 animate-ping" />
-              <span className="relative inline-flex rounded-full w-2.5 h-2.5 bg-[#34C759]" />
-            </span>
-          )}
-        </p>
+        <p className="text-4xl font-bold tracking-tight text-[#1D1D1F]">{formatKpi(kpi)}</p>
         <TrendChip value={kpi.value} previous={kpi.previous} comparison={kpi.comparison} />
       </div>
     </div>

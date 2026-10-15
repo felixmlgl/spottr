@@ -1,11 +1,13 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from '../router';
+import { Logo } from '../components/Logo';
 
 const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/overview', label: 'Overview' },
+  { to: '/gyms/locations', label: 'Locations' },
   { to: '/gyms/floor', label: 'Floor' },
-  { to: '/gyms/world-map', label: 'World map' },
+  { to: '/gyms/world-map', label: 'Multi-camera tracking' },
   { to: '/gyms/members', label: 'Members' },
   { to: '/demo', label: 'Member app', external: true },
   { to: '/gyms/privacy', label: 'Privacy' },
@@ -35,12 +37,12 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
   return (
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
       <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between gap-4">
-        <Link to="/gyms" className="flex items-baseline gap-1.5 shrink-0">
-          <span className="font-logo text-xl tracking-tight text-[#1D1D1F]">spottr</span>
+        <Link to="/gyms" className="flex items-center gap-2 shrink-0">
+          <Logo />
           <span className="text-sm font-medium text-[#6E6E73]">for Gyms</span>
         </Link>
 
-        <nav aria-label="Gym demo" className="hidden lg:flex items-center p-1 bg-[#F5F5F7] rounded-full">
+        <nav aria-label="Gym demo" className="hidden xl:flex items-center p-1 bg-[#F5F5F7] rounded-full">
           {renderLinks(false)}
         </nav>
 
@@ -56,7 +58,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
       </div>
 
       {/* Compact: horizontally scrollable pill row */}
-      <nav aria-label="Gym demo" className="lg:hidden border-t border-black/[0.04]">
+      <nav aria-label="Gym demo" className="xl:hidden border-t border-black/[0.04]">
         <div className="max-w-[1100px] mx-auto px-4 py-2 overflow-x-auto">
           <div className="inline-flex items-center p-1 bg-[#F5F5F7] rounded-full">{renderLinks(true)}</div>
         </div>

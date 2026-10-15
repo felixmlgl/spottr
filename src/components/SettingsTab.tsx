@@ -62,10 +62,21 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
       <Link to="/gyms" className="p-5 flex items-center justify-between gap-4 hover:bg-black/[0.02]">
         <div>
           <p className="text-sm font-semibold text-[#1D1D1F]">Gym operator demo</p>
-          <p className="text-xs text-[#6E6E73] mt-0.5">The same cameras, from the gym's side.</p>
+          <p className="text-xs text-[#6E6E73] mt-0.5">A simulated demo gym, from the operator's side.</p>
         </div>
         <ArrowRight className="w-4 h-4 text-[#6E6E73]" />
       </Link>
+    </Section>
+
+    <Section title="Membership">
+      <Row label="Spottr" hint="Free for you, through your gym. Your gym pays for Spottr, not you.">
+        <span className="px-3 py-1 rounded-full bg-[#34C759]/12 text-xs font-semibold text-[#248A3D]">Free</span>
+      </Row>
+      <Row label="AI coach" hint="Coaching built on your logged workouts.">
+        <span className="px-3 py-1 rounded-full bg-white text-xs font-semibold text-[#6E6E73] ring-1 ring-black/[0.06] whitespace-nowrap">
+          Premium · coming later
+        </span>
+      </Row>
     </Section>
 
     <Section title="Muscle maps">
@@ -127,7 +138,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
       <div className="p-5 flex gap-3">
         <ShieldCheck className="w-5 h-5 text-[#34C759] shrink-0 mt-0.5" />
         <div className="text-sm text-[#1D1D1F] leading-relaxed flex flex-col gap-2">
-          <p>The video stays inside the gym. Faces are pixelated, and everyone except you is blurred head to toe.</p>
+          <p>In the replay, everyone the pose model detects except you is pixelated head to toe.</p>
           <p className="text-[#6E6E73]">
             To name an exercise, Spottr sends Gemini one small, blurred image per set: three frames of a single rep, cropped
             around you.

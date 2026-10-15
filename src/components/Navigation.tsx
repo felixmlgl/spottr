@@ -1,5 +1,6 @@
 import React from 'react';
 import { Home, ClipboardList, Activity, History, Settings } from 'lucide-react';
+import { Logo } from './Logo';
 
 export type TabId = 'main' | 'plan' | 'recovery' | 'history' | 'settings';
 
@@ -31,11 +32,8 @@ export const Navigation: React.FC<NavigationProps> = ({
     {/* Desktop & tablet top bar */}
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        <button
-          className="font-logo text-xl tracking-tight text-[#1D1D1F] cursor-pointer"
-          onClick={() => onSelectTab('main')}
-        >
-          spottr
+        <button className="cursor-pointer shrink-0" onClick={() => onSelectTab('main')} aria-label="Spottr, go to Main">
+          <Logo />
         </button>
 
         <nav className="hidden md:flex items-center p-1 bg-[#F5F5F7] rounded-full">

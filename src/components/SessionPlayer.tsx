@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Play, Pause, RotateCcw, Upload, MoreHorizontal } from 'lucide-react';
+import { Play, Pause, RotateCcw, MoreHorizontal } from 'lucide-react';
 import {
   LoadedPipelineData,
   getPipelineDetectionsAtTime,
@@ -58,14 +58,12 @@ function playRepChirp() {
 
 /**
  * The annotated clip for one member: video + overlay, bystanders pixelated, set markers on the scrubber.
- * Technical controls (overlay style, speed, own video file) live behind "Details".
+ * Technical controls (overlay style, speed) live behind "Details".
  */
 export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, defaultOverlayMode, repSound }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [customVideoUrl, setCustomVideoUrl] = useState<string | null>(null);
   const [videoLoadError, setVideoLoadError] = useState<boolean>(false);
   const [overlayMode, setOverlayMode] = useState<OverlayMode>(defaultOverlayMode);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -77,7 +75,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
 
   const lastRepRef = useRef<number>(0);
 
-  const activeVideoUrl = customVideoUrl || data.videoUrl || '';
+  const activeVideoUrl = data.videoUrl || '';
   const clipWidth = data.session.width || 1280;
   const clipHeight = data.session.height || 720;
   const hasSets = data.hasSets;
@@ -127,16 +125,6 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
   const handleSpeedChange = (speed: number) => {
     setPlaybackSpeed(speed);
     if (videoRef.current) videoRef.current.playbackRate = speed;
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setCustomVideoUrl(URL.createObjectURL(file));
-      setVideoLoadError(false);
-      setCurrentTime(0);
-      setIsPlaying(false);
-    }
   };
 
   // Keep the clock in sync with the video (or run an internal timer without one)
@@ -424,18 +412,6 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
                   ))}
                 </div>
               </div>
-              {(!activeVideoUrl || videoLoadError || customVideoUrl) && (
-                <>
-                  <input type="file" ref={fileInputRef} accept="video/*" className="hidden" onChange={handleFileSelect} />
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-xs font-medium text-[#1D1D1F] cursor-pointer"
-                  >
-                    <Upload className="w-3.5 h-3.5" />
-                    {customVideoUrl ? 'Change video file' : 'Use your own video file'}
-                  </button>
-                </>
-              )}
               <p className="text-[11px] text-[#86868B] leading-relaxed">
                 {overlayMode === 'raw'
                   ? `Raw overlay.json${data.overlay?.fps ? ` · ${data.overlay.fps} fps` : ''}. Keypoints under 0.3 confidence were removed by the backend.`

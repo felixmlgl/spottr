@@ -224,7 +224,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
       <Card className="!p-5 sm:!p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <Eyebrow>Pilot setup · about 20 minutes per site</Eyebrow>
+            <Eyebrow>Pilot setup · target: about 20 minutes per site</Eyebrow>
             <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F] mt-1">Connect your cameras to one floor map</h2>
             <p className="text-sm text-[#6E6E73] mt-1 max-w-2xl">
               Prefilled with the Great Hall example. Every step works on your own floor plan; the calibration itself is fitted and
@@ -551,9 +551,9 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
             </div>
             <ol className="flex flex-col gap-3">
               {[
-                ['Your recorder keeps recording', 'Most NVR/VMS systems can share each camera as an RTSP stream on your local network. Nothing is unplugged or replaced.'],
+                ['Your recorder keeps recording', 'Most NVR/VMS systems can share each camera as an RTSP stream on your local network. The goal: nothing is unplugged or replaced.'],
                 ['A Spottr box reads the streams', 'A small computer on site runs the same pipeline as this demo: per-camera tracking, the shared floor map and one identity per person.'],
-                ['One-time calibration', 'The steps on this page, about 20 minutes per site, then a check with a few walk-throughs.'],
+                ['One-time calibration', 'The steps on this page (target: about 20 minutes per site, not yet timed at a real gym), then a check with a few walk-throughs.'],
                 ['Your team sees the shared map', 'Sessions, zones and occupancy are computed from the one world state, not per camera.'],
               ].map(([t, b], i) => (
                 <li key={t} className="flex gap-3">
