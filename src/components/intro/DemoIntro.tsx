@@ -5,6 +5,7 @@ import { findClip, prefetchClip, useClipData, useClipSessions } from '../../hook
 import { PipelinePerson, clipDataBaseUrl } from '../../services/pipelineAdapter';
 import { defaultPersonId, mainExercise, sortPeopleForPicker, trackedSeconds } from '../../services/memberSession';
 import { PersonSpotlight } from './PersonSpotlight';
+import { Logo } from '../Logo';
 import { navigate } from '../../router';
 
 interface DemoIntroProps {
@@ -133,7 +134,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
   return (
     <div className="min-h-screen bg-white text-[#1D1D1F] pb-28">
       <header className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center">
-        <span className="font-logo text-xl tracking-tight">spottr</span>
+        <Logo />
         <span className="ml-2 px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wide">
           Demo
         </span>
