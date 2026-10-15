@@ -29,7 +29,7 @@ const STEPS = [
   },
   {
     icon: Cpu,
-    title: 'Spottr edge box',
+    title: 'Spottr box',
     body: 'A small box on your network turns movement into sets, reps and zone occupancy.',
   },
   {

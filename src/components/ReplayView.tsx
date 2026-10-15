@@ -53,7 +53,7 @@ export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings
       )}
 
       <p className="text-xs text-[#86868B] text-center pb-8">
-        In production Spottr runs on the gym's own cameras through an edge device; the video never leaves the gym.
+        In production Spottr runs on the gym's own cameras through a Spottr box; the video never leaves the gym.
       </p>
     </div>
   </div>

@@ -39,7 +39,7 @@ const AVAILABLE_TODAY: PrivacyItem[] = [
 
 const IN_DEVELOPMENT: PrivacyItem[] = [
   {
-    title: 'All processing on the Spottr edge box',
+    title: 'All processing on the Spottr box',
     body: 'The goal is that raw video never leaves the gym. Today\u2019s pipeline runs on recorded clips rather than a live camera stream.',
   },
   {

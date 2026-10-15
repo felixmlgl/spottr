@@ -10,9 +10,9 @@ No wearables, no phone, no app to open mid-set. Members lift, and every set, rep
 <br>
 
 ![Gemini](https://img.shields.io/badge/Google_Gemini-Flash-4285F4?logo=googlegemini&logoColor=white)
-![AI Studio](https://img.shields.io/badge/Google_AI_Studio-Cloud_Run-34A853?logo=googlecloud&logoColor=white)
+![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
 ![YOLO pose](https://img.shields.io/badge/YOLO26n--pose-BoT--SORT-111111)
-![Raspberry Pi 5](https://img.shields.io/badge/Edge-Raspberry_Pi_5-C51A4A?logo=raspberrypi&logoColor=white)
+![Spottr box](https://img.shields.io/badge/Spottr_box-Mac_mini_class-34C759)
 ![React](https://img.shields.io/badge/React_19-Vite-61DAFB?logo=react&logoColor=black)
 ![Python](https://img.shields.io/badge/Python_3.12-numpy_·_scipy-3776AB?logo=python&logoColor=white)
 
@@ -76,7 +76,7 @@ Green skeleton = person in an active set · `+1` flashes on each counted rep · 
 
 ### What Gemini actually sees
 
-The camera stream never leaves the gym. For each detected set, the edge device sends Gemini **one small, blurred image**: three frames of a single rep (start → halfway → furthest point), cropped around the lifter, with their face pixelated and every other person blurred head to toe. Gemini returns the exercise and equipment as structured JSON.
+The camera stream never leaves the gym. For each detected set, the Spottr box sends Gemini **one small, blurred image**: three frames of a single rep (start → halfway → furthest point), cropped around the lifter, with their face pixelated and every other person blurred head to toe. Gemini returns the exercise and equipment as structured JSON.
 
 <table>
 <tr>
@@ -95,13 +95,13 @@ The camera stream never leaves the gym. For each detected set, the edge device s
 
 **Problem.** Most gym members don't log their workouts. Tracking apps need you to type between sets, and wearables are poor at counting strength reps. Gyms already pay for camera coverage of the whole floor, and that footage is only used for security.
 
-**Solution.** A small edge box (Raspberry Pi 5) plugs into the gym's existing IP cameras. It tracks every member's pose, finds who is doing sets, counts reps, and uses Gemini to name the exercise. Members get an automatic workout log with sets, reps, volume and a muscle-recovery map, with nothing to wear and nothing to type.
+**Solution.** A Spottr box (a small, Mac-mini-class computer) plugs into the gym's existing IP cameras. It tracks every member's pose, finds who is doing sets, counts reps, and uses Gemini to name the exercise. Members get an automatic workout log with sets, reps, volume and a muscle-recovery map, with nothing to wear and nothing to type.
 
 **Why it's different**
 
-- **Zero hardware for members.** The gym already has the cameras, so the only new hardware is one edge device per camera zone.
+- **Zero hardware for members.** The gym already has the cameras, so the only new hardware is one or two Spottr boxes per location.
 - **Exercise-agnostic counting.** Reps are found from coherent joint motion, not per-exercise rules, so a new exercise needs no new code. The label never affects the count.
-- **Private by design.** Pose runs on the edge. Only one blurred snapshot per set goes to Gemini (lifter's face pixelated, everyone else head to toe), never the video stream. The replay blurs everyone but you too.
+- **Private by design.** Pose runs on the Spottr box. Only one blurred snapshot per set goes to Gemini (lifter's face pixelated, everyone else head to toe), never the video stream. The replay blurs everyone but you too.
 - **Works on bad footage.** Built and tuned on real, crowded, low-resolution gym video, not staged single-person clips.
 
 **Who pays.** Gyms and gym chains: a member-experience and retention feature on top of cameras they already own, plus floor analytics like equipment usage and peak hours.
@@ -113,7 +113,7 @@ The camera stream never leaves the gym. For each detected set, the edge device s
 ```mermaid
 flowchart LR
     CAM["📹 Existing gym<br/>IP camera"] --> EDGE
-    subgraph EDGE["Edge device · Raspberry Pi 5"]
+    subgraph EDGE["Spottr box · Mac-mini class"]
         direction TB
         POSE["YOLO26n-pose + BoT-SORT/ReID<br/>17 keypoints + ID per person"] --> STITCH["Stitch broken tracks"]
         STITCH --> REPS["Stationary? → coherent motion?<br/>→ PCA 1-D signal → peak count → validate"]
@@ -192,7 +192,7 @@ python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python tests/test_reps.py                    # synthetic rep-counter suite
 ```
 
-**On a Raspberry Pi**
+**CPU-only export (NCNN)**
 
 ```bash
 .venv/bin/yolo export model=models/yolo26n-pose.pt format=ncnn imgsz=640

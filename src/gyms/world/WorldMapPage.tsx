@@ -120,7 +120,7 @@ export const WorldMapPage: React.FC = () => {
             </span>
           </>
         }
-        title="World map"
+        title="Multi-camera tracking"
         subtitle="Cameras are observations of one shared model of the room. Whichever camera sees someone, they stay one anonymous identity on one floor map."
         aside={
           <Segmented
@@ -138,7 +138,7 @@ export const WorldMapPage: React.FC = () => {
 
       {error && (
         <Card className="!p-5 text-sm text-[#1D1D1F]">
-          Could not load the world-map data ({error}). {isLive ? 'Is the Spottr world service running?' : ''}
+          Could not load the multi-camera tracking data ({error}). {isLive ? 'Is the Spottr world service running?' : ''}
         </Card>
       )}
 
