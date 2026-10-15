@@ -1,0 +1,164 @@
+source_id,source_record_id,record_name,equipment,exercise_id,candidate_exercise_id,candidate_name,score,reason
+free-exercise-db,Arnold_Dumbbell_Press,Arnold Dumbbell Press,dumbbell,dumbbell-arnold-press,arnold-press,Arnold Press,100.0,"same name, one side has no equipment"
+free-exercise-db,Band_Good_Morning,Band Good Morning,band,band-good-morning,good-mornings,Good Mornings,100.0,"same name, one side has no equipment"
+free-exercise-db,Band_Hip_Adductions,Band Hip Adductions,band,band-hip-adductions,band-hip-abduction,Hip Abduction – Band,88.9,extra words (token_sort_ratio >= 85)
+free-exercise-db,Barbell_Glute_Bridge,Barbell Glute Bridge,barbell,barbell-glute-bridge,glute-bridge,Glute Bridge,100.0,"same name, one side has no equipment"
+free-exercise-db,Barbell_Seated_Calf_Raise,Barbell Seated Calf Raise,barbell,barbell-seated-calf-raise,seated-calf-raise,Seated Calf Raise,100.0,"same name, one side has no equipment"
+free-exercise-db,Barbell_Step_Ups,Barbell Step Ups,barbell,barbell-step-up,step-up,Step-Up,100.0,"same name, one side has no equipment"
+free-exercise-db,Bent_Over_Two-Dumbbell_Row,Bent Over Two-Dumbbell Row,dumbbell,dumbbell-bent-over-two-row,dumbbell-bent-over-row,Bent Over Dumbbell Rows,85.7,extra words (token_sort_ratio >= 85)
+free-exercise-db,Box_Squat,Box Squat,barbell,barbell-box-squat,squat-box,Squat – Box,100.0,"same name, one side has no equipment"
+free-exercise-db,Box_Squat_with_Bands,Box Squat with Bands,band barbell,band-box-squat,squat-box,Squat – Box,100.0,"same name, one side has no equipment"
+free-exercise-db,Butterfly,Butterfly,machine,machine-butterfly,butterfly,Butterfly,100.0,"same name, one side has no equipment"
+free-exercise-db,Cable_Internal_Rotation,Cable Internal Rotation,cable,cable-internal-rotation,cable-external-rotation,Cable External Rotation,88.2,extra words (token_sort_ratio >= 85)
+free-exercise-db,Cable_Rope_Overhead_Triceps_Extension,Cable Rope Overhead Triceps Extension,cable,cable-rope-overhead-triceps-extension,cable-overhead-tricep-extension,Overhead Cable Tricep Extension,91.2,extra words (token_sort_ratio >= 85)
+free-exercise-db,Clean_and_Jerk,Clean and Jerk,barbell,barbell-clean-and-jerk,clean-and-jerk,Clean and Jerk,100.0,"same name, one side has no equipment"
+free-exercise-db,Dead_Bug,Dead Bug,bodyweight,dead-bug-2,dead-bug,Dead Bug,100.0,"same name, one side has no equipment"
+free-exercise-db,Deadlift_with_Bands,Deadlift with Bands,band barbell,band-deadlift,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Decline_Push-Up,Decline Push-Up,(unknown),decline-push-up-2,decline-push-up,Decline Pushups,100.0,"same name, one side has no equipment"
+free-exercise-db,Deficit_Deadlift,Deficit Deadlift,barbell,barbell-deficit-deadlift,deficit-deadlift,Deficit Deadlift,100.0,"same name, one side has no equipment"
+free-exercise-db,Dumbbell_Clean,Dumbbell Clean,dumbbell,dumbbell-clean,clean,Clean,100.0,"same name, one side has no equipment"
+free-exercise-db,Dumbbell_Lying_One-Arm_Rear_Lateral_Raise,Dumbbell Lying One-Arm Rear Lateral Raise,dumbbell,dumbbell-lying-one-arm-rear-lateral-raise,dumbbell-one-handed-leaning-lateral-raise,One-Handed Leaning Lateral Raise – Dumbbell,85.7,extra words (token_sort_ratio >= 85)
+free-exercise-db,Dumbbell_One-Arm_Triceps_Extension,Dumbbell One-Arm Triceps Extension,dumbbell,dumbbell-one-arm-triceps-extension,dumbbell-one-handed-wrist-extension,One-Handed Wrist Extension – Dumbbell,88.5,extra words (token_sort_ratio >= 85)
+free-exercise-db,Dumbbell_Step_Ups,Dumbbell Step Ups,dumbbell,dumbbell-step-up,step-up,Step-Up,100.0,"same name, one side has no equipment"
+free-exercise-db,Exercise_Ball_Crunch,Exercise Ball Crunch,exercise_ball,exercise-ball-crunch,crunch-2,Crunch,100.0,"same name, one side has no equipment"
+free-exercise-db,Face_Pull,Face Pull,cable,cable-face-pull,facepull,Facepull,100.0,"same name, one side has no equipment"
+free-exercise-db,Farmers_Walk,Farmer's Walk,other,farmers-walk-2,farmers-walk,Farmers Walk,100.0,"same name, one side has no equipment"
+free-exercise-db,Flutter_Kicks,Flutter Kicks,bodyweight,flutter-kick-2,flutter-kick,Flutter Kicks,100.0,"same name, one side has no equipment"
+free-exercise-db,Goblet_Squat,Goblet Squat,kettlebell,kettlebell-goblet-squat,goblet-squat,Goblet Squat,100.0,"same name, one side has no equipment"
+free-exercise-db,Good_Morning,Good Morning,barbell,barbell-good-morning,good-mornings,Good Mornings,100.0,"same name, one side has no equipment"
+free-exercise-db,Hang_Clean,Hang Clean,barbell,barbell-hang-clean,hang-clean,Hang Clean,100.0,"same name, one side has no equipment"
+free-exercise-db,Hang_Snatch,Hang Snatch,barbell,barbell-hang-snatch,hang-snatch,Hang Snatch,100.0,"same name, one side has no equipment"
+free-exercise-db,Hyperextensions_Back_Extensions,Hyperextensions (Back Extensions),other,hyperextensions-back-extension,hyperextensions,Hyperextensions,100.0,"same name, one side has no equipment"
+free-exercise-db,Kettlebell_Arnold_Press,Kettlebell Arnold Press,kettlebell,kettlebell-arnold-press,arnold-press,Arnold Press,100.0,"same name, one side has no equipment"
+free-exercise-db,Kettlebell_Hang_Clean,Kettlebell Hang Clean,kettlebell,kettlebell-hang-clean,hang-clean,Hang Clean,100.0,"same name, one side has no equipment"
+free-exercise-db,Kettlebell_Pistol_Squat,Kettlebell Pistol Squat,kettlebell,kettlebell-pistol-squat,pistol-squat,Pistol Squat,100.0,"same name, one side has no equipment"
+free-exercise-db,Leg_Extensions,Leg Extensions,machine,machine-leg-extension,leg-extension,Leg Extension,100.0,"same name, one side has no equipment"
+free-exercise-db,Low_Cable_Crossover,Low Cable Crossover,cable,cable-low-crossover,cable-low-cross-over-nb,Low-Cable Cross-Over - NB,89.7,extra words (token_sort_ratio >= 85)
+free-exercise-db,Low_Cable_Triceps_Extension,Low Cable Triceps Extension,cable,cable-low-triceps-extension,cable-triceps-extension,Triceps Extensions on Cable,89.5,extra words (token_sort_ratio >= 85)
+free-exercise-db,Lying_Close-Grip_Barbell_Triceps_Press_To_Chin,Lying Close-Grip Barbell Triceps Press To Chin,barbell ez_bar,barbell-lying-close-grip-triceps-press-to-chin,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Lying_Leg_Curls,Lying Leg Curls,machine,machine-lying-leg-curl,leg-curl-laying,Leg Curls (laying),100.0,"same name, one side has no equipment"
+free-exercise-db,Lying_One-Arm_Lateral_Raise,Lying One-Arm Lateral Raise,dumbbell,dumbbell-lying-one-arm-lateral-raise,dumbbell-one-handed-leaning-lateral-raise,One-Handed Leaning Lateral Raise – Dumbbell,93.1,extra words (token_sort_ratio >= 85)
+free-exercise-db,Oblique_Crunches,Oblique Crunches,bodyweight,oblique-crunch-2,oblique-crunch,Oblique Crunch,100.0,"same name, one side has no equipment"
+free-exercise-db,One_Arm_Lat_Pulldown,One Arm Lat Pulldown,cable,cable-one-arm-lat-pulldown,one-handed-lat-pulldown,One-Handed Lat Pulldown,100.0,"same name, one side has no equipment"
+free-exercise-db,One_Arm_Pronated_Dumbbell_Triceps_Extension,One Arm Pronated Dumbbell Triceps Extension,dumbbell,dumbbell-one-arm-pronated-triceps-extension,dumbbell-one-handed-overhead-tricep-extension,One-Handed Overhead Tricep Extension – Dumbbell,86.1,extra words (token_sort_ratio >= 85)
+free-exercise-db,Overhead_Cable_Curl,Overhead Cable Curl,cable,cable-overhead-curl,cable-overhand-curl,Overhand Cable Curl,92.3,fuzzy match 85-94
+free-exercise-db,Pallof_Press,Pallof Press,cable,cable-pallof-press,pallof-press,PALLOF PRESS,100.0,"same name, one side has no equipment"
+free-exercise-db,Power_Jerk,Power Jerk,barbell,barbell-power-jerk,power-jerk,Power Jerk,100.0,"same name, one side has no equipment"
+free-exercise-db,Power_Snatch,Power Snatch,barbell,barbell-power-snatch,power-snatch,Power Snatch,100.0,"same name, one side has no equipment"
+free-exercise-db,Push_Press_-_Behind_the_Neck,Push Press - Behind the Neck,barbell,barbell-push-press-behind-neck,barbell-behind-neck-press,Behind the Neck Press – Barbell,87.2,extra words (token_sort_ratio >= 85)
+free-exercise-db,Rack_Pull_with_Bands,Rack Pull with Bands,band barbell,band-rack-pull,rack-pull,Rack Pull,100.0,"same name, one side has no equipment"
+free-exercise-db,Rack_Pulls,Rack Pulls,barbell,barbell-rack-pull,rack-pull,Rack Pull,100.0,"same name, one side has no equipment"
+free-exercise-db,Recumbent_Bike,Recumbent Bike,machine,machine-recumbent-bike,recumbent-bike,Recumbent Bike,100.0,"same name, one side has no equipment"
+free-exercise-db,Reverse_Band_Bench_Press,Reverse Band Bench Press,band barbell,band-reverse-bench-press,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Reverse_Band_Box_Squat,Reverse Band Box Squat,band barbell,band-reverse-box-squat,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Reverse_Band_Deadlift,Reverse Band Deadlift,band barbell,band-reverse-deadlift,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Reverse_Band_Power_Squat,Reverse Band Power Squat,band barbell,band-reverse-power-squat,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Reverse_Band_Sumo_Deadlift,Reverse Band Sumo Deadlift,band barbell,band-reverse-sumo-deadlift,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Reverse_Barbell_Preacher_Curls,Reverse Barbell Preacher Curls,barbell ez_bar,barbell-reverse-preacher-curl,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Reverse_Triceps_Bench_Press,Reverse Triceps Bench Press,barbell,barbell-reverse-triceps-bench-press,barbell-reverse-grip-bench-press,Reverse Grip Bench Press,87.5,extra words (token_sort_ratio >= 85)
+free-exercise-db,Ring_Dips,Ring Dips,other,ring-dip-2,ring-dip,Ring Dips,100.0,"same name, one side has no equipment"
+free-exercise-db,Rope_Straight-Arm_Pulldown,Rope Straight-Arm Pulldown,cable,cable-rope-straight-arm-pulldown,cable-straight-arm-pulldown,Straight-Arm Pulldown (Cable),89.4,extra words (token_sort_ratio >= 85)
+free-exercise-db,Seated_Band_Hamstring_Curl,Seated Band Hamstring Curl,band,band-seated-hamstring-curl,seated-leg-curl,Seated Leg Curl,100.0,"same name, one side has no equipment"
+free-exercise-db,Seated_Bent-Over_Rear_Delt_Raise,Seated Bent-Over Rear Delt Raise,dumbbell,dumbbell-seated-bent-over-rear-delt-raise,dumbbell-seated-rear-delt-rise,Seated rear delt rise,85.7,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Seated_Calf_Raise,Seated Calf Raise,machine,machine-seated-calf-raise,seated-calf-raise,Seated Calf Raise,100.0,"same name, one side has no equipment"
+free-exercise-db,Seated_Leg_Curl,Seated Leg Curl,machine,machine-seated-leg-curl,seated-leg-curl,Seated Leg Curl,100.0,"same name, one side has no equipment"
+free-exercise-db,Seated_One-arm_Cable_Pulley_Rows,Seated One-arm Cable Pulley Rows,cable,cable-seated-one-arm-pulley-row,cable-seated-one-handed-row,Seated One-Handed Row – Cable,85.1,extra words (token_sort_ratio >= 85)
+free-exercise-db,Shotgun_Row,Shotgun Row,cable,cable-shotgun-row,shotgun-row,Shotgun Row,100.0,"same name, one side has no equipment"
+free-exercise-db,Side_Laterals_to_Front_Raise,Side Laterals to Front Raise,dumbbell,dumbbell-side-laterals-to-front-raise,dumbbell-lateral-to-front-raise,Lateral-to-Front Raises,85.7,extra words (token_sort_ratio >= 85)
+free-exercise-db,Sit-Up,Sit-Up,bodyweight,sit-up-2,sit-up,Sit-ups,100.0,"same name, one side has no equipment"
+free-exercise-db,Sled_Push,Sled Push,other,sled-push-2,sled-push,Sled Push,100.0,"same name, one side has no equipment"
+free-exercise-db,Smith_Machine_Hang_Power_Clean,Smith Machine Hang Power Clean,smith_machine,smith-machine-hang-power-clean,hang-power-clean,Hang Power Clean,100.0,"same name, one side has no equipment"
+free-exercise-db,Smith_Machine_Leg_Press,Smith Machine Leg Press,smith_machine,smith-machine-leg-press,leg-press,Leg Press,100.0,"same name, one side has no equipment"
+free-exercise-db,Smith_Machine_Pistol_Squat,Smith Machine Pistol Squat,smith_machine,smith-machine-pistol-squat,pistol-squat,Pistol Squat,100.0,"same name, one side has no equipment"
+free-exercise-db,Snatch,Snatch,barbell,barbell-snatch,snatch,Snatch,100.0,"same name, one side has no equipment"
+free-exercise-db,Spider_Crawl,Spider Crawl,bodyweight,spider-crawl,spider-curl,Spider Curl,87.0,extra words (token_sort_ratio >= 85)
+free-exercise-db,Split_Jerk,Split Jerk,barbell,barbell-split-jerk,split-jerk,Split Jerk,100.0,"same name, one side has no equipment"
+free-exercise-db,Split_Squats,Split Squats,(unknown),split-squat,barbell-split-squat,Split Squat – Barbell,100.0,"same name, one side has no equipment"
+free-exercise-db,Squat_Jerk,Squat Jerk,barbell,barbell-squat-jerk,squat-jerk,Squat Jerk,100.0,"same name, one side has no equipment"
+free-exercise-db,Squat_with_Bands,Squat with Bands,band barbell,band-squat,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Squat_with_Plate_Movers,Squat with Plate Movers,barbell plate,plate-squat-movers,,,,equipment in the name contradicts the source's equipment
+free-exercise-db,Standing_Barbell_Calf_Raise,Standing Barbell Calf Raise,barbell,barbell-standing-calf-raise,barbell-calf-raise,Calf Raise – Barbell,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Standing_Barbell_Press_Behind_Neck,Standing Barbell Press Behind Neck,barbell,barbell-standing-press-behind-neck,barbell-behind-neck-press,Behind the Neck Press – Barbell,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Standing_Biceps_Cable_Curl,Standing Biceps Cable Curl,cable,cable-standing-biceps-curl,cable-biceps-curl,Biceps Curl With Cable,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Standing_Calf_Raises,Standing Calf Raises,machine,machine-standing-calf-raise,machine-calf-raise,Calf Raise – Machine,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Standing_Dumbbell_Calf_Raise,Standing Dumbbell Calf Raise,dumbbell,dumbbell-standing-calf-raise,standing-calf-raise,Standing Calf Raises,100.0,"same name, one side has no equipment"
+free-exercise-db,Standing_Dumbbell_Triceps_Extension,Standing Dumbbell Triceps Extension,dumbbell,dumbbell-standing-triceps-extension,dumbbell-triceps-extension,Dumbbell Triceps Extension,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Standing_Dumbbell_Upright_Row,Standing Dumbbell Upright Row,dumbbell,dumbbell-standing-upright-row,dumbbell-upright-row,Dumbbell upright-row,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Standing_Leg_Curl,Standing Leg Curl,machine,machine-standing-leg-curl,leg-curl-standing,Leg Curls (standing),100.0,"same name, one side has no equipment"
+free-exercise-db,Standing_One-Arm_Cable_Curl,Standing One-Arm Cable Curl,cable,cable-standing-one-arm-curl,cable-one-handed-standing-chest-fly,One-Handed Standing Chest Fly – Cable,88.9,extra words (token_sort_ratio >= 85)
+free-exercise-db,Standing_Overhead_Barbell_Triceps_Extension,Standing Overhead Barbell Triceps Extension,barbell,barbell-standing-overhead-triceps-extension,barbell-overhead-tricep-extension,Overhead Tricep Extension – Barbell,100.0,"differs only by a default-form word (bent-over, standing)"
+free-exercise-db,Sumo_Deadlift_with_Bands,Sumo Deadlift with Bands,band barbell,band-sumo-deadlift,sumo-deadlift,Sumo Deadlift,100.0,"same name, one side has no equipment"
+free-exercise-db,Tire_Flip,Tire Flip,other,tire-flip-2,tire-flip,Tire Flip,100.0,"same name, one side has no equipment"
+free-exercise-db,Toe_Touchers,Toe Touchers,bodyweight,toe-touchers,toe-touch,Toe Touch,85.7,extra words (token_sort_ratio >= 85)
+free-exercise-db,Wide-Grip_Lat_Pulldown,Wide-Grip Lat Pulldown,cable,cable-wide-grip-lat-pulldown,lat-pulldown-wide-grip,Lat Pulldown (Wide Grip),100.0,"same name, one side has no equipment"
+free-exercise-db,Wide-Grip_Rear_Pull-Up,Wide-Grip Rear Pull-Up,bodyweight,wide-grip-rear-pull-up,pull-up-wide-grip,Pull-Ups (Wide Grip),85.7,extra words (token_sort_ratio >= 85)
+free-exercise-db,Windmills,Windmills,(unknown),windmill,kettlebell-windmill,Kettlebell Windmill,100.0,"same name, one side has no equipment"
+longhaul-fitness,00535621-681b-4765-9b4f-ca82dc4df55a,Standing External Shoulder Rotation – Dumbbell,dumbbell,dumbbell-standing-external-shoulder-rotation,dumbbell-shoulder-external-rotation,Shoulder External Rotation with Dumbbell,100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,04f4ff32-ec03-4905-99a7-d669ff221de4,Front Squat,(unknown),front-squat,barbell-front-squat,Front Squats,100.0,"same name, one side has no equipment"
+longhaul-fitness,0641b6f6-8ef5-4120-907c-c3352d801432,Inverted Row,(unknown),inverted-row-2,inverted-row,Inverted Rows,100.0,"same name, one side has no equipment"
+longhaul-fitness,0b1665ab-19bc-4c97-8b83-bcebf1af3362,Jump Squat – Bodyweight,bodyweight,jump-squat-bodyweight,squat-jump,Squat Jumps,100.0,"same name, one side has no equipment"
+longhaul-fitness,1232d6bd-1b97-4c14-b8e6-de4a40cae8db,Pull-Up,(unknown),pull-up-2,pull-up,Pull-ups,100.0,"same name, one side has no equipment"
+longhaul-fitness,224efa9a-0e81-47e5-af0b-8ba0100f0a8e,Squat – Belt,machine,machine-squat-belt,belt-squat,Belt Squat,100.0,"same name, one side has no equipment"
+longhaul-fitness,288eae8d-af58-42db-9f10-16b599e11876,Hack Squat – Barbell,barbell,barbell-hack-squat,hack-squat,Hack Squats,100.0,"same name, one side has no equipment"
+longhaul-fitness,310d636b-c865-4d1a-b50d-50a6d9c0855f,Incline Hex Press – Dumbbell,dumbbell,dumbbell-incline-hex-press,dumbbell-incline-chest-press,Incline Chest Press DB,88.9,extra words (token_sort_ratio >= 85)
+longhaul-fitness,343dc5c0-3ad2-49cd-a576-1a9ad8866caa,Isometric Pull-Up Hold,(unknown),isometric-pull-up-hold,pull-up-isometric-hold,Pull-up Isometric Hold,100.0,"same name, one side has no equipment"
+longhaul-fitness,345ec620-4a66-429b-9804-354b4bbbc37c,Close-Grip Push-Up,(unknown),close-grip-push-up,close-grip-press-up,Close-grip Press-ups,100.0,"same name, one side has no equipment"
+longhaul-fitness,3f982fe0-0602-470f-9ecf-7d5e1616e5a2,Lying Leg Raise,(unknown),lying-leg-raise,leg-raise-lying,"Leg Raises, Lying",100.0,"same name, one side has no equipment"
+longhaul-fitness,430ec1c7-0abe-41e6-b5e8-c127aeb0b43a,Goblet Squat,(unknown),goblet-squat,dumbbell-goblet-squat,Dumbbell Goblet Squat,100.0,"same name, one side has no equipment"
+longhaul-fitness,60576989-d045-492b-82b0-743bb4a3ce62,Plank,(unknown),plank-2,plank,Plank,100.0,"same name, one side has no equipment"
+longhaul-fitness,67cc9514-9294-4772-b7c3-e2ba8e00e92a,Lunge – Dumbbell,dumbbell,dumbbell-lunge,dumbbell-lunge-standing,Dumbbell Lunges Standing,100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,6ce7b2fa-f145-4864-8b6e-12883465557d,Seated Calf Raise,(unknown),seated-calf-raise,dumbbell-seated-calf-raise,Seated Dumbbell Calf Raise,100.0,"same name, one side has no equipment"
+longhaul-fitness,6d2ea3ce-084a-478b-95ce-a5b65ccbe580,Standing Chest Fly – Cable,cable,cable-standing-chest-fly,cable-fly,Fly With Cable,100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,70e0b9fd-a6e8-4e68-b804-2ef6b81dda4f,Crunch,(unknown),crunch-2,crunch,Crunches,100.0,"same name, one side has no equipment"
+longhaul-fitness,719c9b11-bb34-4f4a-95fd-332ee68c1ff7,Close-Grip Bench Press,(unknown),close-grip-bench-press,barbell-bench-press-narrow-grip,Bench Press Narrow Grip,100.0,"same name, one side has no equipment"
+longhaul-fitness,7a971512-0265-490a-8ac0-871c0e1013de,Push-Up,(unknown),push-up-2,push-up,Push-Up,100.0,"same name, one side has no equipment"
+longhaul-fitness,7b853e82-8131-408b-984e-451b74251b81,Push Press – Barbell,barbell,barbell-push-press,push-press,Push Press,100.0,"same name, one side has no equipment"
+longhaul-fitness,842cfbf1-1a71-48c6-832d-3713d3f6811b,Row – Dumbbell,dumbbell,dumbbell-row,dumbbell-bent-over-row,Bent Over Dumbbell Rows,100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,859b2211-9bb0-462b-987c-620a3e37d688,Leg Press – Machine,machine,machine-leg-press,leg-press,Leg Press,100.0,"same name, one side has no equipment"
+longhaul-fitness,8b94a531-c6e9-4eb4-94d2-46352ce849f8,One-Handed Row – Dumbbell,dumbbell,dumbbell-one-handed-row,dumbbell-bent-over-row,Bent Over Dumbbell Rows,100.0,matches only through an alias
+longhaul-fitness,930d9fc3-52c0-4a87-aaee-923552ffbb94,Push Press – Dumbbell,dumbbell,dumbbell-push-press,push-press,Push Press,100.0,"same name, one side has no equipment"
+longhaul-fitness,9d2940c4-6fcc-49ee-b5f6-9d10d90c30aa,Nordic Hamstring Curl,(unknown),nordic-hamstring-curl,nordic-curl,Nordic Curl,88.0,extra words (token_sort_ratio >= 85)
+longhaul-fitness,9d9ac1be-4ef9-43e8-a5a5-d6a4d1e6b5de,Bicycle Crunch,(unknown),bicycle-crunch-2,bicycle-crunch,bicycle crunches,100.0,"same name, one side has no equipment"
+longhaul-fitness,9dad56f9-08a4-4631-845a-d0b7c58fbece,Meadows Row,(unknown),meadows-row,barbell-meadows-row,Meadows Row,100.0,"same name, one side has no equipment"
+longhaul-fitness,a06410b6-c871-45c0-aee5-db6df750f494,Plank - BOSU,bosu,bosu-plank,plank-2,Plank,100.0,"same name, one side has no equipment"
+longhaul-fitness,a189b026-3641-426f-b9a2-d32678ccb99f,Straight Arm Lat Pulldown,(unknown),straight-arm-lat-pulldown,lat-pull-down-straight-back,Lat Pull Down (Straight Back),89.8,extra words (token_sort_ratio >= 85)
+longhaul-fitness,ab0da03b-dd54-4a7f-bb06-40c866dfa88c,One-Legged Glute Bridge,(unknown),one-legged-glute-bridge,single-leg-glute-bridge,Single Leg Glute Bridge,100.0,"same name, one side has no equipment"
+longhaul-fitness,abf570d0-c26e-4865-a2d6-4b40c332b82c,Side Plank,(unknown),side-plank-2,side-plank,Side Plank,100.0,"same name, one side has no equipment"
+longhaul-fitness,af12bb86-3b46-4e79-bd31-71f74b81ded1,Standing Glute Kickback – Machine,machine,machine-standing-glute-kickback,machine-glute-kickback,Glute Kickback (Machine),100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,b0f5eb25-3d65-42fe-b7e4-ba104698bcd9,Chin-Up,(unknown),chin-up-2,chin-up,Chin Up,100.0,"same name, one side has no equipment"
+longhaul-fitness,b8b5d80e-fc68-4e95-84a8-d20cc3a9b95b,Concentration Curl,(unknown),concentration-curl,cable-concentration-curl,Cable Concentration Curl,100.0,"same name, one side has no equipment"
+longhaul-fitness,c46c643f-d109-4720-8ce9-3b5d24b9cdec,Lateral Walk – Band,band,band-lateral-walk,lateral-walk,Lateral Walk,100.0,"same name, one side has no equipment"
+longhaul-fitness,c714ca8d-3df3-439b-bae0-da66423b7daa,Squat – Box,(unknown),squat-box,box-squat,Box squat,100.0,"same name, one side has no equipment"
+longhaul-fitness,c85b6e20-7a2c-45fe-99b2-854f4c2c6fd8,Sumo Deadlift – Barbell,barbell,barbell-sumo-deadlift,sumo-deadlift,Sumo Deadlift,100.0,"same name, one side has no equipment"
+longhaul-fitness,cbbdaae8-7600-456f-b025-12d2050b3765,Hanging Leg Raise,(unknown),hanging-leg-raise-2,hanging-leg-raise,Hanging Leg Raises,100.0,"same name, one side has no equipment"
+longhaul-fitness,cbc3639e-776d-43ec-bd98-dd0df647aed6,Standing Cable Leg Curl,cable,cable-standing-leg-curl,leg-curl-standing,Leg Curls (standing),100.0,"same name, one side has no equipment"
+longhaul-fitness,d0344102-ed3a-43bd-a786-27d4fbcba2f3,Push-Up – Medicine Ball,medicine_ball,medicine-ball-push-up,push-up-2,Push-Up,100.0,"same name, one side has no equipment"
+longhaul-fitness,d3fe33ec-cb3b-4a38-bef8-7391da0f9e68,Burpee,(unknown),burpee,bosu-burpee,Burpee – BOSU,100.0,"same name, one side has no equipment"
+longhaul-fitness,d52ab563-adac-47d9-a85a-3593b285e041,Power Clean,(unknown),power-clean,barbell-power-clean,Power Clean,100.0,"same name, one side has no equipment"
+longhaul-fitness,d5349874-565e-4e21-b808-aa3ee10ec357,Clean,(unknown),clean,barbell-clean,Clean,100.0,"same name, one side has no equipment"
+longhaul-fitness,de4cd379-702b-411c-a127-41a7ac78c658,Chest Press – Cable,cable,cable-chest-press,chest-press,Chest Press,100.0,"same name, one side has no equipment"
+longhaul-fitness,e13cf8a4-6b48-4d9e-9a24-a30d5f98d713,Mountain Climbers,(unknown),mountain-climber,bosu-mountain-climber,Mountain Climbers – BOSU,100.0,"same name, one side has no equipment"
+longhaul-fitness,e32f671a-5bb1-4d39-8b51-d21aa62c29bc,Zottman Curl,(unknown),zottman-curl,dumbbell-zottman-curl,Zottman curl,100.0,"same name, one side has no equipment"
+longhaul-fitness,e739a096-130b-4d30-a752-423d43866ec5,Row – Barbell,barbell,barbell-row,barbell-bent-over-rowing,Bent Over Rowing,100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,ea4fe379-e8e5-469d-a9ef-45f1be7c98ac,One-Legged Hip Thrust,(unknown),one-legged-hip-thrust,dumbbell-single-leg-hip-thrust,Dumbbell Single-leg Hip Thrust,100.0,"same name, one side has no equipment"
+longhaul-fitness,eff261cc-68a0-4867-92d2-dc099abf7d99,Lunge – Barbell,barbell,barbell-lunge,barbell-lunge-standing,Barbell Lunges Standing,100.0,"differs only by a default-form word (bent-over, standing)"
+longhaul-fitness,f08b4ec4-b3ee-4c67-adcf-d292f43f1e3e,Hack Squat – Machine,machine,machine-hack-squat,hack-squat,Hack Squats,100.0,"same name, one side has no equipment"
+wger,556,Side Bends on Machine,dumbbell machine,machine-side-bend,,,,equipment in the name contradicts the source's equipment
+wger,907,Handstand Push Up,(unknown),handstand-push-up,handstand-pushup,Handstand Pushup,100.0,"same name, one side has no equipment"
+wger,917,Straight Bar Cable Front Raise,cable ez_bar,cable-straight-bar-front-raise,,,,equipment in the name contradicts the source's equipment
+wger,919,T-Bar row,barbell,barbell-t-bar-row,rowing-t-bar,"Rowing, T-bar",100.0,"same name, one side has no equipment"
+wger,1089,Medicine ball twist,exercise_ball medicine_ball,medicine-ball-twist,,,,equipment in the name contradicts the source's equipment
+wger,1111,Push-Ups | Incline,bodyweight,push-up-incline,incline-push-up,Incline Push up,100.0,"same name, one side has no equipment"
+wger,1185,Triceps Pushdown,(unknown),triceps-pushdown,cable-tricep-pushdown,Tricep Pushdown on Cable,100.0,"same name, one side has no equipment"
+wger,1234,Dumbbell Single-leg Hip Thrust,barbell dumbbell,dumbbell-single-leg-hip-thrust,,,,equipment in the name contradicts the source's equipment
+wger,1278,Dumbbell Chest Press,dumbbell,dumbbell-chest-press,chest-press,Chest Press,100.0,"same name, one side has no equipment"
+wger,1392,Good Morning,bodyweight,good-morning,good-mornings,Good Mornings,100.0,"same name, one side has no equipment"
+wger,1484,Omni Cable Cross-over,cable ez_bar,cable-omni-cross-over,,,,equipment in the name contradicts the source's equipment
+wger,1612,kettlebell sumo deadlift,kettlebell,kettlebell-sumo-deadlift,sumo-deadlift,Sumo Deadlift,100.0,"same name, one side has no equipment"
+wger,1638,Barbell Clean and press,barbell dumbbell,barbell-clean-and-press,,,,equipment in the name contradicts the source's equipment
+wger,1650,Dumbbell Side Bend,dumbbell,dumbbell-side-bend,dumbbell-side-trunk-flexion,Side Dumbbell Trunk Flexion,100.0,matches only through an alias
+wger,1655,Machine Chest Press Exercise,machine,machine-chest-press-exercise,chest-press,Chest Press,100.0,"same name, one side has no equipment"
+wger,1668,One Arm Overhead Cable Tricep Extension,band cable,cable-one-arm-overhead-tricep-extension,,,,equipment in the name contradicts the source's equipment
+wger,1669,Jumping Jacks,bodyweight,jumping-jacks-2,jumping-jacks,Jumping Jacks,100.0,"same name, one side has no equipment"
+wger,1730,Side Lateral Raise (Cable),cable,cable-side-lateral-raise,cable-lateral-row-one-armed,"Lateral Rows on Cable, One Armed",100.0,matches only through an alias
+wger,1749,Seated Triceps Press,(unknown),seated-triceps-press,dumbbell-seated-triceps-press,Seated Triceps Press,100.0,"same name, one side has no equipment"
