@@ -39,6 +39,7 @@ Design: Apple-style, light, accent `#34C759`.
 - `backend/`: Python vision pipeline (pose tracking, rep counting, exercise labels). Teammates' code; do not touch.
 - `world-service/`: separate Python service for multi-camera shared-world tracking (calibration, sync, cross-camera identities, world state, FastAPI + static export). Docs in `world-service/docs/`. `models/` and `out/` are gitignored.
 - `public/world-demo/`: static export of the world-service API for the world map (regenerate with `python -m spottr_world.export`).
+- `exercise-db/`: exercise reference database (exercises -> muscles, German names, pipeline-label aliases) merged from openly licensed sources plus the pipeline's own muscle table. Python + uv; `make build validate` there. Outputs in `exercise-db/dist/` (SQLite, Postgres seed, JSON). See `exercise-db/README.md`.
 - `docs/media/`: README images and videos.
 - `vite.config.ts`: Vite config, plus the dev-only `/api/recap` route (Gemini). It doesn't exist on Vercel; the app falls back to a local recap.
 - `vercel.json`: install/build settings and the SPA rewrite to `index.html`.
