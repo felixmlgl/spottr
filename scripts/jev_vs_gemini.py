@@ -7,6 +7,7 @@ to pick an exercise id. Gemini's answer is read from session.json, so only Jev i
     python3 scripts/jev_vs_gemini.py --dry-run     # print the Jev states, no API call
     ... --images   # send Gemini's own blurred snapshot instead (Jev image support is experimental)
     JEV_MODEL=jev-preview ...   # try Jev 1.14 instead of jev-latest
+    ... --data jev-eval   # clip folders (each with session.json) to read instead of public/demo-data
 """
 import argparse
 import base64
@@ -147,6 +148,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="print states, do not call Jev")
     ap.add_argument("--images", action="store_true", help="send the Gemini snapshot instead of keypoints")
+    ap.add_argument("--data", action="append", type=Path, help="folder of clip outputs (repeatable)")
     args = ap.parse_args()
     self_check()
     key = os.environ.get("TYPESAFE_API_KEY")
@@ -154,12 +156,13 @@ def main():
         sys.exit("Set TYPESAFE_API_KEY (console.typesafe.ai/keys) or use --dry-run")
 
     agree = total = tokens = 0
-    for clip in sorted(p for p in DATA.iterdir() if (p / "session.json").exists()):
+    clips = sorted(c for d in (args.data or [DATA]) for c in Path(d).iterdir() if (c / "session.json").exists())
+    for clip in clips:
         session = json.loads((clip / "session.json").read_text())
         frames = json.loads((clip / "overlay.json").read_text())["frames"]
         for person in session["people"]:
             for k, s in enumerate(person["sets"]):
-                if "exercise_source" not in s or not s.get("rep_rest_s"):
+                if not s.get("exercise_source", "").startswith("gemini") or not s.get("rep_rest_s"):
                     continue  # no Gemini label to compare against
                 name = f"{clip.name} P{person['id']} set {k + 1}"
                 assets = None
