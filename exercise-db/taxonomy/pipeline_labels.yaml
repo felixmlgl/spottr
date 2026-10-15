@@ -1,0 +1,89 @@
+# Vision-pipeline labels -> exercise id (hand-maintained). Stored as exercise_aliases with
+# kind = 'pipeline_label' (unique).
+#
+# The classifier (backend/vision/classify.py) outputs an exercise label (backend/vision/exercises.py
+# EXERCISES) and an equipment value. Look up "<label>:<equipment>" first, then "<label>" alone.
+# "<label>:<equipment>" entries also attach the spottr-pipeline source record of that pair to the
+# exercise, so the pipeline's muscle table applies to it. Pairs without a fitting exercise are left out.
+# Where several exercises fit, the one with a start+end image and known equipment is preferred.
+
+labels:
+  # legs
+  squat: barbell-squat
+  squat:barbell: barbell-squat
+  squat:smith_machine: smith-machine-squat
+  deadlift: barbell-deadlift
+  deadlift:barbell: barbell-deadlift
+  romanian_deadlift: barbell-romanian-deadlift
+  romanian_deadlift:barbell: barbell-romanian-deadlift
+  romanian_deadlift:dumbbell: dumbbell-romanian-deadlift
+  lunge: dumbbell-lunge
+  lunge:dumbbell: dumbbell-lunge
+  lunge:barbell: barbell-lunge
+  leg_press: machine-leg-press
+  leg_press:machine: machine-leg-press
+  leg_extension: machine-leg-extension
+  leg_extension:machine: machine-leg-extension
+  leg_curl: machine-lying-leg-curl
+  leg_curl:machine: machine-lying-leg-curl
+  hip_thrust: barbell-hip-thrust
+  hip_thrust:barbell: barbell-hip-thrust
+  hip_thrust:dumbbell: dumbbell-hip-thrust
+  calf_raise: machine-standing-calf-raise
+  calf_raise:machine: machine-standing-calf-raise
+  calf_raise:barbell: barbell-standing-calf-raise
+  # chest
+  bench_press: barbell-bench-press
+  bench_press:barbell: barbell-bench-press
+  bench_press:dumbbell: dumbbell-bench-press
+  incline_press: barbell-incline-bench-press
+  incline_press:barbell: barbell-incline-bench-press
+  incline_press:dumbbell: dumbbell-incline-bench-press
+  push_up: push-up
+  push_up:bodyweight: push-up
+  chest_fly: dumbbell-fly
+  chest_fly:dumbbell: dumbbell-fly
+  chest_fly:cable: cable-fly
+  chest_fly:machine: machine-butterfly
+  dip: dip-triceps-version
+  dip:bodyweight: dip-triceps-version
+  # shoulders
+  shoulder_press: barbell-shoulder-press
+  shoulder_press:barbell: barbell-shoulder-press
+  shoulder_press:dumbbell: dumbbell-shoulder-press
+  shoulder_press:machine: machine-leverage-shoulder-press
+  lateral_raise: dumbbell-lateral-raise
+  lateral_raise:dumbbell: dumbbell-lateral-raise
+  lateral_raise:machine: machine-side-lateral-raise
+  rear_delt_fly: dumbbell-reverse-fly
+  rear_delt_fly:dumbbell: dumbbell-reverse-fly
+  rear_delt_fly:machine: machine-reverse-fly
+  rear_delt_fly:cable: cable-rear-delt-fly
+  shrug: barbell-shrug
+  shrug:barbell: barbell-shrug
+  shrug:dumbbell: dumbbell-shrug
+  # arms
+  bicep_curl: dumbbell-biceps-curl
+  bicep_curl:dumbbell: dumbbell-biceps-curl
+  bicep_curl:barbell: barbell-biceps-curl
+  bicep_curl:cable: cable-standing-biceps-curl
+  tricep_extension: cable-tricep-pushdown
+  tricep_extension:cable: cable-tricep-pushdown
+  tricep_extension:dumbbell: dumbbell-triceps-extension
+  tricep_extension:barbell: barbell-triceps-extension
+  # back
+  lat_pulldown: cable-wide-grip-lat-pulldown
+  lat_pulldown:cable: cable-wide-grip-lat-pulldown
+  pull_up: pull-up
+  pull_up:bodyweight: pull-up
+  seated_row: cable-seated-row
+  seated_row:cable: cable-seated-row
+  seated_row:machine: machine-seated-row
+  bent_over_row: barbell-bent-over-rowing
+  bent_over_row:barbell: barbell-bent-over-rowing
+  bent_over_row:dumbbell: dumbbell-bent-over-two-row
+  # core
+  crunch: crunch
+  crunch:bodyweight: crunch
+  crunch:cable: cable-crunch
+  crunch:machine: machine-crunch

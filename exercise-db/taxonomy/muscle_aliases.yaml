@@ -1,0 +1,95 @@
+# Raw muscle name per source (lowercased, as found in the source) -> muscle id from muscles.yaml.
+# The build fails if a source record uses a raw name that is not listed here.
+#
+# A raw name maps to a group when the source means the whole group:
+# - free-exercise-db only uses group-level names.
+# - wger: whole muscles that our taxonomy splits into heads/parts map to the group
+#   (pectoralis major -> chest, quadriceps femoris -> quads, trapezius -> traps).
+#   wger also has only one muscle for some regions and uses it for all work there; wger's own
+#   common name for it is the group name (Anterior deltoid = "Shoulders", Biceps femoris =
+#   "Hamstrings", Gluteus maximus = "Glutes"). Lateral raises and rear-delt flys are tagged
+#   "Anterior deltoid", leg curls "Biceps femoris", so these map to the group as well.
+
+free-exercise-db:
+  abdominals: abs
+  abductors: abductors
+  adductors: adductors
+  biceps: biceps
+  calves: calves
+  chest: chest
+  forearms: forearms
+  glutes: glutes
+  hamstrings: hamstrings
+  lats: lats
+  lower back: lower_back
+  middle back: upper_back
+  neck: neck
+  quadriceps: quads
+  shoulders: shoulders
+  traps: traps
+  triceps: triceps
+
+wger:
+  anterior deltoid: shoulders
+  biceps brachii: biceps_brachii
+  biceps femoris: hamstrings
+  brachialis: brachialis
+  erector spinae: erector_spinae
+  gastrocnemius: gastrocnemius
+  gluteus maximus: glutes
+  latissimus dorsi: latissimus_dorsi
+  obliquus externus abdominis: external_oblique
+  pectoralis major: chest
+  quadriceps femoris: quads
+  rectus abdominis: rectus_abdominis
+  serratus anterior: serratus_anterior
+  soleus: soleus
+  trapezius: traps
+  triceps brachii: triceps_brachii
+
+# longhaul-fitness: mostly group-level names; deltoid heads, rotator cuff and forearm sides are
+# specific. "rotator cuff - back" = external rotators (infraspinatus, teres minor) -> infraspinatus;
+# "rotator cuff - front" = internal rotator -> subscapularis; inner/outer thigh = adductors/abductors.
+longhaul-fitness:
+  abdominal: abs
+  bicep: biceps
+  calf: calves
+  chest: chest
+  forearm - inner: wrist_flexors
+  forearm - outer: wrist_extensors
+  glute: glutes
+  hamstring: hamstrings
+  lat: lats
+  lower back: lower_back
+  oblique: obliques
+  quad: quads
+  rotator cuff - back: infraspinatus
+  rotator cuff - front: subscapularis
+  shoulder - back: posterior_deltoid
+  shoulder - front: anterior_deltoid
+  shoulder - side: lateral_deltoid
+  thigh - inner: adductors
+  thigh - outer: abductors
+  trap: traps
+  tricep: triceps
+
+# Muscle ids of the vision pipeline (backend/vision/exercises.py MUSCLES).
+spottr-pipeline:
+  chest: chest
+  front_delts: anterior_deltoid
+  side_delts: lateral_deltoid
+  rear_delts: posterior_deltoid
+  traps: traps
+  lats: lats
+  upper_back: upper_back
+  lower_back: lower_back
+  biceps: biceps
+  triceps: triceps
+  forearms: forearms
+  abs: abs
+  obliques: obliques
+  glutes: glutes
+  quads: quads
+  hamstrings: hamstrings
+  calves: calves
+  adductors: adductors

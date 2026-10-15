@@ -1,0 +1,61 @@
+# Explicit rules for exercises.movement_pattern and exercises.laterality (hand-maintained).
+#
+# Rules run on the canonical name tokens (see name_rules.yaml, e.g. "Pull-Ups" -> pullup) of the
+# exercise's display name. First matching rule wins. A rule matches when all given conditions hold:
+#   any:       at least one of these tokens is in the name
+#   all:       every one of these tokens is in the name
+#   none:      none of these tokens is in the name
+#   category:  exercises.category is one of these
+#   mechanic:  exercises.mechanic equals this
+#   equipment: the exercise has at least one of these equipment ids
+# A rule whose result is null stops the search and leaves the field NULL.
+# Anything no rule matches stays NULL: we don't guess.
+
+movement_pattern:
+  # No loaded movement pattern for stretches and mobility drills.
+  - {pattern: null, category: [stretching, mobility]}
+  # Full-body Olympic / combination lifts mix several patterns.
+  - {pattern: null, any: [clean, snatch, jerk, thruster, burpee, getup]}
+  - {pattern: carry, any: [farmerswalk, carry, yoke]}
+  - {pattern: anti_rotation, any: [pallofpress]}
+  - {pattern: anti_rotation, all: [anti, rotation]}
+  - {pattern: rotation, any: [russiantwist, woodchop]}
+  - {pattern: rotation, any: [rotation, twist], category: [strength]}
+  - {pattern: lunge, any: [lunge, splitsquat, stepup, bulgarian]}
+  - {pattern: squat, any: [squat, legpress, pistol], none: [calfraise]}
+  - {pattern: hinge, any: [deadlift, goodmorning, hipthrust, glutebridge, backextension, pullthrough]}
+  - {pattern: hinge, any: [swing], equipment: [kettlebell, dumbbell]}
+  - {pattern: elbow_flexion, any: [curl], none: [legcurl, wrist, nordic, leg, glute, hamstring, crunch, situp, toe]}
+  - {pattern: elbow_extension, any: [skullcrusher, pushdown]}
+  - {pattern: elbow_extension, all: [triceps, extension]}
+  - {pattern: elbow_extension, all: [triceps, kickback]}
+  - {pattern: elbow_extension, all: [french, press]}
+  - {pattern: elbow_extension, all: [tate, press]}
+  - {pattern: elbow_extension, all: [jm, press]}
+  - {pattern: vertical_pull, any: [pullup, chinup, pulldown, latpulldown, muscleup, uprightrow]}
+  - {pattern: horizontal_pull, any: [row, facepull], category: [strength, strongman]}
+  - {pattern: vertical_push, all: [overhead, press]}
+  - {pattern: vertical_push, all: [push, press]}
+  - {pattern: vertical_push, all: [arnold, press]}
+  - {pattern: vertical_push, all: [handstand, pushup]}
+  - {pattern: vertical_push, all: [pike, pushup]}
+  - {pattern: horizontal_push, any: [pushup]}
+  - {pattern: horizontal_push, any: [benchpress]}
+  - {pattern: horizontal_push, all: [chest, press]}
+  - {pattern: horizontal_push, all: [floor, press]}
+  - {pattern: isolation_other, any: [lateralraise, frontraise, fly, legextension, legcurl, calfraise, shrug, reardelt, butterfly]}
+  - {pattern: isolation_other, all: [pec, deck]}
+  - {pattern: isolation_other, all: [wrist, curl]}
+  - {pattern: locomotion, any: [run, running, jog, jogging, sprint, walk, walking, crawl, skip, skipping, treadmill, cycling, bike, bicycling, elliptical, stairmaster], category: [cardio, plyometrics, strongman]}
+  # Isolation exercises the source marks as such, without a more specific pattern above.
+  - {pattern: isolation_other, mechanic: isolation, category: [strength]}
+
+laterality:
+  - {laterality: alternating, any: [alternating]}
+  - {laterality: alternating, all: [walking, lunge]}
+  - {laterality: unilateral, any: [singlearm, singleleg, unilateral, pistol, splitsquat, bulgarian, stepup]}
+  # Other lunges: one leg at a time, but the sources don't say whether sides alternate.
+  - {laterality: null, any: [lunge]}
+  # Barbell-type implements are held with both hands.
+  - {laterality: bilateral, equipment: [barbell, ez_bar, trap_bar, smith_machine]}
+  - {laterality: bilateral, any: [pullup, chinup, dip, pushup, muscleup, latpulldown, hipthrust, glutebridge, deadlift, squat, legpress, situp, crunch, plank, shrug, facepull]}

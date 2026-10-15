@@ -1,0 +1,101 @@
+# Build configuration.
+
+# Sources that are ingested, in priority order. Priority decides which record supplies an
+# exercise's display name, category, mechanic, force and level when sources disagree.
+# A folder under sources/ that is not listed here is not ingested.
+sources:
+  - wger
+  - longhaul-fitness
+  - free-exercise-db
+  - spottr-pipeline
+
+# Sources ingested on the user's explicit decision (2026-10-15) although their provenance is
+# disputed. free-exercise-db appears to be scraped from bodybuilding.com (sources/free-exercise-db/
+# PROVENANCE.md). Consequences: its instruction texts (copied word for word) are not used, its images
+# rank after openly licensed ones and are never committed (media/ is gitignored), and the build
+# report and dist/NOTICE.md flag it.
+disputed_sources: [free-exercise-db]
+
+# Sources whose record ids are vision-pipeline labels: their records attach to the exercise that
+# taxonomy/pipeline_labels.yaml maps the label to (match_method 'manual'), not by name.
+label_sources: [spottr-pipeline]
+
+# Reviewed sources whose muscle list is final for the exercises they cover (instead of the
+# majority vote). Other sources' claims stay in exercise_muscle_evidence and lower `confidence`.
+# spottr-pipeline is the team's own table behind the app's heat map; it fixes clearly wrong
+# source data on the exercises the camera recognizes (e.g. wger's deadlift: lats primary,
+# no hamstrings or lower back).
+authoritative_sources: [spottr-pipeline]
+
+# Adapters that exist but are deliberately not ingested (listed in the build report).
+excluded_sources: {}
+
+# Licenses we accept (SPDX ids, prefix match: "CC-BY-SA" accepts "CC-BY-SA-3.0" and "-4.0").
+# LicenseRef-Spottr-Internal: Spottr's own data (no third-party rights).
+accepted_licenses: [CC0, Unlicense, PDDL, MIT, Apache-2.0, BSD, CC-BY, CC-BY-SA, ODbL, LicenseRef-Spottr-Internal]
+
+# Lower = more permissive. Instructions are taken from the most permissive source that has them.
+license_rank:
+  LicenseRef-Spottr-Internal: 0
+  CC0: 0
+  Unlicense: 0
+  PDDL: 0
+  MIT: 1
+  BSD: 1
+  Apache-2.0: 1
+  CC-BY: 2
+  ODbL: 3
+  CC-BY-SA: 3
+
+# exercise_muscles.weight per resolved role.
+role_weights:
+  primary: 1.0
+  secondary: 0.5
+  stabilizer: 0.25
+
+# Variation words that usually describe the default form of an exercise ("Bent Over Rowing" vs
+# "Row", "Standing Bicep Curl" vs "Biceps Curl"): a pair differing only by these goes to the review
+# queue instead of becoming a variation.
+default_form_modifiers: [bentover, standing]
+
+# rapidfuzz token_set_ratio bands.
+fuzzy:
+  auto_merge: 95
+  review: 85
+
+# Raw source category -> exercises.category. Matched case-insensitively.
+# wger's categories are body parts, not exercise types, so they map to `strength` (plus
+# `cardio`); category_name_rules below catch stretches by name.
+categories:
+  free-exercise-db:
+    strength: strength
+    powerlifting: strength
+    olympic weightlifting: olympic
+    strongman: strongman
+    plyometrics: plyometrics
+    stretching: stretching
+    cardio: cardio
+  wger:
+    abs: strength
+    arms: strength
+    back: strength
+    calves: strength
+    chest: strength
+    legs: strength
+    shoulders: strength
+    cardio: cardio
+  longhaul-fitness:
+    strength: strength
+    flexibility: mobility
+    cardio: cardio
+
+# For sources whose categories are coarse (wger: body parts; longhaul-fitness: "flexibility"): if
+# the canonical name tokens contain the token, the category becomes this value instead.
+category_name_rules:
+  sources: [wger, longhaul-fitness]
+  rules:
+    - {token: stretch, category: stretching}
+    - {token: foamroller, category: mobility}
+    - {token: smr, category: mobility}
+    - {token: jumpingjack, category: cardio}
+    - {token: sphinx, category: stretching}

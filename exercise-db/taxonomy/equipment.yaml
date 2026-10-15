@@ -1,0 +1,141 @@
+# Canonical equipment (hand-maintained).
+#
+# load: true  = load equipment. It is part of the merge key: exercises with different load
+#               equipment are never merged (barbell vs dumbbell bench press).
+# load: false = accessory (bench, mat, pull-up bar). Stored on the exercise, but ignored for
+#               matching, because sources disagree on whether they list it.
+#               A record whose equipment is only accessories counts as `bodyweight` for matching.
+#
+# aliases: raw equipment strings per source (matched case-insensitively). The build fails on an
+# unmapped raw value. Map a raw value to [] (empty list) to say "no equipment information".
+#
+# name_rules work on the canonical name tokens from name_rules.yaml (e.g. "Smith machine" is the
+# single token `smithmachine`), applied in this order:
+#   infer:   load equipment named in the name is added to the record's equipment (it replaces an
+#            uninformative "bodyweight" or "other"). If the source lists a different load
+#            implement than the name, the record goes to the review queue. A record with no
+#            equipment and no implement in its name gets `bodyweight` only if its name says so.
+#   replace: if the name has the token, replace one equipment id with another
+#            (e.g. a Smith machine exercise listed as `machine` becomes `smith_machine`).
+
+equipment:
+  - {id: barbell,       name_en: Barbell,          name_de: Langhantel,        load: true}
+  - {id: ez_bar,        name_en: EZ bar,           name_de: SZ-Stange,         load: true}
+  - {id: trap_bar,      name_en: Trap bar,         name_de: Trap-Bar,          load: true}
+  - {id: dumbbell,      name_en: Dumbbell,         name_de: Kurzhantel,        load: true}
+  - {id: kettlebell,    name_en: Kettlebell,       name_de: Kettlebell,        load: true}
+  - {id: cable,         name_en: Cable,            name_de: Kabelzug,          load: true}
+  - {id: machine,       name_en: Machine,          name_de: Maschine,          load: true}
+  - {id: smith_machine, name_en: Smith machine,    name_de: Multipresse,       load: true}
+  - {id: plate,         name_en: Weight plate,     name_de: Hantelscheibe,     load: true}
+  - {id: band,          name_en: Resistance band,  name_de: Widerstandsband,   load: true}
+  - {id: medicine_ball, name_en: Medicine ball,    name_de: Medizinball,       load: true}
+  - {id: exercise_ball, name_en: Exercise ball,    name_de: Gymnastikball,     load: true}
+  - {id: foam_roller,   name_en: Foam roller,      name_de: Faszienrolle,      load: true}
+  - {id: bosu,          name_en: BOSU ball,        name_de: BOSU-Ball,         load: true}
+  - {id: bodyweight,    name_en: Bodyweight,       name_de: Körpergewicht,     load: true}
+  - {id: other,         name_en: Other,            name_de: Sonstiges,         load: true}
+  - {id: bench,         name_en: Bench,            name_de: Hantelbank,        load: false}
+  - {id: incline_bench, name_en: Incline bench,    name_de: Schrägbank,        load: false}
+  - {id: pull_up_bar,   name_en: Pull-up bar,      name_de: Klimmzugstange,    load: false}
+  - {id: gym_mat,       name_en: Gym mat,          name_de: Gymnastikmatte,    load: false}
+  - {id: rings,         name_en: Gymnastic rings,  name_de: Turnringe,         load: false}
+
+aliases:
+  free-exercise-db:
+    barbell: [barbell]
+    dumbbell: [dumbbell]
+    kettlebells: [kettlebell]
+    cable: [cable]
+    machine: [machine]
+    bands: [band]
+    medicine ball: [medicine_ball]
+    exercise ball: [exercise_ball]
+    foam roll: [foam_roller]
+    e-z curl bar: [ez_bar]
+    body only: [bodyweight]
+    other: [other]
+  wger:
+    barbell: [barbell]
+    sz-bar: [ez_bar]
+    dumbbell: [dumbbell]
+    kettlebell: [kettlebell]
+    cable machine: [cable]
+    resistance band: [band]
+    swiss ball: [exercise_ball]
+    none (bodyweight exercise): [bodyweight]
+    bench: [bench]
+    incline bench: [incline_bench]
+    pull-up bar: [pull_up_bar]
+    gym mat: [gym_mat]
+  longhaul-fitness:   # the name suffix after " – "
+    barbell: [barbell]
+    fat bar: [barbell]
+    t-bar: [barbell]
+    landmine: [barbell]
+    trap bar: [trap_bar]
+    trap bar high handles: [trap_bar]
+    trap bar low handles: [trap_bar]
+    dumbbell: [dumbbell]
+    hand weights: [dumbbell]
+    kettlebell: [kettlebell]
+    double kettlebell: [kettlebell]
+    cable: [cable]
+    cable with rope: [cable]
+    cable with bar: [cable]
+    rope: []                 # cable attachment; the name says "Cable"
+    machine: [machine]
+    leg press machine: [machine]
+    belt: [machine]          # belt squat machine
+    smith machine: [smith_machine]
+    band: [band]
+    medicine ball: [medicine_ball]
+    stability ball: [exercise_ball]
+    plate: [plate]
+    bosu: [bosu]
+    foam roller: [foam_roller]
+    bodyweight: [bodyweight]
+    bar: [bodyweight]        # dip / hang bar; a "Cable Curl – Bar" gets cable from its name
+    rings: [rings]
+    ring: [rings]
+    feet in rings: [rings]
+    hands in rings: [rings]
+    bench: [bench]
+    box: []
+    lacrosse ball: [other]
+    dowel: [other]
+    yoga block: [other]
+    pillow: [other]
+  spottr-pipeline:
+    barbell: [barbell]
+    dumbbell: [dumbbell]
+    cable: [cable]
+    machine: [machine]
+    smith_machine: [smith_machine]
+    kettlebell: [kettlebell]
+    bodyweight: [bodyweight]
+    other: [other]
+
+name_rules:
+  infer:
+    smithmachine: smith_machine
+    trapbar: trap_bar
+    ezbar: ez_bar
+    barbell: barbell
+    dumbbell: dumbbell
+    kettlebell: kettlebell
+    cable: cable
+    band: band
+    medicineball: medicine_ball
+    exerciseball: exercise_ball
+    machine: machine
+    foamroller: foam_roller
+    plate: plate
+    bosu: bosu
+    bodyweight: bodyweight
+  replace:
+    - {token: smithmachine, from: machine, to: smith_machine}
+    - {token: smithmachine, from: barbell, to: smith_machine}
+    - {token: trapbar, from: barbell, to: trap_bar}
+    - {token: trapbar, from: other, to: trap_bar}
+    - {token: ezbar, from: barbell, to: ez_bar}

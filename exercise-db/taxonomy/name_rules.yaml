@@ -1,0 +1,301 @@
+# Exercise-name normalization (hand-maintained). Used for the merge key, fuzzy matching,
+# variation detection and the movement-pattern / laterality rules.
+#
+# Order: lowercase, accents stripped, "&" -> "and", punctuation -> space, then
+#   phrases (multi-word, longest first) -> abbreviations (single token) -> plurals -> phrases again,
+#   then for the match key: filler and equipment tokens dropped, tokens sorted.
+
+# Multi-word phrases -> one canonical token (or phrase). Hyphens are already spaces here.
+phrases:
+  e z curl bar: ezbar
+  ez curl bar: ezbar
+  e z bar: ezbar
+  ez bar: ezbar
+  sz bar: ezbar
+  trap bar: trapbar
+  hex bar: trapbar
+  smith machine: smithmachine
+  smith: smithmachine
+  multi press: smithmachine
+  multipress: smithmachine
+  foam roller: foamroller
+  foam roll: foamroller
+  foam rolling: foamroller
+  medicine ball: medicineball
+  exercise ball: exerciseball
+  swiss ball: exerciseball
+  stability ball: exerciseball
+  resistance band: band
+  iliotibial band: itband
+  it band: itband
+  body weight: bodyweight
+  pull up: pullup
+  pull ups: pullup
+  chin up: chinup
+  chin ups: chinup
+  push up: pushup
+  push ups: pushup
+  press up: pushup
+  press ups: pushup
+  sit up: situp
+  sit ups: situp
+  step up: stepup
+  step ups: stepup
+  muscle up: muscleup
+  pull down: pulldown
+  pull downs: pulldown
+  push down: pushdown
+  push downs: pushdown
+  press down: pushdown
+  pressdown: pushdown
+  bent over: bentover
+  rowing machine: rowingmachine
+  single arm: singlearm
+  one arm: singlearm
+  1 arm: singlearm
+  single handed: singlearm
+  one handed: singlearm
+  single leg: singleleg
+  single legged: singleleg
+  one leg: singleleg
+  one legged: singleleg
+  1 leg: singleleg
+  close grip: closegrip
+  narrow grip: closegrip
+  close hand: closegrip
+  wide grip: widegrip
+  reverse grip: reversegrip
+  underhand grip: reversegrip
+  neutral grip: neutralgrip
+  stiff leg: stiffleg
+  stiff legged: stiffleg
+  straight leg: stiffleg
+  straight legged: stiffleg
+  good morning: goodmorning
+  good mornings: goodmorning
+  skull crusher: skullcrusher
+  skull crushers: skullcrusher
+  skullcrushers: skullcrusher
+  medium grip: ""
+  military press: overhead press
+  shoulder press: overhead press
+  bench press: benchpress
+  bench presses: benchpress
+  incline press: incline benchpress
+  decline press: decline benchpress
+  incline bench: incline
+  decline bench: decline
+  flat bench: ""
+  cross over: crossover
+  wide stance: widestance
+  narrow stance: closestance
+  close stance: closestance
+  biceps curl: curl
+  bicep curl: curl
+  calf raise: calfraise
+  calf raises: calfraise
+  calve raise: calfraise
+  calves raise: calfraise
+  lateral raise: lateralraise
+  lateral raises: lateralraise
+  side lateral raise: lateralraise
+  side raise: lateralraise
+  side raises: lateralraise
+  side lateralraise: lateralraise
+  chest fly: fly
+  front raise: frontraise
+  front raises: frontraise
+  leg raise: legraise
+  leg raises: legraise
+  rear delt: reardelt
+  rear deltoid: reardelt
+  reverse fly: reardelt fly
+  reverse flye: reardelt fly
+  reverse flyes: reardelt fly
+  hip thrust: hipthrust
+  hip thrusts: hipthrust
+  glute bridge: glutebridge
+  glute bridges: glutebridge
+  face pull: facepull
+  face pulls: facepull
+  farmers walk: farmerswalk
+  farmer walk: farmerswalk
+  farmers carry: farmerswalk
+  farmer s walk: farmerswalk
+  jumping jack: jumpingjack
+  jumping jacks: jumpingjack
+  mountain climber: mountainclimber
+  mountain climbers: mountainclimber
+  russian twist: russiantwist
+  russian twists: russiantwist
+  wood chop: woodchop
+  wood chopper: woodchop
+  woodchopper: woodchop
+  back extension: backextension
+  back extensions: backextension
+  hyper extension: backextension
+  hyperextension: backextension
+  hyperextensions: backextension
+  leg press: legpress
+  leg extension: legextension
+  leg extensions: legextension
+  leg curl: legcurl
+  leg curls: legcurl
+  hamstring curl: legcurl
+  hamstring curls: legcurl
+  lat pulldown: latpulldown
+  lat pull down: latpulldown
+  upright row: uprightrow
+  upright rows: uprightrow
+  split squat: splitsquat
+  split squats: splitsquat
+  pallof press: pallofpress
+
+# Single-token abbreviations and spelling variants.
+abbreviations:
+  db: dumbbell
+  dbs: dumbbell
+  bb: barbell
+  kb: kettlebell
+  kbs: kettlebell
+  ez: ezbar
+  rdl: romanian deadlift
+  rdls: romanian deadlift
+  ohp: overhead press
+  sldl: stiffleg deadlift
+  pullups: pullup
+  chinups: chinup
+  pushups: pushup
+  situps: situp
+  stepups: stepup
+  pulldowns: pulldown
+  pushdowns: pushdown
+  flye: fly
+  flyes: fly
+  flys: fly
+  flies: fly
+  dumbell: dumbbell
+  dumbells: dumbbell
+  dumbbells: dumbbell
+  barbells: barbell
+  kettlebells: kettlebell
+  cables: cable
+  machines: machine
+  bands: band
+  alternate: alternating
+  alt: alternating
+  rowing: row
+  hammercurl: hammer curl
+  bicep: biceps
+  tricep: triceps
+
+# Plurals -> singular.
+plurals:
+  curls: curl
+  raises: raise
+  presses: press
+  squats: squat
+  lunges: lunge
+  crunches: crunch
+  extensions: extension
+  rows: row
+  dips: dip
+  shrugs: shrug
+  deadlifts: deadlift
+  kickbacks: kickback
+  thrusts: thrust
+  bridges: bridge
+  swings: swing
+  cleans: clean
+  snatches: snatch
+  jerks: jerk
+  twists: twist
+  rollouts: rollout
+  planks: plank
+  burpees: burpee
+  sprints: sprint
+  jumps: jump
+  hops: hop
+  circles: circle
+  pullovers: pullover
+  crossovers: crossover
+  pulls: pull
+  walks: walk
+  climbers: climber
+  stretches: stretch
+  rotations: rotation
+  shrugs: shrug
+  thrusters: thruster
+  windmills: windmill
+  getups: getup
+  skaters: skater
+  tucks: tuck
+  bends: bend
+  slams: slam
+  kicks: kick
+  wipers: wiper
+  slides: slide
+
+# Dropped from the match key (carry no meaning for identity).
+filler: [the, a, an, with, "on", of, and, to, in, for, at, using, exercise, movement, version,
+         flat, standard, regular, normal, conventional, basic, classic, traditional,
+         variation]
+
+# Tokens that turn an exercise into a variation of another one (variation_of). Two names that
+# differ only by these tokens are never merged; the one without them is the base.
+modifiers: [incline, decline, closegrip, widegrip, reversegrip, neutralgrip, pronated, supinated,
+            singlearm, singleleg, alternating, seated, standing, kneeling, lying, deficit,
+            paused, pause, sumo, hammer, front, romanian, stiffleg, weighted, assisted, banded,
+            behind, neck, rack, partial, isometric, tempo, jumping, jump, reverse, widestance,
+            closestance, overhand, underhand, bentover]
+
+# A trailing " – <equipment>" in a name (longhaul-fitness style, "Dip – Bar") is dropped for matching
+# when the suffix is the record's own equipment value and consists only of equipment tokens and
+# these attachment words. "Calf Raise – Leg Press Machine" keeps its suffix (it names the setup).
+# Words that change the exercise (landmine, t-bar, belt, box, bench, "feet in rings") are not listed.
+suffix_words: [bar, rope, rings, ring, handles, handle, high, low, hand, weights, with]
+
+# Equipment tokens: dropped from the match key, because equipment is a separate part of the key.
+equipment_tokens: [barbell, dumbbell, kettlebell, cable, machine, smithmachine, ezbar, trapbar,
+                   band, medicineball, exerciseball, plate, bodyweight, foamroller, bosu]
+
+# Slugs (permanent exercise ids) are built from the display name of the record that creates the
+# exercise: lowercase ASCII, abbreviations expanded, plurals singularized, equipment words moved to
+# the front (in their slug form), filler dropped; if the name has no equipment word and the record
+# has exactly one load equipment, that equipment is prefixed ("Bench Press" -> barbell-bench-press).
+# Synonyms are NOT applied, so the slug keeps the source's wording.
+slug:
+  words: {benchpress: bench press, pullups: pull up, pushups: push up, chinups: chin up, situps: sit up}
+  plurals: {ups: up, downs: down, outs: out, ins: in}
+  filler: [the, a, an, with, "on", of, using]
+  filler_phrases: [medium grip]
+  # Kept in place, never treated as equipment ("Rowing Machine" is a cardio machine, "IT band" a body part).
+  keep_phrases: [rowing machine, it band, iliotibial band]
+  equipment:
+    smith machine: smith-machine
+    smith: smith-machine
+    multi press: smith-machine
+    multipress: smith-machine
+    foam roller: foam-roller
+    foam roll: foam-roller
+    bosu: bosu
+    plate: plate
+    e z curl bar: ez-bar
+    ez curl bar: ez-bar
+    e z bar: ez-bar
+    ez bar: ez-bar
+    ezbar: ez-bar
+    sz bar: ez-bar
+    trap bar: trap-bar
+    hex bar: trap-bar
+    medicine ball: medicine-ball
+    exercise ball: exercise-ball
+    swiss ball: exercise-ball
+    stability ball: exercise-ball
+    resistance band: band
+    barbell: barbell
+    dumbbell: dumbbell
+    kettlebell: kettlebell
+    cable: cable
+    machine: machine
+    band: band

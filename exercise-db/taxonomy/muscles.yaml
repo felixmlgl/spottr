@@ -1,0 +1,106 @@
+# Two-level muscle taxonomy (hand-maintained).
+#
+# groups: the 19 fixed muscle groups the app shows (volume per muscle group).
+# muscles: specific muscles or muscle heads, each under exactly one group.
+#   Based on wger's anatomical muscle list (https://wger.de/api/v2/muscle/), split further where
+#   the head matters for training (deltoid and pectoralis major heads, trapezius parts).
+#   Where wger names a whole muscle that we split (pectoralis major, quadriceps femoris,
+#   trapezius), muscle_aliases.yaml maps it to the group instead.
+#
+# region: upper | lower | core.  body_view: front | back | both | null (deep muscle, not
+# visible on a body map).
+
+groups:
+  - {id: chest,       name_en: Chest,          name_de: Brust,                  region: upper, body_view: front}
+  - {id: shoulders,   name_en: Shoulders,      name_de: Schultern,              region: upper, body_view: both}
+  - {id: biceps,      name_en: Biceps,         name_de: Bizeps,                 region: upper, body_view: front}
+  - {id: triceps,     name_en: Triceps,        name_de: Trizeps,                region: upper, body_view: back}
+  - {id: forearms,    name_en: Forearms,       name_de: Unterarme,              region: upper, body_view: both}
+  - {id: abs,         name_en: Abs,            name_de: Bauch,                  region: core,  body_view: front}
+  - {id: obliques,    name_en: Obliques,       name_de: Seitliche Bauchmuskeln, region: core,  body_view: front}
+  - {id: lats,        name_en: Lats,           name_de: Latissimus,             region: upper, body_view: back}
+  - {id: upper_back,  name_en: Upper back,     name_de: Oberer Rücken,          region: upper, body_view: back}
+  - {id: traps,       name_en: Traps,          name_de: Trapez,                 region: upper, body_view: both}
+  - {id: lower_back,  name_en: Lower back,     name_de: Unterer Rücken,         region: core,  body_view: back}
+  - {id: glutes,      name_en: Glutes,         name_de: Gesäß,                  region: lower, body_view: back}
+  - {id: hip_flexors, name_en: Hip flexors,    name_de: Hüftbeuger,             region: lower, body_view: front}
+  - {id: quads,       name_en: Quads,          name_de: Quadrizeps,             region: lower, body_view: front}
+  - {id: hamstrings,  name_en: Hamstrings,     name_de: Beinbeuger,             region: lower, body_view: back}
+  - {id: adductors,   name_en: Adductors,      name_de: Adduktoren,             region: lower, body_view: front}
+  - {id: abductors,   name_en: Abductors,      name_de: Abduktoren,             region: lower, body_view: both}
+  - {id: calves,      name_en: Calves,         name_de: Waden,                  region: lower, body_view: back}
+  - {id: neck,        name_en: Neck,           name_de: Nacken,                 region: upper, body_view: both}
+
+muscles:
+  # chest
+  - {id: pectoralis_major_clavicular, parent: chest, name_en: Pectoralis major (clavicular head), name_de: Großer Brustmuskel (Schlüsselbeinanteil), latin_name: "Musculus pectoralis major, pars clavicularis", body_view: front}
+  - {id: pectoralis_major_sternal, parent: chest, name_en: Pectoralis major (sternal head), name_de: Großer Brustmuskel (Brustbeinanteil), latin_name: "Musculus pectoralis major, pars sternocostalis", body_view: front}
+  - {id: pectoralis_minor, parent: chest, name_en: Pectoralis minor, name_de: Kleiner Brustmuskel, latin_name: Musculus pectoralis minor, body_view: null}
+  - {id: serratus_anterior, parent: chest, name_en: Serratus anterior, name_de: Vorderer Sägemuskel, latin_name: Musculus serratus anterior, body_view: front}
+  # shoulders
+  - {id: anterior_deltoid, parent: shoulders, name_en: Anterior deltoid, name_de: Vorderer Deltamuskel, latin_name: "Musculus deltoideus, pars clavicularis", body_view: front}
+  - {id: lateral_deltoid, parent: shoulders, name_en: Lateral deltoid, name_de: Seitlicher Deltamuskel, latin_name: "Musculus deltoideus, pars acromialis", body_view: both}
+  - {id: posterior_deltoid, parent: shoulders, name_en: Posterior deltoid, name_de: Hinterer Deltamuskel, latin_name: "Musculus deltoideus, pars spinalis", body_view: back}
+  - {id: supraspinatus, parent: shoulders, name_en: Supraspinatus, name_de: Obergrätenmuskel, latin_name: Musculus supraspinatus, body_view: back}
+  - {id: infraspinatus, parent: shoulders, name_en: Infraspinatus, name_de: Untergrätenmuskel, latin_name: Musculus infraspinatus, body_view: back}
+  - {id: teres_minor, parent: shoulders, name_en: Teres minor, name_de: Kleiner Rundmuskel, latin_name: Musculus teres minor, body_view: back}
+  - {id: subscapularis, parent: shoulders, name_en: Subscapularis, name_de: Unterschulterblattmuskel, latin_name: Musculus subscapularis, body_view: null}
+  # biceps
+  - {id: biceps_brachii, parent: biceps, name_en: Biceps brachii, name_de: Zweiköpfiger Oberarmmuskel, latin_name: Musculus biceps brachii, body_view: front}
+  - {id: brachialis, parent: biceps, name_en: Brachialis, name_de: Oberarmmuskel, latin_name: Musculus brachialis, body_view: front}
+  # triceps
+  - {id: triceps_brachii, parent: triceps, name_en: Triceps brachii, name_de: Dreiköpfiger Oberarmmuskel, latin_name: Musculus triceps brachii, body_view: back}
+  # forearms
+  - {id: brachioradialis, parent: forearms, name_en: Brachioradialis, name_de: Oberarmspeichenmuskel, latin_name: Musculus brachioradialis, body_view: front}
+  - {id: wrist_flexors, parent: forearms, name_en: Wrist flexors, name_de: Handgelenkbeuger, latin_name: Musculi flexores carpi, body_view: front}
+  - {id: wrist_extensors, parent: forearms, name_en: Wrist extensors, name_de: Handgelenkstrecker, latin_name: Musculi extensores carpi, body_view: back}
+  # abs
+  - {id: rectus_abdominis, parent: abs, name_en: Rectus abdominis, name_de: Gerader Bauchmuskel, latin_name: Musculus rectus abdominis, body_view: front}
+  - {id: transversus_abdominis, parent: abs, name_en: Transversus abdominis, name_de: Querer Bauchmuskel, latin_name: Musculus transversus abdominis, body_view: null}
+  # obliques
+  - {id: external_oblique, parent: obliques, name_en: External oblique, name_de: Äußerer schräger Bauchmuskel, latin_name: Musculus obliquus externus abdominis, body_view: front}
+  - {id: internal_oblique, parent: obliques, name_en: Internal oblique, name_de: Innerer schräger Bauchmuskel, latin_name: Musculus obliquus internus abdominis, body_view: null}
+  # lats
+  - {id: latissimus_dorsi, parent: lats, name_en: Latissimus dorsi, name_de: Breiter Rückenmuskel, latin_name: Musculus latissimus dorsi, body_view: back}
+  - {id: teres_major, parent: lats, name_en: Teres major, name_de: Großer Rundmuskel, latin_name: Musculus teres major, body_view: back}
+  # upper back
+  - {id: rhomboids, parent: upper_back, name_en: Rhomboids, name_de: Rautenmuskeln, latin_name: Musculi rhomboidei, body_view: back}
+  - {id: middle_trapezius, parent: upper_back, name_en: Middle trapezius, name_de: Mittlerer Trapezmuskel, latin_name: "Musculus trapezius, pars transversa", body_view: back}
+  - {id: lower_trapezius, parent: upper_back, name_en: Lower trapezius, name_de: Unterer Trapezmuskel, latin_name: "Musculus trapezius, pars ascendens", body_view: back}
+  # traps
+  - {id: upper_trapezius, parent: traps, name_en: Upper trapezius, name_de: Oberer Trapezmuskel, latin_name: "Musculus trapezius, pars descendens", body_view: both}
+  - {id: levator_scapulae, parent: traps, name_en: Levator scapulae, name_de: Schulterblattheber, latin_name: Musculus levator scapulae, body_view: back}
+  # lower back
+  - {id: erector_spinae, parent: lower_back, name_en: Erector spinae, name_de: Rückenstrecker, latin_name: Musculus erector spinae, body_view: back}
+  - {id: quadratus_lumborum, parent: lower_back, name_en: Quadratus lumborum, name_de: Quadratischer Lendenmuskel, latin_name: Musculus quadratus lumborum, body_view: null}
+  # glutes
+  - {id: gluteus_maximus, parent: glutes, name_en: Gluteus maximus, name_de: Großer Gesäßmuskel, latin_name: Musculus gluteus maximus, body_view: back}
+  - {id: gluteus_medius, parent: glutes, name_en: Gluteus medius, name_de: Mittlerer Gesäßmuskel, latin_name: Musculus gluteus medius, body_view: back}
+  - {id: gluteus_minimus, parent: glutes, name_en: Gluteus minimus, name_de: Kleiner Gesäßmuskel, latin_name: Musculus gluteus minimus, body_view: null}
+  # hip flexors
+  - {id: iliopsoas, parent: hip_flexors, name_en: Iliopsoas, name_de: Lenden-Darmbein-Muskel, latin_name: Musculus iliopsoas, body_view: front}
+  - {id: sartorius, parent: hip_flexors, name_en: Sartorius, name_de: Schneidermuskel, latin_name: Musculus sartorius, body_view: front}
+  # quads
+  - {id: rectus_femoris, parent: quads, name_en: Rectus femoris, name_de: Gerader Schenkelmuskel, latin_name: Musculus rectus femoris, body_view: front}
+  - {id: vastus_lateralis, parent: quads, name_en: Vastus lateralis, name_de: Äußerer Schenkelmuskel, latin_name: Musculus vastus lateralis, body_view: front}
+  - {id: vastus_medialis, parent: quads, name_en: Vastus medialis, name_de: Innerer Schenkelmuskel, latin_name: Musculus vastus medialis, body_view: front}
+  - {id: vastus_intermedius, parent: quads, name_en: Vastus intermedius, name_de: Mittlerer Schenkelmuskel, latin_name: Musculus vastus intermedius, body_view: null}
+  # hamstrings
+  - {id: biceps_femoris, parent: hamstrings, name_en: Biceps femoris, name_de: Zweiköpfiger Schenkelmuskel, latin_name: Musculus biceps femoris, body_view: back}
+  - {id: semitendinosus, parent: hamstrings, name_en: Semitendinosus, name_de: Halbsehnenmuskel, latin_name: Musculus semitendinosus, body_view: back}
+  - {id: semimembranosus, parent: hamstrings, name_en: Semimembranosus, name_de: Plattsehnenmuskel, latin_name: Musculus semimembranosus, body_view: back}
+  # adductors
+  - {id: adductor_magnus, parent: adductors, name_en: Adductor magnus, name_de: Großer Schenkelanzieher, latin_name: Musculus adductor magnus, body_view: both}
+  - {id: adductor_longus, parent: adductors, name_en: Adductor longus, name_de: Langer Schenkelanzieher, latin_name: Musculus adductor longus, body_view: front}
+  - {id: adductor_brevis, parent: adductors, name_en: Adductor brevis, name_de: Kurzer Schenkelanzieher, latin_name: Musculus adductor brevis, body_view: null}
+  - {id: gracilis, parent: adductors, name_en: Gracilis, name_de: Schlankmuskel, latin_name: Musculus gracilis, body_view: front}
+  - {id: pectineus, parent: adductors, name_en: Pectineus, name_de: Kammmuskel, latin_name: Musculus pectineus, body_view: front}
+  # abductors
+  - {id: tensor_fasciae_latae, parent: abductors, name_en: Tensor fasciae latae, name_de: Schenkelbindenspanner, latin_name: Musculus tensor fasciae latae, body_view: front}
+  # calves
+  - {id: gastrocnemius, parent: calves, name_en: Gastrocnemius, name_de: Zwillingswadenmuskel, latin_name: Musculus gastrocnemius, body_view: back}
+  - {id: soleus, parent: calves, name_en: Soleus, name_de: Schollenmuskel, latin_name: Musculus soleus, body_view: back}
+  - {id: tibialis_anterior, parent: calves, name_en: Tibialis anterior, name_de: Vorderer Schienbeinmuskel, latin_name: Musculus tibialis anterior, body_view: front}
+  # neck
+  - {id: sternocleidomastoid, parent: neck, name_en: Sternocleidomastoid, name_de: Kopfwender, latin_name: Musculus sternocleidomastoideus, body_view: front}
+  - {id: splenius, parent: neck, name_en: Splenius, name_de: Riemenmuskel, latin_name: Musculi splenii, body_view: back}
