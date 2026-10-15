@@ -8,6 +8,9 @@ to pick an exercise id. Gemini's answer is read from session.json, so only Jev i
     ... --images   # send Gemini's own blurred snapshot instead (Jev image support is experimental)
     JEV_MODEL=jev-preview ...   # try Jev 1.14 instead of jev-latest
     ... --data jev-eval   # clip folders (each with session.json) to read instead of public/demo-data
+
+A data folder may hold truth.json, {"<clip folder>": "exercise_id" or ["id", "also_ok_id"]}. Clips listed
+there are scored against the truth (Gemini too); other clips only check Jev against Gemini.
 """
 import argparse
 import base64
@@ -155,15 +158,20 @@ def main():
     if not key and not args.dry_run:
         sys.exit("Set TYPESAFE_API_KEY (console.typesafe.ai/keys) or use --dry-run")
 
-    agree = total = tokens = 0
+    jev_ok = total = gem_ok = gem_total = tokens = 0
     clips = sorted(c for d in (args.data or [DATA]) for c in Path(d).iterdir() if (c / "session.json").exists())
     for clip in clips:
+        truth_file = clip.parent / "truth.json"
+        truth = json.loads(truth_file.read_text()).get(clip.name) if truth_file.exists() else None
+        truth = [truth] if isinstance(truth, str) else truth
         session = json.loads((clip / "session.json").read_text())
         frames = json.loads((clip / "overlay.json").read_text())["frames"]
         for person in session["people"]:
             for k, s in enumerate(person["sets"]):
-                if not s.get("exercise_source", "").startswith("gemini") or not s.get("rep_rest_s"):
-                    continue  # no Gemini label to compare against
+                gem = s["exercise"] if s.get("exercise_source", "").startswith("gemini") else None
+                if not (truth or gem) or not s.get("rep_rest_s"):
+                    continue  # nothing to score against
+                ref = truth or [gem]
                 name = f"{clip.name} P{person['id']} set {k + 1}"
                 assets = None
                 if args.images:
@@ -179,7 +187,7 @@ def main():
                         continue
                 if args.dry_run:
                     shown = {**state, "snapshot": s["snapshot"]} if assets else state
-                    print(f"--- {name} (gemini: {s['exercise']})\n{shown}\n")
+                    print(f"--- {name} (truth: {truth}, gemini: {gem})\n{shown}\n")
                     continue
                 try:
                     res = ask_jev(state, key, assets)
@@ -189,14 +197,20 @@ def main():
                 ans = res["answers"]["exercise"]
                 tokens += res.get("usage", {}).get("input_tokens", 0)
                 total += 1
-                agree += ans["choice"] == s["exercise"]
-                print(f"{name}: gemini={s['exercise']} ({s['confidence']})  "
-                      f"jev={ans['choice']} ({ans['confidence']:.2f})  "
-                      f"{'AGREE' if ans['choice'] == s['exercise'] else 'differ'}")
+                jev_ok += ans["choice"] in ref
+                if truth and gem:
+                    gem_total += 1
+                    gem_ok += gem in truth
+                gem_shown = f"{gem} ({s['confidence']})" if gem else "-"
+                print(f"{name}: truth={'/'.join(truth) if truth else '-'}  gemini={gem_shown}  "
+                      f"jev={ans['choice']} ({ans['confidence']:.2f}) {'OK' if ans['choice'] in ref else 'WRONG'}")
                 top = sorted(ans["probabilities"].items(), key=lambda kv: -kv[1])[:3]
                 print("    jev top 3: " + ", ".join(f"{e} {p:.2f}" for e, p in top))
     if total:
-        print(f"\nAgreement: {agree}/{total} sets. Input tokens: {tokens} "
+        print(f"\nJev correct: {jev_ok}/{total} sets (vs truth where known, else vs Gemini)")
+        if gem_total:
+            print(f"Gemini correct: {gem_ok}/{gem_total} sets with a known truth")
+        print(f"Input tokens: {tokens} "
               f"(~{tokens / total:.0f} per set, ${tokens * 0.042e-6:.6f} at $0.042/M)")
 
 
