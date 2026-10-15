@@ -68,6 +68,17 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
       </Link>
     </Section>
 
+    <Section title="Membership">
+      <Row label="Spottr" hint="Free for you, through your gym. Your gym pays for Spottr, not you.">
+        <span className="px-3 py-1 rounded-full bg-[#34C759]/12 text-xs font-semibold text-[#248A3D]">Free</span>
+      </Row>
+      <Row label="AI coach" hint="Coaching built on your logged workouts.">
+        <span className="px-3 py-1 rounded-full bg-white text-xs font-semibold text-[#6E6E73] ring-1 ring-black/[0.06] whitespace-nowrap">
+          Premium · coming later
+        </span>
+      </Row>
+    </Section>
+
     <Section title="Muscle maps">
       <Row label="Body model" hint="The figure used for muscles worked and recovery.">
         <div className="flex items-center p-1 bg-white rounded-full shadow-2xs" role="group" aria-label="Body model">
