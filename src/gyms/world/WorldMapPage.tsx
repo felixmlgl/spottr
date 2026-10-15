@@ -29,6 +29,9 @@ import {
 import type { CameraRange, MetricsPayload, Segment, Timeline, WorldMapConfig, WorldPerson, WorldRange } from './types';
 import { usePlayback } from './usePlayback';
 
+// Presenter aids (talk track, debug overlay) only appear in `npm run dev`, never on the live site
+const SHOW_PRESENTER_TOOLS = import.meta.env.DEV;
+
 const TALK_TRACK =
   'Your cameras already see different parts of the room. Spottr calibrates them to one shared floor map, so they no longer behave like separate cameras. When a member moves through the gym, we maintain one session and one identity across views. This is what lets us understand the workout in the context of the whole gym, not just one camera clip.';
 
@@ -166,14 +169,16 @@ const Hero: React.FC = () => {
             going.
           </p>
         </div>
-        <button
-          onClick={() => setTalk((v) => !v)}
-          className="self-start lg:self-end inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-sm font-medium text-[#1D1D1F] shadow-xs ring-1 ring-black/[0.06] hover:bg-[#FAFAFA] cursor-pointer"
-          aria-expanded={talk}
-        >
-          <MessageSquareQuote className="w-4 h-4 text-[#34C759]" aria-hidden />
-          {talk ? 'Hide talk track' : 'Talk track'}
-        </button>
+        {SHOW_PRESENTER_TOOLS && (
+          <button
+            onClick={() => setTalk((v) => !v)}
+            className="self-start lg:self-end inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-sm font-medium text-[#1D1D1F] shadow-xs ring-1 ring-black/[0.06] hover:bg-[#FAFAFA] cursor-pointer"
+            aria-expanded={talk}
+          >
+            <MessageSquareQuote className="w-4 h-4 text-[#34C759]" aria-hidden />
+            {talk ? 'Hide talk track' : 'Talk track'}
+          </button>
+        )}
       </div>
       <ol className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-6">
         {[
@@ -251,17 +256,19 @@ const Demo: React.FC<{ config: WorldMapConfig; timeline: Timeline; metrics: Metr
                     {s}
                   </span>
                 ))}
-                <button
-                  onClick={() => setDebug((d) => !d)}
-                  aria-pressed={debug}
-                  title="Show local track IDs, global IDs, calibration points and association links"
-                  className={`ml-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold cursor-pointer transition-colors ${
-                    debug ? 'bg-[#1D1D1F] text-white' : 'bg-white text-[#6E6E73] hover:text-[#1D1D1F]'
-                  }`}
-                >
-                  <Bug className="w-3 h-3" aria-hidden />
-                  Debug
-                </button>
+                {SHOW_PRESENTER_TOOLS && (
+                  <button
+                    onClick={() => setDebug((d) => !d)}
+                    aria-pressed={debug}
+                    title="Show local track IDs, global IDs, calibration points and association links"
+                    className={`ml-1 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold cursor-pointer transition-colors ${
+                      debug ? 'bg-[#1D1D1F] text-white' : 'bg-white text-[#6E6E73] hover:text-[#1D1D1F]'
+                    }`}
+                  >
+                    <Bug className="w-3 h-3" aria-hidden />
+                    Debug
+                  </button>
+                )}
               </div>
             </div>
 
