@@ -1,75 +1,11 @@
 /**
  * Summary Service
- * Aggregates ExerciseSession tracks into a WorkoutSummary and provides
- * personalized workout recaps (via server-side Gemini 3.8 Flash or smart local coach).
+ * Workout recaps for the member app (via server-side Gemini or a local fallback).
  */
 
-import { ExerciseSession, WorkoutSummary } from '../types/schema';
-import { MOCK_SESSIONS } from '../mocks/scenarios';
-
-export interface ComparisonMetrics {
-  repsDeltaPercent: number; // e.g. +14%
-  durationDeltaPercent: number; // e.g. +8%
-  paceDescription: string;
-  previousSessionDate: string;
-  highlights: string[];
-}
+import { WorkoutSummary } from '../types/schema';
 
 export class SummaryService {
-  /**
-   * Aggregates individual exercise sessions into a comprehensive WorkoutSummary
-   */
-  public aggregateSessions(
-    personId: string,
-    sessions: ExerciseSession[],
-    totalDurationOverride?: number
-  ): WorkoutSummary {
-    const personSessions = sessions.filter((s) => s.person_id === personId);
-
-    const totalReps = personSessions.reduce((sum, s) => sum + s.rep_count, 0);
-
-    const totalDuration =
-      totalDurationOverride ??
-      personSessions.reduce((maxEnd, s) => Math.max(maxEnd, s.end_time), 0);
-
-    return {
-      person_id: personId,
-      total_duration_s: Math.round(totalDuration),
-      sessions: personSessions,
-      total_reps: totalReps,
-    };
-  }
-
-  /**
-   * Retrieves default scenario session summary
-   */
-  public getScenarioSummary(
-    scenarioId: string,
-    personId: string,
-    durationS?: number
-  ): WorkoutSummary {
-    const sessions = MOCK_SESSIONS[scenarioId] || [];
-    return this.aggregateSessions(personId, sessions, durationS);
-  }
-
-  /**
-   * Compares current workout to historical baseline
-   */
-  public getSessionComparison(summary: WorkoutSummary): ComparisonMetrics {
-    const reps = summary.total_reps;
-    return {
-      repsDeltaPercent: reps > 0 ? 12 : 0,
-      durationDeltaPercent: 5,
-      paceDescription: 'Consistent 3.1s cadence with controlled eccentric lowering',
-      previousSessionDate: '3 days ago (Thursday)',
-      highlights: [
-        `Completed ${reps} total reps with zero missed repetitions recorded by camera`,
-        'Maintained parallel depth on all working sets with strict lockout',
-        'Clean 4.2 sec average rest interval between repetitions',
-      ],
-    };
-  }
-
   /**
    * Generates a 2-3 sentence personalized coach recap.
    * Calls server-side Gemini API (/api/recap) or falls back to smart local sports coach.

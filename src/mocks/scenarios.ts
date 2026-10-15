@@ -127,69 +127,6 @@ export const MOCK_REP_TIMESTAMPS: Record<string, Record<string, number[]>> = {
   },
 };
 
-export const MOCK_SESSIONS: Record<string, ExerciseSession[]> = {
-  'scenario-1': [
-    {
-      person_id: 'person-1',
-      exercise_id: 'squat',
-      exercise_name: 'Barbell Back Squat',
-      start_time: 1.5,
-      end_time: 27.0,
-      rep_count: 8,
-      rep_timestamps: [3.5, 6.4, 9.6, 12.8, 16.0, 19.3, 22.5, 25.8],
-    },
-    {
-      person_id: 'person-2',
-      exercise_id: 'rdl',
-      exercise_name: 'Barbell Romanian Deadlift',
-      start_time: 2.0,
-      end_time: 27.0,
-      rep_count: 5,
-      rep_timestamps: [5.0, 10.2, 15.6, 20.8, 25.5],
-    },
-  ],
-  'scenario-2': [
-    {
-      person_id: 'person-1',
-      exercise_id: 'bicep-curl',
-      exercise_name: 'Dumbbell Bicep Curl',
-      start_time: 1.0,
-      end_time: 31.0,
-      rep_count: 10,
-      rep_timestamps: [3.2, 6.1, 9.0, 12.0, 15.1, 18.2, 21.1, 24.0, 27.2, 30.1],
-    },
-    {
-      person_id: 'person-2',
-      exercise_id: 'lateral-raise',
-      exercise_name: 'Lateral Shoulder Raise',
-      start_time: 2.5,
-      end_time: 29.5,
-      rep_count: 7,
-      rep_timestamps: [4.5, 8.2, 12.1, 16.0, 19.8, 23.9, 27.5],
-    },
-  ],
-  'scenario-3': [
-    {
-      person_id: 'person-1',
-      exercise_id: 'bench-press',
-      exercise_name: 'Barbell Bench Press',
-      start_time: 1.5,
-      end_time: 25.8,
-      rep_count: 8,
-      rep_timestamps: [3.8, 6.7, 9.8, 12.9, 16.1, 19.2, 22.4, 25.1],
-    },
-    {
-      person_id: 'person-2',
-      exercise_id: 'spotter',
-      exercise_name: 'Spotter / Active Rest',
-      start_time: 0,
-      end_time: 26.0,
-      rep_count: 0,
-      rep_timestamps: [],
-    },
-  ],
-};
-
 export interface MockFrameResult {
   skeleton: PoseSkeleton;
   bbox: { x: number; y: number; w: number; h: number };

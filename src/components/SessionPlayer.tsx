@@ -127,7 +127,6 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
     if (videoRef.current) videoRef.current.playbackRate = speed;
   };
 
-
   // Keep the clock in sync with the video (or run an internal timer without one)
   useEffect(() => {
     let animId: number;
