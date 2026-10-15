@@ -33,7 +33,8 @@ export class SummaryService {
   }
 
   /**
-   * Rule-based sports coach generator for instant offline resilience
+   * Rule-based recap when Gemini isn't available. Only states what was counted (exercises, reps, time),
+   * never form or technique: nothing in the pipeline measures those.
    */
   public generateLocalRecap(summary: WorkoutSummary): string {
     const sessionNames = summary.sessions
@@ -42,15 +43,13 @@ export class SummaryService {
       .join(', ');
 
     if (!sessionNames || summary.total_reps === 0) {
-      return `Solid session for Member ${summary.person_id}. You spent ${summary.total_duration_s}s active on the gym floor; stay hydrated and ramp up intensity on your next set!`;
+      return `No sets counted for Member ${summary.person_id} in this clip. You were on the gym floor for ${summary.total_duration_s}s.`;
     }
 
     const durationMins = Math.max(1, Math.round(summary.total_duration_s / 60));
-    return `Great effort! You crushed ${summary.total_reps} clean reps across ${summary.sessions.length} exercise${
+    return `Nice work! ${summary.total_reps} reps across ${summary.sessions.length} set${
       summary.sessions.length > 1 ? 's' : ''
-    } (${sessionNames}) in ${durationMins} min${
-      durationMins > 1 ? 's' : ''
-    }. Your cadence remained solid throughout the eccentric phases with crisp lockout at the peak.`;
+    } (${sessionNames}) in ${durationMins} min. Every rep was counted by the gym camera, so there was nothing to log.`;
   }
 }
 

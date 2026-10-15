@@ -122,31 +122,10 @@ export interface PastWorkout {
   duration_minutes: number;
   total_reps: number;
   exercises: PastWorkoutExercise[];
-  recap: string;
-  suggestion: string;
+  /** AI recap; only today's camera-tracked session has one */
+  recap?: string;
   timeline_points?: { t: number; exercise: string; reps: number }[];
   muscle_load?: Partial<Record<MuscleId, number>>;
-}
-
-export interface GymOccupancyData {
-  current_percent: number;
-  status_label: string; // e.g. "Moderate occupancy"
-  hourly_traffic: { hour: string; percent: number; is_now?: boolean }[];
-  zones: {
-    id: string;
-    name: string;
-    status: 'available' | 'moderate' | 'full';
-    status_text: string;
-    free_units: number;
-    total_units: number;
-  }[];
-}
-
-export interface PersonalBest {
-  exercise: string;
-  value: string;
-  date: string;
-  note: string;
 }
 
 // === Plan, Muscle Map & Recovery Schemas ===

@@ -57,6 +57,10 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
           Welcome back, {MEMBER_PROFILE.name}
         </h1>
         <p className="text-base text-[#6E6E73] mt-2">Your session was logged automatically by the gym cameras.</p>
+        <p className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#F5F5F7] text-xs text-[#6E6E73]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#34C759] shrink-0" />
+          Demo: today is a recorded gym clip run through the real Spottr pipeline. Older history is sample data.
+        </p>
       </div>
 
       {/* Latest session overview: only while it's fresh (today or yesterday) */}
@@ -160,6 +164,16 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
             </BarChart>
           </ResponsiveContainer>
         </div>
+        <p className="text-xs text-[#6E6E73] -mt-2 flex items-center gap-3 flex-wrap">
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-sm bg-[#34C759]" />
+            Today, from the camera clip
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-sm bg-[#A1A1A6]" />
+            Sample history
+          </span>
+        </p>
       </div>
     </div>
   );

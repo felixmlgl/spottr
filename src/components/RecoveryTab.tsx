@@ -125,7 +125,7 @@ export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, hi
 
       <WeeklyPlan plan={plan} onUpdatePlan={onUpdatePlan} />
 
-      <p className="text-xs text-[#86868B] text-center">Recovery estimates are simplified and not medical advice.</p>
+      <p className="text-xs text-[#86868B] text-center">Recovery estimates are simplified and not medical advice. They use today's clip plus the sample history.</p>
     </div>
   );
 };

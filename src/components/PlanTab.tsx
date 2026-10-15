@@ -212,7 +212,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
 
         <p className="text-xs text-[#6E6E73] flex items-center gap-1.5">
           <Camera className="w-3.5 h-3.5 shrink-0" />
-          The gym cameras count your reps as you go, so there's nothing to log.
+          The gym cameras count your reps, so there's nothing to log.
         </p>
       </div>
 
@@ -236,7 +236,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
       </div>
 
       <p className="text-xs text-[#86868B] text-center">
-        Suggestions use simplified recovery estimates and are not medical advice.
+        Suggestions use simplified recovery estimates and are not medical advice. Older workouts are sample data.
       </p>
     </div>
   );
