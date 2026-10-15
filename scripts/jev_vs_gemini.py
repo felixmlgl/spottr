@@ -5,13 +5,16 @@ to pick an exercise id. Gemini's answer is read from session.json, so only Jev i
 
     TYPESAFE_API_KEY=... python3 scripts/jev_vs_gemini.py
     python3 scripts/jev_vs_gemini.py --dry-run     # print the Jev states, no API call
+    ... --images   # send Gemini's own blurred snapshot instead (Jev image support is experimental)
 """
 import argparse
+import base64
 import json
 import math
 import os
 import sys
 import urllib.request
+import uuid
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -95,7 +98,25 @@ def build_state(s, frames, pid):
     )
 
 
-def ask_jev(state, key):
+IMAGE_STATE = (
+    "Three frames from a fixed gym security camera, cropped around one person (their face and all other "
+    "people are blurred on purpose). Left to right: start position, halfway, and furthest point of ONE "
+    "repetition of an exercise they are repeating. Joints moving the most: {joints}."
+)
+
+
+def image_state(s, clip):
+    """Same snapshot + context Gemini got. Returns (state, assets), or None if the snapshot is missing."""
+    snap = clip / s.get("snapshot", "")
+    if not snap.is_file():
+        return None
+    ref = str(uuid.uuid4())
+    state = {"description": IMAGE_STATE.format(joints=", ".join(s["moving_joints"])), "snapshot": ref}
+    data = base64.b64encode(snap.read_bytes()).decode("ascii")
+    return state, {ref: {"type": "image", "format": "jpg", "data_base64": data}}
+
+
+def ask_jev(state, key, assets=None):
     body = {
         "state": state,
         "model": "jev-latest",
@@ -105,8 +126,12 @@ def ask_jev(state, key):
             "criteria": {e: e.replace("_", " ") for e in EXERCISE_IDS},
         }},
     }
-    req = urllib.request.Request(API, json.dumps(body).encode(), {
-        "Authorization": f"Bearer {key}", "Content-Type": "application/json"})
+    headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
+    if assets:
+        body["assets"] = assets
+        body["questions"]["exercise"]["instructions"] = "Which exercise is the person in the centre of `snapshot` doing?"
+        headers["TypeSafe-Danger-Zone-Images"] = "true"
+    req = urllib.request.Request(API, json.dumps(body).encode(), headers)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
 
@@ -120,6 +145,7 @@ def self_check():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="print states, do not call Jev")
+    ap.add_argument("--images", action="store_true", help="send the Gemini snapshot instead of keypoints")
     args = ap.parse_args()
     self_check()
     key = os.environ.get("TYPESAFE_API_KEY")
@@ -135,15 +161,24 @@ def main():
                 if "exercise_source" not in s or not s.get("rep_rest_s"):
                     continue  # no Gemini label to compare against
                 name = f"{clip.name} P{person['id']} set {k + 1}"
-                state = build_state(s, frames, person["id"])
-                if state is None:
-                    print(f"{name}: person not in overlay during rep, skipped")
-                    continue
+                assets = None
+                if args.images:
+                    got = image_state(s, clip)
+                    if got is None:
+                        print(f"{name}: snapshot file missing, skipped")
+                        continue
+                    state, assets = got
+                else:
+                    state = build_state(s, frames, person["id"])
+                    if state is None:
+                        print(f"{name}: person not in overlay during rep, skipped")
+                        continue
                 if args.dry_run:
-                    print(f"--- {name} (gemini: {s['exercise']})\n{state}\n")
+                    shown = {**state, "snapshot": s["snapshot"]} if assets else state
+                    print(f"--- {name} (gemini: {s['exercise']})\n{shown}\n")
                     continue
                 try:
-                    res = ask_jev(state, key)
+                    res = ask_jev(state, key, assets)
                 except Exception as e:  # one bad call shouldn't hide the other results
                     print(f"{name}: Jev failed ({type(e).__name__}: {e})")
                     continue
@@ -154,6 +189,8 @@ def main():
                 print(f"{name}: gemini={s['exercise']} ({s['confidence']})  "
                       f"jev={ans['choice']} ({ans['confidence']:.2f})  "
                       f"{'AGREE' if ans['choice'] == s['exercise'] else 'differ'}")
+                top = sorted(ans["probabilities"].items(), key=lambda kv: -kv[1])[:3]
+                print("    jev top 3: " + ", ".join(f"{e} {p:.2f}" for e, p in top))
     if total:
         print(f"\nAgreement: {agree}/{total} sets. Input tokens: {tokens} "
               f"(~{tokens / total:.0f} per set, ${tokens * 0.042e-6:.6f} at $0.042/M)")
