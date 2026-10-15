@@ -13,6 +13,7 @@ import { Members } from './pages/Members';
 import { Privacy } from './pages/Privacy';
 import { RequestPilot } from './pages/RequestPilot';
 import { WorldMapPage } from './world/WorldMapPage';
+import { NotFoundContent } from '../NotFound';
 
 const PAGES: Record<string, { title: string; component: React.FC }> = {
   '/gyms': { title: 'Spottr for Gyms', component: Landing },
@@ -24,10 +25,11 @@ const PAGES: Record<string, { title: string; component: React.FC }> = {
   '/gyms/pilot': { title: 'Request a pilot · Spottr for Gyms', component: RequestPilot },
 };
 
+const NOT_FOUND = { title: 'Page not found · Spottr for Gyms', component: NotFoundContent };
+
 export const GymsApp: React.FC<{ pathname: string }> = ({ pathname }) => {
-  const normalized = pathname.replace(/\/+$/, '') || '/gyms';
-  const route = PAGES[normalized] ? normalized : '/gyms';
-  const { title, component: Page } = PAGES[route];
+  const route = pathname.replace(/\/+$/, '') || '/gyms';
+  const { title, component: Page } = PAGES[route] ?? NOT_FOUND;
 
   useEffect(() => {
     const previous = document.title;
