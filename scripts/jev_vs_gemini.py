@@ -6,6 +6,7 @@ to pick an exercise id. Gemini's answer is read from session.json, so only Jev i
     TYPESAFE_API_KEY=... python3 scripts/jev_vs_gemini.py
     python3 scripts/jev_vs_gemini.py --dry-run     # print the Jev states, no API call
     ... --images   # send Gemini's own blurred snapshot instead (Jev image support is experimental)
+    JEV_MODEL=jev-preview ...   # try Jev 1.14 instead of jev-latest
 """
 import argparse
 import base64
@@ -119,7 +120,7 @@ def image_state(s, clip):
 def ask_jev(state, key, assets=None):
     body = {
         "state": state,
-        "model": "jev-latest",
+        "model": os.environ.get("JEV_MODEL", "jev-latest"),  # jev-preview = 1.14
         "questions": {"exercise": {
             "type": "choice",
             "instructions": "Which exercise is this person doing?",
