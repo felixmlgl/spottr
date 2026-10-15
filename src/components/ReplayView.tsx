@@ -28,7 +28,7 @@ export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings
       <div>
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">How we counted</h1>
         <p className="text-base text-[#6E6E73] mt-1.5">
-          The footage your stats came from. Everyone except Person {personId} is pixelated.
+          The footage your stats came from. Everyone the pose model detects, except Person {personId}, is pixelated.
         </p>
       </div>
 
@@ -53,7 +53,7 @@ export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings
       )}
 
       <p className="text-xs text-[#86868B] text-center pb-8">
-        In production Spottr runs on the gym's own cameras through a Spottr box; the video never leaves the gym.
+        The plan for production: Spottr runs on the gym's own cameras through a Spottr box, so the video never leaves the gym.
       </p>
     </div>
   </div>

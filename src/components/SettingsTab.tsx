@@ -138,7 +138,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
       <div className="p-5 flex gap-3">
         <ShieldCheck className="w-5 h-5 text-[#34C759] shrink-0 mt-0.5" />
         <div className="text-sm text-[#1D1D1F] leading-relaxed flex flex-col gap-2">
-          <p>The video stays inside the gym. Faces are pixelated, and everyone except you is blurred head to toe.</p>
+          <p>In the replay, everyone the pose model detects except you is pixelated head to toe.</p>
           <p className="text-[#6E6E73]">
             To name an exercise, Spottr sends Gemini one small, blurred image per set: three frames of a single rep, cropped
             around you.

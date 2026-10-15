@@ -19,8 +19,9 @@ import {
 import { FloorPlan, OCCUPANCY_GRADIENT } from '../components/FloorPlan';
 import { axisProps, Card, ChartTooltip, DemoBadge, Eyebrow, highlightBar, PageHeader, Segmented } from '../components/ui';
 
-const SLIDER_MIN = 6;
-const SLIDER_MAX = 22;
+// Opening hours; each slider step is the hour starting there, so the last one is 10–11pm
+const SLIDER_MIN = GYM.openHour;
+const SLIDER_MAX = GYM.closeHour - 1;
 
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 
@@ -196,9 +197,9 @@ export const Floor: React.FC = () => {
                   className="w-full accent-[#34C759] cursor-pointer"
                 />
                 <span className="flex justify-between text-[11px] text-[#6E6E73]">
-                  <span>{formatHour(SLIDER_MIN)}</span>
-                  <span>{formatHour(14)}</span>
-                  <span>{formatHour(SLIDER_MAX)}</span>
+                  <span>{formatHour(GYM.openHour)}</span>
+                  <span>{formatHour((GYM.openHour + GYM.closeHour) / 2)}</span>
+                  <span>{formatHour(GYM.closeHour)}</span>
                 </span>
               </label>
               <span className="w-24 shrink-0 text-right text-sm font-semibold text-[#1D1D1F] tabular-nums">
