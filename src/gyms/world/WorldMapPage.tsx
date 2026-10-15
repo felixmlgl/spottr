@@ -470,6 +470,9 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
   const held = metrics?.evaluation?.['420_480']?.strict;
   const tuned = metrics?.evaluation?.['030_090']?.strict;
   const q = config.calibration.quality;
+  const floorAll = q.cross_camera_floor_agreement_m;
+  const floorHeld = held?.cross_camera_position_disagreement_m.all;
+  const heldSeconds = held ? Math.round(held.segment_s[1] - held.segment_s[0]) : 60;
   const offset = Object.values(config.sync.offsets_s).find((v) => v !== 0) ?? 0;
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   return (
@@ -498,11 +501,13 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
       <Card className="flex flex-col gap-4">
         <div className="flex items-baseline justify-between gap-2">
           <Eyebrow>Measured on this footage</Eyebrow>
-          <span className="text-[11px] text-[#6E6E73]">vs. hand-checked labels</span>
+          <span className="text-[11px] text-[#6E6E73] text-right">
+            {held ? `${held.gt_people} people · ${heldSeconds} s · one reviewer` : 'vs. hand-checked labels'}
+          </span>
         </div>
         <dl className="grid grid-cols-2 gap-3">
           {[
-            [held ? pct(held.IDF1) : '–', 'identity consistency (IDF1) on a held-out minute'],
+            [held ? pct(held.IDF1) : '–', 'identity consistency (IDF1) on the held-out test minute'],
             [held ? String(held.false_merges.distinct_events) : '–', 'times two people were merged into one'],
             [held ? pct(held.cross_camera.recall) : '–', 'of moments seen by both cameras shown as one person'],
             [`${Math.abs(offset * 1000).toFixed(0)} ms`, `time offset found between the two recordings (${config.sync.confidence} confidence)`],
@@ -514,10 +519,33 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
           ))}
         </dl>
         <p className="text-[12px] text-[#6E6E73] leading-relaxed">
-          Calibration is graded <span className="font-semibold text-[#1D1D1F]">{q.grade ?? 'n/a'}</span>
-          {q.cross_camera_floor_agreement_m &&
-            `: the two cameras place the same person ${q.cross_camera_floor_agreement_m.median.toFixed(2)} m apart (median), ${q.cross_camera_floor_agreement_m.p90.toFixed(2)} m at the 90th percentile`}
-          . The room had no surveyed floor plan, so metric scale comes from average body proportions (about ±5%).
+          Scope: {held ? `${held.gt_people} people` : 'the people'} in one {heldSeconds}-second test segment, labelled by a single
+          reviewer after all settings were frozen. A small sample, not a benchmark.
+        </p>
+        <div className="text-[12px] text-[#6E6E73] leading-relaxed">
+          <p className="font-semibold text-[#1D1D1F]">How far apart the two cameras place the same person (median / 90th percentile)</p>
+          <dl className="mt-1 grid grid-cols-[1fr_auto] gap-x-4 gap-y-0.5">
+            {floorAll && (
+              <>
+                <dt>Whole recording, calibration check</dt>
+                <dd className="tabular-nums text-[#1D1D1F]">
+                  {floorAll.median.toFixed(2)} / {floorAll.p90.toFixed(2)} m
+                </dd>
+              </>
+            )}
+            {floorHeld && (
+              <>
+                <dt>Test minute, all postures</dt>
+                <dd className="tabular-nums text-[#1D1D1F]">
+                  {floorHeld.median.toFixed(2)} / {floorHeld.p90.toFixed(2)} m
+                </dd>
+              </>
+            )}
+          </dl>
+        </div>
+        <p className="text-[12px] text-[#6E6E73] leading-relaxed">
+          Calibration is graded <span className="font-semibold text-[#1D1D1F]">{q.grade ?? 'n/a'}</span>. The room had no surveyed
+          floor plan, so metric scale comes from average body proportions (about ±5%).
           {tuned && ` On the minute used to tune the system, IDF1 was ${pct(tuned.IDF1)}.`} Uncertain identities are shown as
           “Needs confirmation” rather than merged.
         </p>
