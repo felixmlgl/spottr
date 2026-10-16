@@ -1,1 +1,37 @@
-aliases: {}
+# Hand-added exercise aliases (stored in exercise_aliases with source_id NULL). Source names,
+# source aliases, German translations and pipeline labels are added by the build automatically.
+# kind: name | abbreviation | translation.  lang: en | de (null for language-neutral abbreviations).
+
+aliases:
+  barbell-romanian-deadlift:
+    - {alias: RDL, kind: abbreviation, lang: en}
+  dumbbell-romanian-deadlift:
+    - {alias: DB RDL, kind: abbreviation, lang: en}
+  barbell-stiff-legged-deadlift:
+    - {alias: SLDL, kind: abbreviation, lang: en}
+  barbell-shoulder-press:
+    - {alias: OHP, kind: abbreviation, lang: en}
+    - {alias: Overhead Press, kind: name, lang: en}
+    - {alias: Schulterdrücken mit der Langhantel, kind: translation, lang: de}
+  dumbbell-shoulder-press:
+    - {alias: DB Shoulder Press, kind: abbreviation, lang: en}
+    - {alias: Schulterdrücken mit Kurzhanteln, kind: translation, lang: de}
+  barbell-bench-press:
+    - {alias: BB Bench, kind: abbreviation, lang: en}
+  dumbbell-bench-press:
+    - {alias: DB Bench, kind: abbreviation, lang: en}
+    - {alias: Dumbbell Bench Press, kind: name, lang: en}
+  barbell-bent-over-rowing:
+    - {alias: Barbell Row, kind: name, lang: en}
+    - {alias: BB Row, kind: abbreviation, lang: en}
+  barbell-squat:
+    - {alias: Back Squat, kind: name, lang: en}
+  barbell-hip-thrust:
+    - {alias: Barbell Hip Thrust, kind: name, lang: en}
+  machine-leg-press:
+    - {alias: Beinpresse, kind: translation, lang: de}
+  ez-bar-skullcrusher:
+    - {alias: French Press, kind: name, lang: en}
+  cable-wide-grip-lat-pulldown:
+    - {alias: Lat Pulldown, kind: name, lang: en}
+    - {alias: Latziehen, kind: translation, lang: de}
