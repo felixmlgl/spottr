@@ -48,6 +48,14 @@ SOFTWARE.
 - License: `Unlicense` (https://github.com/yuhonas/free-exercise-db/blob/f00c92c7dcf1216a928a52c3706c7ce8e2f71ed5/LICENSE.md)
 - Provenance disputed: the data and images appear to originate from bodybuilding.com (see sources/free-exercise-db/PROVENANCE.md). Ingested on Spottr's decision; the images are not redistributed with this repository.
 
+## Everkinetic exercise illustrations (`everkinetic`)
+
+- Source: https://github.com/everkinetic/data
+- Version: `446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6`
+- License: `CC-BY-SA-4.0` (https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/LICENSE.md)
+- Attribution: Exercise illustrations by Everkinetic (everkinetic.com), licensed under CC BY-SA 4.0 (github.com/everkinetic/data).
+- Share-alike: adaptations of this data must be shared under the same license.
+
 ## Spottr vision pipeline muscle table (`spottr-pipeline`)
 
 - Source: https://github.com/felixmlgl/spottr/blob/main/backend/vision/exercises.py
