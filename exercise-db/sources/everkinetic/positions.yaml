@@ -1,0 +1,271 @@
+# Which Everkinetic drawing shows the START position, checked by eye against the drawings and the
+# exercise's steps. relaxation = dist/png/NNNN-relaxation.png (sheet "A"),
+# tension = dist/png/NNNN-tension.png (sheet "B"). null = not usable (reason in note).
+"0001": {start: null, note: "isometric hold; the drawings show the two variants (hands on forehead / hands behind head), not a start and end position"}
+"0002": {start: null, note: "isometric hold; the drawings show the left and right side variants, not a start and end position"}
+"0004": {start: relaxation}
+"0005": {start: relaxation}
+"0008": {start: relaxation}
+"0009": {start: relaxation}
+"0013": {start: relaxation}
+"0014": {start: relaxation}
+"0015": {start: relaxation}
+"0016": {start: relaxation}
+"0017": {start: relaxation}
+"0018": {start: relaxation}
+"0019": {start: null, note: "continuous circling movement; the drawings show two points on the circle, no start/end"}
+"0021": {start: relaxation}
+"0022": {start: relaxation}
+"0023": {start: relaxation}
+"0024": {start: relaxation}
+"0025": {start: relaxation}
+"0026": {start: relaxation}
+"0027": {start: relaxation}
+"0028": {start: relaxation}
+"0029": {start: relaxation}
+"0030": {start: relaxation}
+"0031": {start: relaxation}
+"0032": {start: relaxation}
+"0033": {start: relaxation}
+"0034": {start: relaxation}
+"0035": {start: relaxation}
+"0037": {start: relaxation}
+"0038": {start: relaxation}
+"0039": {start: relaxation}
+"0041": {start: relaxation}
+"0042": {start: tension}
+"0043": {start: tension}
+"0044": {start: relaxation}
+"0045": {start: tension}
+"0046": {start: tension}
+"0048": {start: relaxation}
+"0049": {start: tension}
+"0050": {start: relaxation}
+"0051": {start: tension}
+"0052": {start: tension}
+"0053": {start: tension}
+"0054": {start: tension}
+"0055": {start: tension}
+"0056": {start: tension}
+"0057": {start: relaxation}
+"0058": {start: tension}
+"0059": {start: relaxation}
+"0060": {start: relaxation}
+"0061": {start: relaxation}
+"0062": {start: tension}
+"0063": {start: relaxation}
+"0064": {start: tension, note: "unsure: steps start with the bar on the thighs, which neither drawing shows; B (bar over chest) is the closer one, A is bar behind head. Drawings show a flat bench, not a decline"}
+"0066": {start: relaxation}
+"0067": {start: tension}
+"0068": {start: relaxation}
+"0069": {start: tension}
+"0070": {start: relaxation}
+"0071": {start: relaxation}
+"0072": {start: tension}
+"0075": {start: tension, note: "steps begin by pressing up from the floor; push-up convention (arms extended) used"}
+"0076": {start: tension, note: "steps call the chest-lowered position the start; push-up convention (arms extended) used"}
+"0077": {start: tension, note: "steps begin lying on the floor; push-up convention (arms extended) used"}
+"0078": {start: tension}
+"0079": {start: tension}
+"0080": {start: relaxation}
+"0081": {start: tension}
+"0082": {start: tension}
+"0083": {start: tension, note: "steps call the bar-lowered position the start; barbell bench convention (arms extended after unracking) used"}
+"0085": {start: relaxation}
+"0086": {start: relaxation}
+"0087": {start: relaxation}
+"0090": {start: relaxation}
+"0091": {start: relaxation}
+"0092": {start: relaxation}
+"0093": {start: relaxation}
+"0094": {start: relaxation}
+"0095": {start: relaxation}
+"0096": {start: relaxation}
+"0098": {start: null, note: "drawings show a seated behind-the-neck lat pulldown on a cable machine, not a pullover on a stability ball"}
+"0099": {start: relaxation}
+"0100": {start: relaxation}
+"0101": {start: relaxation}
+"0102": {start: relaxation}
+"0103": {start: tension}
+"0104": {start: relaxation}
+"0105": {start: relaxation}
+"0107": {start: relaxation}
+"0109": {start: relaxation}
+"0111": {start: relaxation}
+"0112": {start: relaxation}
+"0113": {start: null, note: "both drawings show practically the same held side-plank position"}
+"0114": {start: relaxation}
+"0115": {start: relaxation}
+"0116": {start: relaxation, note: "unsure: alternating kicks; A (legs together, level) taken as start, B shows the legs scissored mid-kick"}
+"0117": {start: relaxation}
+"0118": {start: tension, note: "gym convention: a Romanian deadlift starts standing (B); the steps start from the floor"}
+"0119": {start: relaxation}
+"0120": {start: relaxation}
+"0121": {start: null, note: "both drawings show the bottom of a lunge (cropped at the knees); no standing start position is drawn"}
+"0122": {start: tension}
+"0123": {start: tension}
+"0124": {start: tension}
+"0125": {start: tension}
+"0126": {start: tension}
+"0127": {start: tension}
+"0128": {start: relaxation}
+"0129": {start: relaxation}
+"0130": {start: tension}
+"0131": {start: null, note: "both drawings show the side-squat bottom position, one to each side (mirror images); no start position is drawn"}
+"0132": {start: tension}
+"0133": {start: tension}
+"0134": {start: relaxation}
+"0135": {start: relaxation}
+"0136": {start: tension}
+"0137": {start: relaxation}
+"0138": {start: tension}
+"0139": {start: tension}
+"0140": {start: relaxation}
+"0141": {start: relaxation}
+"0142": {start: relaxation}
+"0143": {start: tension}
+"0144": {start: tension}
+"0145": {start: tension}
+"0146": {start: tension}
+"0147": {start: tension}
+"0148": {start: relaxation}
+"0150": {start: relaxation}
+"0151": {start: tension}
+"0152": {start: tension}
+"0154": {start: tension}
+"0155": {start: tension}
+"0156": {start: relaxation}
+"0157": {start: relaxation}
+"0158": {start: tension}
+"0160": {start: tension}
+"0161": {start: tension}
+"0162": {start: tension}
+"0163": {start: relaxation}
+"0164": {start: relaxation}
+"0165": {start: tension}
+"0166": {start: relaxation}
+"0168": {start: tension}
+"0169": {start: tension}
+"0170": {start: tension}
+"0171": {start: relaxation}
+"0172": {start: tension}
+"0173": {start: relaxation}
+"0174": {start: tension}
+"0175": {start: tension}
+"0176": {start: relaxation}
+"0177": {start: relaxation}
+"0178": {start: relaxation}
+"0179": {start: tension, note: "unsure: steps are vague; B (arms straight, bar behind the head) taken as start, A shows elbows bent with the bar lowered below head level"}
+"0180": {start: tension}
+"0181": {start: tension}
+"0182": {start: tension}
+"0183": {start: tension}
+"0184": {start: tension}
+"0185": {start: tension, note: "unsure: steps are vague; lying triceps-extension convention (arms extended, B) used, A shows elbows bent with the bar behind the head"}
+"0186": {start: tension}
+"0187": {start: tension}
+"0188": {start: tension}
+"0189": {start: relaxation}
+"0190": {start: tension, note: "steps start with the bar at the chest before pressing; barbell bench convention (arms extended) used"}
+"0191": {start: relaxation}
+"0192": {start: relaxation}
+"0193": {start: tension}
+"0194": {start: tension}
+"0195": {start: tension}
+"0196": {start: relaxation}
+"0197": {start: relaxation}
+"0198": {start: tension}
+"0199": {start: relaxation}
+"0201": {start: tension}
+"0202": {start: tension}
+"0203": {start: tension, note: "gym convention: the Tate press starts with arms extended (B); the steps start at the chest"}
+"0204": {start: relaxation}
+"0205": {start: relaxation}
+"0206": {start: relaxation}
+"0207": {start: relaxation}
+"0208": {start: relaxation}
+"0209": {start: tension}
+"0210": {start: relaxation, note: "unsure: steps (apparently copied from a curl) say start with arms extended (B); triceps-extension convention, elbows bent (A), used"}
+"0211": {start: relaxation}
+"0212": {start: relaxation}
+"0213": {start: null, note: "alternating curl; each drawing shows a different arm curled up, neither shows the both-arms-down start"}
+"0214": {start: null, note: "alternating curl; each drawing shows a different arm curled up, neither shows the both-arms-down start"}
+"0215": {start: relaxation}
+"0216": {start: relaxation}
+"0217": {start: relaxation}
+"0218": {start: relaxation}
+"0219": {start: relaxation}
+"0220": {start: relaxation}
+"0221": {start: null, note: "each drawing shows a different arm curled across the body, neither shows the both-arms-down start"}
+"0222": {start: relaxation}
+"0223": {start: null, note: "alternating curl; each drawing shows a different arm curled up, neither shows the both-arms-down start"}
+"0224": {start: relaxation}
+"0225": {start: relaxation}
+"0226": {start: relaxation}
+"0227": {start: relaxation}
+"0228": {start: relaxation}
+"0229": {start: relaxation}
+"0231": {start: relaxation}
+"0232": {start: relaxation}
+"0233": {start: relaxation}
+"0234": {start: relaxation}
+"0235": {start: relaxation}
+"0236": {start: relaxation}
+"0237": {start: relaxation}
+"0238": {start: relaxation}
+"0239": {start: relaxation}
+"0240": {start: relaxation}
+"0241": {start: relaxation}
+"0242": {start: relaxation}
+"0243": {start: relaxation}
+"0244": {start: relaxation}
+"0245": {start: relaxation}
+"0246": {start: relaxation}
+"0247": {start: relaxation}
+"0248": {start: relaxation}
+"0249": {start: relaxation}
+"0250": {start: relaxation}
+"0251": {start: relaxation}
+"0252": {start: relaxation}
+"0253": {start: relaxation}
+"0254": {start: relaxation}
+"0255": {start: relaxation}
+"0256": {start: tension}
+"0257": {start: relaxation}
+"0258": {start: relaxation}
+"0259": {start: null, note: "the step start (standing, bar resting at the thighs) is not drawn; the drawings show the bottom (bar near the floor) and the top of the curl"}
+"0260": {start: tension}
+"0261": {start: null, note: "alternating curl; each drawing shows a different arm curled up, neither shows the both-arms-down start"}
+"0262": {start: tension}
+"0263": {start: relaxation}
+"0264": {start: relaxation}
+"0265": {start: relaxation}
+"0266": {start: relaxation}
+"0267": {start: relaxation}
+"0268": {start: relaxation}
+"0269": {start: relaxation}
+"0270": {start: null, note: "continuous circling movement; the drawings show two points on the circle, no start/end"}
+"0272": {start: relaxation}
+"0273": {start: relaxation}
+"0274": {start: null, note: "feet are cropped out of both drawings; they show the same standing position, raised and lowered heels can't be told apart"}
+"0275": {start: relaxation, note: "unsure: feet are cropped out; A taken as heels down because the hand rail sits higher relative to the body than in B"}
+"0276": {start: relaxation}
+"0277": {start: null, note: "continuous circling movement; the drawings show two points on the circle, no start/end"}
+"0278": {start: null, note: "feet are cropped out of both drawings; they show the same standing position, the rocking movement can't be seen"}
+"0279": {start: relaxation}
+"0280": {start: null, note: "both drawings are practically identical (feet cropped out); no start/end difference visible"}
+"0281": {start: null, note: "both drawings are practically identical (feet cropped out); no start/end difference visible"}
+"0282": {start: null, note: "both drawings are practically identical (feet cropped out); no start/end difference visible"}
+"0284": {start: null, note: "alternating movement; the drawings show the left and right elbow-to-knee twist, not a start and end position"}
+"0285": {start: relaxation}
+"0286": {start: relaxation}
+"0287": {start: relaxation}
+"0288": {start: relaxation}
+"0289": {start: relaxation}
+"0290": {start: relaxation}
+"0291": {start: relaxation}
+"0292": {start: relaxation}
+"0293": {start: relaxation}
+"0294": {start: tension}
+"0295": {start: relaxation}
+"0296": {start: relaxation}

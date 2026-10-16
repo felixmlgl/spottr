@@ -16,6 +16,7 @@ Needs [uv](https://docs.astral.sh/uv/) (it installs Python 3.12 and the dependen
 ```bash
 cd exercise-db
 make fetch      # download raw snapshots (network; <= 1 request/s)
+make fetch-media  # download exercise images to media/ (not committed)
 make build      # normalize, merge, export dist/ and reports/
 make validate   # all checks; fails on any violation
 make load       # load into Postgres / Supabase, only if DATABASE_URL is set
@@ -64,8 +65,22 @@ spottr_exdb/                build, merge, export, report, validate, load
 |---|---|---|
 | `wger` | CC BY-SA (per record; some CC0) | exercises, English + German names, muscles, instructions. Read from wger's official data fixtures on GitHub, because wger.de's robots.txt disallows `/api/v2`. |
 | `longhaul-fitness` | MIT | exercises, deltoid heads, rotator cuff, forearm flexors/extensors, instructions |
+| `everkinetic` | CC BY-SA 4.0 | start/end line drawings (order checked by eye, `sources/everkinetic/positions.yaml`), names and instructions; only attaches to existing exercises |
 | `spottr-pipeline` | Spottr internal | the vision pipeline's own exercise -> muscle table (`backend/vision/exercises.py`, read-only snapshot). Records are `label:equipment` pairs attached through `taxonomy/pipeline_labels.yaml`; its muscle list is final for those exercises (`authoritative_sources`). |
-| `free-exercise-db` | (Unlicense label) | **not ingested**: appears scraped from bodybuilding.com, see `sources/free-exercise-db/PROVENANCE.md`. Adapter kept, raw data not committed. |
+| `free-exercise-db` | Unlicense label, **provenance disputed** | ingested on Spottr's decision although it appears scraped from bodybuilding.com (`sources/free-exercise-db/PROVENANCE.md`): exercises, muscles and start/end photos. Its copied instruction texts are not used; its photos are never committed and rank after openly licensed images. |
+
+## Images
+
+`exercise_images` holds a start and an end image per exercise (both from the same record), with
+path, original URL, license, author and sha256. The files are **not in git** (public repository):
+
+```bash
+make fetch-media   # downloads them to exercise-db/media/ (gitignored)
+```
+
+Openly licensed images (Everkinetic) are preferred over free-exercise-db photos when both exist.
+Coverage per source and the list of exercises without images are in `reports/build_report.md`.
+Show the attribution of every image that is displayed (license and author per row).
 
 ## Adding a source
 

@@ -1,0 +1,28 @@
+{
+  "source_id": "everkinetic",
+  "retrieved_at": "2026-10-15T22:08:57Z",
+  "version": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+  "url": "https://github.com/everkinetic/data",
+  "files": [
+    {
+      "path": "LICENSE.md",
+      "bytes": 18578,
+      "sha256": "5049f48bb0fecbaa7974ac5d5f38ade23e829df637fa2f65c5fb3c74ec086a52"
+    },
+    {
+      "path": "README.md",
+      "bytes": 153,
+      "sha256": "4037829b0d66f9bfa91343ac5ddcfd8306b7c9ac274ca9609ebc48e0b48b844d"
+    },
+    {
+      "path": "exercises.json",
+      "bytes": 396095,
+      "sha256": "39aea039b5f4097b58965a7f33fddb3c1accfbc47a94f76ccfd5559e3cb955e9"
+    },
+    {
+      "path": "ls-tree-dist-png.txt",
+      "bytes": 14903,
+      "sha256": "990da9523dec105fb407837e973092823d37d21dabf9291f85424a2ba0d484ef"
+    }
+  ]
+}

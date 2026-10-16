@@ -7,6 +7,7 @@ sources:
   - wger
   - longhaul-fitness
   - free-exercise-db
+  - everkinetic
   - spottr-pipeline
 
 # Sources ingested on the user's explicit decision (2026-10-15) although their provenance is

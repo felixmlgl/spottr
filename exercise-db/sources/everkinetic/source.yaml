@@ -1,0 +1,19 @@
+# Everkinetic exercise illustrations (everkinetic/data on GitHub): line drawings, two per exercise.
+# License verified from the repo's LICENSE.md: Creative Commons Attribution-ShareAlike 4.0
+# (an adaptation of the CC BY-SA 3.0 originals on Wikimedia Commons). Clean provenance (drawn by
+# Everkinetic); reports/image_candidates.md has the details.
+#
+# Used for images, names (matching) and instructions only. Its muscle labels and `type`
+# (227 of 293 records say "isolation", squats included) are not reliable, so normalize.py does not
+# emit them; records therefore never create exercises, they only attach to existing ones.
+# The drawings are named relaxation/tension (muscle state), not start/end: positions.yaml says
+# which one shows the start position, checked by eye per exercise.
+id: everkinetic
+name: Everkinetic exercise illustrations
+url: https://github.com/everkinetic/data
+license: CC-BY-SA-4.0
+license_url: https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/LICENSE.md
+attribution: "Exercise illustrations by Everkinetic (everkinetic.com), licensed under CC BY-SA 4.0 (github.com/everkinetic/data)."
+notice_file: null
+share_alike: 1
+commercial_use_ok: 1
