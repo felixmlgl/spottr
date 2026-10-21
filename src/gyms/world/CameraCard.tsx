@@ -53,15 +53,15 @@ export const CameraCard: React.FC<Props> = ({
             <Camera className="w-3.5 h-3.5" aria-hidden />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-[#1D1D1F] truncate">{camera.label}</p>
-            <p className="text-[11px] text-[#6E6E73]">
+            <p className="text-sm font-semibold text-ink truncate">{camera.label}</p>
+            <p className="text-[11px] text-ink-2">
               {people} {people === 1 ? 'person' : 'people'} in view
             </p>
           </div>
         </div>
-        <span className="text-[11px] font-semibold text-[#6E6E73] bg-[#F5F5F7] rounded-full px-2 py-0.5">{cameraShort(camera.camera_id)}</span>
+        <span className="text-[11px] font-semibold text-ink-2 bg-surface rounded-full px-2 py-0.5">{cameraShort(camera.camera_id)}</span>
       </div>
-      <div className="relative bg-[#1D1D1F]" style={{ aspectRatio: `${W} / ${H}` }}>
+      <div className="relative bg-ink" style={{ aspectRatio: `${W} / ${H}` }}>
         {videoUrl && !failed ? (
           <video
             ref={setVideo}

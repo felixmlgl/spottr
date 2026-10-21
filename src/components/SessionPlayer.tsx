@@ -298,7 +298,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
         {/* Live rep badge */}
         {sets.length > 0 && (
           <div className="absolute bottom-3 right-3 flex items-baseline gap-1.5 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white">
-            <span className="text-lg font-bold tabular-nums text-[#34C759]">{liveReps}</span>
+            <span className="font-dot text-2xl font-black leading-none text-accent">{liveReps}</span>
             <span className="text-xs font-medium">reps</span>
           </div>
         )}
@@ -306,13 +306,13 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
 
       {/* Scrubber with set markers */}
       <div className="flex items-center gap-3 px-1">
-        <span className="text-xs text-[#6E6E73] font-mono w-9 text-right">{formatTime(currentTime)}</span>
+        <span className="text-xs text-ink-2 font-mono w-9 text-right">{formatTime(currentTime)}</span>
         <div className="relative flex-1 h-5 flex items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-[#E5E5EA]" />
+          <div className="absolute inset-x-0 h-1.5 rounded-full bg-line" />
           {sets.map((s, i) => (
             <div
               key={i}
-              className="absolute h-1.5 rounded-full bg-[#34C759]/45"
+              className="absolute h-1.5 rounded-full bg-accent/45"
               style={{
                 left: `${(s.start_s / totalDuration) * 100}%`,
                 width: `${((s.end_s - s.start_s) / totalDuration) * 100}%`,
@@ -320,7 +320,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
             />
           ))}
           <div
-            className="absolute h-1.5 rounded-full bg-[#1D1D1F]"
+            className="absolute h-1.5 rounded-full bg-ink"
             style={{ width: `${Math.min(100, (currentTime / totalDuration) * 100)}%` }}
           />
           <input
@@ -331,24 +331,24 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
             value={currentTime}
             onChange={(e) => handleSeek(parseFloat(e.target.value))}
             aria-label="Seek"
-            className="relative w-full h-5 appearance-none bg-transparent cursor-pointer accent-[#1D1D1F] focus:outline-none"
+            className="relative w-full h-5 appearance-none bg-transparent cursor-pointer accent-ink focus:outline-none"
           />
         </div>
-        <span className="text-xs text-[#6E6E73] font-mono w-9">{formatTime(totalDuration)}</span>
+        <span className="text-xs text-ink-2 font-mono w-9">{formatTime(totalDuration)}</span>
       </div>
 
       {/* Controls */}
       <div className="flex items-center gap-2 flex-wrap">
         <button
           onClick={togglePlay}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-medium transition-transform duration-150 active:scale-95 cursor-pointer shadow-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent-ink hover:bg-accent-deep text-white text-sm font-medium transition-transform duration-150 active:scale-95 cursor-pointer shadow-sm"
         >
           {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
           <span>{isPlaying ? 'Pause' : 'Play'}</span>
         </button>
         <button
           onClick={handleReset}
-          className="p-2.5 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-[#1D1D1F] transition-colors cursor-pointer"
+          className="p-2.5 rounded-full bg-surface hover:bg-surface-2 text-ink transition-colors cursor-pointer"
           title="Restart"
           aria-label="Restart"
         >
@@ -360,9 +360,9 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
           <button
             key={i}
             onClick={() => handleSeek(Math.max(0, s.start_s - 1))}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-xs font-semibold text-[#1D1D1F] cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-surface hover:bg-surface-2 text-xs font-semibold text-ink cursor-pointer"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-accent" />
             Set {i + 1} · {s.reps} {prettifyExerciseName(s.exercise).toLowerCase()} · {formatTime(s.start_s)}
           </button>
         ))}
@@ -372,23 +372,23 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
           <button
             onClick={() => setDetailsOpen(!detailsOpen)}
             aria-expanded={detailsOpen}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-xs font-medium text-[#1D1D1F] cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-surface hover:bg-surface-2 text-xs font-medium text-ink cursor-pointer"
           >
             <MoreHorizontal className="w-4 h-4" />
             Details
           </button>
           {detailsOpen && (
-            <div className="absolute right-0 bottom-full mb-2 z-20 w-72 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl ring-1 ring-black/[0.06] p-4 flex flex-col gap-4">
+            <div className="absolute right-0 bottom-full mb-2 z-20 w-72 max-w-[calc(100vw-2rem)] bg-paper rounded-2xl shadow-xl ring-1 ring-black/[0.06] p-4 flex flex-col gap-4">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-xs font-medium text-[#1D1D1F]">Overlay</span>
-                <div className="flex items-center p-1 bg-[#F5F5F7] rounded-full" role="group" aria-label="Overlay style">
+                <span className="text-xs font-medium text-ink">Overlay</span>
+                <div className="flex items-center p-1 bg-surface rounded-full" role="group" aria-label="Overlay style">
                   {(['styled', 'raw'] as OverlayMode[]).map((mode) => (
                     <button
                       key={mode}
                       onClick={() => setOverlayMode(mode)}
                       aria-pressed={overlayMode === mode}
                       className={`px-3 py-1 rounded-full text-xs font-medium cursor-pointer ${
-                        overlayMode === mode ? 'bg-[#1D1D1F] text-white' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                        overlayMode === mode ? 'bg-ink text-paper' : 'text-ink-2 hover:text-ink'
                       }`}
                     >
                       {mode === 'raw' ? 'Raw' : 'Styled'}
@@ -397,14 +397,14 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
                 </div>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <span className="text-xs font-medium text-[#1D1D1F]">Speed</span>
-                <div className="flex items-center p-1 bg-[#F5F5F7] rounded-full">
+                <span className="text-xs font-medium text-ink">Speed</span>
+                <div className="flex items-center p-1 bg-surface rounded-full">
                   {[1, 1.5, 2].map((spd) => (
                     <button
                       key={spd}
                       onClick={() => handleSpeedChange(spd)}
                       className={`px-3 py-1 rounded-full text-xs font-medium cursor-pointer ${
-                        playbackSpeed === spd ? 'bg-[#1D1D1F] text-white' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                        playbackSpeed === spd ? 'bg-ink text-paper' : 'text-ink-2 hover:text-ink'
                       }`}
                     >
                       {spd}&times;
@@ -412,7 +412,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
                   ))}
                 </div>
               </div>
-              <p className="text-[11px] text-[#86868B] leading-relaxed">
+              <p className="text-[11px] text-ink-3 leading-relaxed">
                 {overlayMode === 'raw'
                   ? `Raw overlay.json${data.overlay?.fps ? ` · ${data.overlay.fps} fps` : ''}. Keypoints under 0.3 confidence were removed by the backend.`
                   : 'Styled overlay drawn from the same pipeline output.'}{' '}

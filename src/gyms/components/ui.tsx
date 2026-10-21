@@ -3,17 +3,17 @@ import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
 import { BarShapeProps, Rectangle } from 'recharts';
 
 export const ACCENT = '#34C759';
-export const INK = '#1D1D1F';
-export const INK_SECONDARY = '#6E6E73';
-export const MUTED_BAR = '#D1D1D6';
-export const GRID = '#E5E5EA';
+export const INK = '#0F1411';
+export const INK_SECONDARY = '#4B5550';
+export const MUTED_BAR = '#D3D8D3';
+export const GRID = '#E6E9E5';
 
 export const Card: React.FC<{ className?: string; children: React.ReactNode }> = ({ className = '', children }) => (
-  <div className={`bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 min-w-0 ${className}`}>{children}</div>
+  <div className={`panel p-6 sm:p-8 min-w-0 ${className}`}>{children}</div>
 );
 
 export const Eyebrow: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <span className={`text-xs font-semibold text-[#6E6E73] uppercase tracking-wide ${className}`}>{children}</span>
+  <span className={`hud-label ${className}`}>{children}</span>
 );
 
 export const PageHeader: React.FC<{
@@ -24,17 +24,17 @@ export const PageHeader: React.FC<{
 }> = ({ eyebrow, title, subtitle, aside }) => (
   <div className="pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
     <div>
-      {eyebrow && <div className="text-sm font-medium text-[#6E6E73] tracking-wide mb-1 flex items-center gap-2 flex-wrap">{eyebrow}</div>}
-      <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F]">{title}</h1>
-      {subtitle && <p className="text-base text-[#6E6E73] mt-2 max-w-2xl">{subtitle}</p>}
+      {eyebrow && <div className="text-sm font-medium text-ink-2 tracking-wide mb-1 flex items-center gap-2 flex-wrap">{eyebrow}</div>}
+      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">{title}</h1>
+      {subtitle && <p className="text-base text-ink-2 mt-2 max-w-2xl">{subtitle}</p>}
     </div>
     {aside}
   </div>
 );
 
 export const DemoBadge: React.FC = () => (
-  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-[#1D1D1F] bg-[#F5F5F7] ring-1 ring-black/[0.06]">
-    <span className="w-1.5 h-1.5 rounded-full bg-[#34C759]" />
+  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-ink bg-surface ring-1 ring-black/[0.06]">
+    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
     Demo data
   </span>
 );
@@ -54,7 +54,7 @@ export function Segmented<T extends string | number>({
   ariaLabel?: string;
 }) {
   return (
-    <div role="group" aria-label={ariaLabel} className={`flex items-center p-1 bg-white rounded-full shadow-xs overflow-x-auto max-w-full ${className}`}>
+    <div role="group" aria-label={ariaLabel} className={`flex items-center p-1 bg-paper rounded-full shadow-xs overflow-x-auto max-w-full ${className}`}>
       {options.map((opt) => {
         const isSelected = value === opt.id;
         return (
@@ -63,7 +63,7 @@ export function Segmented<T extends string | number>({
             onClick={() => onChange(opt.id)}
             aria-pressed={isSelected}
             className={`px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer whitespace-nowrap ${
-              isSelected ? 'bg-[#1D1D1F] text-white' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+              isSelected ? 'bg-ink text-paper' : 'text-ink-2 hover:text-ink'
             }`}
           >
             {opt.label}
@@ -85,10 +85,10 @@ export const TrendChip: React.FC<{ value: number; previous: number; comparison: 
   const up = rounded > 0;
   const Icon = flat ? Minus : up ? ArrowUpRight : ArrowDownRight;
   return (
-    <p className="text-xs text-[#6E6E73] mt-1 flex items-center gap-1 flex-wrap">
+    <p className="text-xs text-ink-2 mt-1 flex items-center gap-1 flex-wrap">
       <span
         className={`inline-flex items-center gap-0.5 font-semibold ${
-          flat ? 'text-[#6E6E73]' : up ? 'text-[#248A3D]' : 'text-[#1D1D1F]'
+          flat ? 'text-ink-2' : up ? 'text-accent-ink' : 'text-ink'
         }`}
       >
         <Icon className="w-3.5 h-3.5 stroke-[2]" aria-hidden />
@@ -102,9 +102,9 @@ export const TrendChip: React.FC<{ value: number; previous: number; comparison: 
 /** White rounded tooltip matching the member app's recharts tooltip. */
 export const ChartTooltip: React.FC<{ title: string; value: string; note?: string }> = ({ title, value, note }) => (
   <div className="bg-white rounded-xl p-3 shadow-lg border border-black/[0.04]">
-    <p className="text-xs text-[#6E6E73]">{title}</p>
-    <p className="text-sm font-bold text-[#1D1D1F] mt-0.5">{value}</p>
-    {note && <p className="text-[11px] text-[#6E6E73] font-medium">{note}</p>}
+    <p className="text-xs text-ink-2">{title}</p>
+    <p className="text-sm font-bold text-ink mt-0.5">{value}</p>
+    {note && <p className="text-[11px] text-ink-2 font-medium">{note}</p>}
   </div>
 );
 

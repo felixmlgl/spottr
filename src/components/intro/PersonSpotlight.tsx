@@ -190,7 +190,7 @@ export const PersonSpotlight: React.FC<PersonSpotlightProps> = ({
   return (
     <div className="flex flex-col gap-3">
       <div
-        className="relative w-full overflow-hidden rounded-[20px] bg-[#1D1D1F]"
+        className="relative w-full overflow-hidden rounded-[20px] bg-ink"
         style={{ aspectRatio: `${W} / ${H}` }}
       >
         {data?.videoUrl && (
@@ -231,19 +231,19 @@ export const PersonSpotlight: React.FC<PersonSpotlightProps> = ({
         <button
           onClick={() => step(-1)}
           disabled={people.length < 2}
-          className="inline-flex items-center gap-1 pl-2.5 pr-3.5 py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-sm font-medium text-[#1D1D1F] disabled:opacity-40 cursor-pointer"
+          className="inline-flex items-center gap-1 pl-2.5 pr-3.5 py-2 rounded-full bg-surface hover:bg-surface-2 text-sm font-medium text-ink disabled:opacity-40 cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
           Prev
         </button>
-        <span className="text-xs text-[#6E6E73] text-center">
+        <span className="text-xs text-ink-2 text-center">
           {selectedIdx >= 0 ? `${selectedIdx + 1} of ${people.length}` : `${people.length} people`}
-          <span className="hidden sm:inline"> · hover a person or use ← →</span>
+          <span className="hidden sm:inline">. Hover a person or use ← →</span>
         </span>
         <button
           onClick={() => step(1)}
           disabled={people.length < 2}
-          className="inline-flex items-center gap-1 pl-3.5 pr-2.5 py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-sm font-medium text-[#1D1D1F] disabled:opacity-40 cursor-pointer"
+          className="inline-flex items-center gap-1 pl-3.5 pr-2.5 py-2 rounded-full bg-surface hover:bg-surface-2 text-sm font-medium text-ink disabled:opacity-40 cursor-pointer"
         >
           Next
           <ChevronRight className="w-4 h-4" />

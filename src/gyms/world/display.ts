@@ -17,7 +17,7 @@ export function personColor(globalId: string | null | undefined): string {
 
 export const STATE_STYLE: Record<DisplayState, { dot: string; text: string; bg: string; hint: string }> = {
   Confirmed: { dot: '#34C759', text: '#1D7A35', bg: '#E9F8EE', hint: 'One identity, backed by strong evidence.' },
-  Tracking: { dot: '#8E8E93', text: '#3A3A3C', bg: '#F2F2F7', hint: 'Followed by the cameras; not enough history yet to call it confirmed.' },
+  Tracking: { dot: '#646E68', text: '#3A3A3C', bg: '#F1F3F0', hint: 'Followed by the cameras; not enough history yet to call it confirmed.' },
   'Needs confirmation': {
     dot: '#FF9500',
     text: '#8A4B00',

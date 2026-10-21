@@ -36,14 +36,14 @@ export const Navigation: React.FC<NavigationProps> = ({
           <Logo />
         </button>
 
-        <nav className="hidden md:flex items-center p-1 bg-[#F5F5F7] rounded-full">
+        <nav className="hidden md:flex items-center p-1 bg-surface rounded-full">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => onSelectTab(tab.id)}
               aria-current={currentTab === tab.id ? 'page' : undefined}
               className={`px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
-                currentTab === tab.id ? 'bg-white text-[#1D1D1F] shadow-sm' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                currentTab === tab.id ? 'bg-white text-ink shadow-sm' : 'text-ink-2 hover:text-ink'
               }`}
             >
               {tab.label}
@@ -52,14 +52,14 @@ export const Navigation: React.FC<NavigationProps> = ({
         </nav>
 
         {/* Demo member chip */}
-        <div className="flex items-center gap-2 pl-1 pr-1 py-1 rounded-full bg-[#F5F5F7] min-w-0">
-          <div className="w-7 h-7 rounded-full overflow-hidden bg-[#D2D2D7] shrink-0">
+        <div className="flex items-center gap-2 pl-1 pr-1 py-1 rounded-full bg-surface min-w-0">
+          <div className="w-7 h-7 rounded-full overflow-hidden bg-line shrink-0">
             {thumbnail && <img src={thumbnail} alt="" className="w-full h-full object-cover object-top" />}
           </div>
-          <span className="text-xs font-medium text-[#1D1D1F] truncate">{personLabel}</span>
+          <span className="text-xs font-medium text-ink truncate">{personLabel}</span>
           <button
             onClick={onChangeSelection}
-            className="px-2.5 py-1 rounded-full bg-white hover:bg-[#E8E8ED] text-[11px] font-semibold text-[#1D1D1F] shadow-2xs cursor-pointer shrink-0"
+            className="px-2.5 py-1 rounded-full bg-white hover:bg-surface-2 text-[11px] font-semibold text-ink shadow-2xs cursor-pointer shrink-0"
           >
             Change
           </button>
@@ -78,7 +78,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             onClick={() => onSelectTab(tab.id)}
             aria-current={isActive ? 'page' : undefined}
             className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors cursor-pointer ${
-              isActive ? 'text-[#34C759]' : 'text-[#6E6E73]'
+              isActive ? 'text-accent-ink' : 'text-ink-2'
             }`}
           >
             <Icon className="w-5 h-5 stroke-[1.75]" />

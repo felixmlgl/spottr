@@ -116,18 +116,18 @@ const BACK_MUSCLES: Partial<Record<BodySlug, MuscleId>> = {
   calves: 'calves',
 };
 
-/** Top → bottom stops for each trained level, so every muscle reads as a lit, rounded shape */
+/** Top → bottom stops for each trained level, so every muscle reads as a lit, rounded shape. Blue, so it never reads as the green "ready" of the recovery map */
 const INTENSITY_LEVELS = {
-  light: { label: 'Light', from: '#D4F5DD', to: '#A2E4B4' },
-  moderate: { label: 'Moderate', from: '#7BE495', to: '#34C759' },
-  heavy: { label: 'Heavy', from: '#3DD164', to: '#1E8E3E' },
+  light: { label: 'Light', from: '#DCEBFF', to: '#AFD0FF' },
+  moderate: { label: 'Moderate', from: '#7DB8FF', to: '#007AFF' },
+  heavy: { label: 'Heavy', from: '#2F86FF', to: '#0051B8' },
 } as const;
 type IntensityLevel = keyof typeof INTENSITY_LEVELS;
 
 const MUSCLE_BASE = '#DCDCE1';
-const PICKED_STROKE = '#1D1D1F';
+const PICKED_STROKE = '#0F1411';
 const BODY_BASE = '#E7E7EB';
-const HAIR = '#C7C7CC';
+const HAIR = '#D3D8D3';
 
 /** Blend hex color `a` toward `b`; amount 0..1 */
 const mixHex = (a: string, b: string, amount: number) => {
@@ -301,7 +301,7 @@ export const BodyMap: React.FC<BodyMapProps> = ({
         ).map(([view, label, body, muscles]) => (
           <div key={view} className="flex-1 flex flex-col items-center" style={{ maxWidth }}>
             {renderFigure(view, body, muscles)}
-            <span className="text-[11px] font-medium text-[#8E8E93] mt-2">{label}</span>
+            <span className="text-[11px] font-medium text-ink-3 mt-2">{label}</span>
           </div>
         ))}
       </div>
@@ -313,17 +313,17 @@ export const BodyMap: React.FC<BodyMapProps> = ({
           <div className="max-w-full px-4 py-2 rounded-full bg-white shadow-sm ring-1 ring-black/[0.04] text-xs flex items-center gap-2.5 animate-in fade-in duration-150">
             <span
               className="w-2.5 h-2.5 rounded-full shrink-0"
-              style={{ backgroundColor: getMuscleColor(activeMuscle) || '#C7C7CC' }}
+              style={{ backgroundColor: getMuscleColor(activeMuscle) || '#D3D8D3' }}
             />
-            <span className="font-semibold text-[#1D1D1F] truncate">{getTooltipString(activeMuscle)}</span>
+            <span className="font-semibold text-ink truncate">{getTooltipString(activeMuscle)}</span>
           </div>
         ) : (
-          <span className="text-[11px] text-[#8E8E93]">Tap a muscle for details</span>
+          <span className="text-[11px] text-ink-3">Tap a muscle for details</span>
         )}
       </div>
 
       {/* Legend */}
-      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-[#6E6E73] pt-3 border-t border-black/[0.04] w-full">
+      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-ink-2 pt-3 border-t border-black/[0.04] w-full">
         {mode === 'recovery' ? (
           <span className="flex items-center gap-2">
             <span>Fatigued</span>

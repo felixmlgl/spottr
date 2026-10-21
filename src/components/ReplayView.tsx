@@ -13,12 +13,12 @@ interface ReplayViewProps {
 
 /** Proof view: the footage the member's stats came from. Opened from Main or History, never a tab. */
 export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings, onBack }) => (
-  <div className="min-h-screen bg-white text-[#1D1D1F]">
+  <div className="min-h-screen theme-night">
     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
       <div className="flex items-center gap-3">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 pl-2.5 pr-3.5 py-2 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-sm font-medium cursor-pointer"
+          className="inline-flex items-center gap-1.5 pl-2.5 pr-3.5 py-2 rounded-full bg-surface hover:bg-surface-2 text-sm font-medium cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           Back
@@ -26,15 +26,16 @@ export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings
       </div>
 
       <div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">How we counted</h1>
-        <p className="text-base text-[#6E6E73] mt-1.5">
-          The footage your stats came from. Everyone the pose model detects, except Person {personId}, is pixelated.
+        <span className="hud-label">REC · replay</span>
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-1">How we counted</h1>
+        <p className="text-base text-ink-2 mt-1.5">
+          The footage your stats came from. Everyone the pose model detects, except you (Person {personId}), is pixelated.
         </p>
       </div>
 
       {data?.errorNote && (
-        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#F5F5F7] text-xs text-[#6E6E73]">
-          <AlertCircle className="w-4 h-4 text-[#8E8E93] shrink-0" />
+        <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface text-xs text-ink-2">
+          <AlertCircle className="w-4 h-4 text-ink-3 shrink-0" />
           <span>{data.errorNote}</span>
         </div>
       )}
@@ -47,12 +48,12 @@ export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings
           repSound={settings.repSound}
         />
       ) : (
-        <div className="aspect-video rounded-[24px] bg-[#F5F5F7] flex items-center justify-center">
-          <Loader2 className="w-6 h-6 animate-spin text-[#6E6E73]" />
+        <div className="aspect-video rounded-[24px] bg-surface flex items-center justify-center">
+          <Loader2 className="w-6 h-6 animate-spin text-ink-2" />
         </div>
       )}
 
-      <p className="text-xs text-[#86868B] text-center pb-8">
+      <p className="hud-label text-center pb-8">
         The plan for production: Spottr runs on the gym's own cameras through a Spottr box, so the video never leaves the gym.
       </p>
     </div>

@@ -69,7 +69,7 @@ const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyIte
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
-        <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F]">
+        <h2 className="text-2xl font-bold tracking-tight text-ink">
           {available ? 'Available today' : 'In development'}
         </h2>
       </div>
@@ -79,14 +79,14 @@ const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyIte
             <Card className="h-full flex flex-col gap-3 !p-6">
               <span
                 className={`self-start inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-                  available ? 'bg-[#34C759]/15 text-[#1E7A35]' : 'bg-white text-[#6E6E73] ring-1 ring-black/[0.06]'
+                  available ? 'bg-accent/15 text-accent-deep' : 'bg-white text-ink-2 ring-1 ring-black/[0.06]'
                 }`}
               >
                 <Icon className="w-3 h-3 stroke-[2.25]" />
                 {available ? 'Available today' : 'In development'}
               </span>
-              <h3 className="text-base font-semibold text-[#1D1D1F]">{item.title}</h3>
-              <p className="text-sm text-[#6E6E73] leading-relaxed">{item.body}</p>
+              <h3 className="text-base font-semibold text-ink">{item.title}</h3>
+              <p className="text-sm text-ink-2 leading-relaxed">{item.body}</p>
             </Card>
           </li>
         ))}
@@ -103,17 +103,17 @@ export const Privacy: React.FC = () => (
     />
     <Section status="available" items={AVAILABLE_TODAY} />
     <section className="flex flex-col gap-3">
-      <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F]">Limits of today&rsquo;s blurring</h2>
-      <ul className="flex flex-col gap-2 list-disc pl-5 text-sm text-[#6E6E73] leading-relaxed max-w-3xl">
+      <h2 className="text-2xl font-bold tracking-tight text-ink">Limits of today&rsquo;s blurring</h2>
+      <ul className="flex flex-col gap-2 list-disc pl-5 text-sm text-ink-2 leading-relaxed max-w-3xl">
         {BLUR_LIMITS.map((limit) => (
           <li key={limit}>{limit}</li>
         ))}
       </ul>
     </section>
     <Section status="development" items={IN_DEVELOPMENT} />
-    <p className="text-sm text-[#6E6E73]">
+    <p className="text-sm text-ink-2">
       Questions about data handling for your gym?{' '}
-      <Link to="/gyms/pilot" className="font-medium text-[#248A3D] hover:text-[#1D1D1F]">
+      <Link to="/gyms/pilot" className="font-medium text-accent-ink hover:text-ink">
         Request a pilot
       </Link>{' '}
       and we'll walk you through it.

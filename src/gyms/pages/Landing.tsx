@@ -1,145 +1,127 @@
 import React from 'react';
-import { ArrowRight, BarChart3, Camera, ChevronRight, Cpu, Dumbbell, HeartHandshake, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronRight, Loader2 } from 'lucide-react';
 import { Link } from '../../router';
 import { BreakEvenCard, PilotStepsCard, PriceCard } from '../components/BusinessCards';
-import { Card } from '../components/ui';
+import { SessionPlayer } from '../../components/SessionPlayer';
+import { useClipData } from '../../hooks/useClipData';
+import { defaultPersonId } from '../../services/memberSession';
 
-const BENEFITS = [
-  {
-    icon: HeartHandshake,
-    title: 'Member retention',
-    body: 'See who is drifting away weeks before they cancel, and reach out while it still matters.',
-  },
-  {
-    icon: BarChart3,
-    title: 'Equipment utilization',
-    body: 'Know which racks members queue for and which machines sit idle, hour by hour.',
-  },
-  {
-    icon: Sparkles,
-    title: 'Premium member experience',
-    body: 'Every set and rep logged automatically in the member app. No wearables, no manual tracking.',
-  },
-];
+const FOR_GYM = [
+  ['Retention', 'See who is drifting away weeks before they cancel, and reach out while it still matters.'],
+  ['Floor use', 'Know which racks members queue for and which machines sit idle, hour by hour.'],
+] as const;
 
-const STEPS = [
-  {
-    icon: Camera,
-    title: 'Your existing cameras',
-    body: 'Spottr works with the cameras already covering your floor. No new sensors on the equipment.',
-  },
-  {
-    icon: Cpu,
-    title: 'Spottr box',
-    body: 'One or two small boxes on your network, hardware included. They turn movement into sets, reps and zone occupancy.',
-  },
-  {
-    icon: Dumbbell,
-    title: 'Insights',
-    body: 'Operators get dashboards and retention alerts. Members get their workouts logged automatically, for free.',
-  },
-];
+const FOR_MEMBERS = [
+  ['Every set logged', 'Sets, reps and exercises show up in the member app on their own. No wearables, no typing.'],
+  ['Free for members', 'The member app is part of your plan, so it reads as a perk of your gym.'],
+] as const;
+
+const PIPELINE = ['Your existing cameras', 'Spottr box on your network', 'Dashboard + member app'];
+
+const primaryButton =
+  'inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent-ink text-white font-semibold hover:bg-accent-deep transition-colors';
+
+/** The real squat clip and pipeline output, the same footage members see under "How we counted". */
+const LiveReplay: React.FC = () => {
+  const data = useClipData('squat');
+  const personId = data ? defaultPersonId(data.session) : null;
+  return (
+    <figure className="viewfinder p-3 sm:p-4 flex flex-col gap-3">
+      {data && personId ? (
+        <SessionPlayer data={data} personId={personId} defaultOverlayMode="styled" repSound={false} />
+      ) : (
+        <div className="aspect-video bg-night flex items-center justify-center">
+          <Loader2 className="w-6 h-6 animate-spin text-white/60" />
+        </div>
+      )}
+      <figcaption className="hud-label">
+        Real gym clip, real pipeline output. Everyone but the member being followed is pixelated.
+      </figcaption>
+    </figure>
+  );
+};
+
+const ValueList: React.FC<{ label: string; items: readonly (readonly [string, string])[] }> = ({ label, items }) => (
+  <div className="flex flex-col gap-4">
+    <span className="hud-label">{label}</span>
+    <dl className="flex flex-col gap-4">
+      {items.map(([title, body]) => (
+        <div key={title} className="border-t border-line pt-3">
+          <dt className="font-display text-lg font-bold tracking-tight text-ink">{title}</dt>
+          <dd className="text-sm text-ink-2 mt-1 leading-relaxed">{body}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+);
 
 export const Landing: React.FC = () => (
   <div className="flex flex-col gap-20 pb-16">
     {/* Hero */}
-    <section className="pt-10 sm:pt-16 text-center flex flex-col items-center">
-      <span className="text-sm font-medium text-[#34C759] mb-4">Spottr for Gyms · Bay Area pilot</span>
-      <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-[#1D1D1F] max-w-3xl leading-[1.05]">
-        Turn your existing cameras into a retention engine
-      </h1>
-      <p className="text-lg sm:text-xl text-[#6E6E73] mt-5 max-w-2xl">
-        Spottr shows you how your floor is really used and which members are slipping away. Your members get
-        every workout logged automatically.
-      </p>
-      <div className="flex flex-col sm:flex-row items-center gap-3 mt-8">
-        <Link
-          to="/gyms/overview"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#34C759] text-white font-semibold hover:bg-[#2DB14F] transition-colors"
-        >
-          Explore the demo
-          <ArrowRight className="w-4 h-4" />
-        </Link>
-        <Link
-          to="/gyms/pilot"
-          className="inline-flex items-center gap-1 px-5 py-3 rounded-full text-[#1D1D1F] font-medium hover:bg-[#F5F5F7] transition-colors"
-        >
-          Request a pilot
-          <ChevronRight className="w-4 h-4" />
-        </Link>
+    <section className="pt-10 sm:pt-14 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 items-center">
+      <div className="flex flex-col items-start">
+        <span className="hud-label text-accent-ink mb-4">Spottr for gyms. Bay Area pilot.</span>
+        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-ink leading-[1.02]">
+          Your cameras already see every set. Now they count them.
+        </h1>
+        <p className="text-lg text-ink-2 mt-5 max-w-xl">
+          Spottr logs every set and rep for your members, and shows you how your floor is used and who is drifting
+          away.
+        </p>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8">
+          <Link to="/gyms/overview" className={primaryButton}>
+            Explore the demo
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            to="/gyms/pilot"
+            className="inline-flex items-center gap-1 px-5 py-3 rounded-full text-ink font-medium hover:bg-surface transition-colors"
+          >
+            Request a pilot
+            <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
+      <LiveReplay />
     </section>
 
-    {/* Benefits */}
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {BENEFITS.map(({ icon: Icon, title, body }) => (
-        <Card key={title} className="flex flex-col gap-4">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-            <Icon className="w-5 h-5 text-[#34C759] stroke-[1.75]" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold tracking-tight text-[#1D1D1F]">{title}</h2>
-            <p className="text-sm text-[#6E6E73] mt-1.5 leading-relaxed">{body}</p>
-          </div>
-        </Card>
-      ))}
-    </section>
-
-    {/* How it works */}
-    <section className="flex flex-col gap-8">
-      <div className="text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1D1D1F]">How it works</h2>
-        <p className="text-base text-[#6E6E73] mt-2">Three pieces. Nothing for your members to wear.</p>
+    {/* What you get, and how it gets there */}
+    <section className="flex flex-col gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <ValueList label="For your gym" items={FOR_GYM} />
+        <ValueList label="For your members" items={FOR_MEMBERS} />
       </div>
-      <ol className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-4">
-        {STEPS.map(({ icon: Icon, title, body }, i) => (
-          <React.Fragment key={title}>
-            <li className="bg-[#F5F5F7] rounded-[24px] p-6 flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">Step {i + 1}</span>
-                <Icon className="w-5 h-5 text-[#1D1D1F] stroke-[1.75]" />
-              </div>
-              <h3 className="text-base font-semibold text-[#1D1D1F]">{title}</h3>
-              <p className="text-sm text-[#6E6E73] leading-relaxed">{body}</p>
-            </li>
-            {i < STEPS.length - 1 && (
-              <li aria-hidden className="hidden md:flex items-center justify-center text-[#D1D1D6]">
-                <ArrowRight className="w-5 h-5" />
+      <ol className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 font-mono text-[13px] text-ink">
+        {PIPELINE.map((step, i) => (
+          <React.Fragment key={step}>
+            <li className="px-3 py-2 rounded-sm bg-surface">{step}</li>
+            {i < PIPELINE.length - 1 && (
+              <li aria-hidden className="text-ink-3 px-1 rotate-90 sm:rotate-0 self-start sm:self-auto">
+                →
               </li>
             )}
           </React.Fragment>
         ))}
       </ol>
-      <div className="text-center">
-        <Link
-          to="/gyms/overview"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] text-white font-semibold hover:bg-black transition-colors"
-        >
-          Explore the demo
-          <ArrowRight className="w-4 h-4" />
-        </Link>
-        <p className="text-xs text-[#6E6E73] mt-3">
-          Walk through the operator dashboard for Iron District Fitness, Oakland (fictional gym, simulated data).
-        </p>
-      </div>
+      <p className="text-xs text-ink-2 -mt-6">
+        No sensors on the equipment and nothing for members to wear. The operator demo is Iron District Fitness,
+        Oakland: a fictional gym with simulated data.
+      </p>
     </section>
 
     {/* Business model */}
     <section className="flex flex-col gap-8">
-      <div className="text-center">
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1D1D1F]">Pilot & pricing</h2>
-        <p className="text-base text-[#6E6E73] mt-2">One price per location. Free for your members.</p>
+      <div>
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-ink">Pilot & pricing</h2>
+        <p className="text-base text-ink-2 mt-2">One price per location. Free for your members.</p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <PilotStepsCard />
         <PriceCard />
         <BreakEvenCard />
       </div>
-      <div className="text-center">
-        <Link
-          to="/gyms/pilot"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#34C759] text-white font-semibold hover:bg-[#2DB14F] transition-colors"
-        >
+      <div>
+        <Link to="/gyms/pilot" className={primaryButton}>
           Request a pilot
           <ArrowRight className="w-4 h-4" />
         </Link>

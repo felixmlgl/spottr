@@ -41,31 +41,31 @@ const ZoneDetail: React.FC<{ zoneId: ZoneId; day: number; hour: number }> = ({ z
         <Eyebrow>
           {DAY_NAMES[day]} · {formatHour(hour)}
         </Eyebrow>
-        <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">{zone.name}</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">{zone.name}</h2>
         <div className="flex items-baseline gap-2 mt-3">
-          <span className="text-5xl font-bold tracking-tight text-[#1D1D1F]">{pct(occ)}</span>
-          <span className="text-sm text-[#6E6E73]">in use</span>
+          <span className="font-dot text-6xl font-black leading-none text-ink">{pct(occ)}</span>
+          <span className="text-sm text-ink-2">in use</span>
         </div>
-        <p className="text-sm text-[#6E6E73] mt-1 flex items-center gap-1.5">
+        <p className="text-sm text-ink-2 mt-1 flex items-center gap-1.5">
           <Users className="w-3.5 h-3.5" />
           ~{Math.min(capacity, Math.round(demand))} of {capacity} {zone.unitNoun} busy
-          {waiting >= 0.5 && <span className="font-semibold text-[#1D1D1F]">· ~{Math.round(waiting)} waiting</span>}
+          {waiting >= 0.5 && <span className="font-semibold text-ink">· ~{Math.round(waiting)} waiting</span>}
         </p>
       </div>
 
       <dl className="grid grid-cols-2 gap-3">
         <div className="bg-white rounded-2xl p-4">
-          <dt className="text-xs text-[#6E6E73]">Avg. utilization, {DAY_LABELS[day]}</dt>
-          <dd className="text-xl font-bold text-[#1D1D1F] mt-0.5">{pct(zoneAverage(zoneId, day))}</dd>
+          <dt className="text-xs text-ink-2">Avg. utilization, {DAY_LABELS[day]}</dt>
+          <dd className="text-xl font-bold text-ink mt-0.5">{pct(zoneAverage(zoneId, day))}</dd>
         </div>
         <div className="bg-white rounded-2xl p-4">
-          <dt className="text-xs text-[#6E6E73]">Avg. utilization, week</dt>
-          <dd className="text-xl font-bold text-[#1D1D1F] mt-0.5">{pct(zoneAverage(zoneId))}</dd>
+          <dt className="text-xs text-ink-2">Avg. utilization, week</dt>
+          <dd className="text-xl font-bold text-ink mt-0.5">{pct(zoneAverage(zoneId))}</dd>
         </div>
       </dl>
 
       <div>
-        <p className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide mb-2">{DAY_NAMES[day]} by hour</p>
+        <p className="hud-label mb-2">{DAY_NAMES[day]} by hour</p>
         <div className="h-24 w-full" role="img" aria-label={`${zone.name} occupancy by hour on ${DAY_NAMES[day]}`}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={hourly} margin={{ top: 2, right: 14, left: 14, bottom: 0 }} barCategoryGap="12%">
@@ -85,18 +85,18 @@ const ZoneDetail: React.FC<{ zoneId: ZoneId; day: number; hour: number }> = ({ z
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide mb-2">Peak times</p>
+        <p className="hud-label mb-2">Peak times</p>
         <ul className="flex flex-col gap-1.5">
           {peaks.map((p) => (
             <li key={`${p.weekday}-${p.hour}`} className="flex items-center justify-between text-sm">
-              <span className="text-[#1D1D1F] flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-[#6E6E73]" />
+              <span className="text-ink flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-ink-2" />
                 {DAY_NAMES[p.weekday]} {formatHour(p.hour)}–{formatHour(p.hour + 1)}
               </span>
-              <span className="font-semibold text-[#1D1D1F] tabular-nums">
+              <span className="font-semibold text-ink tabular-nums">
                 {pct(p.occupancy)}
                 {zoneDemand(zoneId, p.weekday, p.hour) - capacity >= 0.5 && (
-                  <span className="font-normal text-[#6E6E73]"> · queue</span>
+                  <span className="font-normal text-ink-2"> · queue</span>
                 )}
               </span>
             </li>
@@ -105,15 +105,15 @@ const ZoneDetail: React.FC<{ zoneId: ZoneId; day: number; hour: number }> = ({ z
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide mb-2">Idle equipment</p>
+        <p className="hud-label mb-2">Idle equipment</p>
         {idle.length === 0 ? (
-          <p className="text-sm text-[#6E6E73]">None. Every unit in this zone is in demand at peak.</p>
+          <p className="text-sm text-ink-2">None. Every unit in this zone is in demand at peak.</p>
         ) : (
           <ul className="flex flex-col gap-1.5">
             {idle.map((u) => (
               <li key={u.id} className="flex items-center justify-between text-sm gap-3">
-                <span className="text-[#1D1D1F]">{u.name}</span>
-                <span className="text-[#6E6E73] text-right">unused {pct(1 - u.peakUtilization)} of peak hours</span>
+                <span className="text-ink">{u.name}</span>
+                <span className="text-ink-2 text-right">unused {pct(1 - u.peakUtilization)} of peak hours</span>
               </li>
             ))}
           </ul>
@@ -163,7 +163,7 @@ export const Floor: React.FC = () => {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 items-start">
-        <Card className="flex flex-col gap-5 !p-4 sm:!p-6">
+        <Card className="theme-night flex flex-col gap-5 !p-4 sm:!p-6">
           {/* Controls */}
           <div className="flex flex-col gap-4">
             <Segmented
@@ -177,7 +177,7 @@ export const Floor: React.FC = () => {
               <button
                 onClick={() => setPlaying((p) => !p)}
                 aria-label={playing ? 'Pause day playback' : 'Play through the day'}
-                className="w-9 h-9 shrink-0 rounded-full bg-white shadow-xs flex items-center justify-center text-[#1D1D1F] hover:bg-[#E8E8ED] transition-colors cursor-pointer"
+                className="w-9 h-9 shrink-0 rounded-full bg-paper shadow-xs flex items-center justify-center text-ink hover:bg-surface-2 transition-colors cursor-pointer"
               >
                 {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
               </button>
@@ -194,15 +194,15 @@ export const Floor: React.FC = () => {
                     setHour(Number(e.target.value));
                   }}
                   aria-valuetext={formatHour(hour)}
-                  className="w-full accent-[#34C759] cursor-pointer"
+                  className="w-full accent-accent cursor-pointer"
                 />
-                <span className="flex justify-between text-[11px] text-[#6E6E73]">
+                <span className="flex justify-between text-[11px] text-ink-2">
                   <span>{formatHour(GYM.openHour)}</span>
                   <span>{formatHour((GYM.openHour + GYM.closeHour) / 2)}</span>
                   <span>{formatHour(GYM.closeHour)}</span>
                 </span>
               </label>
-              <span className="w-24 shrink-0 text-right text-sm font-semibold text-[#1D1D1F] tabular-nums">
+              <span className="w-24 shrink-0 text-right text-sm font-semibold text-ink tabular-nums">
                 {DAY_LABELS[day]} {formatHour(hour)}
               </span>
             </div>
@@ -217,7 +217,7 @@ export const Floor: React.FC = () => {
           />
 
           {/* Legend */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-[#6E6E73]">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs text-ink-2">
             <span className="font-medium">Share of equipment in use</span>
             <div className="flex items-center gap-2 flex-1 max-w-xs">
               <span>0%</span>

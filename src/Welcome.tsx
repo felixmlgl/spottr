@@ -1,7 +1,7 @@
 /**
  * Welcome page ("/").
  * Twenty-four 2.4s gym clips play back-to-back on a loop with quick cuts, while the
- * Spottr logo and the demo button stay fixed on top.
+ * Spottr logo, a one-line pitch and the two entry points (member app, gyms) stay fixed on top.
  */
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -22,9 +22,18 @@ const FADE_MS = 120;
 const DemoButton: React.FC = () => (
   <Link
     to="/demo"
-    className="whitespace-nowrap rounded-full border border-white/40 bg-white/55 px-6 py-3 text-[14px] font-medium text-[#1D1D1F] shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-colors hover:bg-white/75"
+    className="whitespace-nowrap rounded-full border border-white/40 bg-white/55 px-6 py-3 text-[14px] font-medium text-ink shadow-[0_4px_24px_rgba(0,0,0,0.15)] backdrop-blur-md transition-colors hover:bg-white/75"
   >
-    Try our demo
+    Try the member app
+  </Link>
+);
+
+const GymsLink: React.FC = () => (
+  <Link
+    to="/gyms"
+    className="whitespace-nowrap rounded-full px-5 py-3 text-[14px] font-medium text-white/90 transition-colors hover:text-white hover:bg-white/10"
+  >
+    For gym owners →
   </Link>
 );
 
@@ -85,7 +94,7 @@ export const Welcome: React.FC = () => {
       <div className="absolute inset-0 bg-black/15" aria-hidden />
 
       <div className="relative z-10 flex h-full flex-col items-center px-4">
-        <div className="flex flex-1 items-center justify-center pt-[4vh] pb-[12vh]">
+        <div className="flex flex-1 flex-col items-center justify-center gap-5 pt-[4vh] pb-[12vh]">
           <h1>
             <img
               src="/welcome/spottr-logo.png"
@@ -93,10 +102,14 @@ export const Welcome: React.FC = () => {
               className="w-[min(28.9vw,476px)] min-w-[187px] h-auto drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]"
             />
           </h1>
+          <p className="font-mono text-[13px] sm:text-[15px] text-white/90 text-center [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+            Your gym's cameras log every set and rep.
+          </p>
         </div>
 
-        <div className="absolute bottom-[9vh] left-1/2 -translate-x-1/2">
+        <div className="absolute bottom-[9vh] left-1/2 -translate-x-1/2 flex flex-col sm:flex-row items-center gap-2">
           <DemoButton />
+          <GymsLink />
         </div>
       </div>
     </main>
