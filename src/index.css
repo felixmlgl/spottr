@@ -1,11 +1,96 @@
 @import "tailwindcss";
 
+/* Spottr palette: green-tinted neutrals (CCTV monitor, not Apple grey) around the brand green.
+   ink-3 is the lightest grey that still passes WCAG AA for small text on `surface`. */
+@theme {
+  --color-ink: #0F1411;
+  --color-ink-2: #4B5550;
+  --color-ink-3: #646E68;
+  --color-surface: #F1F3F0;
+  --color-surface-2: #E6E9E5;
+  --color-line: #D3D8D3;
+  /* Popovers and text on ink fills; flips with .theme-night */
+  --color-paper: #FFFFFF;
+  --color-accent: #34C759;
+  /* Filled buttons and green text: white on accent-ink is 5.3:1 */
+  --color-accent-ink: #1E7B36;
+  --color-accent-deep: #17652B;
+  /* Night mode for camera views (replay, floor) */
+  --color-night: #0B0F0D;
+
+  --font-display: "Archivo", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Dot-matrix numerals, same idea as the wordmark */
+  --font-dot: "Doto", "JetBrains Mono", ui-monospace, monospace;
+}
+
 @layer base {
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", sans-serif;
-    color: #1D1D1F;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    color: var(--color-ink);
     background-color: #FFFFFF;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-stretch: 92%;
+  }
+}
+
+/* Camera views (replay, floor) run on dark, like a monitor wall. Utilities inside re-resolve to these values. */
+.theme-night {
+  --color-ink: #EEF2EF;
+  --color-ink-2: #AAB4AE;
+  --color-ink-3: #8D9791;
+  --color-surface: #19201C;
+  --color-surface-2: #232B27;
+  --color-line: #2F3833;
+  --color-paper: #121815;
+  background-color: var(--color-night);
+  color: var(--color-ink);
+}
+
+/* Small readout label, like the timestamp text on a camera feed */
+@utility hud-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-ink-2);
+}
+
+/* Viewfinder corner brackets. Set --vf to recolor (e.g. on dark panels). */
+@utility viewfinder {
+  --vf-len: 14px;
+  --vf-w: 1.5px;
+  background-image:
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
+    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink)));
+  background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
+  background-size:
+    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len),
+    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len),
+    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len),
+    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len);
+  background-repeat: no-repeat;
+}
+
+/* Standard content panel: flat surface with viewfinder corners instead of a big rounded card */
+@utility panel {
+  background-color: var(--color-surface);
+  border-radius: 4px;
+  --vf: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  @apply viewfinder;
+}
+
+/* Round dots, matching the wordmark */
+.font-dot {
+  font-variation-settings: "ROND" 100;
 }
