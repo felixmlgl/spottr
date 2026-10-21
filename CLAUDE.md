@@ -2,9 +2,9 @@
 
 Automatic workout tracking from existing gym cameras.
 
-- `/`: welcome page (looping gym clips, "Try our demo" button)
+- `/`: welcome page (looping gym clips, "Try the member app" and "For gym owners" buttons). Below the hero: the company site for gym owners (`/#gyms`; old `/gyms` links are forwarded here)
 - `/demo`: member app (old `/?clip=…&person=…` links are forwarded here)
-- `/gyms`: gym operator demo (`/gyms/overview`, `/floor`, `/world-map`, `/members`, `/privacy`, `/pilot`)
+- `/gyms/*`: gym operator demo (`/gyms/overview`, `/floor`, `/world-map`, `/members`, `/privacy`, `/pilot`)
 
 Stack: Vite + React + TypeScript + Tailwind v4. Deployed on Vercel (tryspottr.app) from `main`.
 Design: Apple-style, light, accent `#34C759`.
@@ -29,6 +29,7 @@ Design: Apple-style, light, accent `#34C759`.
 - `src/main.tsx`: entry point. Picks the page by URL (`/`, `/gyms/*`, everything else = member app) and renders Vercel Analytics.
 - `src/router.tsx`: small pathname router (`usePathname`, `navigate`, `Link`). No router library.
 - `src/Welcome.tsx`: welcome page at `/`.
+- `src/Company.tsx`: company site below the welcome hero (pitch, live replay, pricing). Lazy-loaded.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.
 - `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo/`.
