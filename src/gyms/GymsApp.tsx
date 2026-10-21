@@ -6,7 +6,6 @@
 import React, { useEffect } from 'react';
 import { GymNav } from './GymNav';
 import { ToastProvider } from './components/Toast';
-import { Landing } from './pages/Landing';
 import { Overview } from './pages/Overview';
 import { Locations } from './pages/Locations';
 import { Floor } from './pages/Floor';
@@ -17,7 +16,6 @@ import { WorldMapPage } from './world/WorldMapPage';
 import { NotFoundContent } from '../NotFound';
 
 const PAGES: Record<string, { title: string; component: React.FC }> = {
-  '/gyms': { title: 'Spottr for Gyms', component: Landing },
   '/gyms/overview': { title: 'Overview · Spottr for Gyms', component: Overview },
   '/gyms/locations': { title: 'Locations · Spottr for Gyms', component: Locations },
   '/gyms/floor': { title: 'Floor · Spottr for Gyms', component: Floor },

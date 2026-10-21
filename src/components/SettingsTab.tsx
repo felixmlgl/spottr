@@ -59,7 +59,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
           Change
         </button>
       </div>
-      <Link to="/gyms" className="p-5 flex items-center justify-between gap-4 hover:bg-black/[0.02]">
+      <Link to="/gyms/overview" className="p-5 flex items-center justify-between gap-4 hover:bg-black/[0.02]">
         <div>
           <p className="text-sm font-semibold text-ink">Gym operator demo</p>
           <p className="text-xs text-ink-2 mt-0.5">A simulated demo gym, from the operator's side.</p>

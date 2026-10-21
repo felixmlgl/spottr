@@ -10,7 +10,7 @@ import { Logo } from './components/Logo';
 
 const DESTINATIONS = [
   { to: '/demo', label: 'Member app demo', body: 'See a workout the gym camera logged.' },
-  { to: '/gyms', label: 'Spottr for Gyms', body: 'The operator dashboard for a simulated demo gym.' },
+  { to: '/gyms/overview', label: 'Spottr for Gyms', body: 'The operator dashboard for a simulated demo gym.' },
 ];
 
 /** The page body, also shown inside the gym demo's layout for unknown /gyms/* paths. */

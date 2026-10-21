@@ -2,10 +2,20 @@
  * Welcome page ("/").
  * Twenty-four 2.4s gym clips play back-to-back on a loop with quick cuts, while the
  * Spottr logo, a one-line pitch and the two entry points (member app, gyms) stay fixed on top.
+ * Below the hero sits the company site for gym owners ("/#gyms", see Company.tsx).
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Link } from './router';
+
+// Only fetched once the page renders, so the video hero isn't held up by the gym mocks it pulls in
+const Company = lazy(() => import('./Company.tsx').then((m) => ({ default: m.Company })));
+
+const scrollBehavior = (): ScrollBehavior =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+const scrollToGyms = (behavior: ScrollBehavior) =>
+  document.getElementById('gyms')?.scrollIntoView({ behavior });
 
 // Four non-overlapping cuts per source video, in chronological order. Playback cycles
 // source videos 1 → 6 on every cut while each video advances from start to end.
@@ -29,12 +39,16 @@ const DemoButton: React.FC = () => (
 );
 
 const GymsLink: React.FC = () => (
-  <Link
-    to="/gyms"
+  <a
+    href="#gyms"
+    onClick={(e) => {
+      e.preventDefault();
+      scrollToGyms(scrollBehavior());
+    }}
     className="whitespace-nowrap rounded-full px-5 py-3 text-[14px] font-medium text-white/90 transition-colors hover:text-white hover:bg-white/10"
   >
-    For gym owners →
-  </Link>
+    For gym owners ↓
+  </a>
 );
 
 export const Welcome: React.FC = () => {
@@ -67,51 +81,64 @@ export const Welcome: React.FC = () => {
     return () => document.removeEventListener('visibilitychange', resume);
   }, [active]);
 
+  // Links to "/#gyms" (and the old "/gyms") land on the company section
+  useEffect(() => {
+    if (window.location.hash === '#gyms') scrollToGyms('auto');
+  }, []);
+
   const next = () => setActive((i) => (i + 1) % CLIPS.length);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-black">
-      {CLIPS.map((clip, i) => (
-        <video
-          key={clip.src}
-          ref={(el) => {
-            videoRefs.current[i] = el;
-          }}
-          src={clip.src}
-          poster={clip.poster}
-          muted
-          playsInline
-          // Buffer only the current and upcoming clip
-          preload={i === active || i === (active + 1) % CLIPS.length ? 'auto' : 'metadata'}
-          onEnded={i === active ? next : undefined}
-          className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
-          style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
-          aria-hidden
-        />
-      ))}
+    <main>
+      <section className="relative h-dvh w-full overflow-hidden bg-black">
+        {CLIPS.map((clip, i) => (
+          <video
+            key={clip.src}
+            ref={(el) => {
+              videoRefs.current[i] = el;
+            }}
+            src={clip.src}
+            poster={clip.poster}
+            muted
+            playsInline
+            // Buffer only the current and upcoming clip
+            preload={i === active || i === (active + 1) % CLIPS.length ? 'auto' : 'metadata'}
+            onEnded={i === active ? next : undefined}
+            className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
+            style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
+            aria-hidden
+          />
+        ))}
 
-      {/* Light scrim so the logo stays legible on bright frames */}
-      <div className="absolute inset-0 bg-black/15" aria-hidden />
+        {/* Light scrim so the logo stays legible on bright frames */}
+        <div className="absolute inset-0 bg-black/15" aria-hidden />
 
-      <div className="relative z-10 flex h-full flex-col items-center px-4">
-        <div className="flex flex-1 flex-col items-center justify-center gap-5 pt-[4vh] pb-[12vh]">
-          <h1>
-            <img
-              src="/welcome/spottr-logo.png"
-              alt="Spottr"
-              className="w-[min(28.9vw,476px)] min-w-[187px] h-auto drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]"
-            />
-          </h1>
-          <p className="font-mono text-[13px] sm:text-[15px] text-white/90 text-center [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-            Your gym's cameras log every set and rep.
-          </p>
+        <div className="relative z-10 flex h-full flex-col items-center px-4">
+          <div className="flex flex-1 flex-col items-center justify-center gap-5 pt-[4vh] pb-[12vh]">
+            <h1>
+              <img
+                src="/welcome/spottr-logo.png"
+                alt="Spottr"
+                className="w-[min(28.9vw,476px)] min-w-[187px] h-auto drop-shadow-[0_2px_24px_rgba(0,0,0,0.25)]"
+              />
+            </h1>
+            <p className="font-mono text-[13px] sm:text-[15px] text-white/90 text-center [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+              Your gym's cameras log every set and rep.
+            </p>
+          </div>
+
+          <div className="absolute bottom-[9vh] left-1/2 -translate-x-1/2 flex flex-col sm:flex-row items-center gap-2">
+            <DemoButton />
+            <GymsLink />
+          </div>
         </div>
+      </section>
 
-        <div className="absolute bottom-[9vh] left-1/2 -translate-x-1/2 flex flex-col sm:flex-row items-center gap-2">
-          <DemoButton />
-          <GymsLink />
-        </div>
-      </div>
+      <section id="gyms" aria-label="For gym owners" className="bg-white text-ink">
+        <Suspense fallback={<div className="min-h-screen" />}>
+          <Company onLogoClick={() => window.scrollTo({ top: 0, behavior: scrollBehavior() })} />
+        </Suspense>
+      </section>
     </main>
   );
 };
