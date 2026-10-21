@@ -49,7 +49,7 @@ export class SummaryService {
     const durationMins = Math.max(1, Math.round(summary.total_duration_s / 60));
     return `Nice work! ${summary.total_reps} reps across ${summary.sessions.length} set${
       summary.sessions.length > 1 ? 's' : ''
-    } (${sessionNames}) in ${durationMins} min. Every rep was counted by the gym camera, so there was nothing to log.`;
+    } (${sessionNames}) in ${durationMins} min. Every rep was counted by the gym camera.`;
   }
 }
 

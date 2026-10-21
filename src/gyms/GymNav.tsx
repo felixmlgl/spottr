@@ -7,7 +7,7 @@ const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/overview', label: 'Overview' },
   { to: '/gyms/locations', label: 'Locations' },
   { to: '/gyms/floor', label: 'Floor' },
-  { to: '/gyms/world-map', label: 'Multi-camera tracking' },
+  { to: '/gyms/world-map', label: 'Cameras' },
   { to: '/gyms/members', label: 'Members' },
   { to: '/demo', label: 'Member app', external: true },
   { to: '/gyms/privacy', label: 'Privacy' },
@@ -23,7 +23,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
           to={link.to}
           aria-current={isActive ? 'page' : undefined}
           className={`${compact ? 'px-3.5' : 'px-4'} py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap inline-flex items-center gap-0.5 ${
-            isActive ? 'bg-white text-[#1D1D1F] shadow-sm' : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+            isActive ? 'bg-white text-ink shadow-sm' : 'text-ink-2 hover:text-ink'
           }`}
         >
           {link.label}
@@ -37,12 +37,12 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
   return (
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
       <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between gap-4">
-        <Link to="/gyms" className="flex items-center gap-2 shrink-0">
+        <Link to="/#gyms" className="flex items-center gap-2 shrink-0">
           <Logo />
-          <span className="text-sm font-medium text-[#6E6E73]">for Gyms</span>
+          <span className="text-sm font-medium text-ink-2">for Gyms</span>
         </Link>
 
-        <nav aria-label="Gym demo" className="hidden xl:flex items-center p-1 bg-[#F5F5F7] rounded-full">
+        <nav aria-label="Gym demo" className="hidden xl:flex items-center p-1 bg-surface rounded-full">
           {renderLinks(false)}
         </nav>
 
@@ -50,7 +50,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
           to="/gyms/pilot"
           aria-current={pilotActive ? 'page' : undefined}
           className={`shrink-0 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-            pilotActive ? 'bg-[#1D1D1F] text-white' : 'bg-[#34C759] text-white hover:bg-[#2DB14F]'
+            pilotActive ? 'bg-ink text-white' : 'bg-accent-ink text-white hover:bg-accent-deep'
           }`}
         >
           Request pilot
@@ -59,8 +59,8 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
 
       {/* Compact: horizontally scrollable pill row */}
       <nav aria-label="Gym demo" className="xl:hidden border-t border-black/[0.04]">
-        <div className="max-w-[1100px] mx-auto px-4 py-2 overflow-x-auto">
-          <div className="inline-flex items-center p-1 bg-[#F5F5F7] rounded-full">{renderLinks(true)}</div>
+        <div className="max-w-[1100px] mx-auto px-4 py-2 overflow-x-auto [mask-image:linear-gradient(to_right,black_88%,transparent)]">
+          <div className="inline-flex items-center p-1 bg-surface rounded-full">{renderLinks(true)}</div>
         </div>
       </nav>
     </header>

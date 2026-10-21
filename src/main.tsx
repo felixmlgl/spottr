@@ -12,6 +12,10 @@ const initialParams = new URLSearchParams(window.location.search);
 if (window.location.pathname === '/' && (initialParams.has('clip') || initialParams.has('person'))) {
   window.history.replaceState({}, '', `/demo${window.location.search}`);
 }
+// The gym pitch used to be its own page at "/gyms"; it's now the company section below the welcome hero
+if (/^\/gyms\/?$/.test(window.location.pathname)) {
+  window.history.replaceState({}, '', `/${window.location.search}#gyms`);
+}
 
 // Gym operator demo is only loaded when visiting /gyms
 const GymsApp = lazy(() => import('./gyms/GymsApp.tsx').then((m) => ({default: m.GymsApp})));

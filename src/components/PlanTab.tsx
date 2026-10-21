@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Camera, RefreshCw, Sparkles } from 'lucide-react';
+import { Camera, RefreshCw } from 'lucide-react';
 import { MuscleId, PastWorkout } from '../types/schema';
 import { MUSCLE_NAMES } from '../data/exerciseMuscles';
 import { calculateMuscleRecovery, readyDayLabel, RecoveryCalculationResult } from '../services/recovery';
@@ -41,10 +41,10 @@ const ExerciseRow: React.FC<{ exercise: ExerciseSuggestion; badge?: React.ReactN
   <div className="p-4 flex items-center gap-4">
     {badge}
     <div className="flex-1 min-w-0">
-      <p className={`text-sm font-semibold truncate ${muted ? 'text-[#6E6E73]' : 'text-[#1D1D1F]'}`}>{exercise.name}</p>
-      <p className="text-xs text-[#6E6E73] truncate">{note ?? muscleList(exercise.primary)}</p>
+      <p className={`text-sm font-semibold truncate ${muted ? 'text-ink-2' : 'text-ink'}`}>{exercise.name}</p>
+      <p className="text-xs text-ink-2 truncate">{note ?? muscleList(exercise.primary)}</p>
     </div>
-    <span className={`text-sm font-semibold tabular-nums shrink-0 ${muted ? 'text-[#86868B]' : 'text-[#1D1D1F]'}`}>
+    <span className={`text-sm font-semibold tabular-nums shrink-0 ${muted ? 'text-ink-3' : 'text-ink'}`}>
       {exercise.sets} × {exercise.reps}
     </span>
   </div>
@@ -57,7 +57,7 @@ const pageOf = <T,>(items: T[], page: number) =>
     : Array.from({ length: PAGE_SIZE }, (_, i) => items[(page * PAGE_SIZE + i) % items.length]);
 
 const NumberBadge: React.FC<{ n: number }> = ({ n }) => (
-  <span className="w-7 h-7 rounded-full bg-[#F5F5F7] text-xs font-bold text-[#1D1D1F] flex items-center justify-center shrink-0">
+  <span className="w-7 h-7 rounded-full bg-surface text-xs font-bold text-ink flex items-center justify-center shrink-0">
     {n}
   </span>
 );
@@ -96,8 +96,8 @@ const MusclePanel: React.FC<MusclePanelProps> = ({ muscle, recovery, history }) 
   return (
     <div className="min-w-0 flex flex-col gap-4 animate-in fade-in duration-150">
       <div>
-        <h4 className="text-2xl font-bold tracking-tight text-[#1D1D1F]">{name}</h4>
-        <p className="text-sm text-[#1D1D1F] mt-1 flex items-center gap-1.5">
+        <h4 className="text-2xl font-bold tracking-tight text-ink">{name}</h4>
+        <p className="text-sm text-ink mt-1 flex items-center gap-1.5">
           <span
             className="w-2 h-2 rounded-full shrink-0"
             style={{ backgroundColor: recoveryColor(status.recovery_percent / 100) }}
@@ -106,11 +106,11 @@ const MusclePanel: React.FC<MusclePanelProps> = ({ muscle, recovery, history }) 
             ? 'Ready to train'
             : `${status.recovery_percent}% recovered · back to full ${readyDayLabel(status.hours_remaining)}`}
         </p>
-        <p className="text-sm text-[#6E6E73] mt-0.5">{lastTrainedText}</p>
+        <p className="text-sm text-ink-2 mt-0.5">{lastTrainedText}</p>
       </div>
 
       {!fits.length && status.status === 'ready' && (
-        <p className="text-sm text-[#6E6E73]">
+        <p className="text-sm text-ink-2">
           Nothing fits yet: every exercise for {name.toLowerCase()} also leans on a muscle that's still recovering.
         </p>
       )}
@@ -118,10 +118,10 @@ const MusclePanel: React.FC<MusclePanelProps> = ({ muscle, recovery, history }) 
       {suggestions.length > 0 && (
         <div>
           <div className="flex items-baseline justify-between gap-3 mb-2">
-            <p className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">
+            <p className="hud-label">
               {fits.length ? 'Exercises that fit' : 'Not yet'}
             </p>
-            <span className="text-xs text-[#86868B]">{suggestions.length} options</span>
+            <span className="text-xs text-ink-3">{suggestions.length} options</span>
           </div>
           <div
             key={page}
@@ -136,7 +136,7 @@ const MusclePanel: React.FC<MusclePanelProps> = ({ muscle, recovery, history }) 
           {suggestions.length > PAGE_SIZE && (
             <button
               onClick={() => setPage((p) => p + 1)}
-              className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-[#E8E8ED] text-sm font-medium text-[#1D1D1F] shadow-2xs cursor-pointer transition-colors"
+              className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white hover:bg-surface-2 text-sm font-medium text-ink shadow-2xs cursor-pointer transition-colors"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Generate new
@@ -147,7 +147,7 @@ const MusclePanel: React.FC<MusclePanelProps> = ({ muscle, recovery, history }) 
 
       {fits.length > 0 && notYet.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide mb-2">Not yet</p>
+          <p className="hud-label mb-2">Not yet</p>
           <div className="bg-white/60 rounded-2xl divide-y divide-black/[0.04] overflow-hidden">
             {notYet.map(({ exercise, waitingOn }) => (
               <ExerciseRow key={exercise.id} exercise={exercise} muted note={waitingNote(waitingOn)} />
@@ -172,24 +172,23 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
   return (
     <div className="flex flex-col gap-8 pb-16 animate-in fade-in duration-200">
       <div className="pt-4">
-        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#1D1D1F]">Plan</h1>
-        <p className="text-base text-[#6E6E73] mt-2">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">Plan</h1>
+        <p className="text-base text-ink-2 mt-2">
           What to train on your next visit, based on what you've worked and what's recovered.
         </p>
       </div>
 
       {/* Next session */}
-      <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 flex flex-col gap-6">
+      <div className="panel p-6 sm:p-8 flex flex-col gap-6">
         <div>
-          <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#34C759]" />
+          <span className="hud-label flex items-center gap-1.5">
             Next session
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#1D1D1F] mt-1">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink mt-1">
             {session.title}
-            <span className="text-[#6E6E73] font-semibold"> · {session.subtitle}</span>
           </h2>
-          <p className="text-base text-[#6E6E73] mt-2 leading-relaxed max-w-3xl">{session.reason}</p>
+          <p className="text-lg font-semibold text-ink-2">{session.subtitle}</p>
+          <p className="text-base text-ink-2 mt-2 leading-relaxed max-w-3xl">{session.reason}</p>
         </div>
 
         {session.exercises.length > 0 && (
@@ -201,7 +200,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
               <ExerciseRow
                 exercise={session.finisher}
                 badge={
-                  <span className="px-2 h-7 rounded-full bg-[#34C759]/10 text-[10px] font-semibold text-[#1E8E3E] uppercase tracking-wide flex items-center shrink-0">
+                  <span className="px-2 h-7 rounded-full bg-accent/10 text-[10px] font-semibold text-accent-ink uppercase tracking-wide flex items-center shrink-0">
                     Finisher
                   </span>
                 }
@@ -210,18 +209,18 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
           </div>
         )}
 
-        <p className="text-xs text-[#6E6E73] flex items-center gap-1.5">
+        <p className="text-xs text-ink-2 flex items-center gap-1.5">
           <Camera className="w-3.5 h-3.5 shrink-0" />
           The gym cameras count your reps, so there's nothing to log.
         </p>
       </div>
 
       {/* Recovery map: tap a muscle to see exercises for it */}
-      <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-8 flex flex-col gap-6">
+      <div className="panel p-6 sm:p-8 flex flex-col gap-6">
         <div>
-          <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">Recovery</span>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">What's ready to train</h3>
-          <p className="text-sm text-[#6E6E73] mt-1 max-w-2xl">
+          <span className="hud-label">Recovery</span>
+          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-ink mt-0.5">What's ready to train</h3>
+          <p className="text-sm text-ink-2 mt-1 max-w-2xl">
             {thisWeek.length
               ? `This week you trained ${joinList(thisWeek.map(dayName))}.`
               : 'No workouts logged this week.'}{' '}
@@ -235,7 +234,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
         </div>
       </div>
 
-      <p className="text-xs text-[#86868B] text-center">
+      <p className="text-xs text-ink-3 text-center">
         Suggestions use simplified recovery estimates and are not medical advice. Older workouts are sample data.
       </p>
     </div>

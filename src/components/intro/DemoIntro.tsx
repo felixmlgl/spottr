@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, Dumbbell, Info, LayoutDashboard, X } from 'lucide-react';
+import { ArrowRight, Info } from 'lucide-react';
 import { PIPELINE_CLIPS } from '../../config';
 import { findClip, prefetchClip, useClipData, useClipSessions } from '../../hooks/useClipData';
 import { PipelinePerson, clipDataBaseUrl } from '../../services/pipelineAdapter';
 import { defaultPersonId, mainExercise, sortPeopleForPicker, trackedSeconds } from '../../services/memberSession';
 import { PersonSpotlight } from './PersonSpotlight';
 import { Logo } from '../Logo';
-import { navigate } from '../../router';
 
 interface DemoIntroProps {
   initialClipId?: string | null;
@@ -16,7 +15,7 @@ interface DemoIntroProps {
 
 /**
  * A frame of the clip, drawn to a canvas (a paused <video> can stay blank until it is played).
- * Softly blurred so nobody in the crowd is recognisable before the privacy overlay is loaded.
+ * Pixelated into coarse blocks so nobody in the crowd is recognisable before the privacy overlay is loaded.
  */
 const ClipPoster: React.FC<{ src: string }> = ({ src }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -35,15 +34,15 @@ const ClipPoster: React.FC<{ src: string }> = ({ src }) => {
           const video = e.target as HTMLVideoElement;
           const canvas = canvasRef.current;
           if (!canvas) return;
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
+          // ~110 blocks across: a face in a gym-wide shot ends up a few blocks wide
+          canvas.width = 110;
+          canvas.height = Math.round((110 * video.videoHeight) / video.videoWidth);
           const ctx = canvas.getContext('2d');
           if (!ctx) return;
-          ctx.filter = `blur(${Math.max(2, video.videoWidth / 280)}px)`;
-          ctx.drawImage(video, 0, 0);
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         }}
       />
-      <canvas ref={canvasRef} className="w-full h-full object-cover" />
+      <canvas ref={canvasRef} className="w-full h-full object-cover [image-rendering:pixelated]" />
     </>
   );
 };
@@ -55,7 +54,6 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
   const [clipId, setClipId] = useState<string | null>(findClip(initialClipId)?.id ?? null);
   const [personId, setPersonId] = useState<string | null>(initialPersonId ?? null);
   const [hoverId, setHoverId] = useState<string | null>(null);
-  const [choosingView, setChoosingView] = useState(false);
   const step2Ref = useRef<HTMLElement>(null);
 
   const clip = findClip(clipId);
@@ -105,10 +103,10 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
         onMouseLeave={() => setHoverId(null)}
         aria-pressed={isSelected}
         className={`w-full flex items-center gap-3 p-2 pr-3 rounded-2xl text-left transition-colors cursor-pointer ${
-          isSelected ? 'bg-[#34C759]/12 ring-2 ring-[#34C759]' : isHot ? 'bg-[#E8E8ED]' : 'hover:bg-[#E8E8ED]'
+          isSelected ? 'bg-accent/12 ring-2 ring-accent' : isHot ? 'bg-surface-2' : 'hover:bg-surface-2'
         }`}
       >
-        <div className="w-10 h-12 rounded-lg overflow-hidden bg-[#D2D2D7] shrink-0">
+        <div className="w-10 h-12 rounded-lg overflow-hidden bg-line shrink-0">
           {thumb && (
             <img
               src={thumb}
@@ -119,23 +117,23 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <p className={`text-sm font-semibold ${isHot ? 'text-[#1D1D1F]' : 'text-[#6E6E73]'}`}>Person {p.id}</p>
-          <p className="text-xs text-[#6E6E73] truncate">
+          <p className={`text-sm font-semibold ${isHot ? 'text-ink' : 'text-ink-2'}`}>Person {p.id}</p>
+          <p className="text-xs text-ink-2 truncate">
             {ex
               ? `${p.sets.length} set${p.sets.length > 1 ? 's' : ''} · ${p.total_reps} reps · ${ex}`
               : `On camera ${Math.round(trackedSeconds(p))} s · no sets`}
           </p>
         </div>
-        {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-[#34C759] shrink-0" />}
+        {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-accent shrink-0" />}
       </button>
     );
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#1D1D1F] pb-28">
+    <div className="min-h-screen bg-white text-ink pb-28">
       <header className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center">
         <Logo />
-        <span className="ml-2 px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wide">
+        <span className="ml-2 px-2 py-0.5 rounded-full bg-surface hud-label">
           Demo
         </span>
       </header>
@@ -145,10 +143,10 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.08]">
             See what the gym camera logged.
           </h1>
-          <p className="text-base text-[#6E6E73] mt-2 max-w-xl">
+          <p className="text-base text-ink-2 mt-2 max-w-xl">
             Pick a real gym clip, then pick the member you want to follow. Spottr shows you their workout as they would see it.
           </p>
-          <p className="text-sm text-[#6E6E73] mt-3 max-w-xl flex items-start gap-2">
+          <p className="text-sm text-ink-2 mt-3 max-w-xl flex items-start gap-2">
             <Info className="w-4 h-4 text-[#0071E3] shrink-0 mt-0.5" />
             <span>
               These are recorded clips from real gyms, run through the real Spottr pipeline. Sets, reps and
@@ -159,7 +157,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
 
         {/* Step 1: clip */}
         <section className="flex flex-col gap-4">
-          <h2 className="text-sm font-semibold text-[#6E6E73] uppercase tracking-wide">1 · Choose a camera clip</h2>
+          <h2 className="hud-label">1 · Choose a camera clip</h2>
           <div className="grid grid-cols-3 gap-2 sm:gap-4">
             {PIPELINE_CLIPS.map((c) => {
               const s = sessions[c.id];
@@ -170,21 +168,25 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
                   key={c.id}
                   onClick={() => pickClip(c.id)}
                   aria-pressed={isSelected}
-                  className={`text-left rounded-[18px] sm:rounded-[22px] p-1.5 sm:p-2 pb-3 sm:pb-4 bg-[#F5F5F7] transition-all cursor-pointer ${
-                    isSelected ? 'ring-2 ring-[#34C759] bg-white shadow-sm' : 'hover:bg-[#EBEBEF]'
+                  className={`text-left rounded-[18px] sm:rounded-[22px] p-1.5 sm:p-2 pb-3 sm:pb-4 bg-surface transition-all cursor-pointer ${
+                    isSelected ? 'ring-2 ring-accent bg-white shadow-sm' : 'hover:bg-surface-2'
                   }`}
                 >
-                  <div className="aspect-video rounded-xl sm:rounded-2xl overflow-hidden bg-[#1D1D1F]">
+                  <div className="relative aspect-video rounded-sm overflow-hidden bg-ink">
                     {c.video && <ClipPoster src={c.video} />}
+                    <span className="absolute top-1.5 left-2 font-mono text-[10px] text-white/90 flex items-center gap-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B30]" />
+                      CAM {String(PIPELINE_CLIPS.indexOf(c) + 1).padStart(2, '0')}
+                    </span>
                   </div>
                   <div className="px-1 sm:px-2 pt-2 sm:pt-3">
                     <div className="flex items-baseline justify-between gap-2">
                       <span className="text-sm sm:text-base font-bold">{c.title}</span>
-                      {s && <span className="text-xs text-[#6E6E73] font-mono">{formatDuration(s.duration_s)}</span>}
+                      {s && <span className="text-xs text-ink-2 font-mono">{formatDuration(s.duration_s)}</span>}
                     </div>
-                    <p className="hidden sm:block text-xs text-[#6E6E73] mt-0.5">
+                    <p className="hidden sm:block text-xs text-ink-2 mt-0.5">
                       {!s
-                        ? 'Loading…'
+                        ? '\u00A0'
                         : liftersCount
                         ? `${s.people.length} people tracked · ${liftersCount} doing sets`
                         : `${s.people.length} people tracked · tracking only`}
@@ -199,10 +201,10 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
         {/* Step 2: person */}
         {clip && (
           <section ref={step2Ref} className="flex flex-col gap-4 scroll-mt-4 animate-in fade-in duration-200">
-            <h2 className="text-sm font-semibold text-[#6E6E73] uppercase tracking-wide">2 · Who should Spottr follow?</h2>
+            <h2 className="hud-label">2 · Who should Spottr follow?</h2>
 
             {session && lifters.length === 0 && (
-              <div className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#F5F5F7] text-sm text-[#6E6E73]">
+              <div className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-surface text-sm text-ink-2">
                 <Info className="w-4 h-4 text-[#0071E3] shrink-0" />
                 <span>Nobody did a set in this clip. Tracking only: pick anyone to see what Spottr records.</span>
               </div>
@@ -217,10 +219,10 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
                 onSelect={setPersonId}
               />
 
-              <div className="bg-[#F5F5F7] rounded-[22px] p-2 flex flex-col gap-1 lg:max-h-[560px] lg:overflow-y-auto">
+              <div className="panel p-2 flex flex-col gap-1 lg:max-h-[560px] lg:overflow-y-auto">
                 {lifters.length > 0 && (
                   <>
-                    <p className="px-2 pt-2 pb-1 text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wide">
+                    <p className="px-2 pt-2 pb-1 hud-label">
                       Doing sets
                     </p>
                     {lifters.map(renderRow)}
@@ -228,13 +230,13 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
                 )}
                 {others.length > 0 && (
                   <>
-                    <p className="px-2 pt-3 pb-1 text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wide">
+                    <p className="px-2 pt-3 pb-1 hud-label">
                       {lifters.length ? 'Also in frame' : 'Everyone tracked'} ({others.length})
                     </p>
                     {others.map(renderRow)}
                   </>
                 )}
-                {!session && <p className="p-4 text-sm text-[#6E6E73]">Loading people…</p>}
+                {!session && <p className="p-4 text-sm text-ink-2">Loading people…</p>}
               </div>
             </div>
           </section>
@@ -244,7 +246,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
       {/* Continue bar */}
       <div className="fixed bottom-0 inset-x-0 z-30 bg-white/90 backdrop-blur-xl border-t border-black/[0.06]">
         <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
-          <p className="text-sm text-[#6E6E73] truncate">
+          <p className="text-sm text-ink-2 truncate">
             {!clip
               ? 'Choose a clip to start'
               : selected
@@ -252,9 +254,9 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
               : 'Choose a person'}
           </p>
           <button
-            onClick={() => canContinue && setChoosingView(true)}
+            onClick={() => canContinue && onContinue(clipId!, personId!)}
             disabled={!canContinue}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1D1D1F] hover:bg-black text-white text-sm font-semibold transition-transform active:scale-95 disabled:opacity-30 disabled:active:scale-100 cursor-pointer disabled:cursor-default shrink-0"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent-ink hover:bg-accent-deep text-white text-sm font-semibold transition-transform active:scale-95 disabled:opacity-30 disabled:active:scale-100 cursor-pointer disabled:cursor-default shrink-0"
           >
             Continue
             <ArrowRight className="w-4 h-4" />
@@ -262,51 +264,6 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
         </div>
       </div>
 
-      {/* Final step: member app or gym admin dashboard */}
-      {choosingView && (
-        <div
-          className="fixed inset-0 z-40 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-          onClick={() => setChoosingView(false)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="view-choice-title"
-            className="relative w-full max-w-lg bg-white rounded-[28px] p-6 sm:p-8 shadow-xl animate-in fade-in duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setChoosingView(false)}
-              aria-label="Close"
-              className="absolute top-4 right-4 p-2 rounded-full text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-            <h2 id="view-choice-title" className="text-2xl font-extrabold tracking-tight">
-              How do you want to see Spottr?
-            </h2>
-            <p className="text-sm text-[#6E6E73] mt-1">Pick a side of the gym to explore.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
-              <button
-                onClick={() => onContinue(clipId!, personId!)}
-                className="text-left rounded-2xl bg-[#F5F5F7] hover:bg-[#EBEBEF] p-4 transition-colors cursor-pointer"
-              >
-                <Dumbbell className="w-5 h-5 text-[#34C759]" />
-                <p className="mt-3 text-base font-bold">As a gym-goer</p>
-                <p className="text-xs text-[#6E6E73] mt-0.5">Your workout, recovery and history.</p>
-              </button>
-              <button
-                onClick={() => navigate('/gyms')}
-                className="text-left rounded-2xl bg-[#F5F5F7] hover:bg-[#EBEBEF] p-4 transition-colors cursor-pointer"
-              >
-                <LayoutDashboard className="w-5 h-5 text-[#0071E3]" />
-                <p className="mt-3 text-base font-bold">As the gym admin</p>
-                <p className="text-xs text-[#6E6E73] mt-0.5">Floor, members and insights for a simulated demo gym.</p>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

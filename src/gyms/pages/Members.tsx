@@ -38,12 +38,12 @@ const Sparkline: React.FC<{ values: number[] }> = ({ values }) => {
       <polyline
         points={points.map(([x, y]) => `${x},${y}`).join(' ')}
         fill="none"
-        stroke="#6E6E73"
+        stroke="#4B5550"
         strokeWidth={1.5}
         strokeLinejoin="round"
         strokeLinecap="round"
       />
-      <circle cx={lx} cy={ly} r={2.5} fill="#1D1D1F" />
+      <circle cx={lx} cy={ly} r={2.5} fill="#0F1411" />
     </svg>
   );
 };
@@ -55,22 +55,22 @@ const AtRiskRow: React.FC<{ row: AtRiskMember; sent: boolean; onNudge: () => voi
   return (
     <li className="grid grid-cols-[1fr_auto] sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.6fr)_auto] items-center gap-x-4 gap-y-2 py-3.5 border-b border-black/[0.05] last:border-0">
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-9 h-9 rounded-full bg-white ring-1 ring-black/5 flex items-center justify-center text-sm font-semibold text-[#1D1D1F] shrink-0">
+        <div className="w-9 h-9 rounded-full bg-white ring-1 ring-black/5 flex items-center justify-center text-sm font-semibold text-ink shrink-0">
           {member.firstName.charAt(0)}
         </div>
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-[#1D1D1F] truncate">{member.firstName}</p>
-          <p className="text-xs text-[#6E6E73]">Member {member.memberNo}</p>
+          <p className="text-sm font-semibold text-ink truncate">{member.firstName}</p>
+          <p className="text-xs text-ink-2">Member {member.memberNo}</p>
         </div>
       </div>
 
       <div className="hidden sm:block">
-        <p className="text-sm text-[#1D1D1F]">{lastVisitLabel(row.daysSinceLastVisit)}</p>
-        <p className="text-xs text-[#6E6E73]">{row.reason === 'inactive' ? 'No visit 14+ days' : 'Visits halved'}</p>
+        <p className="text-sm text-ink">{lastVisitLabel(row.daysSinceLastVisit)}</p>
+        <p className="text-xs text-ink-2">{row.reason === 'inactive' ? 'No visit 14+ days' : 'Visits halved'}</p>
       </div>
 
-      <div className="col-span-2 sm:col-span-1 row-start-2 sm:row-start-auto flex items-center gap-3 text-xs text-[#6E6E73]">
-        <span className="sm:hidden text-[#1D1D1F]">{lastVisitLabel(row.daysSinceLastVisit)} ·</span>
+      <div className="col-span-2 sm:col-span-1 row-start-2 sm:row-start-auto flex items-center gap-3 text-xs text-ink-2">
+        <span className="sm:hidden text-ink">{lastVisitLabel(row.daysSinceLastVisit)} ·</span>
         <Sparkline values={row.weeklyVisits} />
         <span className="tabular-nums">
           {row.usualRate.toFixed(1)} → {row.recentRate.toFixed(1)} / wk
@@ -82,8 +82,8 @@ const AtRiskRow: React.FC<{ row: AtRiskMember; sent: boolean; onNudge: () => voi
         disabled={sent}
         className={`col-start-2 row-start-1 sm:col-start-auto sm:row-start-auto justify-self-end inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
           sent
-            ? 'bg-transparent text-[#248A3D] cursor-default'
-            : 'bg-white text-[#1D1D1F] shadow-xs hover:bg-[#1D1D1F] hover:text-white cursor-pointer'
+            ? 'bg-transparent text-accent-ink cursor-default'
+            : 'bg-white text-ink shadow-xs hover:bg-ink hover:text-white cursor-pointer'
         }`}
       >
         {sent ? <Check className="w-3.5 h-3.5" /> : <Send className="w-3.5 h-3.5" />}
@@ -136,9 +136,9 @@ export const Members: React.FC = () => {
         <Card className="flex flex-col gap-4">
           <div>
             <Eyebrow>Last 4 weeks</Eyebrow>
-            <h2 className="text-xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">Sessions per week</h2>
-            <p className="text-xs text-[#6E6E73] mt-1">
-              <span className="font-semibold text-[#1D1D1F]">{ENGAGEMENT_SUMMARY.regularsPct}%</span> of{' '}
+            <h2 className="text-xl font-bold tracking-tight text-ink mt-0.5">Sessions per week</h2>
+            <p className="text-xs text-ink-2 mt-1">
+              <span className="font-semibold text-ink">{ENGAGEMENT_SUMMARY.regularsPct}%</span> of{' '}
               {ENGAGEMENT_SUMMARY.establishedMembers} members train twice a week or more
             </p>
           </div>
@@ -160,15 +160,15 @@ export const Members: React.FC = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-xs text-[#6E6E73] -mt-1">Sessions per week · green = 2+ sessions</p>
+          <p className="text-xs text-ink-2 -mt-1">Sessions per week. Green means 2 or more.</p>
         </Card>
 
         <Card className="flex flex-col gap-4">
           <div>
             <Eyebrow>New members, last 6 months</Eyebrow>
-            <h2 className="text-xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">Retention curve</h2>
-            <p className="text-xs text-[#6E6E73] mt-1">
-              <span className="font-semibold text-[#1D1D1F]">{week12.retained}%</span> still training after 12 weeks ·{' '}
+            <h2 className="text-xl font-bold tracking-tight text-ink mt-0.5">Retention curve</h2>
+            <p className="text-xs text-ink-2 mt-1">
+              <span className="font-semibold text-ink">{week12.retained}%</span> still training after 12 weeks ·{' '}
               {100 - week4.retained}% drop off in the first month
             </p>
           </div>
@@ -179,7 +179,7 @@ export const Members: React.FC = () => {
                 <XAxis dataKey="week" {...axisProps} tickFormatter={(w: number) => (w === 0 ? 'Join' : `W${w}`)} interval={1} dy={6} />
                 <YAxis {...axisProps} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} tickFormatter={(v: number) => `${v}%`} />
                 <Tooltip
-                  cursor={{ stroke: '#D1D1D6', strokeWidth: 1 }}
+                  cursor={{ stroke: '#D3D8D3', strokeWidth: 1 }}
                   content={({ active, payload }) => {
                     if (!active || !payload?.length) return null;
                     const d = payload[0].payload as (typeof RETENTION_CURVE)[number];
@@ -204,7 +204,7 @@ export const Members: React.FC = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-xs text-[#6E6E73] -mt-1">Share of new members with a visit in that week or the next</p>
+          <p className="text-xs text-ink-2 -mt-1">Share of new members with a visit in that week or the next</p>
         </Card>
       </section>
 
@@ -212,10 +212,11 @@ export const Members: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <Eyebrow>At risk</Eyebrow>
-            <h2 className="text-xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">
-              {counts.all} members are slipping away
+            <h2 className="text-xl font-bold tracking-tight text-ink mt-1 flex items-baseline gap-2">
+              <span className="font-dot text-5xl font-black leading-none">{counts.all}</span>
+              members are slipping away
             </h2>
-            <p className="text-xs text-[#6E6E73] mt-1 max-w-lg">
+            <p className="text-xs text-ink-2 mt-1 max-w-lg">
               Regulars who stopped coming or halved their visits in the last few weeks. Operators see first names
               only; the nudge arrives in the member's Spottr app.
             </p>
@@ -237,7 +238,7 @@ export const Members: React.FC = () => {
         </div>
 
         <div>
-          <div className="hidden sm:grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.6fr)_auto] gap-x-4 text-xs font-medium text-[#6E6E73] pt-2 border-b border-black/[0.05] pb-2">
+          <div className="hidden sm:grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.6fr)_auto] gap-x-4 text-xs font-medium text-ink-2 pt-2 border-b border-black/[0.05] pb-2">
             <span>Member</span>
             <span>Last visit</span>
             <span>Visits, last 8 weeks</span>
@@ -258,7 +259,7 @@ export const Members: React.FC = () => {
         {rows.length > PAGE_SIZE && (
           <button
             onClick={() => setShowAll((s) => !s)}
-            className="self-center px-4 py-1.5 rounded-full text-xs font-medium text-[#1D1D1F] bg-white shadow-xs hover:bg-[#E8E8ED] transition-colors cursor-pointer"
+            className="self-center px-4 py-1.5 rounded-full text-xs font-medium text-ink bg-white shadow-xs hover:bg-surface-2 transition-colors cursor-pointer"
           >
             {showAll ? 'Show fewer' : `Show all ${rows.length}`}
           </button>

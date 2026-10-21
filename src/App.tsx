@@ -26,6 +26,7 @@ import { mainExercise, summaryToWorkout, workoutHistory } from './services/membe
 import { summaryService } from './services/summary';
 import { loadTrainingPlan, saveTrainingPlan } from './services/planService';
 import { useSettings } from './services/settings';
+import { MEMBER_PROFILE } from './mocks/memberData';
 
 const appUrl = (clipId: string, personId: string) =>
   `/demo?clip=${encodeURIComponent(clipId)}&person=${encodeURIComponent(personId)}`;
@@ -120,16 +121,16 @@ export default function App() {
   if (!data || !person || !summary) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <Loader2 className="w-6 h-6 animate-spin text-[#6E6E73]" />
+        <Loader2 className="w-6 h-6 animate-spin text-ink-2" />
       </div>
     );
   }
 
   const thumbnail = person.thumbnail ? `${clipDataBaseUrl(clip)}/${person.thumbnail}` : null;
-  const personLabel = `Person ${person.id} · ${mainExercise(person) ?? clip.title}`;
+  const personLabel = `${MEMBER_PROFILE.name} · ${mainExercise(person) ?? clip.title}`;
 
   return (
-    <div className="min-h-screen bg-white text-[#1D1D1F] flex flex-col font-sans selection:bg-[#34C759]/20 selection:text-[#1D1D1F]">
+    <div className="min-h-screen bg-white text-ink flex flex-col font-sans selection:bg-accent/20 selection:text-ink">
       <Navigation
         currentTab={currentTab}
         onSelectTab={selectTab}

@@ -17,8 +17,8 @@ const TOTALS = [
 
 const Stat: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div>
-    <dt className="text-xs text-[#6E6E73]">{label}</dt>
-    <dd className="text-xl font-bold tracking-tight text-[#1D1D1F] tabular-nums mt-0.5">{children}</dd>
+    <dt className="text-xs text-ink-2">{label}</dt>
+    <dd className="text-xl font-bold tracking-tight text-ink tabular-nums mt-0.5">{children}</dd>
   </div>
 );
 
@@ -29,14 +29,14 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
     <Card className="flex flex-col gap-5 !p-6">
       <div className="flex flex-col items-start gap-2">
         <div>
-          <p className="text-xs text-[#6E6E73] flex items-center gap-1">
+          <p className="text-xs text-ink-2 flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5" aria-hidden />
             {GYM.name}
           </p>
-          <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">{l.city}</h2>
+          <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">{l.city}</h2>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-[11px] font-semibold text-[#1D1D1F] ring-1 ring-black/[0.06] whitespace-nowrap">
-          <Cpu className="w-3.5 h-3.5 text-[#34C759]" aria-hidden />
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white text-[11px] font-semibold text-ink ring-1 ring-black/[0.06] whitespace-nowrap">
+          <Cpu className="w-3.5 h-3.5 text-accent" aria-hidden />
           {l.spottrBoxes} Spottr box{l.spottrBoxes > 1 ? 'es' : ''} · {l.cameras} cameras
         </span>
       </div>
@@ -49,11 +49,11 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
         </div>
         <Stat label="Sessions per member">
           {l.sessionsPerMember.toFixed(1)}
-          <span className="text-sm font-normal text-[#6E6E73]"> / wk</span>
+          <span className="text-sm font-normal text-ink-2"> / wk</span>
         </Stat>
         <div>
           <Stat label="Slipping members">{l.atRisk}</Stat>
-          <p className={`text-xs mt-1 ${atRiskShare === highestRisk ? 'font-semibold text-[#1D1D1F]' : 'text-[#6E6E73]'}`}>
+          <p className={`text-xs mt-1 ${atRiskShare === highestRisk ? 'font-semibold text-ink' : 'text-ink-2'}`}>
             {pct(atRiskShare)} of members{atRiskShare === highestRisk ? ' · highest in the chain' : ''}
           </p>
         </div>
@@ -62,13 +62,13 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
       {l.detailed ? (
         <Link
           to="/gyms/overview"
-          className="mt-auto inline-flex items-center gap-0.5 text-sm font-medium text-[#248A3D] hover:text-[#1D1D1F] self-start"
+          className="mt-auto inline-flex items-center gap-0.5 text-sm font-medium text-accent-ink hover:text-ink self-start"
         >
           Open location dashboard
           <ChevronRight className="w-4 h-4" />
         </Link>
       ) : (
-        <p className="mt-auto text-xs text-[#6E6E73]">Summary only: this demo simulates Oakland in detail.</p>
+        <p className="mt-auto text-xs text-ink-2">Summary only: this demo simulates Oakland in detail.</p>
       )}
     </Card>
   );
@@ -89,10 +89,10 @@ export const Locations: React.FC = () => (
 
     <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {TOTALS.map((t) => (
-        <div key={t.label} className="bg-[#F5F5F7] rounded-[24px] p-6">
+        <div key={t.label} className="panel p-6">
           <Eyebrow>{t.label}</Eyebrow>
-          <p className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1D1D1F] tabular-nums mt-3">{t.value}</p>
-          <p className="text-xs text-[#6E6E73] mt-1">All {CHAIN_LOCATIONS.length} locations</p>
+          <p className="font-dot text-4xl sm:text-5xl font-black text-ink mt-3">{t.value}</p>
+          <p className="text-xs text-ink-2 mt-1">All {CHAIN_LOCATIONS.length} locations</p>
         </div>
       ))}
     </section>
@@ -106,15 +106,15 @@ export const Locations: React.FC = () => (
     <Card className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <Eyebrow>Chain total</Eyebrow>
-        <p className="text-base text-[#1D1D1F] mt-1">
+        <p className="text-base text-ink mt-1">
           {CHAIN_LOCATIONS.length} locations × {formatUsd(PRICE_PER_LOCATION_MONTH)} ={' '}
           <span className="font-bold">{formatUsd(CHAIN_LOCATIONS.length * PRICE_PER_LOCATION_MONTH)} per month</span>
         </p>
-        <p className="text-xs text-[#6E6E73] mt-1">Target price, not yet tested with customers. Hardware included.</p>
+        <p className="text-xs text-ink-2 mt-1">Pilot pricing. Hardware included.</p>
       </div>
       <Link
         to="/gyms/pilot"
-        className="shrink-0 inline-flex items-center gap-1 px-5 py-2.5 rounded-full bg-[#1D1D1F] text-white text-sm font-semibold hover:bg-black transition-colors self-start sm:self-auto"
+        className="shrink-0 inline-flex items-center gap-1 px-5 py-2.5 rounded-full bg-accent-ink text-white text-sm font-semibold hover:bg-accent-deep transition-colors self-start sm:self-auto"
       >
         How a pilot works
         <ChevronRight className="w-4 h-4" />

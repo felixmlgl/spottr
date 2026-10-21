@@ -36,14 +36,14 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
     aria-label="Gym floor plan, zones colored by occupancy"
   >
     {/* Building shell with entrance gap */}
-    <rect x={8} y={8} width={FLOOR_VIEWBOX.w - 16} height={608} rx={20} fill="#FFFFFF" />
+    <rect x={8} y={8} width={FLOOR_VIEWBOX.w - 16} height={608} rx={20} fill="var(--color-paper)" />
     <path
       d={`M 540 616 L 28 616 Q 8 616 8 596 L 8 28 Q 8 8 28 8 L 972 8 Q 992 8 992 28 L 992 596 Q 992 616 972 616 L 660 616`}
       fill="none"
-      stroke="#D1D1D6"
+      stroke="var(--color-line)"
       strokeWidth={2}
     />
-    <text x={600} y={636} textAnchor="middle" fontSize={16} fill="#6E6E73" fontWeight={500}>
+    <text x={600} y={636} textAnchor="middle" fontSize={16} fill="var(--color-ink-2)" fontWeight={500}>
       Entrance
     </text>
 
@@ -77,9 +77,9 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
             height={zone.rect.h}
             rx={16}
             fill={occupancyColor(occ)}
-            stroke={isSelected ? '#1D1D1F' : 'transparent'}
+            stroke={isSelected ? '#0F1411' : 'transparent'}
             strokeWidth={3}
-            className="transition-[fill] duration-300 group-hover:opacity-90 group-focus-visible:stroke-[#1D1D1F]"
+            className="transition-[fill] duration-300 group-hover:opacity-90 group-focus-visible:stroke-ink"
           />
           {zone.units.map((u) => (
             <rect
@@ -91,7 +91,7 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
               rx={4}
               fill="#FFFFFF"
               fillOpacity={0.6}
-              stroke={isSelected && idleUnitIds.has(u.id) ? '#1D1D1F' : 'none'}
+              stroke={isSelected && idleUnitIds.has(u.id) ? '#0F1411' : 'none'}
               strokeWidth={2.5}
             >
               <title>{u.name}</title>
@@ -99,7 +99,7 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
           ))}
           {/* Label chip: white background keeps text legible on every ramp step */}
           <rect x={x + 10} y={y + 10} width={Math.min(chipW, w - 20)} height={32} rx={16} fill="#FFFFFF" fillOpacity={0.94} />
-          <text x={x + 24} y={y + 32} fontSize={18} fontWeight={600} fill="#1D1D1F">
+          <text x={x + 24} y={y + 32} fontSize={18} fontWeight={600} fill="#0F1411">
             {label}
           </text>
         </g>

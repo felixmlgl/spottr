@@ -120,12 +120,12 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
   return (
     <div className="flex flex-col gap-8">
       {/* "This Week" 7-Day Status Bar */}
-      <div className="bg-[#F5F5F7] rounded-[24px] p-6 sm:p-7 flex flex-col gap-4">
+      <div className="panel p-6 sm:p-7 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">
+          <span className="hud-label">
             This week &bull; Sep 21 &ndash; 27
           </span>
-          <span className="text-xs font-medium text-[#34C759]">
+          <span className="text-xs font-medium text-accent">
             5 of 6 workouts logged
           </span>
         </div>
@@ -143,12 +143,12 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                 onClick={() => handleOpenDay(dayKey)}
                 className={`flex flex-col items-center justify-between p-2.5 sm:p-3 rounded-2xl transition-all cursor-pointer ${
                   info.status === 'completed'
-                    ? 'bg-[#34C759] text-white shadow-xs'
+                    ? 'bg-accent-ink text-white shadow-xs'
                     : info.status === 'partial'
-                    ? 'bg-white border-2 border-[#34C759] text-[#1D1D1F]'
+                    ? 'bg-white border-2 border-accent text-ink'
                     : info.status === 'missed'
-                    ? 'bg-[#E5E5EA] text-[#6E6E73]'
-                    : 'bg-white text-[#6E6E73]'
+                    ? 'bg-line text-ink-2'
+                    : 'bg-white text-ink-2'
                 } ${isToday ? 'ring-2 ring-black/10' : ''}`}
               >
                 <span className="text-[11px] font-medium opacity-80">
@@ -165,17 +165,17 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
           })}
         </div>
 
-        <div className="flex items-center justify-center gap-4 text-xs text-[#6E6E73] pt-2 border-t border-black/[0.04]">
+        <div className="flex items-center justify-center gap-4 text-xs text-ink-2 pt-2 border-t border-black/[0.04]">
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#34C759]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-accent" />
             <span>Completed</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#E5E5EA]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-line" />
             <span>Missed / Rest</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-white border border-[#34C759]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white border border-accent" />
             <span>Partial</span>
           </span>
         </div>
@@ -184,13 +184,13 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
       {/* Weekday Schedule List (Mon - Sun) */}
       <div>
         <div className="flex items-center justify-between mb-4 px-1">
-          <h3 className="text-xl font-bold tracking-tight text-[#1D1D1F]">
+          <h3 className="text-xl font-bold tracking-tight text-ink">
             Weekly routine
           </h3>
-          <span className="text-xs text-[#6E6E73]">Tap any day to edit</span>
+          <span className="text-xs text-ink-2">Tap any day to edit</span>
         </div>
 
-        <div className="bg-[#F5F5F7] rounded-[24px] divide-y divide-black/[0.04] overflow-hidden">
+        <div className="panel divide-y divide-black/[0.04] overflow-hidden">
           {daysOrder.map((dayKey) => {
             const day = plan.days[dayKey];
             const isToday = dayKey === 'sun';
@@ -203,37 +203,37 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-[#1D1D1F] w-24">
+                    <span className="text-sm font-bold text-ink w-24">
                       {day.day_label}
                     </span>
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         day.is_rest
-                          ? 'bg-[#E5E5EA] text-[#6E6E73]'
-                          : 'bg-white text-[#1D1D1F] shadow-xs'
+                          ? 'bg-line text-ink-2'
+                          : 'bg-white text-ink shadow-xs'
                       }`}
                     >
                       {day.is_rest ? 'Rest day' : day.title}
                     </span>
                     {isToday && (
-                      <span className="text-[10px] font-semibold text-[#34C759] uppercase tracking-wider">
+                      <span className="hud-label text-accent">
                         Today
                       </span>
                     )}
                   </div>
 
                   {!day.is_rest && (
-                    <p className="text-xs text-[#6E6E73] truncate mt-1 pl-0 sm:pl-26">
+                    <p className="text-xs text-ink-2 truncate mt-1 pl-0 sm:pl-26">
                       {day.exercises.map((e) => `${e.name} (${e.target_sets}×${e.target_reps})`).join(', ')}
                     </p>
                   )}
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-xs text-[#6E6E73]">
+                  <span className="text-xs text-ink-2">
                     {day.is_rest ? 'Recovery' : `${day.exercises.length} exercises`}
                   </span>
-                  <ChevronRight className="w-4 h-4 text-[#6E6E73]" />
+                  <ChevronRight className="w-4 h-4 text-ink-2" />
                 </div>
               </button>
             );
@@ -248,31 +248,31 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
             {/* Header */}
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-semibold text-[#6E6E73] tracking-wide uppercase">
+                <span className="hud-label">
                   Edit routine &bull; {editingDay.day_label}
                 </span>
-                <h2 className="text-2xl font-bold tracking-tight text-[#1D1D1F] mt-0.5">
+                <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">
                   {editingDay.is_rest ? 'Rest Day' : editingDay.title}
                 </h2>
               </div>
               <button
                 onClick={() => setSelectedDayKey(null)}
-                className="p-2 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-[#6E6E73] hover:text-[#1D1D1F] cursor-pointer"
+                className="p-2 rounded-full bg-surface hover:bg-surface-2 text-ink-2 hover:text-ink cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Rest Toggle */}
-            <div className="flex items-center justify-between p-4 bg-[#F5F5F7] rounded-2xl">
+            <div className="flex items-center justify-between p-4 bg-surface rounded-2xl">
               <div>
-                <p className="text-sm font-semibold text-[#1D1D1F]">Rest day</p>
-                <p className="text-xs text-[#6E6E73]">No exercises planned for this day</p>
+                <p className="text-sm font-semibold text-ink">Rest day</p>
+                <p className="text-xs text-ink-2">No exercises planned for this day</p>
               </div>
               <button
                 onClick={handleToggleRest}
                 className={`w-12 h-7 flex items-center rounded-full p-1 transition-colors cursor-pointer ${
-                  editingDay.is_rest ? 'bg-[#34C759]' : 'bg-[#E5E5EA]'
+                  editingDay.is_rest ? 'bg-accent' : 'bg-line'
                 }`}
               >
                 <div
@@ -288,14 +288,14 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
               <>
                 {/* Title Input */}
                 <div>
-                  <label className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide block mb-1.5">
+                  <label className="hud-label block mb-1.5">
                     Workout Title
                   </label>
                   <input
                     type="text"
                     value={editingDay.title}
                     onChange={(e) => setEditingDay({ ...editingDay, title: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl bg-[#F5F5F7] text-sm font-medium text-[#1D1D1F] focus:outline-none focus:ring-2 focus:ring-[#34C759]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-surface text-sm font-medium text-ink focus:outline-none focus:ring-2 focus:ring-accent"
                     placeholder="e.g. Push, Pull, Legs, Upper"
                   />
                 </div>
@@ -303,28 +303,28 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                 {/* Exercises List */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">
+                    <span className="hud-label">
                       Target exercises ({editingDay.exercises.length})
                     </span>
                     <button
                       onClick={() => setIsAddingExercise(true)}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#34C759] hover:underline cursor-pointer"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>Add exercise</span>
                     </button>
                   </div>
 
-                  <div className="bg-[#F5F5F7] rounded-2xl divide-y divide-black/[0.04] overflow-hidden">
+                  <div className="bg-surface rounded-2xl divide-y divide-black/[0.04] overflow-hidden">
                     {editingDay.exercises.length === 0 ? (
-                      <p className="p-4 text-xs text-[#6E6E73] text-center">
+                      <p className="p-4 text-xs text-ink-2 text-center">
                         No exercises added yet. Tap "Add exercise" above.
                       </p>
                     ) : (
                       editingDay.exercises.map((ex) => (
                         <div key={ex.id} className="p-3.5 flex items-center justify-between gap-3">
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-medium text-[#1D1D1F] truncate">
+                            <h4 className="text-sm font-medium text-ink truncate">
                               {ex.name}
                             </h4>
                           </div>
@@ -333,19 +333,19 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                           <div className="flex items-center gap-3 shrink-0">
                             {/* Sets Stepper */}
                             <div className="flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-2xs">
-                              <span className="text-[11px] text-[#6E6E73] font-medium mr-1">Sets</span>
+                              <span className="text-[11px] text-ink-2 font-medium mr-1">Sets</span>
                               <button
                                 onClick={() => handleUpdateExerciseSets(ex.id, -1)}
-                                className="w-5 h-5 flex items-center justify-center rounded text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center rounded text-ink-2 hover:bg-surface cursor-pointer"
                               >
                                 <Minus className="w-3 h-3" />
                               </button>
-                              <span className="text-xs font-bold text-[#1D1D1F] w-4 text-center">
+                              <span className="text-xs font-bold text-ink w-4 text-center">
                                 {ex.target_sets}
                               </span>
                               <button
                                 onClick={() => handleUpdateExerciseSets(ex.id, 1)}
-                                className="w-5 h-5 flex items-center justify-center rounded text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center rounded text-ink-2 hover:bg-surface cursor-pointer"
                               >
                                 <Plus className="w-3 h-3" />
                               </button>
@@ -353,19 +353,19 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
 
                             {/* Reps Stepper */}
                             <div className="flex items-center gap-1.5 bg-white px-2 py-1 rounded-lg shadow-2xs">
-                              <span className="text-[11px] text-[#6E6E73] font-medium mr-1">Reps</span>
+                              <span className="text-[11px] text-ink-2 font-medium mr-1">Reps</span>
                               <button
                                 onClick={() => handleUpdateExerciseReps(ex.id, -1)}
-                                className="w-5 h-5 flex items-center justify-center rounded text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center rounded text-ink-2 hover:bg-surface cursor-pointer"
                               >
                                 <Minus className="w-3 h-3" />
                               </button>
-                              <span className="text-xs font-bold text-[#1D1D1F] w-5 text-center">
+                              <span className="text-xs font-bold text-ink w-5 text-center">
                                 {ex.target_reps}
                               </span>
                               <button
                                 onClick={() => handleUpdateExerciseReps(ex.id, 1)}
-                                className="w-5 h-5 flex items-center justify-center rounded text-[#6E6E73] hover:bg-[#F5F5F7] cursor-pointer"
+                                className="w-5 h-5 flex items-center justify-center rounded text-ink-2 hover:bg-surface cursor-pointer"
                               >
                                 <Plus className="w-3 h-3" />
                               </button>
@@ -374,7 +374,7 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                             {/* Delete */}
                             <button
                               onClick={() => handleRemoveExercise(ex.id)}
-                              className="p-1.5 text-[#6E6E73] hover:text-[#FF3B30] transition-colors cursor-pointer"
+                              className="p-1.5 text-ink-2 hover:text-[#FF3B30] transition-colors cursor-pointer"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -387,27 +387,27 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
 
                 {/* Add Exercise Search Picker */}
                 {isAddingExercise && (
-                  <div className="p-4 bg-[#F5F5F7] rounded-2xl flex flex-col gap-3 animate-in fade-in duration-150">
+                  <div className="p-4 bg-surface rounded-2xl flex flex-col gap-3 animate-in fade-in duration-150">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-[#6E6E73] uppercase tracking-wide">
+                      <span className="hud-label">
                         Choose exercise
                       </span>
                       <button
                         onClick={() => setIsAddingExercise(false)}
-                        className="text-xs text-[#6E6E73] hover:text-[#1D1D1F] cursor-pointer"
+                        className="text-xs text-ink-2 hover:text-ink cursor-pointer"
                       >
                         Cancel
                       </button>
                     </div>
 
                     <div className="relative">
-                      <Search className="w-4 h-4 text-[#86868B] absolute left-3 top-2.5" />
+                      <Search className="w-4 h-4 text-ink-3 absolute left-3 top-2.5" />
                       <input
                         type="text"
                         value={exerciseSearch}
                         onChange={(e) => setExerciseSearch(e.target.value)}
                         placeholder="Search exercises..."
-                        className="w-full pl-9 pr-4 py-2 rounded-xl bg-white text-xs font-medium text-[#1D1D1F] focus:outline-none focus:ring-1 focus:ring-[#34C759]"
+                        className="w-full pl-9 pr-4 py-2 rounded-xl bg-white text-xs font-medium text-ink focus:outline-none focus:ring-1 focus:ring-accent"
                       />
                     </div>
 
@@ -416,10 +416,10 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                         <button
                           key={template.id}
                           onClick={() => handleAddExercise(template)}
-                          className="w-full text-left p-2.5 text-xs font-medium text-[#1D1D1F] hover:bg-[#F5F5F7] flex items-center justify-between cursor-pointer"
+                          className="w-full text-left p-2.5 text-xs font-medium text-ink hover:bg-surface flex items-center justify-between cursor-pointer"
                         >
                           <span>{template.name}</span>
-                          <span className="text-[10px] text-[#6E6E73]">{template.category}</span>
+                          <span className="text-[10px] text-ink-2">{template.category}</span>
                         </button>
                       ))}
                     </div>
@@ -432,13 +432,13 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
             <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={() => setSelectedDayKey(null)}
-                className="flex-1 py-3 rounded-full bg-[#F5F5F7] hover:bg-[#E8E8ED] text-sm font-medium text-[#1D1D1F] transition-colors cursor-pointer"
+                className="flex-1 py-3 rounded-full bg-surface hover:bg-surface-2 text-sm font-medium text-ink transition-colors cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveDay}
-                className="flex-1 py-3 rounded-full bg-[#34C759] hover:bg-[#2FB34F] text-sm font-medium text-white transition-colors cursor-pointer"
+                className="flex-1 py-3 rounded-full bg-accent-ink hover:bg-accent-deep text-sm font-medium text-white transition-colors cursor-pointer"
               >
                 Save routine
               </button>
