@@ -1,5 +1,5 @@
-import { MuscleId, PastWorkout, RecoveryStatus, TrainingPlan } from '../types/schema';
-import { getExerciseMuscleMapping, MUSCLE_NAMES } from '../data/exerciseMuscles';
+import { MuscleId, PastWorkout, RecoveryStatus } from '../types/schema';
+import { MUSCLE_NAMES } from '../data/exerciseMuscles';
 import { DEMO_TODAY, workoutMuscles } from './memberSession';
 
 // Required recovery hours
@@ -33,11 +33,6 @@ export interface RecoveryCalculationResult {
   muscles: Record<MuscleId, RecoveryStatus>;
   readyList: RecoveryStatus[];
   recoveringList: RecoveryStatus[];
-  recommendation: {
-    headline: string;
-    details: string;
-    actionHint?: string;
-  };
 }
 
 /** "Now" in the demo: 1:00 PM on the demo's today. Workouts are dated by day only, so each one counts as ending at 10:30. */
@@ -77,7 +72,7 @@ export function readyDayLabel(hoursRemaining: number): string {
  * @param history the member's workouts, today's camera-tracked session first. Recovery follows whatever each
  *   workout actually trained, so it changes with the selected demo person.
  */
-export function calculateMuscleRecovery(history: PastWorkout[], plan?: TrainingPlan): RecoveryCalculationResult {
+export function calculateMuscleRecovery(history: PastWorkout[]): RecoveryCalculationResult {
   const lastTrainedHours = hoursSinceTrained(history);
 
   const results: Record<MuscleId, RecoveryStatus> = {} as Record<MuscleId, RecoveryStatus>;
@@ -117,45 +112,9 @@ export function calculateMuscleRecovery(history: PastWorkout[], plan?: TrainingP
     .filter((m) => m.status !== 'ready')
     .sort((a, b) => a.recovery_percent - b.recovery_percent);
 
-  // Contextual smart recommendation based on plan
-  let recommendation = {
-    headline: 'Upper body and pull groups are ready',
-    details:
-      'Your chest, shoulders, and arms are fully recovered. Tomorrow’s planned Pull day or Upper body workout fits your readiness curve perfectly.',
-    actionHint: 'Legs are resting until Wednesday',
-  };
-
-  if (plan) {
-    const mondayWorkout = plan.days.mon;
-    if (mondayWorkout && !mondayWorkout.is_rest) {
-      const tired = recoveringList.slice(0, 3).map((m) => m.name.toLowerCase());
-      // Primary muscles of tomorrow's planned exercises that haven't recovered yet
-      const clashing = recoveringList.filter((m) =>
-        mondayWorkout.exercises.some((ex) => getExerciseMuscleMapping(ex.exercise_id).primary.includes(m.muscle_id))
-      );
-      recommendation = clashing.length
-        ? {
-            headline: `Go easy on tomorrow's ${mondayWorkout.title}`,
-            details: `Your ${clashing
-              .slice(0, 3)
-              .map((m) => m.name.toLowerCase())
-              .join(', ')} ${clashing.length === 1 ? 'is' : 'are'} still recovering from today. Lighter sets, or swap ${mondayWorkout.title} with a day that trains other muscles.`,
-            actionHint: `${clashing.length} planned muscle${clashing.length === 1 ? '' : 's'} still recovering`,
-          }
-        : {
-            headline: `${mondayWorkout.title} is ready for tomorrow`,
-            details: tired.length
-              ? `Your ${tired.join(', ')} ${tired.length === 1 ? 'is' : 'are'} still recovering, and tomorrow's ${mondayWorkout.title} plan leaves them to rest.`
-              : `Every muscle group is recovered. You're clear to follow your ${mondayWorkout.title} plan tomorrow.`,
-            actionHint: `On track for ${mondayWorkout.title}`,
-          };
-    }
-  }
-
   return {
     muscles: results,
     readyList,
     recoveringList,
-    recommendation,
   };
 }
