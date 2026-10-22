@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronDown, Clock, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, Clock } from 'lucide-react';
+import { CheckDot } from './CheckDot';
 import { BodyMap, recoveryColor, recoveryMapProps } from './BodyMap';
 import { WeeklyPlan } from './WeeklyPlan';
 import { calculateMuscleRecovery } from '../services/recovery';
@@ -46,7 +47,7 @@ export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, hi
                   key={m.muscle_id}
                   className="px-3 py-1.5 rounded-full bg-white text-xs font-medium text-ink shadow-2xs flex items-center gap-1.5"
                 >
-                  <span className="w-2 h-2 rounded-full bg-accent" />
+                  <span className="w-2 h-2 rounded-full bg-lime ring-1 ring-black/15" />
                   {m.name}
                 </span>
               ))}
@@ -83,7 +84,7 @@ export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, hi
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl p-5 flex flex-col gap-3">
               <h3 className="text-sm font-bold text-ink flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-accent" />
+                <CheckDot className="w-4 h-4" />
                 Ready ({recoveryData.readyList.length})
               </h3>
               <p className="text-xs text-ink-2">{recoveryData.readyList.map((m) => m.name).join(', ') || 'None yet'}</p>
@@ -109,7 +110,7 @@ export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, hi
       {/* Up next */}
       <div className="panel p-5 flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-2xs shrink-0">
-          <span className="w-2.5 h-2.5 rounded-full bg-accent" />
+          <span className="w-2.5 h-2.5 rounded-full bg-lime ring-1 ring-black/15" />
         </div>
         <div>
           <span className="hud-label">

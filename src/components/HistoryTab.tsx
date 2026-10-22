@@ -147,10 +147,10 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
               <Line
                 type="monotone"
                 dataKey="reps"
-                stroke="#34C759"
+                stroke="#4D80FF"
                 strokeWidth={2}
-                dot={{ r: 4, fill: '#FFFFFF', stroke: '#34C759', strokeWidth: 2 }}
-                activeDot={{ r: 6, fill: '#34C759', stroke: '#FFFFFF', strokeWidth: 2 }}
+                dot={{ r: 4, fill: '#FFFFFF', stroke: '#4D80FF', strokeWidth: 2 }}
+                activeDot={{ r: 6, fill: '#4D80FF', stroke: '#FFFFFF', strokeWidth: 2 }}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -160,7 +160,9 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
           {bests.map((e) => (
             <div key={e.id} className="bg-white rounded-2xl p-4">
               <span className="hud-label flex items-center gap-1">
-                <Award className="w-3.5 h-3.5 text-accent" />
+                <span className="w-5 h-5 rounded-full bg-lime text-ink flex items-center justify-center">
+                  <Award className="w-3 h-3" />
+                </span>
                 Best · {e.best.date}
               </span>
               <p className="text-sm font-semibold text-ink mt-1">{e.name}</p>
@@ -243,11 +245,11 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
             <div className="grid grid-cols-2 gap-3 panel p-4 text-center">
               <div>
                 <span className="text-xs text-ink-2 block">Total reps</span>
-                <span className="font-dot text-4xl font-black text-accent-ink">{selectedWorkout.total_reps}</span>
+                <span className="num text-4xl text-accent-ink">{selectedWorkout.total_reps}</span>
               </div>
               <div>
                 <span className="text-xs text-ink-2 block">Duration</span>
-                <span className="font-dot text-4xl font-black text-ink">
+                <span className="num text-4xl text-ink">
                   {selectedWorkout.duration_minutes}
                   <span className="font-sans text-sm font-normal text-ink-2 ml-1">min</span>
                 </span>

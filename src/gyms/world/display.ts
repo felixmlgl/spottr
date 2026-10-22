@@ -6,8 +6,8 @@
 
 import type { CameraObservation, CameraRow, DisplayState, Evidence, WorldFrame, WorldPerson } from './types';
 
-/** Calm, distinguishable person colours; Spottr green is kept for the brand, not for one person. */
-const PERSON_COLORS = ['#007AFF', '#FF9500', '#AF52DE', '#FF2D55', '#5856D6', '#A2845E', '#FF3B30', '#E3A500', '#BF5AF2', '#1C7ED6', '#D9480F'];
+/** Calm, distinguishable person colours; Spottr blue is kept for the brand, not for one person. */
+const PERSON_COLORS = ['#34C759', '#FF9500', '#AF52DE', '#FF2D55', '#5856D6', '#A2845E', '#FF3B30', '#E3A500', '#BF5AF2', '#0FA3A3', '#D9480F'];
 
 export function personColor(globalId: string | null | undefined): string {
   if (!globalId) return '#AEAEB2';
@@ -17,7 +17,7 @@ export function personColor(globalId: string | null | undefined): string {
 
 export const STATE_STYLE: Record<DisplayState, { dot: string; text: string; bg: string; hint: string }> = {
   Confirmed: { dot: '#34C759', text: '#1D7A35', bg: '#E9F8EE', hint: 'One identity, backed by strong evidence.' },
-  Tracking: { dot: '#646E68', text: '#3A3A3C', bg: '#F1F3F0', hint: 'Followed by the cameras; not enough history yet to call it confirmed.' },
+  Tracking: { dot: '#636B7E', text: '#3A3A3C', bg: '#F2F4F8', hint: 'Followed by the cameras; not enough history yet to call it confirmed.' },
   'Needs confirmation': {
     dot: '#FF9500',
     text: '#8A4B00',

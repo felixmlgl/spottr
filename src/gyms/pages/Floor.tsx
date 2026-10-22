@@ -43,7 +43,7 @@ const ZoneDetail: React.FC<{ zoneId: ZoneId; day: number; hour: number }> = ({ z
         </Eyebrow>
         <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">{zone.name}</h2>
         <div className="flex items-baseline gap-2 mt-3">
-          <span className="font-dot text-6xl font-black leading-none text-ink">{pct(occ)}</span>
+          <span className="num text-6xl leading-none text-ink">{pct(occ)}</span>
           <span className="text-sm text-ink-2">in use</span>
         </div>
         <p className="text-sm text-ink-2 mt-1 flex items-center gap-1.5">
@@ -163,7 +163,7 @@ export const Floor: React.FC = () => {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 items-start">
-        <Card className="theme-night flex flex-col gap-5 !p-4 sm:!p-6">
+        <Card className="flex flex-col gap-5 !p-4 sm:!p-6">
           {/* Controls */}
           <div className="flex flex-col gap-4">
             <Segmented

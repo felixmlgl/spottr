@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Check } from 'lucide-react';
+import { CheckDot } from '../../components/CheckDot';
 import { AT_RISK_MEMBERS, GYM } from '../../mocks/gym';
 import { breakEvenMembers, DEFAULT_DUES, DUES_OPTIONS, formatUsd, PRICE_PER_LOCATION_MONTH } from '../pricing';
 import { Card, Eyebrow, Segmented } from './ui';
@@ -48,7 +48,7 @@ export const PriceCard: React.FC<{ className?: string }> = ({ className = '' }) 
     <div>
       <Eyebrow>Pricing</Eyebrow>
       <p className="mt-2 flex items-baseline gap-2 flex-wrap">
-        <span className="font-dot text-5xl font-black text-ink">{formatUsd(PRICE_PER_LOCATION_MONTH)}</span>
+        <span className="num text-5xl text-ink">{formatUsd(PRICE_PER_LOCATION_MONTH)}</span>
         <span className="text-sm text-ink-2">per location / month</span>
       </p>
       <span className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-ink-2 bg-white ring-1 ring-black/[0.06] whitespace-nowrap">
@@ -58,7 +58,7 @@ export const PriceCard: React.FC<{ className?: string }> = ({ className = '' }) 
     <ul className="flex flex-col gap-2">
       {INCLUDED.map((item) => (
         <li key={item} className="text-sm text-ink flex gap-2">
-          <Check className="w-4 h-4 text-accent-ink shrink-0 mt-0.5" />
+          <CheckDot className="w-[18px] h-[18px] mt-0.5" />
           {item}
         </li>
       ))}
@@ -77,7 +77,7 @@ export const BreakEvenCard: React.FC<{ className?: string }> = ({ className = ''
           Pays for itself from
         </h2>
         <p className="mt-1 flex items-baseline gap-2">
-          <span className="font-dot text-5xl font-black text-accent-ink">{members}</span>
+          <span className="num marker text-5xl text-ink">{members}</span>
           <span className="text-base font-semibold text-ink">retained members</span>
         </p>
         <p className="text-sm text-ink-2 mt-1.5 leading-relaxed">

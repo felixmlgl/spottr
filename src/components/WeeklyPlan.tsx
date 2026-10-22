@@ -125,7 +125,7 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
           <span className="hud-label">
             This week &bull; Sep 21 &ndash; 27
           </span>
-          <span className="text-xs font-medium text-accent">
+          <span className="px-2.5 py-1 rounded-full bg-lime text-xs font-semibold text-ink">
             5 of 6 workouts logged
           </span>
         </div>
@@ -143,9 +143,9 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                 onClick={() => handleOpenDay(dayKey)}
                 className={`flex flex-col items-center justify-between p-2.5 sm:p-3 rounded-2xl transition-all cursor-pointer ${
                   info.status === 'completed'
-                    ? 'bg-accent-ink text-white shadow-xs'
+                    ? 'bg-lime text-ink shadow-xs'
                     : info.status === 'partial'
-                    ? 'bg-white border-2 border-accent text-ink'
+                    ? 'bg-lime/35 text-ink'
                     : info.status === 'missed'
                     ? 'bg-line text-ink-2'
                     : 'bg-white text-ink-2'
@@ -167,7 +167,7 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
 
         <div className="flex items-center justify-center gap-4 text-xs text-ink-2 pt-2 border-t border-black/[0.04]">
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-accent" />
+            <span className="w-2.5 h-2.5 rounded-full bg-lime ring-1 ring-black/10" />
             <span>Completed</span>
           </span>
           <span className="flex items-center gap-1.5">
@@ -175,7 +175,7 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
             <span>Missed / Rest</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-white border border-accent" />
+            <span className="w-2.5 h-2.5 rounded-full bg-lime/35 ring-1 ring-black/10" />
             <span>Partial</span>
           </span>
         </div>

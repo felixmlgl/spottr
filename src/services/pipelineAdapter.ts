@@ -152,8 +152,8 @@ export function pipelinePersonToPersonInfo(
     ? prettifyExerciseName(exKeys[0])
     : (person.sets && person.sets[0] ? prettifyExerciseName(person.sets[0].exercise) : 'Resting');
 
-  const colors = ['#34C759', '#06B6D4', '#F59E0B', '#8B5CF6', '#EC4899', '#3B82F6', '#10B981', '#6366F1'];
-  const accentColor = colors[(person.id - 1) % colors.length] || '#34C759';
+  const colors = ['#4D80FF', '#06B6D4', '#F59E0B', '#8B5CF6', '#EC4899', '#34C759', '#10B981', '#6366F1'];
+  const accentColor = colors[(person.id - 1) % colors.length] || '#4D80FF';
 
   return {
     person_id: String(person.id),

@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Camera, Check, CircleAlert, Cable, ImageUp, MapPin, MousePointerClick, Trash2 } from 'lucide-react';
 import { Card, Eyebrow, Segmented } from '../components/ui';
+import { CheckDot } from '../../components/CheckDot';
 import { isLive, postCalibration } from './api';
 import { cameraTint } from './WorldMap';
 import type { CalibrationResult, CameraConfig, Vec2, WorldMapConfig } from './types';
@@ -132,8 +133,8 @@ const PlanMap: React.FC<{
         (p) =>
           p.world && (
             <g key={p.id} transform={`translate(${p.world[0]} ${p.world[1]})`}>
-              <circle r={p.id === activePoint ? 0.42 : 0.3} fill="#FFFFFF" stroke="#0F1411" strokeWidth={0.08} />
-              <text x={0.45} y={0.15} fontSize={0.38} fill="#0F1411">
+              <circle r={p.id === activePoint ? 0.42 : 0.3} fill="#FFFFFF" stroke="#0E1117" strokeWidth={0.08} />
+              <text x={0.45} y={0.15} fontSize={0.38} fill="#0E1117">
                 {p.id.replace(/^c\d_/, '')}
               </text>
             </g>
@@ -156,7 +157,7 @@ const PlanMap: React.FC<{
             <rect x={-0.34} y={-0.22} width={0.5} height={0.44} rx={0.08} fill={cameraTint(c.camera_id)} />
             <path d="M 0.16 -0.12 L 0.38 -0.24 L 0.38 0.24 L 0.16 0.12 Z" fill={cameraTint(c.camera_id)} />
           </g>
-          <text y={-1.0} textAnchor="middle" fontSize={0.48} fontWeight={600} fill="#0F1411">
+          <text y={-1.0} textAnchor="middle" fontSize={0.48} fontWeight={600} fill="#0E1117">
             {c.label}
           </text>
         </g>
@@ -244,7 +245,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
               >
                 <span
                   className={`w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center ${
-                    i < stepIdx ? 'bg-accent-ink text-white' : s.id === step ? 'bg-white text-ink' : 'bg-line text-ink-2'
+                    i < stepIdx ? 'bg-lime text-ink' : s.id === step ? 'bg-white text-ink' : 'bg-line text-ink-2'
                   }`}
                 >
                   {i < stepIdx ? <Check className="w-3 h-3" /> : i + 1}
@@ -399,7 +400,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
                       p.pixel && (
                         <g key={p.id} transform={`translate(${p.pixel[0]} ${p.pixel[1]})`}>
                           <circle r={p.id === activePoint ? 14 : 10} fill="#FFFFFF" fillOpacity={0.9} stroke={cameraTint(cam.camera_id)} strokeWidth={4} />
-                          <text x={18} y={6} fontSize={20} fontWeight={600} fill="#FFFFFF" stroke="#0F1411" strokeWidth={4} paintOrder="stroke">
+                          <text x={18} y={6} fontSize={20} fontWeight={600} fill="#FFFFFF" stroke="#0E1117" strokeWidth={4} paintOrder="stroke">
                             {p.id.replace(/^c\d_/, '')}
                           </text>
                         </g>
@@ -441,7 +442,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
                           image {p.pixel ? `${p.pixel[0]}, ${p.pixel[1]} px` : '—'} · floor {p.world ? `${p.world[0].toFixed(1)}, ${p.world[1].toFixed(1)} m` : '—'}
                         </span>
                       </button>
-                      {p.pixel && p.world ? <Check className="w-4 h-4 text-accent" aria-label="complete" /> : <CircleAlert className="w-4 h-4 text-[#FF9500]" aria-label="incomplete" />}
+                      {p.pixel && p.world ? <CheckDot className="w-4 h-4" label="complete" /> : <CircleAlert className="w-4 h-4 text-[#FF9500]" aria-label="incomplete" />}
                       <button
                         onClick={() => setPairs((all) => ({ ...all, [activeCam]: all[activeCam].filter((x) => x.id !== p.id) }))}
                         aria-label={`Remove ${p.name}`}
@@ -572,13 +573,13 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
             <Eyebrow>What exists today</Eyebrow>
             <ul className="flex flex-col gap-2 text-sm text-ink">
               <li className="flex gap-2">
-                <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" /> Processing of recorded video from two cameras into one shared world state
+                <CheckDot className="w-4 h-4 mt-0.5" /> Processing of recorded video from two cameras into one shared world state
               </li>
               <li className="flex gap-2">
-                <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" /> Calibration fitting and grading through the service API
+                <CheckDot className="w-4 h-4 mt-0.5" /> Calibration fitting and grading through the service API
               </li>
               <li className="flex gap-2">
-                <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" /> Anonymous labels only; faces of detected people pixelated in the demo clips
+                <CheckDot className="w-4 h-4 mt-0.5" /> Anonymous labels only; faces of detected people pixelated in the demo clips
               </li>
               <li className="flex gap-2 text-ink-2">
                 <CircleAlert className="w-4 h-4 text-[#FF9500] shrink-0 mt-0.5" /> Live RTSP/WebRTC ingestion: designed for (same pipeline, replaceable video source), not built yet

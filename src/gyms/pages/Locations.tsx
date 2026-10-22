@@ -91,7 +91,7 @@ export const Locations: React.FC = () => (
       {TOTALS.map((t) => (
         <div key={t.label} className="panel p-6">
           <Eyebrow>{t.label}</Eyebrow>
-          <p className="font-dot text-4xl sm:text-5xl font-black text-ink mt-3">{t.value}</p>
+          <p className="num text-4xl sm:text-5xl text-ink mt-3">{t.value}</p>
           <p className="text-xs text-ink-2 mt-1">All {CHAIN_LOCATIONS.length} locations</p>
         </div>
       ))}

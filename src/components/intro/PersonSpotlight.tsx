@@ -4,7 +4,7 @@ import { LoadedPipelineData, PipelinePerson } from '../../services/pipelineAdapt
 import { blurBystanders, overlayRowsAtTime } from '../../services/privacyBlur';
 import { mainExercise, spotlightTime } from '../../services/memberSession';
 
-const HIGHLIGHT = '#34C759';
+const HIGHLIGHT = '#C7FF6A';
 
 interface PersonSpotlightProps {
   data: LoadedPipelineData | null;
@@ -141,7 +141,7 @@ export const PersonSpotlight: React.FC<PersonSpotlightProps> = ({
       ctx.beginPath();
       ctx.roundRect(tx, ty, tw + pad * 2, tagH, tagH / 2);
       ctx.fill();
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = '#0E1117';
       ctx.textBaseline = 'middle';
       ctx.fillText(label, tx + pad, ty + tagH / 2);
     }

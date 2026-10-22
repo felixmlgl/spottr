@@ -25,7 +25,7 @@ export interface BodyMapProps {
    */
   colorMap?: Partial<Record<MuscleId, string>>;
   /**
-   * Mode: 'intensity' (shades of Apple green) or 'recovery' (status colors)
+   * Mode: 'intensity' (shades of blue) or 'recovery' (status colors)
    */
   mode?: 'intensity' | 'recovery';
   /**
@@ -50,7 +50,7 @@ const RECOVERY_STOPS: [number, string][] = [
   [0, '#FF3B30'],
   [0.35, '#FF9500'],
   [0.65, '#FFCC00'],
-  [0.85, '#34C759'],
+  [0.85, '#8EDB3A'],
 ];
 
 /** Color for a muscle that is `recovered` (0..1) of the way back, blended between the neighbouring stops */
@@ -125,7 +125,7 @@ const INTENSITY_LEVELS = {
 type IntensityLevel = keyof typeof INTENSITY_LEVELS;
 
 const MUSCLE_BASE = '#DCDCE1';
-const PICKED_STROKE = '#0F1411';
+const PICKED_STROKE = '#0E1117';
 const BODY_BASE = '#E7E7EB';
 const HAIR = '#D3D8D3';
 
