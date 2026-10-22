@@ -29,8 +29,11 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - `src/main.tsx`: entry point. Picks the page by URL (`/`, `/gyms/*`, everything else = member app) and renders Vercel Analytics.
 - `src/router.tsx`: small pathname router (`usePathname`, `navigate`, `Link`). No router library.
 - `src/Welcome.tsx`: welcome page at `/`.
-- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (mailto info@tryspottr.app), demos, footer. Lazy-loaded.
+- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (the request-a-demo popup, plus mailto info@tryspottr.app), demos, footer. Lazy-loaded.
 - `src/landing/`: `Chapter.tsx` (chapter template, timeline rail, active-chapter hook) and `previews.tsx` (chapter visuals built from the real clip and dashboard pieces).
+- `src/requestDemo/`: the "Request a demo" popup (gym size and price, then contact details). `openRequestDemo()` opens it from anywhere; `RequestDemoHost` is mounted once in `main.tsx`.
+- `api/request-demo.ts`: Vercel Function behind the popup; emails the request through Resend (`RESEND_API_KEY`, see `.env.example`). `vite.config.ts` serves the same handler in dev and prints the email when no key is set.
+- `src/gyms/pricing.ts`: the four price tiers by gym size (keep in sync with the pitch deck); `src/components/TierPricing.tsx` shows them.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.
 - `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo/`.
