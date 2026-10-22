@@ -152,7 +152,14 @@ const Intro: React.FC = () => (
 /** The one action, then the two full demos for anyone who wants to click around. */
 const Contact: React.FC = () => (
   <section id="contact" className="scroll-mt-28 flex flex-col gap-6">
-    <Reveal className="panel p-8 sm:p-12 flex flex-col items-start gap-5">
+    <Reveal className="panel relative isolate overflow-hidden p-8 sm:p-12 flex flex-col items-start gap-5">
+      {/* Halftone gym floor on the right, fading out behind the text (scripts/halftone.py) */}
+      <img
+        src="/halftone/texture.svg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute -z-10 right-0 top-1/2 -translate-y-1/2 h-[130%] max-w-none opacity-35 [mask-image:linear-gradient(to_bottom,transparent_55%,black)] sm:[mask-image:linear-gradient(to_right,transparent,black_55%)]"
+      />
       <span className="glass rounded-full px-3 py-1 text-sm font-semibold text-ink">Your turn</span>
       <h2 className="text-4xl sm:text-6xl font-medium tracking-tight text-ink leading-[1.05] max-w-2xl">
         See it on your floor.

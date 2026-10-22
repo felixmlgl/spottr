@@ -41,8 +41,10 @@ export function useFelix() {
 type Felix = NonNullable<ReturnType<typeof useFelix>>;
 
 const Loading: React.FC<{ className?: string }> = ({ className = 'aspect-video' }) => (
-  <div className={`panel flex items-center justify-center ${className}`}>
-    <Loader2 className="w-6 h-6 animate-spin text-ink-3" aria-label="Loading" />
+  <div className={`panel relative overflow-hidden flex items-center justify-center ${className}`}>
+    {/* Halftone still of the clip while its data loads (scripts/halftone.py) */}
+    <img src="/halftone/loading.svg" alt="" className="absolute inset-0 w-full h-full object-cover animate-pulse" />
+    <Loader2 className="relative w-6 h-6 animate-spin text-ink-3" aria-label="Loading" />
   </div>
 );
 
@@ -227,6 +229,16 @@ const PRIVACY_FIRST = ['No face recognition', 'Workouts come from pose data', 'G
 
 export const PrivacyList: React.FC = () => (
   <div className="panel p-6 sm:p-7 flex flex-col gap-4">
+    <figure className="flex flex-col gap-2">
+      <img
+        src="/halftone/privacy.svg"
+        alt="A frame of the squat clip drawn as dots, with the body points of each person in it"
+        className="w-full rounded-[20px]"
+      />
+      <figcaption className="hud-label">
+        Illustration from the real clip: sets and reps are computed from body points like these.
+      </figcaption>
+    </figure>
     <ul className="flex flex-col gap-3">
       {AVAILABLE_TODAY.filter((item) => PRIVACY_FIRST.includes(item.title)).map((item) => (
         <li key={item.title} className="flex gap-3 p-4 rounded-[20px] bg-white/70 ring-1 ring-white">
