@@ -4,7 +4,7 @@
  * the UI says so wherever they appear.
  */
 
-export type TierId = 'studio' | 'club' | 'bigbox' | 'mega';
+export type TierId = 'rack' | 'floor' | 'hall' | 'arena';
 
 export interface Tier {
   id: TierId;
@@ -21,13 +21,13 @@ export interface Tier {
 }
 
 export const TIERS: Tier[] = [
-  { id: 'studio', name: 'Studio', members: 'Under 500', minMembers: 0, price: 399, cameras: 3, dues: 80 },
-  { id: 'club', name: 'Club', members: '500–1,500', minMembers: 500, price: 799, cameras: 6, dues: 60 },
-  { id: 'bigbox', name: 'Big box', members: '1,500–5,000', minMembers: 1500, price: 1499, cameras: 12, dues: 45 },
-  { id: 'mega', name: 'Mega', members: '5,000+', minMembers: 5000, price: 2999, cameras: 24, dues: 30 },
+  { id: 'rack', name: 'Rack', members: 'Under 500', minMembers: 0, price: 399, cameras: 3, dues: 80 },
+  { id: 'floor', name: 'Floor', members: '500–1,500', minMembers: 500, price: 799, cameras: 6, dues: 60 },
+  { id: 'hall', name: 'Hall', members: '1,500–5,000', minMembers: 1500, price: 1499, cameras: 12, dues: 45 },
+  { id: 'arena', name: 'Arena', members: '5,000+', minMembers: 5000, price: 2999, cameras: 24, dues: 30 },
 ];
 
-export const DEFAULT_TIER: TierId = 'club';
+export const DEFAULT_TIER: TierId = 'floor';
 
 /** Monthly price of one more Spottr box, for gyms with more cameras than their tier includes */
 export const EXTRA_BOX_MONTH = 149;
