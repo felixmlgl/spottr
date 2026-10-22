@@ -4,8 +4,7 @@
  * Environment variables (Vercel project settings, or .env.local for `npm run dev`):
  * - RESEND_API_KEY     required to send; from resend.com
  * - DEMO_REQUEST_TO    inbox for the requests, default info@tryspottr.app
- * - DEMO_REQUEST_FROM  sender, default Resend's test sender, which only delivers to the Resend account's own email
- *                      until a domain is verified there (then e.g. "Spottr <demo@tryspottr.app>")
+ * - DEMO_REQUEST_FROM  sender, default "Spottr <demo@tryspottr.app>" (tryspottr.app is verified in Resend)
  *
  * In local dev, vite.config.ts serves the same handler; without a key it prints the email instead of sending it.
  * No imports on purpose: Vercel runs this file on its own.
@@ -52,7 +51,7 @@ export async function handleDemoRequest(
 
   const firstName = req.name.split(' ')[0];
   const email = {
-    from: env.DEMO_REQUEST_FROM || 'Spottr <onboarding@resend.dev>',
+    from: env.DEMO_REQUEST_FROM || 'Spottr <demo@tryspottr.app>',
     to: [env.DEMO_REQUEST_TO || 'info@tryspottr.app'],
     reply_to: req.email,
     subject: `Demo request: ${req.gym}, ${req.city}`,
