@@ -2,11 +2,11 @@ import React from 'react';
 import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
 import { BarShapeProps, Rectangle } from 'recharts';
 
-export const ACCENT = '#34C759';
-export const INK = '#0F1411';
-export const INK_SECONDARY = '#4B5550';
-export const MUTED_BAR = '#D3D8D3';
-export const GRID = '#E6E9E5';
+export const ACCENT = '#4D80FF';
+export const INK = '#0E1117';
+export const INK_SECONDARY = '#4B5262';
+export const MUTED_BAR = '#CDD3DE';
+export const GRID = '#E7EAF0';
 
 export const Card: React.FC<{ className?: string; children: React.ReactNode }> = ({ className = '', children }) => (
   <div className={`panel p-6 sm:p-8 min-w-0 ${className}`}>{children}</div>
@@ -25,7 +25,7 @@ export const PageHeader: React.FC<{
   <div className="pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
     <div>
       {eyebrow && <div className="text-sm font-medium text-ink-2 tracking-wide mb-1 flex items-center gap-2 flex-wrap">{eyebrow}</div>}
-      <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">{title}</h1>
+      <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">{title}</h1>
       {subtitle && <p className="text-base text-ink-2 mt-2 max-w-2xl">{subtitle}</p>}
     </div>
     {aside}
@@ -88,7 +88,7 @@ export const TrendChip: React.FC<{ value: number; previous: number; comparison: 
     <p className="text-xs text-ink-2 mt-1 flex items-center gap-1 flex-wrap">
       <span
         className={`inline-flex items-center gap-0.5 font-semibold ${
-          flat ? 'text-ink-2' : up ? 'text-accent-ink' : 'text-ink'
+          flat ? 'text-ink-2' : up ? 'bg-lime text-[#0E1117] rounded-full pl-1 pr-1.5 py-px' : 'text-ink'
         }`}
       >
         <Icon className="w-3.5 h-3.5 stroke-[2]" aria-hidden />
@@ -101,7 +101,7 @@ export const TrendChip: React.FC<{ value: number; previous: number; comparison: 
 
 /** White rounded tooltip matching the member app's recharts tooltip. */
 export const ChartTooltip: React.FC<{ title: string; value: string; note?: string }> = ({ title, value, note }) => (
-  <div className="bg-white rounded-xl p-3 shadow-lg border border-black/[0.04]">
+  <div className="bg-paper rounded-xl p-3 shadow-lg border border-black/[0.04]">
     <p className="text-xs text-ink-2">{title}</p>
     <p className="text-sm font-bold text-ink mt-0.5">{value}</p>
     {note && <p className="text-[11px] text-ink-2 font-medium">{note}</p>}
@@ -115,8 +115,18 @@ export const axisProps = {
   axisLine: false,
 } as const;
 
+/** Diagonal-striped fill for the empty track behind bars. Put <HatchDefs /> inside the chart, then use HATCH as a fill. */
+export const HATCH = 'url(#hatch)';
+export const HatchDefs: React.FC<{ id?: string; color?: string }> = ({ id = 'hatch', color = GRID }) => (
+  <defs>
+    <pattern id={id} width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="2" height="7" fill={color} />
+    </pattern>
+  </defs>
+);
+
 /** Bar shape that paints highlighted bars in the accent and the rest in a recessive gray. */
-export const highlightBar = (isHighlighted: (index: number) => boolean, fill = MUTED_BAR) =>
+export const highlightBar = (isHighlighted: (index: number) => boolean, fill = MUTED_BAR, accent = ACCENT) =>
   function HighlightBar(props: BarShapeProps) {
-    return <Rectangle {...props} fill={isHighlighted(props.index) ? ACCENT : fill} />;
+    return <Rectangle {...props} fill={isHighlighted(props.index) ? accent : fill} />;
   };
