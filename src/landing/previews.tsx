@@ -3,7 +3,7 @@
  * logic (workout card, recovery suggestion); gym chapters reuse dashboard pieces. Nothing here links away.
  */
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Loader2, Send } from 'lucide-react';
 import { Link } from '../router';
 import { useClipData } from '../hooks/useClipData';
@@ -97,15 +97,28 @@ export const PoseFrame: React.FC<{ felix: Felix | null }> = ({ felix }) => {
 };
 
 /** 6:05 pm: the real squat clip with the pipeline's live rep count. */
-export const LiveReplay: React.FC<{ felix: Felix | null }> = ({ felix }) =>
-  felix ? (
+export const LiveReplay: React.FC<{ felix: Felix | null }> = ({ felix }) => {
+  // The player buffers the whole 3 MB clip, so it mounts only once the chapter is about a screen away
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || near) return;
+    const io = new IntersectionObserver(([entry]) => entry.isIntersecting && setNear(true), { rootMargin: '100% 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
+  return felix && near ? (
     <figure className="panel p-3 sm:p-4 flex flex-col gap-3">
       <SessionPlayer data={felix.data} personId={felix.personId} defaultOverlayMode="styled" repSound={false} />
       <figcaption className="hud-label px-1">Real gym clip. Everyone else is pixelated.</figcaption>
     </figure>
   ) : (
-    <Loading />
+    <div ref={ref}>
+      <Loading />
+    </div>
   );
+};
 
 const formatSeconds = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 

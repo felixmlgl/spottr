@@ -74,9 +74,11 @@ export function useActiveChapter(ids: string[]): string | null {
   return active;
 }
 
-/** How far the viewport's middle has travelled through an element, 0..1. */
-export function useScrollProgress(ref: React.RefObject<HTMLElement | null>): number {
-  const [progress, setProgress] = useState(0);
+/**
+ * How far the viewport's middle has travelled through `ref`, 0..1, written to `--progress` on `target`.
+ * A CSS variable rather than state, so scrolling doesn't re-render every chapter.
+ */
+export function useScrollProgress(ref: React.RefObject<HTMLElement | null>, target: React.RefObject<HTMLElement | null>) {
   useEffect(() => {
     let frame = 0;
     const update = () => {
@@ -84,7 +86,7 @@ export function useScrollProgress(ref: React.RefObject<HTMLElement | null>): num
       const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      setProgress(Math.min(1, Math.max(0, (window.innerHeight / 2 - r.top) / r.height)));
+      target.current?.style.setProperty('--progress', String(Math.min(1, Math.max(0, (window.innerHeight / 2 - r.top) / r.height))));
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -97,14 +99,13 @@ export function useScrollProgress(ref: React.RefObject<HTMLElement | null>): num
       window.removeEventListener('resize', onScroll);
       cancelAnimationFrame(frame);
     };
-  }, [ref]);
-  return progress;
+  }, [ref, target]);
 }
 
-/** Vertical line beside the chapters (desktop): a faint track with a blue fill that follows the scroll. */
-export const TimelineRail: React.FC<{ progress: number }> = ({ progress }) => (
+/** Vertical line beside the chapters (desktop): a faint track with a blue fill that follows the scroll (`--progress`). */
+export const TimelineRail: React.FC = () => (
   <div aria-hidden className="hidden lg:block absolute left-6 top-2 bottom-2 w-0.5 rounded-full bg-line">
-    <div className="w-full rounded-full bg-accent" style={{ height: `${progress * 100}%` }} />
+    <div className="w-full rounded-full bg-accent" style={{ height: 'calc(var(--progress, 0) * 100%)' }} />
   </div>
 );
 
