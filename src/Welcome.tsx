@@ -37,7 +37,14 @@ const StoryButton: React.FC = () => (
       e.preventDefault();
       scrollToGyms(scrollBehavior());
     }}
-    className="whitespace-nowrap rounded-full bg-lime px-6 py-3 text-[14px] font-semibold text-ink shadow-[0_8px_30px_rgba(199,255,106,0.35)] transition-transform hover:scale-[1.03]"
+    className="glass whitespace-nowrap rounded-full px-6 py-3 text-[14px] font-semibold text-ink transition-transform hover:scale-[1.03]"
+    // Liquid glass that picks up a little logo blue as the page scrolls (--hero-scroll is 0 → 1, set on the hero)
+    style={
+      {
+        '--glass-fill': 'color-mix(in srgb, #4D80FF calc(var(--hero-scroll, 0) * 35%), rgb(255 255 255 / 0.72))',
+        '--glass-fill-2': 'color-mix(in srgb, #4D80FF calc(var(--hero-scroll, 0) * 35%), rgb(255 255 255 / 0.42))',
+      } as React.CSSProperties
+    }
   >
     See how it works ↓
   </a>
@@ -47,7 +54,10 @@ export const Welcome: React.FC = () => {
   const [active, setActive] = useState(0);
   // Reduced motion: start on a still frame; the visitor can still press play
   const [paused, setPaused] = useState(prefersReducedMotion);
+  // The sheet's frosted edge stays hidden until the visitor starts scrolling; only its grab bar shows
+  const [scrolled, setScrolled] = useState(() => window.scrollY > 0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const heroRef = useRef<HTMLElement>(null);
 
   // Play the active clip from the start (unless paused); pause the others once they've faded out.
   useEffect(() => {
@@ -74,6 +84,16 @@ export const Welcome: React.FC = () => {
     // Only on pause toggles: clip changes are handled above
   }, [paused]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 0);
+      // Set directly on the element so scrolling doesn't re-render the 24 videos
+      heroRef.current?.style.setProperty('--hero-scroll', String(Math.min(window.scrollY / (window.innerHeight * 0.6), 1)));
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   // Browsers can refuse playback while the tab is in the background; resume when it's shown.
   useEffect(() => {
     const resume = () => {
@@ -92,7 +112,7 @@ export const Welcome: React.FC = () => {
 
   return (
     <main>
-      <section className="relative h-dvh w-full overflow-hidden bg-black">
+      <section ref={heroRef} className="relative h-dvh w-full overflow-hidden bg-black">
         {CLIPS.map((clip, i) => (
           <video
             key={clip.src}
@@ -133,9 +153,10 @@ export const Welcome: React.FC = () => {
           <button
             onClick={() => setPaused((p) => !p)}
             aria-label={paused ? 'Play background video' : 'Pause background video'}
-            className="glass absolute right-4 bottom-[calc(1rem+3rem)] w-11 h-11 rounded-full flex items-center justify-center text-ink cursor-pointer hover:bg-white/80"
+            // Faint smoked glass so it doesn't compete with the logo and the story button; brightens on hover
+            className="glass absolute right-4 bottom-[calc(1rem+3rem)] w-9 h-9 rounded-full flex items-center justify-center text-white/70 cursor-pointer transition-colors hover:text-white [--glass-fill:rgb(255_255_255/0.14)] [--glass-fill-2:rgb(255_255_255/0.06)] [--glass-rim:rgb(255_255_255/0.35)] hover:[--glass-fill:rgb(255_255_255/0.3)]"
           >
-            {paused ? <Play className="w-4 h-4 fill-current" aria-hidden /> : <Pause className="w-4 h-4 fill-current" aria-hidden />}
+            {paused ? <Play className="w-3.5 h-3.5 fill-current" aria-hidden /> : <Pause className="w-3.5 h-3.5 fill-current" aria-hidden />}
           </button>
         </div>
       </section>
@@ -144,9 +165,12 @@ export const Welcome: React.FC = () => {
       <section id="gyms" aria-label="For gym owners" className="relative z-10 isolate -mt-12 pt-10 text-ink">
         <div
           aria-hidden
-          className="absolute inset-x-0 top-0 h-64 -z-10 rounded-t-[44px] bg-gradient-to-b from-[#F5F6FA]/80 to-[#F5F6FA]/0 backdrop-blur-2xl [mask-image:linear-gradient(black_40%,transparent)]"
+          className={`absolute inset-x-0 top-0 h-64 -z-10 rounded-t-[44px] bg-gradient-to-b from-[#F5F6FA]/80 to-[#F5F6FA]/0 backdrop-blur-2xl [mask-image:linear-gradient(black_40%,transparent)] transition-opacity duration-500 ${scrolled ? 'opacity-100' : 'opacity-0'}`}
         />
-        <span aria-hidden className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-ink/15" />
+        <span
+          aria-hidden
+          className={`absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full transition-colors duration-500 ${scrolled ? 'bg-ink/15' : 'bg-white/70'}`}
+        />
         <Suspense fallback={<div className="min-h-screen" />}>
           <Company onLogoClick={() => window.scrollTo({ top: 0, behavior: scrollBehavior() })} />
         </Suspense>
