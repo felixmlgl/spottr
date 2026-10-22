@@ -16,7 +16,6 @@ export const BASE_URL = "";
 export const PIPELINE_CLIPS: PipelineClip[] = [
   { id: "squat", title: "Squat", video: "/videosCorrect/squat.mp4", data: "/demo-data/squat" },
   { id: "dip",   title: "Dips",  video: "/videosCorrect/dip.mp4",   data: "/demo-data/dip" },
-  { id: "crowd", title: "Crowd", video: "/videosCorrect/crowd.mp4", data: "/demo-data/crowd" },
 ];
 
 export const FALLBACK_SAMPLE_CLIP: PipelineClip = {
