@@ -54,7 +54,7 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
             pilotActive ? 'bg-ink text-white' : 'bg-accent-ink text-white hover:bg-accent-deep'
           }`}
         >
-          Request pilot
+          Request a pilot
         </Link>
       </div>
 

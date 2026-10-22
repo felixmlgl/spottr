@@ -3,6 +3,7 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'rec
 import { Award, ChevronRight, Info, Play, X } from 'lucide-react';
 import { PastWorkout } from '../types/schema';
 import { BodyMap } from './BodyMap';
+import { InfoTip } from './Disclosure';
 import { isSampleWorkout, workoutMuscles } from '../services/memberSession';
 
 interface HistoryTabProps {
@@ -81,15 +82,15 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
       <div className="pt-4">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink">History</h1>
         <p className="text-base text-ink-2 mt-2">
-          {workouts.length} sessions logged over the past 4 weeks.
+          {workouts.length} workouts logged over the past 4 weeks.
         </p>
       </div>
 
       <div className="flex items-start gap-2 px-4 py-3 rounded-2xl bg-surface text-sm text-ink-2">
         <Info className="w-4 h-4 text-[#0071E3] shrink-0 mt-0.5" />
-        <span>
-          Only today's session comes from the camera clip. Older sessions are sample data that show what a few weeks of
-          history look like. So far the pipeline has been tested on squats and dips only.
+        <span className="flex items-center gap-1">
+          Today is a real clip. Earlier workouts are samples.
+          <InfoTip label="What has been tested">So far the pipeline has been tested on squats and dips only.</InfoTip>
         </span>
       </div>
 
@@ -98,7 +99,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <span className="hud-label">Volume trend</span>
-            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-ink mt-0.5">Reps per session</h3>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-ink mt-0.5">Reps per workout</h3>
           </div>
           {trendOptions.length > 1 && (
             <div className="flex items-center p-1 bg-white rounded-full shadow-xs self-start sm:self-auto overflow-x-auto max-w-full">
@@ -230,7 +231,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
           >
             <div className="flex items-start justify-between">
               <div>
-                <span className="hud-label">Session detail</span>
+                <span className="hud-label">Workout detail</span>
                 <h2 className="text-2xl font-bold tracking-tight text-ink mt-0.5">{selectedWorkout.display_date}</h2>
               </div>
               <button
@@ -286,7 +287,7 @@ export const HistoryTab: React.FC<HistoryTabProps> = ({ workouts, todayRecap, on
             {isSampleWorkout(selectedWorkout) && (
               <p className="text-xs text-ink-2 flex items-start gap-1.5">
                 <Info className="w-3.5 h-3.5 shrink-0 mt-px" />
-                Sample session for the demo, not tracked by a camera.
+                Sample workout for the demo, not tracked by a camera.
               </p>
             )}
 

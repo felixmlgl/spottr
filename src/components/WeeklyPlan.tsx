@@ -222,11 +222,6 @@ export const WeeklyPlan: React.FC<WeeklyPlanProps> = ({ plan, onUpdatePlan }) =>
                     )}
                   </div>
 
-                  {!day.is_rest && (
-                    <p className="text-xs text-ink-2 truncate mt-1 pl-0 sm:pl-26">
-                      {day.exercises.map((e) => `${e.name} (${e.target_sets}×${e.target_reps})`).join(', ')}
-                    </p>
-                  )}
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">

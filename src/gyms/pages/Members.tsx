@@ -10,6 +10,7 @@ import {
   SESSIONS_PER_WEEK_DISTRIBUTION,
 } from '../../mocks/gym';
 import { useToast } from '../components/Toast';
+import { InfoTip } from '../../components/Disclosure';
 import {
   ACCENT,
   axisProps,
@@ -73,7 +74,7 @@ const AtRiskRow: React.FC<{ row: AtRiskMember; sent: boolean; onNudge: () => voi
         <span className="sm:hidden text-ink">{lastVisitLabel(row.daysSinceLastVisit)} ·</span>
         <Sparkline values={row.weeklyVisits} />
         <span className="tabular-nums">
-          {row.usualRate.toFixed(1)} → {row.recentRate.toFixed(1)} / wk
+          {+row.usualRate.toFixed(1)} → {+row.recentRate.toFixed(1)}
         </span>
       </div>
 
@@ -129,20 +130,20 @@ export const Members: React.FC = () => {
           </>
         }
         title="Members"
-        subtitle="Engagement across the membership, measured from real visits. No check-in data or surveys needed."
+        subtitle="Who's training, and who's slipping."
       />
 
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card className="flex flex-col gap-4">
           <div>
             <Eyebrow>Last 4 weeks</Eyebrow>
-            <h2 className="text-xl font-bold tracking-tight text-ink mt-0.5">Sessions per week</h2>
+            <h2 className="text-xl font-bold tracking-tight text-ink mt-0.5">Visits per week</h2>
             <p className="text-xs text-ink-2 mt-1">
               <span className="font-semibold text-ink">{ENGAGEMENT_SUMMARY.regularsPct}%</span> of{' '}
               {ENGAGEMENT_SUMMARY.establishedMembers} members train twice a week or more
             </p>
           </div>
-          <div className="h-60 w-full" role="img" aria-label="Distribution of members by average sessions per week">
+          <div className="h-60 w-full" role="img" aria-label="Distribution of members by average visits per week">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={SESSIONS_PER_WEEK_DISTRIBUTION} margin={{ top: 8, right: 0, left: -20, bottom: 0 }} barCategoryGap="32%">
                 <CartesianGrid vertical={false} stroke={GRID} />
@@ -153,14 +154,14 @@ export const Members: React.FC = () => {
                   content={({ active, payload }) => {
                     if (!active || !payload?.length) return null;
                     const d = payload[0].payload as (typeof SESSIONS_PER_WEEK_DISTRIBUTION)[number];
-                    return <ChartTooltip title={`${d.label} sessions / week`} value={`${d.members} members`} />;
+                    return <ChartTooltip title={`${d.label} visits / week`} value={`${d.members} members`} />;
                   }}
                 />
                 <Bar dataKey="members" radius={[4, 4, 0, 0]} shape={highlightBar((i) => i >= 3)} isAnimationActive={false} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-xs text-ink-2 -mt-1">Sessions per week. Blue means 2 or more.</p>
+          <p className="text-xs text-ink-2 -mt-1">Visits per week. Blue: 2 or more.</p>
         </Card>
 
         <Card className="flex flex-col gap-4">
@@ -211,18 +212,20 @@ export const Members: React.FC = () => {
       <Card className="flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <Eyebrow>At risk</Eyebrow>
+            <Eyebrow>Slipping</Eyebrow>
             <h2 className="text-xl font-bold tracking-tight text-ink mt-1 flex items-baseline gap-2">
               <span className="num text-5xl leading-none">{counts.all}</span>
-              members are slipping away
+              members are slipping
             </h2>
-            <p className="text-xs text-ink-2 mt-1 max-w-lg">
-              Regulars who stopped coming or halved their visits in the last few weeks. Operators see first names
-              only; the nudge arrives in the member's Spottr app.
+            <p className="text-xs text-ink-2 mt-1 max-w-lg flex items-center gap-1">
+              Regulars who stopped coming or halved their visits.
+              <InfoTip label="What gym staff see">
+                Gym staff see first names only. The nudge arrives in the member app.
+              </InfoTip>
             </p>
           </div>
           <Segmented<RiskFilter>
-            ariaLabel="Filter at-risk members"
+            ariaLabel="Filter slipping members"
             options={[
               { id: 'all', label: `All (${counts.all})` },
               { id: 'inactive', label: `No visit 14+ days (${counts.inactive})` },
@@ -241,7 +244,7 @@ export const Members: React.FC = () => {
           <div className="hidden sm:grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.6fr)_auto] gap-x-4 text-xs font-medium text-ink-2 pt-2 border-b border-black/[0.05] pb-2">
             <span>Member</span>
             <span>Last visit</span>
-            <span>Visits, last 8 weeks</span>
+            <span>Visits per week, then → now</span>
             <span className="w-[108px]" />
           </div>
           <ul>

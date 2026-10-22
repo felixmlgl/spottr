@@ -2,37 +2,46 @@ import React from 'react';
 import { Check, Clock } from 'lucide-react';
 import { Link } from '../../router';
 import { Card, PageHeader } from '../components/ui';
+import { Disclosure } from '../../components/Disclosure';
 
 interface PrivacyItem {
   title: string;
+  /** One line shown on the card; `body` then opens under "Details". Without it, `body` is shown as is. */
+  summary?: string;
   body: string;
 }
 
 // Only list something under "Available today" if the current build actually does it.
 // Blur claims mirror src/services/privacyBlur.ts (replay) and backend/vision/classify.py (snapshots, thumbnails).
-const AVAILABLE_TODAY: PrivacyItem[] = [
+export const AVAILABLE_TODAY: PrivacyItem[] = [
   {
     title: 'No face recognition',
+    summary: 'Reps and sets come from body pose, not faces.',
     body: 'Spottr follows body pose (joint positions) to count reps and sets. It does not identify people by their face.',
   },
   {
     title: 'Workouts come from pose data',
+    summary: 'No sensors on equipment and nothing for members to wear.',
     body: 'Sets, reps and zone occupancy are computed from body keypoints over time. There are no sensors on equipment and nothing for members to wear.',
   },
   {
-    title: 'Operators see aggregates',
-    body: 'The operator dashboard shows counts, trends and zone occupancy. The at-risk list shows a first name and member number only, with no photos or video.',
+    title: 'Gym staff see aggregates',
+    summary: 'Counts and trends; slipping members by first name only.',
+    body: 'The gym dashboard shows counts, trends and zone occupancy. The list of slipping members shows a first name and member number only, with no photos or video.',
   },
   {
     title: 'Bystanders pixelated in the replay',
+    summary: 'Everyone except the selected member is pixelated.',
     body: 'In the member app\u2019s session replay, everyone except the selected member is pixelated head to toe as the video is drawn on screen. The selected member is shown unblurred.',
   },
   {
     title: 'Blurred snapshots for exercise labels',
+    summary: 'Gemini gets one small image per set with faces pixelated, never video.',
     body: 'To label an exercise, the pipeline sends Google Gemini one small image per set: three frames of one rep, cropped around the lifter, with the lifter\u2019s face pixelated and everyone else pixelated head to toe. Member thumbnails get the same blur.',
   },
   {
     title: 'AI recaps use a text summary',
+    summary: 'Recaps are written from exercise names and rep counts, not video.',
     body: "Optional workout recaps in the member app are written by Google's Gemini API from a short text summary (exercise names, rep counts, duration), not from video.",
   },
 ];
@@ -57,7 +66,7 @@ const IN_DEVELOPMENT: PrivacyItem[] = [
 ];
 
 // Known gaps in today's blurring (see backend/README.md "Known limitations")
-const BLUR_LIMITS = [
+export const BLUR_LIMITS = [
   'Blurring only covers people the pose model detects. Someone hidden behind equipment, or missed for more than half a second, stays visible.',
   'In the replay, the blur is applied while drawing. The video file itself is not blurred.',
   'The annotated review video the pipeline can export is not blurred.',
@@ -69,6 +78,13 @@ const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyIte
   return (
     <section className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
+        <span
+          className={`w-7 h-7 rounded-full flex items-center justify-center ${
+            available ? 'bg-lime text-ink' : 'bg-white text-ink-2 ring-1 ring-black/[0.06]'
+          }`}
+        >
+          <Icon className="w-4 h-4 stroke-[2.25]" aria-hidden />
+        </span>
         <h2 className="text-2xl font-bold tracking-tight text-ink">
           {available ? 'Available today' : 'In development'}
         </h2>
@@ -76,17 +92,14 @@ const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyIte
       <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {items.map((item) => (
           <li key={item.title}>
-            <Card className="h-full flex flex-col gap-3 !p-6">
-              <span
-                className={`self-start inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-                  available ? 'bg-lime text-ink' : 'bg-white text-ink-2 ring-1 ring-black/[0.06]'
-                }`}
-              >
-                <Icon className="w-3 h-3 stroke-[2.25]" />
-                {available ? 'Available today' : 'In development'}
-              </span>
+            <Card className="h-full flex flex-col gap-2 !p-6">
               <h3 className="text-base font-semibold text-ink">{item.title}</h3>
-              <p className="text-sm text-ink-2 leading-relaxed">{item.body}</p>
+              <p className="text-sm text-ink-2 leading-relaxed">{item.summary ?? item.body}</p>
+              {item.summary && (
+                <Disclosure className="mt-1">
+                  <p className="text-sm text-ink-2 leading-relaxed">{item.body}</p>
+                </Disclosure>
+              )}
             </Card>
           </li>
         ))}
@@ -99,7 +112,7 @@ export const Privacy: React.FC = () => (
   <div className="flex flex-col gap-12 pb-16">
     <PageHeader
       title="Privacy"
-      subtitle="Spottr is in its pilot phase. This page describes what the current build does and marks what is still being built. We update it as features ship."
+      subtitle="What Spottr does today, and what's still being built. Updated as features ship."
     />
     <Section status="available" items={AVAILABLE_TODAY} />
     <section className="flex flex-col gap-3">

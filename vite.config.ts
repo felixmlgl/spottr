@@ -46,11 +46,11 @@ function apiPlugin(): Plugin {
                 ?.map((s: { rep_count: number; exercise_name: string }) => `${s.rep_count} reps of ${s.exercise_name}`)
                 .join(', ') || 'General gym session';
 
-            const prompt = `You are Spottr's AI Strength Coach ("Your gym's cameras count for you."). Generate an encouraging, 2-3 sentence personalized workout recap for a gym member based on camera-counted repetitions:
+            const prompt = `You are Spottr's AI Strength Coach ("Your gym's cameras count for you."). Generate an encouraging one-sentence workout recap for a gym member based on camera-counted repetitions:
 - Exercises: ${exerciseStr}
 - Total Reps: ${summary?.total_reps ?? 0}
 - Active Duration: ${summary?.total_duration_s ?? 0} seconds
-Tone: Athletic, motivating, concise (like Whoop / Strava). Only refer to the exercises, reps and duration above. Do not comment on form, depth, tempo or technique: Spottr does not measure those. No markdown headers or bullet points.`;
+Tone: Athletic, motivating, concise (like Whoop / Strava). The app already shows total reps, sets and time next to the recap, so don't repeat those totals. Only refer to the exercises, reps and duration above. Do not comment on form, depth, tempo or technique: Spottr does not measure those. No markdown headers or bullet points.`;
 
             const response = await ai.models.generateContent({
               model: 'gemini-3.8-flash',

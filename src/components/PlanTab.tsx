@@ -182,7 +182,7 @@ export const PlanTab: React.FC<PlanTabProps> = ({ history }) => {
       <div className="panel p-6 sm:p-8 flex flex-col gap-6">
         <div>
           <span className="hud-label flex items-center gap-1.5">
-            Next session
+            Next workout
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink mt-1">
             {session.title}

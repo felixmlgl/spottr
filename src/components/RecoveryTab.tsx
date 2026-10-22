@@ -38,7 +38,6 @@ export const RecoveryTab: React.FC<RecoveryTabProps> = ({ plan, onUpdatePlan, hi
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink mt-1">
                 Next visit: {next.title}
               </h2>
-              <p className="text-base text-ink-2 mt-2 leading-relaxed">{next.reason}</p>
             </div>
 
             <div className="flex flex-wrap gap-2">

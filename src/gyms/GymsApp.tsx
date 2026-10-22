@@ -19,7 +19,7 @@ const PAGES: Record<string, { title: string; component: React.FC }> = {
   '/gyms/overview': { title: 'Overview · Spottr for Gyms', component: Overview },
   '/gyms/locations': { title: 'Locations · Spottr for Gyms', component: Locations },
   '/gyms/floor': { title: 'Floor · Spottr for Gyms', component: Floor },
-  '/gyms/world-map': { title: 'Multi-camera tracking · Spottr for Gyms', component: WorldMapPage },
+  '/gyms/world-map': { title: 'Cameras · Spottr for Gyms', component: WorldMapPage },
   '/gyms/members': { title: 'Members · Spottr for Gyms', component: Members },
   '/gyms/privacy': { title: 'Privacy · Spottr for Gyms', component: Privacy },
   '/gyms/pilot': { title: 'Pilot & pricing · Spottr for Gyms', component: RequestPilot },

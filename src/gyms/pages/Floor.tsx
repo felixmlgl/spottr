@@ -48,18 +48,18 @@ const ZoneDetail: React.FC<{ zoneId: ZoneId; day: number; hour: number }> = ({ z
         </div>
         <p className="text-sm text-ink-2 mt-1 flex items-center gap-1.5">
           <Users className="w-3.5 h-3.5" />
-          ~{Math.min(capacity, Math.round(demand))} of {capacity} {zone.unitNoun} busy
+          ~{Math.min(capacity, Math.round(demand))} of {capacity} {zone.unitNoun} in use
           {waiting >= 0.5 && <span className="font-semibold text-ink">· ~{Math.round(waiting)} waiting</span>}
         </p>
       </div>
 
       <dl className="grid grid-cols-2 gap-3">
         <div className="bg-white rounded-2xl p-4">
-          <dt className="text-xs text-ink-2">Avg. utilization, {DAY_LABELS[day]}</dt>
+          <dt className="text-xs text-ink-2">Usual {DAY_NAMES[day]}</dt>
           <dd className="text-xl font-bold text-ink mt-0.5">{pct(zoneAverage(zoneId, day))}</dd>
         </div>
         <div className="bg-white rounded-2xl p-4">
-          <dt className="text-xs text-ink-2">Avg. utilization, week</dt>
+          <dt className="text-xs text-ink-2">Usual week</dt>
           <dd className="text-xl font-bold text-ink mt-0.5">{pct(zoneAverage(zoneId))}</dd>
         </div>
       </dl>
@@ -159,7 +159,7 @@ export const Floor: React.FC = () => {
           </>
         }
         title="Floor"
-        subtitle="How each zone is used through the day, averaged over the last 4 weeks. Click a zone for details."
+        subtitle="How busy each zone is, hour by hour (4-week average). Tap a zone for details."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 items-start">
@@ -224,7 +224,14 @@ export const Floor: React.FC = () => {
               <span className="h-2 flex-1 rounded-full" style={{ background: OCCUPANCY_GRADIENT }} />
               <span>100%</span>
             </div>
-            <span>“queue” = members waiting · outlined = idle equipment</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="px-1.5 py-px rounded-full bg-white text-[11px] font-semibold text-ink ring-1 ring-black/10">queue</span>
+              members waiting
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-[3px] ring-2 ring-ink" />
+              idle equipment
+            </span>
           </div>
         </Card>
 

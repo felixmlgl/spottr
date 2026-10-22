@@ -28,6 +28,7 @@ import {
 } from './display';
 import type { CameraRange, MetricsPayload, Segment, Timeline, WorldMapConfig, WorldPerson, WorldRange } from './types';
 import { usePlayback } from './usePlayback';
+import { Disclosure, InfoTip } from '../../components/Disclosure';
 
 // Presenter aids (talk track, debug overlay) only appear in `npm run dev`, never on the live site
 const SHOW_PRESENTER_TOOLS = import.meta.env.DEV;
@@ -123,8 +124,8 @@ export const WorldMapPage: React.FC = () => {
             </span>
           </>
         }
-        title="Multi-camera tracking"
-        subtitle="Cameras are observations of one shared model of the room. Whichever camera sees someone, they stay one anonymous identity on one floor map."
+        title="One map, many cameras"
+        subtitle="Each person stays one anonymous dot on the floor map, whichever camera sees them."
         aside={
           <Segmented
             ariaLabel="Mode"
@@ -155,20 +156,8 @@ export const WorldMapPage: React.FC = () => {
 const Hero: React.FC = () => {
   const [talk, setTalk] = useState(false);
   return (
-    <section className="rounded-[24px] bg-gradient-to-br from-[#EEF3FF] to-surface p-6 sm:p-8 ring-1 ring-accent/10">
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-        <div className="max-w-2xl">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink leading-tight">
-            Two cameras. One shared floor map.
-            <br />
-            One identity per member.
-          </h2>
-          <p className="text-[15px] text-ink-2 mt-3">
-            Each camera is calibrated to the same floor plan, so a person seen from both sides of the room lands on the
-            same spot and becomes one marker. When one camera loses them behind a chair, the other keeps the identity
-            going.
-          </p>
-        </div>
+    <section className="panel p-4 sm:p-5">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-3">
         {SHOW_PRESENTER_TOOLS && (
           <button
             onClick={() => setTalk((v) => !v)}
@@ -179,15 +168,14 @@ const Hero: React.FC = () => {
             {talk ? 'Hide talk track' : 'Talk track'}
           </button>
         )}
-      </div>
-      <ol className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-6">
+      <ol className="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-1 lg:order-first">
         {[
           ['Calibrate', 'Each camera is mapped to one floor plan.'],
           ['Project', 'Everyone each camera sees is placed on that plan.'],
           ['Resolve', 'Overlapping sightings become one identity, only when the evidence is strong.'],
         ].map(([title, body], i) => (
           <li key={title} className="bg-white/80 rounded-2xl p-4 flex gap-3">
-            <span className="font-mono text-xs text-accent-ink pt-0.5 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+            <span className="text-xs font-semibold text-accent-ink tabular-nums pt-0.5 shrink-0">{i + 1}</span>
             <span>
               <span className="block text-sm font-semibold text-ink">{title}</span>
               <span className="block text-[13px] text-ink-2 mt-0.5">{body}</span>
@@ -195,6 +183,7 @@ const Hero: React.FC = () => {
           </li>
         ))}
       </ol>
+      </div>
       {talk && (
         <blockquote className="mt-5 bg-white rounded-2xl p-5 text-[15px] leading-relaxed text-ink border-l-4 border-accent">
           “{TALK_TRACK}”
@@ -330,9 +319,12 @@ const Demo: React.FC<{ config: WorldMapConfig; timeline: Timeline; metrics: Metr
                 {fmtTime(t - seg.from_s)} / {fmtTime(seg.to_s - seg.from_s)}
               </span>
             </div>
-            <p className="text-[11px] text-ink-3 -mt-2">
-              Blue ticks mark moments when the service matched one person across both cameras. Identities are decided with a
-              {` ${config.decision_lag_s.toFixed(0)} s`} look-ahead so early guesses can still be corrected.
+            <p className="text-xs text-ink-2 -mt-2 flex items-center gap-1">
+              Blue ticks: moments matched across both cameras.
+              <InfoTip label="How matching works">
+                Identities are decided with a {config.decision_lag_s.toFixed(0)} s look-ahead, so early guesses can still be
+                corrected.
+              </InfoTip>
             </p>
           </Card>
 
@@ -454,9 +446,11 @@ const Demo: React.FC<{ config: WorldMapConfig; timeline: Timeline; metrics: Metr
               );
             })}
           </div>
-          <p className="text-[11px] text-ink-3 -mt-2">
-            Clips are recorded footage of a public lounge, not a gym. Faces of people the detector found are pixelated; anyone it
-            missed is not. Labels are anonymous and only valid inside this recording.
+          <p className="text-xs text-ink-2 -mt-2 flex items-center gap-1">
+            Recorded in a public lounge, not a gym. Detected faces are pixelated.
+            <InfoTip label="About this footage">
+              Anyone the detector missed is not pixelated. Labels are anonymous and only valid inside this recording.
+            </InfoTip>
           </p>
         </div>
       </div>
@@ -477,8 +471,8 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <Card className="flex flex-col gap-4">
-        <Eyebrow>How it works</Eyebrow>
+      <Card className="self-start w-full !p-5">
+        <Disclosure label="How it works">
         <ol className="flex flex-col gap-3">
           {[
             ['Each camera tracks people on its own', 'Pose and box per person, with short-term IDs that only mean something inside that camera.'],
@@ -497,14 +491,14 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
             </li>
           ))}
         </ol>
+        </Disclosure>
       </Card>
-      <Card className="flex flex-col gap-4">
-        <div className="flex items-baseline justify-between gap-2">
-          <Eyebrow>Measured on this footage</Eyebrow>
-          <span className="text-[11px] text-ink-2 text-right">
-            {held ? `${held.gt_people} people · ${heldSeconds} s · one reviewer` : 'vs. hand-checked labels'}
-          </span>
-        </div>
+      <Card className="self-start w-full !p-5">
+        <Disclosure label="Accuracy on this footage">
+        <div className="flex flex-col gap-4">
+        <span className="text-xs text-ink-2">
+          {held ? `${held.gt_people} people · ${heldSeconds} s · one reviewer` : 'vs. hand-checked labels'}
+        </span>
         <dl className="grid grid-cols-2 gap-3">
           {[
             [held ? pct(held.IDF1) : '–', 'identity consistency (IDF1) on the held-out test minute'],
@@ -549,6 +543,8 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
           {tuned && ` On the minute used to tune the system, IDF1 was ${pct(tuned.IDF1)}.`} Uncertain identities are shown as
           “Needs confirmation” rather than merged.
         </p>
+        </div>
+        </Disclosure>
       </Card>
     </section>
   );

@@ -30,10 +30,8 @@ function squatRackInsight(): Insight {
   const extra = Math.max(1, Math.ceil(demand / TARGET_PEAK_UTILIZATION) - racks);
   return {
     id: 'capacity',
-    title: `Squat racks are at ${Math.round(occupancy * 100)}% capacity Mon–Thu 5–7pm`,
-    body: `${extra} more rack${extra === 1 ? '' : 's'} would bring peak use under ${Math.round(
-      TARGET_PEAK_UTILIZATION * 100
-    )}% and cut waiting time for your busiest members.`,
+    title: `Squat racks are ${Math.round(occupancy * 100)}% in use Mon–Thu 5–7pm`,
+    body: `${extra} more rack${extra === 1 ? '' : 's'} would keep peak use under ${Math.round(TARGET_PEAK_UTILIZATION * 100)}%.`,
     link: { to: '/gyms/floor', label: 'View floor' },
   };
 }
@@ -43,9 +41,9 @@ function retentionInsight(): Insight {
   const regulars = lapsed.filter((r) => r.usualRate >= 2).length;
   return {
     id: 'retention',
-    title: `${lapsed.length} members have gone quiet in the last two months`,
-    body: `None of them has visited in 14+ days, and ${regulars} were training twice a week or more a month ago. A personal nudge now is cheaper than winning them back after they cancel.`,
-    link: { to: '/gyms/members', label: 'See who' },
+    title: `${lapsed.length} regulars are slipping`,
+    body: `None visited in 14+ days. ${regulars} used to train twice a week or more.`,
+    link: { to: '/gyms/members', label: 'Send nudges' },
   };
 }
 
@@ -56,8 +54,8 @@ function idleEquipmentInsight(): Insight {
   return {
     id: 'equipment',
     title: `${listNames(idle.map((u) => u.name))} sit unused ${idlePct}% of peak hours`,
-    body: `That floor space could hold another squat rack, the zone members are queuing for.`,
-    link: { to: '/gyms/floor', label: 'See idle equipment' },
+    body: `Room for another squat rack, the zone with a queue.`,
+    link: { to: '/gyms/floor', label: 'View floor' },
   };
 }
 
