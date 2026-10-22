@@ -26,9 +26,16 @@ interface DemoIntroProps {
  */
 const ClipPoster: React.FC<{ src: string }> = ({ src }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  // A cached clip can load its metadata before React listens for it; seek here then
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && video.readyState >= 1 && video.currentTime === 0) video.currentTime = 1;
+  }, []);
   return (
     <>
       <video
+        ref={videoRef}
         src={src}
         preload="metadata"
         muted

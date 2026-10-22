@@ -1,7 +1,6 @@
 import {StrictMode, Suspense, lazy} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Analytics} from '@vercel/analytics/react';
-import App from './App.tsx';
 import {Welcome} from './Welcome.tsx';
 import {NotFound} from './NotFound.tsx';
 import {usePathname} from './router.tsx';
@@ -17,7 +16,8 @@ if (/^\/gyms\/?$/.test(window.location.pathname)) {
   window.history.replaceState({}, '', `/${window.location.search}#gyms`);
 }
 
-// Gym operator demo is only loaded when visiting /gyms
+// The member demo and the gym operator demo are only loaded when visiting /demo or /gyms
+const App = lazy(() => import('./App.tsx'));
 const GymsApp = lazy(() => import('./gyms/GymsApp.tsx').then((m) => ({default: m.GymsApp})));
 
 function Page({pathname}: {pathname: string}) {
@@ -29,7 +29,13 @@ function Page({pathname}: {pathname: string}) {
       </Suspense>
     );
   }
-  if (pathname.replace(/\/+$/, '') === '/demo') return <App />;
+  if (pathname.replace(/\/+$/, '') === '/demo') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <App />
+      </Suspense>
+    );
+  }
   return <NotFound />;
 }
 
