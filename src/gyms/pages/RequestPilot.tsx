@@ -128,7 +128,7 @@ export const RequestPilot: React.FC = () => {
                   type="submit"
                   className="px-6 py-2.5 rounded-full bg-accent-ink text-white text-sm font-semibold hover:bg-accent-deep transition-colors cursor-pointer"
                 >
-                  Request pilot
+                  Request a pilot
                 </button>
               </div>
             </form>

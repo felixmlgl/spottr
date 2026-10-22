@@ -47,9 +47,9 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
           <Stat label="Visits this week">{l.visitsThisWeek.toLocaleString('en-US')}</Stat>
           <TrendChip value={l.visitsThisWeek} previous={l.visitsLastWeek} comparison="vs. last week" />
         </div>
-        <Stat label="Sessions per member">
+        <Stat label="Visits per member">
           {l.sessionsPerMember.toFixed(1)}
-          <span className="text-sm font-normal text-ink-2"> / wk</span>
+          <span className="text-sm font-normal text-ink-2"> / week</span>
         </Stat>
         <div>
           <Stat label="Slipping members">{l.atRisk}</Stat>
@@ -68,7 +68,7 @@ const LocationCard: React.FC<{ location: ChainLocation }> = ({ location: l }) =>
           <ChevronRight className="w-4 h-4" />
         </Link>
       ) : (
-        <p className="mt-auto text-xs text-ink-2">Summary only: this demo simulates Oakland in detail.</p>
+        <p className="mt-auto text-xs text-ink-2">Summary only</p>
       )}
     </Card>
   );
@@ -84,7 +84,7 @@ export const Locations: React.FC = () => (
         </>
       }
       title="Locations"
-      subtitle="Every location of the chain on one screen: compare sites and see where members are slipping."
+      subtitle="Compare sites and see where members are slipping. Oakland is simulated in detail; the others are summaries."
     />
 
     <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">

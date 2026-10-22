@@ -9,17 +9,17 @@ import { AT_RISK_MEMBERS, GYM } from '../../mocks/gym';
 import { breakEvenMembers, DEFAULT_DUES, DUES_OPTIONS, formatUsd, PRICE_PER_LOCATION_MONTH } from '../pricing';
 import { Card, Eyebrow, Segmented } from './ui';
 
-const PILOT_STEPS = [
+export const PILOT_STEPS = [
   ['Intro call', 'We look at your floor plan and the cameras you already have.'],
   ['Install', 'One or two Spottr boxes per location, hardware included. They read your existing camera streams.'],
-  ['Pilot', 'Your members use the app for free. You get the operator dashboard and retention alerts.'],
+  ['Pilot', 'Your members use the app for free. You get the gym dashboard and alerts for slipping members.'],
   ['Rollout', 'If the pilot works for you, we agree on a rollout across your locations.'],
 ] as const;
 
 const INCLUDED = [
   'One or two Spottr boxes per location, hardware included',
   'Works with the cameras you already have',
-  'Operator dashboard and retention alerts',
+  'Gym dashboard and alerts for slipping members',
   'Member app, free for your members',
 ];
 

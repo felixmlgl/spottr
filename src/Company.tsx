@@ -1,84 +1,81 @@
 /**
  * Company site: the "For gym owners" section below the welcome hero ("/#gyms"). Lazy-loaded by Welcome.
- * Built to be read at a glance: one line per idea, and every tile opens the part of the demo with the detail.
+ * One scroll, told as one member's evening: he walks in, trains, sees his workout, gets a plan; the gym sees its floor
+ * and notices when he slips; then privacy, price and how a pilot starts. Every chapter uses the same template
+ * (landing/Chapter.tsx) and shows the real product in place, so the page only links away at the very end.
  */
 
-import React from 'react';
-import {
-  ArrowRight,
-  ArrowUpRight,
-  ChevronRight,
-  Cctv,
-  Cpu,
-  LayoutDashboard,
-  LayoutGrid,
-  Loader2,
-  LucideIcon,
-  ShieldCheck,
-  Smartphone,
-  UserMinus,
-} from 'lucide-react';
+import React, { useRef } from 'react';
+import { ArrowDown, Cctv, Gift, LayoutDashboard, Mail, PersonStanding, Smartphone } from 'lucide-react';
 import { Link } from './router';
 import { Logo } from './components/Logo';
-import { IconDot, OpenArrow, TILE_TONES, TileTone } from './components/Tile';
-import { breakEvenMembers, DEFAULT_DUES, formatUsd, PRICE_PER_LOCATION_MONTH } from './gyms/pricing';
-import { SessionPlayer } from './components/SessionPlayer';
-import { useClipData } from './hooks/useClipData';
-import { defaultPersonId } from './services/memberSession';
+import { IconDot, OpenArrow, TILE_TONES } from './components/Tile';
+import { FloorStatus } from './gyms/components/FloorNow';
+import { MEMBER_PROFILE } from './mocks/memberData';
+import { Chapter, ChapterProps, Reveal, scrollToId, TimelineRail, useActiveChapter, useScrollProgress } from './landing/Chapter';
+import {
+  LiveReplay,
+  NextWorkout,
+  PilotSteps,
+  PoseFrame,
+  PricingCard,
+  PrivacyList,
+  SlippingExample,
+  useFelix,
+  WorkoutCard,
+} from './landing/previews';
 
-const BENEFITS: { label: string; title: string; to: string; icon: LucideIcon; tone: TileTone }[] = [
-  { label: 'Retention', title: "See who's drifting away", to: '/gyms/members', icon: UserMinus, tone: 'blue' },
-  { label: 'Floor', title: 'Know which racks are full', to: '/gyms/floor', icon: LayoutGrid, tone: 'glass' },
-  { label: 'Members', title: 'Every set logged for them', to: '/demo', icon: Smartphone, tone: 'lime' },
-  { label: 'Privacy', title: 'No face recognition', to: '/gyms/privacy', icon: ShieldCheck, tone: 'glass' },
-];
-
-const STEPS: [LucideIcon, string][] = [
-  [Cctv, 'Your cameras'],
-  [Cpu, 'Spottr box'],
-  [LayoutDashboard, 'Dashboard + app'],
-];
+const NAME = MEMBER_PROFILE.name;
+const CONTACT_EMAIL = 'info@tryspottr.app';
+const MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Spottr pilot for our gym')}`;
 
 const primaryButton =
-  'inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent-ink text-white font-semibold hover:bg-accent-deep transition-colors';
+  'inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent-ink text-white font-semibold hover:bg-accent-deep transition-colors cursor-pointer';
+const quietButton =
+  'inline-flex items-center gap-1.5 px-5 py-3 rounded-full text-ink font-medium hover:bg-white/60 transition-colors cursor-pointer';
 
-/** The real squat clip and pipeline output, the same footage members see under "How we counted". */
-const LiveReplay: React.FC = () => {
-  const data = useClipData('squat');
-  const personId = data ? defaultPersonId(data.session) : null;
-  return (
-    <figure className="panel p-3 sm:p-4 flex flex-col gap-3">
-      {data && personId ? (
-        <SessionPlayer data={data} personId={personId} defaultOverlayMode="styled" repSound={false} />
-      ) : (
-        <div className="aspect-video bg-night flex items-center justify-center">
-          <Loader2 className="w-6 h-6 animate-spin text-white/60" />
-        </div>
-      )}
-      <figcaption className="hud-label">Real gym clip. Everyone else is pixelated.</figcaption>
-    </figure>
-  );
-};
+// In-page navigation: each link jumps to the first chapter of its group and lights up while any of them is on screen
+const NAV: { label: string; chapters: string[] }[] = [
+  { label: 'How it works', chapters: ['walk-in', 'set'] },
+  { label: 'Members', chapters: ['logged', 'morning'] },
+  { label: 'Gyms', chapters: ['floor', 'slipping'] },
+  { label: 'Privacy', chapters: ['privacy'] },
+  { label: 'Pricing', chapters: ['pays', 'start'] },
+];
+const CHAPTER_IDS = NAV.flatMap((n) => n.chapters);
 
-/** One benefit, one line. The whole tile opens the demo page that shows it in detail. */
-const BenefitTile: React.FC<(typeof BENEFITS)[number]> = ({ label, title, to, icon, tone }) => (
-  <Link to={to} className={`group p-4 sm:p-6 flex flex-col min-h-[180px] sm:min-h-[210px] ${TILE_TONES[tone]}`}>
-    <span className="flex items-start justify-between text-ink">
-      <IconDot icon={icon} tone={tone} />
-      <OpenArrow />
-    </span>
-    <span className="mt-auto pt-6 text-sm font-medium text-ink-2">{label}</span>
-    <span className="font-display text-xl sm:text-2xl leading-tight text-ink mt-1">{title}</span>
-  </Link>
-);
-
-const DEMO_LINKS = [
-  { to: '/gyms/overview', label: 'Gym dashboard' },
-  { to: '/demo', label: 'Member app' },
+const FACTS: [typeof Cctv, string][] = [
+  [Cctv, 'Uses your existing cameras'],
+  [PersonStanding, 'Nothing for members to wear'],
+  [Gift, 'Free for your members'],
 ];
 
+/** In-page link: scrolls to the section instead of jumping, and still works as a plain anchor without JS. */
+const JumpLink: React.FC<{ to: string; className: string; children: React.ReactNode; current?: boolean }> = ({
+  to,
+  className,
+  children,
+  current,
+}) => (
+  <a
+    href={`#${to}`}
+    aria-current={current ? 'location' : undefined}
+    onClick={(e) => {
+      e.preventDefault();
+      scrollToId(to);
+    }}
+    className={className}
+  >
+    {children}
+  </a>
+);
+
 /** Sticks to the top once the company section reaches it, so it never covers the video hero. */
-const CompanyNav: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => (
+const CompanyNav: React.FC<{ onLogoClick: () => void; active: string | null; progress: number }> = ({
+  onLogoClick,
+  active,
+  progress,
+}) => (
   <header className="sticky top-0 z-30 px-3 sm:px-4 pt-3">
     <div className="glass max-w-[1100px] mx-auto rounded-full h-14 pl-5 pr-2 flex items-center justify-between gap-4">
       <a
@@ -92,120 +89,233 @@ const CompanyNav: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => (
       >
         <Logo />
       </a>
-      <nav aria-label="Demos" className="flex items-center gap-1 sm:gap-2">
-        {DEMO_LINKS.map((link) => (
-          <Link
-            key={link.to}
-            to={link.to}
-            className="hidden sm:inline-flex items-center gap-0.5 px-3.5 py-2 rounded-full text-sm font-medium text-ink-2 hover:text-ink hover:bg-white/60 transition-colors"
-          >
-            {link.label}
-            <ArrowUpRight className="w-3.5 h-3.5 stroke-[1.75]" aria-hidden />
-          </Link>
-        ))}
-        <Link
-          to="/gyms/pilot"
-          className="inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold bg-accent-ink text-white hover:bg-accent-deep transition-colors"
-        >
-          Request pilot
-        </Link>
+      <nav aria-label="Sections" className="hidden md:flex items-center gap-0.5">
+        {NAV.map((n) => {
+          const on = active !== null && n.chapters.includes(active);
+          return (
+            <JumpLink
+              key={n.label}
+              to={n.chapters[0]}
+              current={on}
+              className={`px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${
+                on ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink hover:bg-white/60'
+              }`}
+            >
+              {n.label}
+            </JumpLink>
+          );
+        })}
       </nav>
+      <JumpLink
+        to="contact"
+        className="shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold bg-accent-ink text-white hover:bg-accent-deep transition-colors"
+      >
+        Request a pilot
+      </JumpLink>
+    </div>
+    {/* Phones have no rail: a thin progress line under the capsule does its job */}
+    <div aria-hidden className="lg:hidden max-w-[1100px] mx-auto px-8 mt-1.5">
+      <div className="h-0.5 rounded-full bg-line/70">
+        <div className="h-full rounded-full bg-accent" style={{ width: `${progress * 100}%` }} />
+      </div>
     </div>
   </header>
 );
 
-export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => (
-  <>
-    <CompanyNav onLogoClick={onLogoClick} />
-    <div className="max-w-[1100px] mx-auto px-4 sm:px-6 flex flex-col gap-24 pb-16">
-      {/* Hero */}
-      <section className="pt-10 sm:pt-14 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 items-center">
-        <div className="flex flex-col items-start">
-          <span className="mb-5 px-3 py-1 rounded-full bg-lime text-[13px] font-semibold text-ink">For gyms · Bay Area pilot</span>
-          <h2 className="text-5xl sm:text-7xl font-medium tracking-tight text-ink leading-[1]">
-            Your cameras already see every set. Now they count them.
-          </h2>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8">
-            <Link to="/gyms/overview" className={primaryButton}>
-              See the dashboard
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              to="/gyms/pilot"
-              className="inline-flex items-center gap-1 px-5 py-3 rounded-full text-ink font-medium hover:bg-surface transition-colors"
-            >
-              Request a pilot
-              <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-        <LiveReplay />
-      </section>
-
-      {/* What you get: one line each, every tile opens the detail */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-ink">What you get</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {BENEFITS.map((b) => (
-            <BenefitTile key={b.to} {...b} />
-          ))}
-        </div>
-      </section>
-
-      {/* How it works: three icons, nothing to install on the equipment */}
-      <section className="flex flex-col gap-6">
-        <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-ink">How it works</h2>
-        <ol className="flex flex-col sm:flex-row sm:items-center gap-3">
-          {STEPS.map(([Icon, label], i) => (
-            <React.Fragment key={label}>
-              <li className="glass rounded-full pl-2 pr-5 py-2 flex items-center gap-3 self-start sm:self-auto">
-                <IconDot icon={Icon} className="bg-accent/10 text-accent-ink" />
-                <span className="text-base font-medium text-ink">{label}</span>
-              </li>
-              {i < STEPS.length - 1 && (
-                <li aria-hidden className="hidden sm:block flex-1 h-2 rounded-full hatch min-w-6" />
-              )}
-            </React.Fragment>
-          ))}
-        </ol>
-      </section>
-
-      {/* Pricing at a glance; the full breakdown lives on the pilot page */}
-      <section className="panel p-6 sm:p-10 flex flex-col gap-8">
-        <dl className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="flex flex-col-reverse">
-            <dt className="text-sm text-ink-2 mt-2">per location / month</dt>
-            <dd className="num text-5xl text-ink">{formatUsd(PRICE_PER_LOCATION_MONTH)}</dd>
-          </div>
-          <div className="flex flex-col-reverse">
-            <dt className="text-sm text-ink-2 mt-2">for your members</dt>
-            <dd className="num text-5xl text-ink">Free</dd>
-          </div>
-          <div className="flex flex-col-reverse">
-            <dt className="text-sm text-ink-2 mt-2">retained members a month pay for it</dt>
-            <dd className="num text-5xl text-ink">
-              <span className="marker">{breakEvenMembers(DEFAULT_DUES)}</span>
-            </dd>
-          </div>
-        </dl>
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-          <Link to="/gyms/pilot" className={primaryButton}>
-            Request a pilot
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link
-            to="/gyms/pilot"
-            className="inline-flex items-center gap-1 px-5 py-3 rounded-full text-ink font-medium hover:bg-white/60 transition-colors"
-          >
-            How the pilot works
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-
-      <p className="text-xs text-ink-3 -mt-14">
-        Pilot pricing. Break-even assumes {formatUsd(DEFAULT_DUES)} average monthly dues. The demo gym is fictional and its data simulated.
-      </p>
+/** Who it's for and the one-line promise, before the story starts. */
+const Intro: React.FC = () => (
+  <Reveal className="pt-12 sm:pt-20 flex flex-col items-start">
+    <span className="mb-5 px-3 py-1 rounded-full bg-lime text-[13px] font-semibold text-ink">For gyms · Bay Area pilot</span>
+    <h1 className="text-5xl sm:text-7xl font-medium tracking-tight text-ink leading-[1] max-w-4xl">
+      Your cameras already see every set. Now they count them.
+    </h1>
+    <ul className="flex flex-wrap gap-3 mt-8">
+      {FACTS.map(([icon, label]) => (
+        <li key={label} className="glass rounded-full pl-2 pr-5 py-2 flex items-center gap-3">
+          <IconDot icon={icon} className="bg-accent/10 text-accent-ink" />
+          <span className="text-base font-medium text-ink">{label}</span>
+        </li>
+      ))}
+    </ul>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8">
+      <JumpLink to="contact" className={primaryButton}>
+        Request a pilot
+      </JumpLink>
+      <JumpLink to="walk-in" className={quietButton}>
+        Follow one workout
+        <ArrowDown className="w-4 h-4" aria-hidden />
+      </JumpLink>
     </div>
-  </>
+  </Reveal>
 );
+
+/** The one action, then the two full demos for anyone who wants to click around. */
+const Contact: React.FC = () => (
+  <section id="contact" className="scroll-mt-28 flex flex-col gap-6">
+    <Reveal className="panel p-8 sm:p-12 flex flex-col items-start gap-5">
+      <span className="glass rounded-full px-3 py-1 text-sm font-semibold text-ink">Your turn</span>
+      <h2 className="text-4xl sm:text-6xl font-medium tracking-tight text-ink leading-[1.05] max-w-2xl">
+        See it on your floor.
+      </h2>
+      <p className="text-lg text-ink-2 max-w-md">Tell us about your gym and the cameras you have. We'll take it from there.</p>
+      <a href={MAILTO} className={primaryButton}>
+        <Mail className="w-4 h-4" aria-hidden />
+        Request a pilot
+      </a>
+      <p className="text-sm text-ink-2">
+        Or write to{' '}
+        <a href={MAILTO} className="font-semibold text-accent-ink hover:text-ink">
+          {CONTACT_EMAIL}
+        </a>
+      </p>
+    </Reveal>
+    <Reveal className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {[
+        { to: '/demo', icon: Smartphone, label: 'Member app', title: `Be ${NAME} for a minute`, tone: 'lime' as const },
+        { to: '/gyms/overview', icon: LayoutDashboard, label: 'Gym dashboard', title: 'Run the demo gym', tone: 'blue' as const },
+      ].map((d) => (
+        <Link key={d.to} to={d.to} className={`group p-6 flex flex-col min-h-[180px] ${TILE_TONES[d.tone]}`}>
+          <span className="flex items-start justify-between text-ink">
+            <IconDot icon={d.icon} tone={d.tone} />
+            <OpenArrow />
+          </span>
+          <span className="mt-auto pt-6 text-sm font-medium text-ink-2">{d.label}</span>
+          <span className="font-display text-2xl leading-tight text-ink mt-1">{d.title}</span>
+        </Link>
+      ))}
+    </Reveal>
+  </section>
+);
+
+const Footer: React.FC = () => (
+  <footer className="max-w-[1100px] mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-ink-2">
+    <Logo className="h-6" />
+    <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2">
+      <Link to="/demo" className="hover:text-ink">
+        Member demo
+      </Link>
+      <Link to="/gyms/overview" className="hover:text-ink">
+        Gym demo
+      </Link>
+      <Link to="/gyms/privacy" className="hover:text-ink">
+        Privacy
+      </Link>
+      <Link to="/gyms/pilot" className="hover:text-ink">
+        Pilot details
+      </Link>
+      <a href={MAILTO} className="hover:text-ink">
+        {CONTACT_EMAIL}
+      </a>
+    </nav>
+    <p className="text-xs text-ink-3">The demo gym and its data are fictional.</p>
+  </footer>
+);
+
+export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => {
+  const felix = useFelix();
+  const railRef = useRef<HTMLDivElement>(null);
+  const progress = useScrollProgress(railRef);
+  const active = useActiveChapter(CHAPTER_IDS);
+  const activeIndex = active ? CHAPTER_IDS.indexOf(active) : -1;
+
+  const chapters: Omit<ChapterProps, 'state'>[] = [
+    {
+      id: 'walk-in',
+      time: '6:02 pm',
+      source: 'Real footage',
+      title: `${NAME} walks in`,
+      line: 'No check-in, nothing to wear. The cameras follow his body pose, not his face.',
+      visual: <PoseFrame felix={felix} />,
+    },
+    {
+      id: 'set',
+      time: '6:05 pm',
+      source: 'Real footage',
+      title: 'Every rep, counted live',
+      line: 'The real clip and the real pipeline output: reps tick up as he squats.',
+      visual: <LiveReplay felix={felix} />,
+      flip: true,
+    },
+    {
+      id: 'logged',
+      time: '6:41 pm',
+      source: 'Real footage',
+      title: "Logged before he's home",
+      line: 'Reps, sets and the muscles he worked land in his app on their own. Nothing to type.',
+      link: { to: felix ? `/demo?clip=squat&person=${felix.personId}` : '/demo', label: `Open ${NAME}'s app` },
+      visual: <WorkoutCard felix={felix} />,
+    },
+    {
+      id: 'morning',
+      time: 'Next morning',
+      source: 'Demo data',
+      title: 'What to train next',
+      line: "His app reads what's recovered and suggests the next workout, so he has a reason to come back.",
+      note: 'Earlier workouts in his history are sample data. Recovery uses simplified estimates and is not medical advice.',
+      visual: <NextWorkout felix={felix} />,
+      flip: true,
+    },
+    {
+      id: 'floor',
+      time: 'Meanwhile',
+      source: 'Demo data',
+      title: 'The gym sees its floor',
+      line: 'How full the floor is, and which zone members are queuing for. No sensors on the equipment.',
+      note: 'Iron District Fitness is a fictional gym; its numbers come from a simulation of 600 members.',
+      link: { to: '/gyms/overview', label: 'View the full dashboard' },
+      visual: <FloorStatus />,
+    },
+    {
+      id: 'slipping',
+      time: '2 weeks later',
+      source: 'Example',
+      title: `${NAME} stops showing up`,
+      line: 'Visits drop from three a week to none. The dashboard flags it early, and one tap sends a nudge.',
+      link: { to: '/gyms/members', label: 'See every slipping member' },
+      visual: <SlippingExample />,
+      flip: true,
+    },
+    {
+      id: 'privacy',
+      time: 'Every visit',
+      title: "What the cameras don't do",
+      line: "Spottr reads body pose. Here's what that means for your members, limits included.",
+      visual: <PrivacyList />,
+    },
+    {
+      id: 'pays',
+      time: 'Every month',
+      source: 'Pilot pricing',
+      title: 'It pays for itself',
+      line: 'One price per location, free for your members. Pick your dues to see the break-even.',
+      note: "Pilot pricing hasn't been tested with paying gyms yet. Break-even is the price divided by your average monthly dues.",
+      link: { to: '/gyms/pilot', label: 'See pilot details' },
+      visual: <PricingCard />,
+      flip: true,
+    },
+    {
+      id: 'start',
+      time: 'Getting started',
+      title: 'From first call to rollout',
+      line: 'A pilot starts with a call about your floor plan and the cameras you already have.',
+      visual: <PilotSteps />,
+    },
+  ];
+
+  return (
+    <>
+      <CompanyNav onLogoClick={onLogoClick} active={active} progress={progress} />
+      <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
+        <Intro />
+        <div ref={railRef} className="relative lg:pl-16 flex flex-col gap-28 sm:gap-40 py-24 sm:py-32">
+          <TimelineRail progress={progress} />
+          {chapters.map((c, i) => (
+            <Chapter key={c.id} {...c} state={i === activeIndex ? 'active' : i < activeIndex ? 'past' : 'next'} />
+          ))}
+        </div>
+        <Contact />
+      </div>
+      <Footer />
+    </>
+  );
+};

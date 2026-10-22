@@ -71,7 +71,7 @@ export const KPIS: Kpi[] = [
   },
   {
     id: 'frequency',
-    label: 'Avg. sessions per member / week',
+    label: 'Avg. visits per member / week',
     value: avgSessionsPerMember(0),
     previous: avgSessionsPerMember(1),
     format: 'decimal',

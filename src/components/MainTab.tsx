@@ -2,13 +2,12 @@ import React, { useMemo } from 'react';
 import { Activity, CalendarCheck, History, LucideIcon, Play } from 'lucide-react';
 import { BarChart, Bar, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { MEMBER_PROFILE } from '../mocks/memberData';
-import { MuscleId, PastWorkout } from '../types/schema';
+import { PastWorkout } from '../types/schema';
 import { PipelinePerson } from '../services/pipelineAdapter';
 import { DEMO_TODAY, trackedSeconds, workoutMuscles } from '../services/memberSession';
-import { MUSCLE_NAMES } from '../data/exerciseMuscles';
+import { musclesWorkedTitle } from '../services/nextSession';
 import { BodyMap } from './BodyMap';
 import { TabId } from './Navigation';
-import { joinList } from '../services/nextSession';
 import { HATCH, HatchDefs } from '../gyms/components/ui';
 import { IconDot, OpenArrow, TILE_TONES, TileTone } from './Tile';
 
@@ -49,11 +48,6 @@ const Tile: React.FC<{
 export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay, onSelectTab }) => {
   const latest = history[0];
   const latestMuscles = workoutMuscles(latest);
-  const topMuscles = (Object.entries(latestMuscles) as [MuscleId, number][])
-    .filter(([, v]) => v >= 0.5)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3)
-    .map(([m]) => MUSCLE_NAMES[m]);
   const daysAgo = Math.round(
     (new Date(`${DEMO_TODAY}T00:00:00Z`).getTime() - new Date(`${latest.date}T00:00:00Z`).getTime()) / DAY_MS
   );
@@ -96,7 +90,7 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
           <section className="panel lg:col-span-7 p-6 sm:p-7 flex flex-col gap-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="text-xl font-medium text-ink">{latestLabel}'s session</h2>
+                <h2 className="text-xl font-medium text-ink">{latestLabel}'s workout</h2>
                 <p className="hud-label mt-0.5">Logged by the gym camera</p>
               </div>
               <button onClick={onWatchReplay} aria-label="Watch how we counted" className="group text-ink cursor-pointer">
@@ -121,11 +115,7 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
               <BodyMap values={latestMuscles} mode="intensity" size="md" />
               <div className="flex flex-col gap-2">
                 <h3 className="font-display text-2xl font-medium tracking-tight text-ink">
-                  {latest.total_reps === 0
-                    ? 'No sets detected'
-                    : topMuscles.length
-                    ? `${joinList(topMuscles.map((m, i) => (i ? m.toLowerCase() : m)))} worked`
-                    : 'No muscle load yet'}
+                  {musclesWorkedTitle(latest)}
                 </h3>
                 <p className="text-[15px] text-ink-2 leading-relaxed">
                   {latest.total_reps === 0
@@ -145,7 +135,7 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
             note="The clip, rep by rep"
             onClick={onWatchReplay}
           />
-          <Tile icon={CalendarCheck} tone="lime" value={sessionsThisWeek} label="sessions this week" onClick={() => onSelectTab('plan')} />
+          <Tile icon={CalendarCheck} tone="lime" value={sessionsThisWeek} label="workouts this week" onClick={() => onSelectTab('plan')} />
           <Tile icon={History} tone="glass" value={reps30} label="reps in 30 days" onClick={() => onSelectTab('history')} />
           <Tile icon={Activity} tone="glass" label="Recovery" note="What's ready to train" onClick={() => onSelectTab('recovery')} />
         </div>
@@ -154,7 +144,7 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, onWatchReplay
         <section className="panel lg:col-span-12 p-6 sm:p-7 flex flex-col gap-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <span className="hud-label">Last 30 days · {sessions30} sessions</span>
+              <span className="hud-label">Last 30 days · {sessions30} workouts</span>
               <h2 className="text-xl font-medium text-ink mt-0.5">Reps per day</h2>
             </div>
             <div className="text-right">

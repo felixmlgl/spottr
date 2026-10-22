@@ -4,6 +4,7 @@
  */
 
 import { WorkoutSummary } from '../types/schema';
+import { joinList } from './nextSession';
 
 export class SummaryService {
   /**
@@ -37,19 +38,19 @@ export class SummaryService {
    * never form or technique: nothing in the pipeline measures those.
    */
   public generateLocalRecap(summary: WorkoutSummary): string {
-    const sessionNames = summary.sessions
-      .filter((s) => s.rep_count > 0)
-      .map((s) => `${s.rep_count} reps of ${s.exercise_name}`)
-      .join(', ');
+    const repsByExercise = new Map<string, number[]>();
+    for (const s of summary.sessions) {
+      if (s.rep_count > 0) repsByExercise.set(s.exercise_name, [...(repsByExercise.get(s.exercise_name) ?? []), s.rep_count]);
+    }
 
-    if (!sessionNames || summary.total_reps === 0) {
+    if (!repsByExercise.size || summary.total_reps === 0) {
       return `No sets counted for Member ${summary.person_id} in this clip. You were on the gym floor for ${summary.total_duration_s}s.`;
     }
 
-    const durationMins = Math.max(1, Math.round(summary.total_duration_s / 60));
-    return `Nice work! ${summary.total_reps} reps across ${summary.sessions.length} set${
-      summary.sessions.length > 1 ? 's' : ''
-    } (${sessionNames}) in ${durationMins} min. Every rep was counted by the gym camera.`;
+    // e.g. "Squat: 2 sets of 5 and 6 reps."
+    return `${[...repsByExercise]
+      .map(([name, reps]) => `${name}: ${reps.length} set${reps.length > 1 ? 's' : ''} of ${joinList(reps.map(String))} reps`)
+      .join('. ')}.`;
   }
 }
 

@@ -2,7 +2,7 @@
 
 Automatic workout tracking from existing gym cameras.
 
-- `/`: welcome page (looping gym clips, "Try the member app" and "For gym owners" buttons). Below the hero: the company site for gym owners (`/#gyms`; old `/gyms` links are forwarded here)
+- `/`: welcome page (looping gym clips, one "See how it works" button, pause control). Below the hero: the landing story for gym owners (`/#gyms`; old `/gyms` links are forwarded here), told as one member's evening in chapters
 - `/demo`: member app (old `/?clip=…&person=…` links are forwarded here)
 - `/gyms/*`: gym operator demo (`/gyms/overview`, `/floor`, `/world-map`, `/members`, `/privacy`, `/pilot`)
 
@@ -29,7 +29,8 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - `src/main.tsx`: entry point. Picks the page by URL (`/`, `/gyms/*`, everything else = member app) and renders Vercel Analytics.
 - `src/router.tsx`: small pathname router (`usePathname`, `navigate`, `Link`). No router library.
 - `src/Welcome.tsx`: welcome page at `/`.
-- `src/Company.tsx`: company site below the welcome hero (pitch, live replay, pricing). Lazy-loaded.
+- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (mailto info@tryspottr.app), demos, footer. Lazy-loaded.
+- `src/landing/`: `Chapter.tsx` (chapter template, timeline rail, active-chapter hook) and `previews.tsx` (chapter visuals built from the real clip and dashboard pieces).
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.
 - `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo/`.

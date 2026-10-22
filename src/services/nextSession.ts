@@ -122,9 +122,21 @@ const needOf = (recovery: RecoveryCalculationResult) => (m: MuscleId) =>
 export const joinList = (words: string[]) =>
   words.length > 1 ? `${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}` : words[0] ?? '';
 
+/** Headline for a workout, e.g. "Quads and glutes worked": the up to three most loaded muscles. */
+export function musclesWorkedTitle(w: PastWorkout): string {
+  if (w.total_reps === 0) return 'No sets detected';
+  const top = (Object.entries(workoutMuscles(w)) as [MuscleId, number][])
+    .filter(([, v]) => v >= 0.5)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([m]) => MUSCLE_NAMES[m]);
+  return top.length ? `${joinList(top.map((m, i) => (i ? m.toLowerCase() : m)))} worked` : 'No muscle load yet';
+}
+
 const SINGULAR: MuscleId[] = ['chest', 'lower_back'];
 const listNames = (muscles: MuscleId[]) => joinList(muscles.map((m) => MUSCLE_NAMES[m].toLowerCase()));
 const isPlural = (muscles: MuscleId[]) => muscles.length > 1 || !SINGULAR.includes(muscles[0]);
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const sinceLabel = (hours: number) => {
   if (hours >= UNTRAINED_HOURS) return 'in the last 4 weeks';
@@ -147,9 +159,9 @@ export function suggestNextSession(recovery: RecoveryCalculationResult): Session
 
   const resting = recovery.recoveringList;
   const restingText = resting.length
-    ? `Your ${listNames(resting.slice(0, 4).map((r) => r.muscle_id))}${resting.length > 4 ? ' and more' : ''} ${
-        isPlural(resting.map((r) => r.muscle_id)) ? 'are' : 'is'
-      } still recovering (back to full ${readyDayLabel(Math.max(...resting.map((r) => r.hours_remaining)))}).`
+    ? `${capitalize(listNames(resting.slice(0, 4).map((r) => r.muscle_id)))}${resting.length > 4 ? ' and more' : ''} ${
+        isPlural(resting.map((r) => r.muscle_id)) ? 'recover' : 'recovers'
+      } by ${readyDayLabel(Math.max(...resting.map((r) => r.hours_remaining)))}.`
     : 'Everything is recovered.';
 
   if (score(focus) <= 0) {
@@ -157,7 +169,7 @@ export function suggestNextSession(recovery: RecoveryCalculationResult): Session
     return {
       title: 'Rest day',
       subtitle: 'Let everything recover',
-      reason: `${restingText} Take a day off, or keep it to light cardio and mobility.`,
+      reason: `${restingText} Take a day off, or keep it to light cardio.`,
       exercises: [],
       finisher: null,
       spotlight,
@@ -200,14 +212,14 @@ export function suggestNextSession(recovery: RecoveryCalculationResult): Session
   const ready = focus.muscles.filter(isReady).sort((a, b) => need(b) - need(a));
   const overdue = ready.filter((m) => need(m) >= need(ready[0]) - 0.01);
   const whole = overdue.length === focus.muscles.length;
-  const overdueText = `Your ${whole ? focus.noun : listNames(overdue.slice(0, 3))} ${
-    whole || isPlural(overdue) ? "haven't" : "hasn't"
-  } been trained ${sinceLabel(recovery.muscles[overdue[0]].last_trained_hours_ago)}, so a ${focus.day} is the best use of your next visit.`;
+  const overdueText = `${capitalize(whole ? focus.noun : listNames(overdue.slice(0, 3)))} ${
+    whole || isPlural(overdue) ? 'are' : 'is'
+  } due: not trained ${sinceLabel(recovery.muscles[overdue[0]].last_trained_hours_ago)}.`;
 
   return {
     title: focus.title,
     subtitle: focus.subtitle,
-    reason: `${restingText} ${overdueText}`,
+    reason: `${overdueText} ${restingText}`,
     // Compound lifts first
     exercises: [...exercises].sort((a, b) => b.primary.length - a.primary.length),
     finisher,
