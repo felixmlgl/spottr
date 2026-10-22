@@ -113,24 +113,27 @@ export const Welcome: React.FC = () => {
   return (
     <main>
       <section ref={heroRef} className="relative h-dvh w-full overflow-hidden bg-black">
-        {CLIPS.map((clip, i) => (
-          <video
-            key={clip.src}
-            ref={(el) => {
-              videoRefs.current[i] = el;
-            }}
-            src={clip.src}
-            poster={clip.poster}
-            muted
-            playsInline
-            // Buffer only the current and upcoming clip
-            preload={i === active || i === (active + 1) % CLIPS.length ? 'auto' : 'metadata'}
-            onEnded={i === active ? next : undefined}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
-            style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
-            aria-hidden
-          />
-        ))}
+        {CLIPS.map((clip, i) => {
+          // Only the current and upcoming clip load anything (poster included): the other 22 are invisible
+          const near = i === active || i === (active + 1) % CLIPS.length;
+          return (
+            <video
+              key={clip.src}
+              ref={(el) => {
+                videoRefs.current[i] = el;
+              }}
+              src={clip.src}
+              poster={near ? clip.poster : undefined}
+              muted
+              playsInline
+              preload={near ? 'auto' : 'none'}
+              onEnded={i === active ? next : undefined}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
+              style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
+              aria-hidden
+            />
+          );
+        })}
 
         {/* Light scrim so the logo stays legible on bright frames */}
         <div className="absolute inset-0 bg-black/15" aria-hidden />
