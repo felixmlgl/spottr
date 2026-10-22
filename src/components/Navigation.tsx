@@ -30,20 +30,21 @@ export const Navigation: React.FC<NavigationProps> = ({
 }) => (
   <>
     {/* Desktop & tablet top bar */}
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
-      <div className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 px-3 sm:px-4 pt-3">
+      {/* Floating glass capsule */}
+      <div className="glass max-w-[1100px] mx-auto rounded-full h-14 pl-5 pr-2 flex items-center justify-between gap-4">
         <button className="cursor-pointer shrink-0" onClick={() => onSelectTab('main')} aria-label="Spottr, go to Main">
           <Logo />
         </button>
 
-        <nav className="hidden md:flex items-center p-1 bg-surface rounded-full">
+        <nav className="hidden md:flex items-center gap-0.5">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => onSelectTab(tab.id)}
               aria-current={currentTab === tab.id ? 'page' : undefined}
-              className={`px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
-                currentTab === tab.id ? 'bg-white text-ink shadow-sm' : 'text-ink-2 hover:text-ink'
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
+                currentTab === tab.id ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink hover:bg-white/60'
               }`}
             >
               {tab.label}
@@ -52,14 +53,14 @@ export const Navigation: React.FC<NavigationProps> = ({
         </nav>
 
         {/* Demo member chip */}
-        <div className="flex items-center gap-2 pl-1 pr-1 py-1 rounded-full bg-surface min-w-0">
-          <div className="w-7 h-7 rounded-full overflow-hidden bg-line shrink-0">
+        <div className="flex items-center gap-2 pl-1 pr-1 py-1 rounded-full bg-white/70 ring-1 ring-white min-w-0">
+          <div className="w-7 h-7 rounded-full overflow-hidden bg-line shrink-0 ring-2 ring-lime">
             {thumbnail && <img src={thumbnail} alt="" className="w-full h-full object-cover object-top" />}
           </div>
           <span className="text-xs font-medium text-ink truncate">{personLabel}</span>
           <button
             onClick={onChangeSelection}
-            className="px-2.5 py-1 rounded-full bg-white hover:bg-surface-2 text-[11px] font-semibold text-ink shadow-2xs cursor-pointer shrink-0"
+            className="px-3 py-1.5 rounded-full bg-ink hover:bg-ink-2 text-[11px] font-semibold text-white cursor-pointer shrink-0"
           >
             Change
           </button>
@@ -67,25 +68,28 @@ export const Navigation: React.FC<NavigationProps> = ({
       </div>
     </header>
 
-    {/* Mobile bottom tab bar */}
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur-xl border-t border-black/[0.06] px-2 py-1.5 flex items-center justify-around">
-      {TABS.map((tab) => {
-        const Icon = tab.icon;
-        const isActive = currentTab === tab.id;
-        return (
-          <button
-            key={tab.id}
-            onClick={() => onSelectTab(tab.id)}
-            aria-current={isActive ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg transition-colors cursor-pointer ${
-              isActive ? 'text-accent-ink' : 'text-ink-2'
-            }`}
-          >
-            <Icon className="w-5 h-5 stroke-[1.75]" />
-            <span className="text-[10px] font-medium tracking-tight">{tab.label}</span>
-          </button>
-        );
-      })}
+    {/* Mobile: floating glass dock. The active tab opens into a labelled pill, the rest are icon circles. */}
+    <nav className="md:hidden fixed bottom-4 inset-x-0 z-30 flex justify-center px-4 pointer-events-none">
+      <div className="glass rounded-full p-1.5 flex items-center gap-1 pointer-events-auto">
+        {TABS.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = currentTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => onSelectTab(tab.id)}
+              aria-current={isActive ? 'page' : undefined}
+              aria-label={tab.label}
+              className={`h-11 rounded-full flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer ${
+                isActive ? 'px-3.5 bg-accent-ink text-white' : 'w-11 text-ink-2 hover:bg-white/70'
+              }`}
+            >
+              <Icon className="w-5 h-5 stroke-[1.75]" aria-hidden />
+              {isActive && <span className="text-sm font-semibold">{tab.label}</span>}
+            </button>
+          );
+        })}
+      </div>
     </nav>
   </>
 );

@@ -41,12 +41,12 @@ export const GymsApp: React.FC<{ pathname: string }> = ({ pathname }) => {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-white text-ink flex flex-col font-sans">
+      <div className="min-h-screen text-ink flex flex-col font-sans">
         <GymNav pathname={route} />
         <main className="flex-1 max-w-[1100px] w-full mx-auto px-4 sm:px-6 py-8">
           <Page />
         </main>
-        <footer className="max-w-[1100px] w-full mx-auto px-4 sm:px-6 py-8 text-xs text-ink-2 border-t border-black/[0.04]">
+        <footer className="max-w-[1100px] w-full mx-auto px-4 sm:px-6 py-8 text-xs text-ink-2">
           Spottr for Gyms · Iron District Fitness is a fictional gym chain; all figures in this demo are simulated.
         </footer>
       </div>

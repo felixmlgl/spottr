@@ -46,7 +46,7 @@ export const NotFoundContent: React.FC = () => {
 };
 
 export const NotFound: React.FC = () => (
-  <div className="min-h-screen bg-white text-ink">
+  <div className="min-h-screen text-ink">
     <header className="max-w-[1100px] mx-auto px-4 sm:px-6 h-16 flex items-center">
       <Link to="/" aria-label="Spottr home">
         <Logo />
