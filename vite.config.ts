@@ -1,12 +1,40 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig, loadEnv, Plugin } from 'vite';
+import { handleDemoRequest } from './api/request-demo.ts';
 
-function apiPlugin(): Plugin {
+function apiPlugin(env: Record<string, string>): Plugin {
   return {
     name: 'spottr-api-routes',
     configureServer(server) {
+      // Same handler as the Vercel Function; without RESEND_API_KEY it prints the email to this terminal instead
+      server.middlewares.use('/api/request-demo', (req, res) => {
+        res.setHeader('Content-Type', 'application/json');
+        if (req.method !== 'POST') {
+          res.statusCode = 405;
+          res.end(JSON.stringify({ ok: false, error: 'Method Not Allowed' }));
+          return;
+        }
+
+        let body = '';
+        req.on('data', (chunk) => {
+          body += chunk;
+        });
+
+        req.on('end', async () => {
+          let input: unknown = null;
+          try {
+            input = JSON.parse(body || '{}');
+          } catch {
+            // Handled as missing fields
+          }
+          const result = await handleDemoRequest(input, env, { dryRunWithoutKey: true });
+          res.statusCode = result.status;
+          res.end(JSON.stringify(result.body));
+        });
+      });
+
       server.middlewares.use('/api/recap', async (req, res) => {
         if (req.method !== 'POST') {
           res.statusCode = 405;
@@ -70,9 +98,11 @@ Tone: Athletic, motivating, concise (like Whoop / Strava). The app already shows
   };
 }
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  // Every variable from .env / .env.local, not only VITE_*: the dev API routes run on the server
+  const env = loadEnv(mode, process.cwd(), '');
   return {
-    plugins: [react(), tailwindcss(), apiPlugin()],
+    plugins: [react(), tailwindcss(), apiPlugin(env)],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
