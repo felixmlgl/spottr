@@ -1,6 +1,6 @@
 import React from 'react';
 import { Check, Clock } from 'lucide-react';
-import { Link } from '../../router';
+import { openRequestDemo } from '../../requestDemo/RequestDemo';
 import { Card, PageHeader } from '../components/ui';
 import { Disclosure } from '../../components/Disclosure';
 
@@ -126,9 +126,9 @@ export const Privacy: React.FC = () => (
     <Section status="development" items={IN_DEVELOPMENT} />
     <p className="text-sm text-ink-2">
       Questions about data handling for your gym?{' '}
-      <Link to="/gyms/pilot" className="font-medium text-accent-ink hover:text-ink">
-        Request a pilot
-      </Link>{' '}
+      <button type="button" onClick={() => openRequestDemo()} className="font-medium text-accent-ink hover:text-ink cursor-pointer">
+        Request a demo
+      </button>{' '}
       and we'll walk you through it.
     </p>
   </div>

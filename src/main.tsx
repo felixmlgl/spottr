@@ -5,6 +5,7 @@ import App from './App.tsx';
 import {Welcome} from './Welcome.tsx';
 import {NotFound} from './NotFound.tsx';
 import {usePathname} from './router.tsx';
+import {RequestDemoHost} from './requestDemo/RequestDemo.tsx';
 import './index.css';
 
 // The member demo used to live at "/"; forward old shared links like "/?clip=…&person=…"
@@ -42,6 +43,7 @@ function Root() {
   return (
     <>
       <Page pathname={pathname} />
+      <RequestDemoHost />
       {/* Page views come from our router (pushState + popstate) rather than the script's
           auto-tracking, which only patches pushState and misses back/forward. */}
       <Analytics route={pathname} path={path} />

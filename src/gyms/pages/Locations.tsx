@@ -2,10 +2,11 @@ import React from 'react';
 import { ChevronRight, Cpu, MapPin } from 'lucide-react';
 import { Link } from '../../router';
 import { CHAIN_LOCATIONS, ChainLocation, GYM } from '../../mocks/gym';
-import { formatUsd, PRICE_PER_LOCATION_MONTH } from '../pricing';
+import { formatUsd, tierForMembers } from '../pricing';
 import { Card, DemoBadge, Eyebrow, PageHeader, TrendChip } from '../components/ui';
 
 const sum = (pick: (l: ChainLocation) => number) => CHAIN_LOCATIONS.reduce((s, l) => s + pick(l), 0);
+const priceOf = (l: ChainLocation) => tierForMembers(l.members).price;
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 
 const TOTALS = [
@@ -107,10 +108,13 @@ export const Locations: React.FC = () => (
       <div>
         <Eyebrow>Chain total</Eyebrow>
         <p className="text-base text-ink mt-1">
-          {CHAIN_LOCATIONS.length} locations × {formatUsd(PRICE_PER_LOCATION_MONTH)} ={' '}
-          <span className="font-bold">{formatUsd(CHAIN_LOCATIONS.length * PRICE_PER_LOCATION_MONTH)} per month</span>
+          {CHAIN_LOCATIONS.map((l) => `${l.city} ${formatUsd(priceOf(l))}`).join(' + ')} ={' '}
+          <span className="font-bold">{formatUsd(sum(priceOf))} per month</span>
         </p>
-        <p className="text-xs text-ink-2 mt-1">Pilot pricing. Hardware included.</p>
+        <p className="text-xs text-ink-2 mt-1">
+          Each location is priced by its size ({CHAIN_LOCATIONS.map((l) => `${l.city}: ${tierForMembers(l.members).name}`).join(', ')}).
+          Pilot pricing, hardware included.
+        </p>
       </div>
       <Link
         to="/gyms/pilot"

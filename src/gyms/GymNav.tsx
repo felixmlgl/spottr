@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from '../router';
 import { Logo } from '../components/Logo';
+import { openRequestDemo } from '../requestDemo/RequestDemo';
 
 const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/overview', label: 'Overview' },
@@ -11,6 +12,7 @@ const LINKS: { to: string; label: string; external?: boolean }[] = [
   { to: '/gyms/members', label: 'Members' },
   { to: '/demo', label: 'Member app', external: true },
   { to: '/gyms/privacy', label: 'Privacy' },
+  { to: '/gyms/pilot', label: 'Pricing' },
 ];
 
 export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
@@ -32,8 +34,6 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
       );
     });
 
-  const pilotActive = pathname === '/gyms/pilot';
-
   return (
     <header className="sticky top-0 z-30 px-3 sm:px-4 pt-3">
       {/* Floating glass capsule */}
@@ -47,15 +47,13 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
           {renderLinks(false)}
         </nav>
 
-        <Link
-          to="/gyms/pilot"
-          aria-current={pilotActive ? 'page' : undefined}
-          className={`shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold transition-colors ${
-            pilotActive ? 'bg-ink text-white' : 'bg-accent-ink text-white hover:bg-accent-deep'
-          }`}
+        <button
+          type="button"
+          onClick={() => openRequestDemo()}
+          className="shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold bg-accent-ink text-white hover:bg-accent-deep transition-colors cursor-pointer"
         >
-          Request a pilot
-        </Link>
+          Request a demo
+        </button>
       </div>
 
       {/* Compact: horizontally scrollable pill row */}

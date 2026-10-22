@@ -16,10 +16,9 @@ import { BodyMap, recoveryMapProps } from '../components/BodyMap';
 import { BONES, SessionPlayer } from '../components/SessionPlayer';
 import { CheckDot } from '../components/CheckDot';
 import { Disclosure } from '../components/Disclosure';
-import { Segmented } from '../gyms/components/ui';
+import { TierPricing } from '../components/TierPricing';
 import { PILOT_STEPS } from '../gyms/components/BusinessCards';
 import { AVAILABLE_TODAY, BLUR_LIMITS } from '../gyms/pages/Privacy';
-import { breakEvenMembers, DEFAULT_DUES, DUES_OPTIONS, formatUsd, PRICE_PER_LOCATION_MONTH } from '../gyms/pricing';
 import { MEMBER_PROFILE } from '../mocks/memberData';
 import { PoseSkeleton } from '../types/schema';
 
@@ -263,39 +262,11 @@ export const PrivacyList: React.FC = () => (
 );
 
 /** Every month: the price, and the break-even for the visitor's own dues. */
-export const PricingCard: React.FC = () => {
-  const [dues, setDues] = useState<number>(DEFAULT_DUES);
-  return (
-    <div className="panel p-6 sm:p-7 flex flex-col gap-6">
-      <dl className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col-reverse">
-          <dt className="text-sm text-ink-2 mt-1.5">per location / month, hardware included</dt>
-          <dd className="num text-5xl text-ink">{formatUsd(PRICE_PER_LOCATION_MONTH)}</dd>
-        </div>
-        <div className="flex flex-col-reverse">
-          <dt className="text-sm text-ink-2 mt-1.5">for your members</dt>
-          <dd className="num text-5xl text-ink">Free</dd>
-        </div>
-      </dl>
-      <div className="rounded-[20px] bg-white/70 ring-1 ring-white p-5 flex flex-col gap-3">
-        <span className="text-sm font-medium text-ink">Your average monthly dues</span>
-        <Segmented
-          ariaLabel="Average monthly dues"
-          options={DUES_OPTIONS.map((d) => ({ id: d, label: formatUsd(d) }))}
-          value={dues}
-          onChange={setDues}
-          className="self-start"
-        />
-        <p className="flex items-baseline gap-2 flex-wrap mt-1">
-          <span className="num text-5xl text-ink">
-            <span className="marker">{breakEvenMembers(dues)}</span>
-          </span>
-          <span className="text-base text-ink">members kept a month covers it</span>
-        </p>
-      </div>
-    </div>
-  );
-};
+export const PricingCard: React.FC = () => (
+  <div className="panel p-6 sm:p-7">
+    <TierPricing />
+  </div>
+);
 
 /** Getting started: the four pilot steps on one line. */
 export const PilotSteps: React.FC = () => (

@@ -6,8 +6,9 @@
  */
 
 import React, { useRef } from 'react';
-import { ArrowDown, Cctv, Gift, LayoutDashboard, Mail, PersonStanding, Smartphone } from 'lucide-react';
+import { ArrowDown, Cctv, Gift, LayoutDashboard, PersonStanding, Smartphone } from 'lucide-react';
 import { Link } from './router';
+import { openRequestDemo } from './requestDemo/RequestDemo';
 import { Logo } from './components/Logo';
 import { IconDot, OpenArrow, TILE_TONES } from './components/Tile';
 import { FloorStatus } from './gyms/components/FloorNow';
@@ -106,12 +107,13 @@ const CompanyNav: React.FC<{ onLogoClick: () => void; active: string | null; pro
           );
         })}
       </nav>
-      <JumpLink
-        to="contact"
-        className="shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold bg-accent-ink text-white hover:bg-accent-deep transition-colors"
+      <button
+        type="button"
+        onClick={() => openRequestDemo()}
+        className="shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold bg-accent-ink text-white hover:bg-accent-deep transition-colors cursor-pointer"
       >
-        Request a pilot
-      </JumpLink>
+        Request a demo
+      </button>
     </div>
     {/* Phones have no rail: a thin progress line under the capsule does its job */}
     <div aria-hidden className="lg:hidden max-w-[1100px] mx-auto px-8 mt-1.5">
@@ -138,9 +140,9 @@ const Intro: React.FC = () => (
       ))}
     </ul>
     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-8">
-      <JumpLink to="contact" className={primaryButton}>
-        Request a pilot
-      </JumpLink>
+      <button type="button" onClick={() => openRequestDemo()} className={primaryButton}>
+        Request a demo
+      </button>
       <JumpLink to="walk-in" className={quietButton}>
         Follow one workout
         <ArrowDown className="w-4 h-4" aria-hidden />
@@ -165,10 +167,9 @@ const Contact: React.FC = () => (
         See it on your floor.
       </h2>
       <p className="text-lg text-ink-2 max-w-md">Tell us about your gym and the cameras you have. We'll take it from there.</p>
-      <a href={MAILTO} className={primaryButton}>
-        <Mail className="w-4 h-4" aria-hidden />
-        Request a pilot
-      </a>
+      <button type="button" onClick={() => openRequestDemo()} className={primaryButton}>
+        Request a demo
+      </button>
       <p className="text-sm text-ink-2">
         Or write to{' '}
         <a href={MAILTO} className="font-semibold text-accent-ink hover:text-ink">
@@ -294,8 +295,8 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
       time: 'Every month',
       source: 'Pilot pricing',
       title: 'It pays for itself',
-      line: 'One price per location, free for your members. Pick your dues to see the break-even.',
-      note: "Pilot pricing hasn't been tested with paying gyms yet. Break-even is the price divided by your average monthly dues.",
+      line: 'Priced by the size of your gym, free for your members. Pick yours to see the price and the break-even.',
+      note: "Pilot pricing hasn't been tested with paying gyms yet. Break-even is the price divided by typical monthly dues for that size.",
       link: { to: '/gyms/pilot', label: 'See pilot details' },
       visual: <PricingCard />,
       flip: true,
