@@ -79,7 +79,7 @@ const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyIte
             <Card className="h-full flex flex-col gap-3 !p-6">
               <span
                 className={`self-start inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
-                  available ? 'bg-accent/15 text-accent-deep' : 'bg-white text-ink-2 ring-1 ring-black/[0.06]'
+                  available ? 'bg-lime text-ink' : 'bg-white text-ink-2 ring-1 ring-black/[0.06]'
                 }`}
               >
                 <Icon className="w-3 h-3 stroke-[2.25]" />

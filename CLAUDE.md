@@ -7,7 +7,7 @@ Automatic workout tracking from existing gym cameras.
 - `/gyms/*`: gym operator demo (`/gyms/overview`, `/floor`, `/world-map`, `/members`, `/privacy`, `/pilot`)
 
 Stack: Vite + React + TypeScript + Tailwind v4. Deployed on Vercel (tryspottr.app) from `main`.
-Design: Apple-style, light, accent `#34C759`.
+Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs with the logo's Hoefler Text) for headings and big numerals, Instrument Sans for UI text. Accent `#4D80FF` (logo blue) for fills; `accent-ink` `#2A5CDB` for small text and filled buttons. Lime `#C7FF6A` means done / live / go: a fill with ink text, the `marker` highlighter, or a color on video; never text on white. Tokens and utilities (`glass`, `panel`, `num`, `marker`, `hatch`) live in `src/index.css`; the tick gauge is `src/components/TickGauge.tsx`. A CSS `mask`, `filter` or `opacity` on an ancestor stops `glass` from blurring the page behind it.
 
 ## Rules
 

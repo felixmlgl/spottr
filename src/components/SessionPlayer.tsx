@@ -207,7 +207,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
       const bh = det.bbox.h * h;
 
       if (isSelected) {
-        ctx.strokeStyle = '#34C759';
+        ctx.strokeStyle = '#C7FF6A';
         ctx.lineWidth = 2.5;
         ctx.strokeRect(bx, by, bw, bh);
 
@@ -245,7 +245,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
           if (!pt) return;
           ctx.beginPath();
           ctx.arc(pt.x * w, pt.y * h, isSelected ? 3.5 : 2, 0, Math.PI * 2);
-          ctx.fillStyle = isSelected ? '#34C759' : '#06B6D4';
+          ctx.fillStyle = isSelected ? '#C7FF6A' : '#06B6D4';
           ctx.fill();
         });
       }
@@ -298,7 +298,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
         {/* Live rep badge */}
         {sets.length > 0 && (
           <div className="absolute bottom-3 right-3 flex items-baseline gap-1.5 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md text-white">
-            <span className="font-dot text-2xl font-black leading-none text-accent">{liveReps}</span>
+            <span className="num text-2xl leading-none text-lime">{liveReps}</span>
             <span className="text-xs font-medium">reps</span>
           </div>
         )}

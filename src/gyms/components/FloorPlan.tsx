@@ -1,11 +1,11 @@
 import React from 'react';
 import { FLOOR_VIEWBOX, ZoneId, ZONES } from '../../mocks/gym';
 
-/** Sequential single-hue (green) ramp for occupancy 0..1. */
+/** Sequential single-hue (brand blue) ramp for occupancy 0..1. */
 const RAMP: [number, [number, number, number]][] = [
-  [0, [236, 248, 239]],
-  [0.5, [134, 214, 153]],
-  [1, [31, 122, 53]],
+  [0, [234, 240, 255]],
+  [0.5, [150, 180, 255]],
+  [1, [31, 73, 181]],
 ];
 
 export function occupancyColor(value: number): string {
@@ -77,7 +77,7 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
             height={zone.rect.h}
             rx={16}
             fill={occupancyColor(occ)}
-            stroke={isSelected ? '#0F1411' : 'transparent'}
+            stroke={isSelected ? '#0E1117' : 'transparent'}
             strokeWidth={3}
             className="transition-[fill] duration-300 group-hover:opacity-90 group-focus-visible:stroke-ink"
           />
@@ -91,7 +91,7 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
               rx={4}
               fill="#FFFFFF"
               fillOpacity={0.6}
-              stroke={isSelected && idleUnitIds.has(u.id) ? '#0F1411' : 'none'}
+              stroke={isSelected && idleUnitIds.has(u.id) ? '#0E1117' : 'none'}
               strokeWidth={2.5}
             >
               <title>{u.name}</title>
@@ -99,7 +99,7 @@ export const FloorPlan: React.FC<FloorPlanProps> = ({ occupancy, waiting, select
           ))}
           {/* Label chip: white background keeps text legible on every ramp step */}
           <rect x={x + 10} y={y + 10} width={Math.min(chipW, w - 20)} height={32} rx={16} fill="#FFFFFF" fillOpacity={0.94} />
-          <text x={x + 24} y={y + 32} fontSize={18} fontWeight={600} fill="#0F1411">
+          <text x={x + 24} y={y + 32} fontSize={18} fontWeight={600} fill="#0E1117">
             {label}
           </text>
         </g>

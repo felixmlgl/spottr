@@ -120,7 +120,7 @@ export default function App() {
 
   if (!data || !person || !summary) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-6 h-6 animate-spin text-ink-2" />
       </div>
     );
@@ -130,7 +130,7 @@ export default function App() {
   const personLabel = `${MEMBER_PROFILE.name} · ${mainExercise(person) ?? clip.title}`;
 
   return (
-    <div className="min-h-screen bg-white text-ink flex flex-col font-sans selection:bg-accent/20 selection:text-ink">
+    <div className="min-h-screen text-ink flex flex-col font-sans selection:bg-lime selection:text-ink">
       <Navigation
         currentTab={currentTab}
         onSelectTab={selectTab}
@@ -140,13 +140,13 @@ export default function App() {
       />
 
       <BodyModelContext.Provider value={settings.bodyModel}>
-        <main className="flex-1 max-w-[1100px] w-full mx-auto px-4 sm:px-6 pt-8 pb-24 md:pb-8">
+        <main className="flex-1 max-w-[1100px] w-full mx-auto px-4 sm:px-6 pt-8 pb-28 md:pb-8">
           {currentTab === 'main' && (
             <MainTab
               person={person}
               history={history}
               onWatchReplay={openReplay}
-              onOpenHistory={() => selectTab('history')}
+              onSelectTab={selectTab}
             />
           )}
 

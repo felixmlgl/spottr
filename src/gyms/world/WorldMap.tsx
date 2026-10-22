@@ -2,7 +2,7 @@ import React from 'react';
 import type { CameraConfig, Vec2, WorldMapConfig, WorldPerson } from './types';
 import { cameraShort, personColor } from './display';
 
-const CAMERA_TINT: Record<string, string> = { cam1: '#34C759', cam2: '#30B0C7' };
+const CAMERA_TINT: Record<string, string> = { cam1: '#4D80FF', cam2: '#30B0C7' };
 const tint = (id: string) => CAMERA_TINT[id] ?? '#646E68';
 
 interface Props {
@@ -40,7 +40,7 @@ function CameraIcon({ cam, highlighted }: { cam: CameraConfig; highlighted: bool
       </g>
       <g transform={`translate(${lx} ${ly})`}>
         <rect x={-1.55} y={-0.42} width={3.1} height={0.84} rx={0.42} fill="#FFFFFF" stroke="#E5E5EA" strokeWidth={0.04} />
-        <text textAnchor="middle" y={0.16} fontSize={0.46} fontWeight={600} fill="#0F1411">
+        <text textAnchor="middle" y={0.16} fontSize={0.46} fontWeight={600} fill="#0E1117">
           {cam.label}
         </text>
       </g>
@@ -66,9 +66,9 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
 
   const grid: React.ReactNode[] = [];
   for (let gx = Math.ceil(vb[0]); gx < vb[0] + vb[2]; gx += 1)
-    grid.push(<line key={`gx${gx}`} x1={gx} y1={vb[1]} x2={gx} y2={vb[1] + vb[3]} stroke="#F1F3F0" strokeWidth={0.03} />);
+    grid.push(<line key={`gx${gx}`} x1={gx} y1={vb[1]} x2={gx} y2={vb[1] + vb[3]} stroke="#F2F4F8" strokeWidth={0.03} />);
   for (let gy = Math.ceil(vb[1]); gy < vb[1] + vb[3]; gy += 1)
-    grid.push(<line key={`gy${gy}`} x1={vb[0]} y1={gy} x2={vb[0] + vb[2]} y2={gy} stroke="#F1F3F0" strokeWidth={0.03} />);
+    grid.push(<line key={`gy${gy}`} x1={vb[0]} y1={gy} x2={vb[0] + vb[2]} y2={gy} stroke="#F2F4F8" strokeWidth={0.03} />);
 
   return (
     <svg
@@ -246,7 +246,7 @@ export const WorldMap: React.FC<Props> = ({ config, people, trails, selected, on
                 stroke={isSel ? color : '#E6E9E5'}
                 strokeWidth={0.04}
               />
-              <text textAnchor="middle" y={0.08} fontSize={0.36} fontWeight={600} fill="#0F1411">
+              <text textAnchor="middle" y={0.08} fontSize={0.36} fontWeight={600} fill="#0E1117">
                 {p.label}
               </text>
             </g>

@@ -43,7 +43,7 @@ const Sparkline: React.FC<{ values: number[] }> = ({ values }) => {
         strokeLinejoin="round"
         strokeLinecap="round"
       />
-      <circle cx={lx} cy={ly} r={2.5} fill="#0F1411" />
+      <circle cx={lx} cy={ly} r={2.5} fill="#0E1117" />
     </svg>
   );
 };
@@ -82,7 +82,7 @@ const AtRiskRow: React.FC<{ row: AtRiskMember; sent: boolean; onNudge: () => voi
         disabled={sent}
         className={`col-start-2 row-start-1 sm:col-start-auto sm:row-start-auto justify-self-end inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
           sent
-            ? 'bg-transparent text-accent-ink cursor-default'
+            ? 'bg-lime text-ink cursor-default'
             : 'bg-white text-ink shadow-xs hover:bg-ink hover:text-white cursor-pointer'
         }`}
       >
@@ -160,7 +160,7 @@ export const Members: React.FC = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-xs text-ink-2 -mt-1">Sessions per week. Green means 2 or more.</p>
+          <p className="text-xs text-ink-2 -mt-1">Sessions per week. Blue means 2 or more.</p>
         </Card>
 
         <Card className="flex flex-col gap-4">
@@ -213,7 +213,7 @@ export const Members: React.FC = () => {
           <div>
             <Eyebrow>At risk</Eyebrow>
             <h2 className="text-xl font-bold tracking-tight text-ink mt-1 flex items-baseline gap-2">
-              <span className="font-dot text-5xl font-black leading-none">{counts.all}</span>
+              <span className="num text-5xl leading-none">{counts.all}</span>
               members are slipping away
             </h2>
             <p className="text-xs text-ink-2 mt-1 max-w-lg">

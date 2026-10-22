@@ -22,8 +22,8 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
           key={link.to}
           to={link.to}
           aria-current={isActive ? 'page' : undefined}
-          className={`${compact ? 'px-3.5' : 'px-4'} py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap inline-flex items-center gap-0.5 ${
-            isActive ? 'bg-white text-ink shadow-sm' : 'text-ink-2 hover:text-ink'
+          className={`${compact ? 'px-3.5' : 'px-4'} py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap inline-flex items-center gap-0.5 ${
+            isActive ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink hover:bg-white/60'
           }`}
         >
           {link.label}
@@ -35,21 +35,22 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
   const pilotActive = pathname === '/gyms/pilot';
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-black/[0.04]">
-      <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 px-3 sm:px-4 pt-3">
+      {/* Floating glass capsule */}
+      <div className="glass max-w-[1100px] mx-auto rounded-full h-14 pl-5 pr-2 flex items-center justify-between gap-4">
         <Link to="/#gyms" className="flex items-center gap-2 shrink-0">
           <Logo />
           <span className="text-sm font-medium text-ink-2">for Gyms</span>
         </Link>
 
-        <nav aria-label="Gym demo" className="hidden xl:flex items-center p-1 bg-surface rounded-full">
+        <nav aria-label="Gym demo" className="hidden xl:flex items-center gap-0.5">
           {renderLinks(false)}
         </nav>
 
         <Link
           to="/gyms/pilot"
           aria-current={pilotActive ? 'page' : undefined}
-          className={`shrink-0 inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+          className={`shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold transition-colors ${
             pilotActive ? 'bg-ink text-white' : 'bg-accent-ink text-white hover:bg-accent-deep'
           }`}
         >
@@ -58,9 +59,10 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
       </div>
 
       {/* Compact: horizontally scrollable pill row */}
-      <nav aria-label="Gym demo" className="xl:hidden border-t border-black/[0.04]">
-        <div className="max-w-[1100px] mx-auto px-4 py-2 overflow-x-auto [mask-image:linear-gradient(to_right,black_88%,transparent)]">
-          <div className="inline-flex items-center p-1 bg-surface rounded-full">{renderLinks(true)}</div>
+      {/* The scroll mask sits inside the glass: a mask on an ancestor would stop the glass blurring the page behind */}
+      <nav aria-label="Gym demo" className="xl:hidden glass max-w-[1100px] mx-auto mt-2 p-1 rounded-full">
+        <div className="flex items-center overflow-x-auto [mask-image:linear-gradient(to_right,black_88%,transparent)]">
+          {renderLinks(true)}
         </div>
       </nav>
     </header>

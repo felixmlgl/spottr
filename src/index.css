@@ -1,96 +1,132 @@
 @import "tailwindcss";
 
-/* Spottr palette: green-tinted neutrals (CCTV monitor, not Apple grey) around the brand green.
+/* Spottr palette: cool neutrals around the logo blue, on a soft color-washed canvas with liquid-glass cards.
+   accent is for fills, charts and large text; accent-ink is for small text and filled buttons (AA on white and surface).
+   lime / amber / coral are status fills (ink text on them); they read best on dark "instrument" cards.
    ink-3 is the lightest grey that still passes WCAG AA for small text on `surface`. */
 @theme {
-  --color-ink: #0F1411;
-  --color-ink-2: #4B5550;
-  --color-ink-3: #646E68;
-  --color-surface: #F1F3F0;
-  --color-surface-2: #E6E9E5;
-  --color-line: #D3D8D3;
+  --color-ink: #0E1117;
+  --color-ink-2: #4B5262;
+  --color-ink-3: #636B7E;
+  --color-surface: #F2F4F8;
+  --color-surface-2: #E7EAF0;
+  --color-line: #D9DEE7;
   /* Popovers and text on ink fills; flips with .theme-night */
   --color-paper: #FFFFFF;
-  --color-accent: #34C759;
-  /* Filled buttons and green text: white on accent-ink is 5.3:1 */
-  --color-accent-ink: #1E7B36;
-  --color-accent-deep: #17652B;
+  --color-accent: #4D80FF;
+  /* Filled buttons and blue text: white on accent-ink is 5.8:1 */
+  --color-accent-ink: #2A5CDB;
+  --color-accent-deep: #1F49B5;
+  --color-lime: #C7FF6A;
+  --color-amber: #FFC83D;
+  --color-coral: #FF6B5E;
   /* Night mode for camera views (replay, floor) */
-  --color-night: #0B0F0D;
+  --color-night: #090B10;
 
-  --font-display: "Archivo", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  /* Dot-matrix numerals, same idea as the wordmark */
-  --font-dot: "Doto", "JetBrains Mono", ui-monospace, monospace;
+  /* Fraunces is a soft old-style serif that sits next to the logo's Hoefler Text; Instrument Sans carries the UI */
+  --font-sans: "Instrument Sans", -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-display: "Fraunces", "Hoefler Text", Georgia, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @layer base {
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    font-family: var(--font-sans);
     color: var(--color-ink);
-    background-color: #FFFFFF;
+    /* Color wash behind the glass: blue top-left, lilac top-right, a hint of lime bottom-right */
+    background:
+      radial-gradient(55vw 45vw at -5% -10%, rgb(77 128 255 / 0.22), transparent 70%),
+      radial-gradient(45vw 40vw at 105% 0%, rgb(169 155 255 / 0.24), transparent 70%),
+      radial-gradient(50vw 40vw at 100% 105%, rgb(199 255 106 / 0.18), transparent 70%),
+      radial-gradient(40vw 35vw at 0% 100%, rgb(77 128 255 / 0.1), transparent 70%),
+      #F5F6FA;
+    background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3 {
+  :where(h1, h2):not(.hud-label),
+  .font-display {
     font-family: var(--font-display);
-    font-stretch: 92%;
+    font-variation-settings: "SOFT" 50;
+    letter-spacing: -0.01em;
   }
 }
 
-/* Camera views (replay, floor) run on dark, like a monitor wall. Utilities inside re-resolve to these values. */
+/* Camera views and dark "instrument" cards. Utilities inside re-resolve to these values. */
 .theme-night {
-  --color-ink: #EEF2EF;
-  --color-ink-2: #AAB4AE;
-  --color-ink-3: #8D9791;
-  --color-surface: #19201C;
-  --color-surface-2: #232B27;
-  --color-line: #2F3833;
-  --color-paper: #121815;
-  background-color: var(--color-night);
+  --color-ink: #EEF1F7;
+  --color-ink-2: #A8B0C0;
+  --color-ink-3: #8A93A6;
+  --color-surface: #161A22;
+  --color-surface-2: #1F2430;
+  --color-line: #2B3140;
+  --color-paper: #11141A;
+  --color-accent-ink: #7FA4FF;
+  --glass-fill: rgb(20 24 33 / 0.86);
+  --glass-fill-2: rgb(14 17 23 / 0.94);
+  --glass-rim: rgb(255 255 255 / 0.22);
+  --glass-shadow: rgb(9 11 16 / 0.35);
   color: var(--color-ink);
 }
+/* Full-page night (replay); night glass cards keep their own glass fill */
+.theme-night:not(.panel, .glass) {
+  background: linear-gradient(180deg, var(--color-night) 40%, #0E1322);
+}
 
-/* Small readout label, like the timestamp text on a camera feed */
+/* Small label above a value or title */
 @utility hud-label {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.01em;
   color: var(--color-ink-2);
 }
 
-/* Viewfinder corner brackets. Set --vf to recolor (e.g. on dark panels). */
-@utility viewfinder {
-  --vf-len: 14px;
-  --vf-w: 1.5px;
-  background-image:
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink))),
-    linear-gradient(var(--vf, var(--color-ink)), var(--vf, var(--color-ink)));
-  background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
-  background-size:
-    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len),
-    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len),
-    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len),
-    var(--vf-len) var(--vf-w), var(--vf-w) var(--vf-len);
-  background-repeat: no-repeat;
+/* Liquid glass: frosted translucent fill, a bright specular rim (brighter top-left), soft drop shadow */
+@utility glass {
+  position: relative;
+  background: linear-gradient(150deg, var(--glass-fill, rgb(255 255 255 / 0.72)), var(--glass-fill-2, rgb(255 255 255 / 0.42)));
+  backdrop-filter: blur(24px) saturate(170%);
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    0 1px 2px rgb(16 24 64 / 0.04),
+    0 18px 50px -20px var(--glass-shadow, rgb(30 50 120 / 0.22));
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(140deg, var(--glass-rim, rgb(255 255 255 / 0.95)), transparent 35%, transparent 65%, var(--glass-rim, rgb(255 255 255 / 0.6)));
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
 }
 
-/* Standard content panel: flat surface with viewfinder corners instead of a big rounded card */
+/* Standard content panel: a big rounded glass card */
 @utility panel {
-  background-color: var(--color-surface);
-  border-radius: 4px;
-  --vf: color-mix(in srgb, var(--color-ink) 55%, transparent);
-  @apply viewfinder;
+  border-radius: 28px;
+  @apply glass;
 }
 
-/* Round dots, matching the wordmark */
-.font-dot {
-  font-variation-settings: "ROND" 100;
+/* Big light serif numerals for stats */
+@utility num {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 100;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Lime highlighter stroke under the one number a card is about */
+@utility marker {
+  padding-inline: 0.06em;
+  background-image: linear-gradient(transparent 60%, var(--color-lime) 60%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Diagonal-striped empty track behind bars and progress fills */
+@utility hatch {
+  background-image: repeating-linear-gradient(-45deg, var(--color-line) 0 2px, transparent 2px 7px);
 }

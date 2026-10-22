@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckDot } from '../../components/CheckDot';
 import { Link } from '../../router';
 import { useToast } from '../components/Toast';
 import { BreakEvenCard, PilotStepsCard, PriceCard } from '../components/BusinessCards';
@@ -50,7 +50,7 @@ export const RequestPilot: React.FC = () => {
 
         {submittedName !== null ? (
           <Card className="flex flex-col items-start gap-4">
-            <CheckCircle2 className="w-8 h-8 text-accent" />
+            <CheckDot className="w-12 h-12" />
             <div>
               <h2 className="text-2xl font-bold tracking-tight text-ink">
                 Thanks{submittedName ? `, ${submittedName.split(' ')[0]}` : ''}.

@@ -155,7 +155,7 @@ export const WorldMapPage: React.FC = () => {
 const Hero: React.FC = () => {
   const [talk, setTalk] = useState(false);
   return (
-    <section className="rounded-[24px] bg-gradient-to-br from-[#F2FBF4] to-surface p-6 sm:p-8 ring-1 ring-accent/10">
+    <section className="rounded-[24px] bg-gradient-to-br from-[#EEF3FF] to-surface p-6 sm:p-8 ring-1 ring-accent/10">
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div className="max-w-2xl">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-ink leading-tight">
@@ -331,7 +331,7 @@ const Demo: React.FC<{ config: WorldMapConfig; timeline: Timeline; metrics: Metr
               </span>
             </div>
             <p className="text-[11px] text-ink-3 -mt-2">
-              Green ticks mark moments when the service matched one person across both cameras. Identities are decided with a
+              Blue ticks mark moments when the service matched one person across both cameras. Identities are decided with a
               {` ${config.decision_lag_s.toFixed(0)} s`} look-ahead so early guesses can still be corrected.
             </p>
           </Card>

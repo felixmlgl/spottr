@@ -36,7 +36,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               transition={{ duration: 0.2 }}
               className="pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-ink text-white text-sm font-medium shadow-xl"
             >
-              <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-lime shrink-0" />
               <span>{toast.message}</span>
             </motion.div>
           )}

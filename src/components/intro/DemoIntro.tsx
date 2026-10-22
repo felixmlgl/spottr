@@ -144,13 +144,12 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
             See what the gym camera logged.
           </h1>
           <p className="text-base text-ink-2 mt-2 max-w-xl">
-            Pick a real gym clip, then pick the member you want to follow. Spottr shows you their workout as they would see it.
+            Pick a clip, then a member. You'll see their workout the way they would.
           </p>
           <p className="text-sm text-ink-2 mt-3 max-w-xl flex items-start gap-2">
             <Info className="w-4 h-4 text-[#0071E3] shrink-0 mt-0.5" />
             <span>
-              These are recorded clips from real gyms, run through the real Spottr pipeline. Sets, reps and
-              exercise labels come from its output, not from a script.
+              Real gym clips and real pipeline output, not a script.
             </span>
           </p>
         </div>
@@ -172,7 +171,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
                     isSelected ? 'ring-2 ring-accent bg-white shadow-sm' : 'hover:bg-surface-2'
                   }`}
                 >
-                  <div className="relative aspect-video rounded-sm overflow-hidden bg-ink">
+                  <div className="relative aspect-video rounded-xl overflow-hidden bg-ink">
                     {c.video && <ClipPoster src={c.video} />}
                     <span className="absolute top-1.5 left-2 font-mono text-[10px] text-white/90 flex items-center gap-1 [text-shadow:0_1px_4px_rgba(0,0,0,0.6)]">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FF3B30]" />

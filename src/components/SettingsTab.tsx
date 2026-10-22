@@ -70,7 +70,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
 
     <Section title="Membership">
       <Row label="Spottr" hint="Free for you, through your gym. Your gym pays for Spottr, not you.">
-        <span className="px-3 py-1 rounded-full bg-accent/12 text-xs font-semibold text-accent-ink">Free</span>
+        <span className="px-3 py-1 rounded-full bg-lime text-xs font-semibold text-ink">Free</span>
       </Row>
       <Row label="AI coach" hint="Coaching built on your logged workouts.">
         <span className="px-3 py-1 rounded-full bg-white text-xs font-semibold text-ink-2 ring-1 ring-black/[0.06] whitespace-nowrap">
