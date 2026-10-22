@@ -111,7 +111,7 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
         <div className="flex flex-col items-start">
           <span className="hud-label text-accent-ink mb-4">Spottr for gyms. Bay Area pilot.</span>
           <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-ink leading-[1.02]">
-            Your cameras already see every set. Now they count them.
+            Your cameras already see every set. Now they count them too.
           </h2>
           <p className="text-lg text-ink-2 mt-5 max-w-xl">
             Spottr logs every set and rep for your members, and shows you how your floor is used and who is drifting
