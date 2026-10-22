@@ -71,11 +71,7 @@ const JumpLink: React.FC<{ to: string; className: string; children: React.ReactN
 );
 
 /** Sticks to the top once the company section reaches it, so it never covers the video hero. */
-const CompanyNav: React.FC<{ onLogoClick: () => void; active: string | null; progress: number }> = ({
-  onLogoClick,
-  active,
-  progress,
-}) => (
+const CompanyNav: React.FC<{ onLogoClick: () => void; active: string | null }> = ({ onLogoClick, active }) => (
   <header className="sticky top-0 z-30 px-3 sm:px-4 pt-3">
     <div className="glass max-w-[1100px] mx-auto rounded-full h-14 pl-5 pr-2 flex items-center justify-between gap-4">
       <a
@@ -116,7 +112,7 @@ const CompanyNav: React.FC<{ onLogoClick: () => void; active: string | null; pro
     {/* Phones have no rail: a thin progress line under the capsule does its job */}
     <div aria-hidden className="lg:hidden max-w-[1100px] mx-auto px-8 mt-1.5">
       <div className="h-0.5 rounded-full bg-line/70">
-        <div className="h-full rounded-full bg-accent" style={{ width: `${progress * 100}%` }} />
+        <div className="h-full rounded-full bg-accent" style={{ width: 'calc(var(--progress, 0) * 100%)' }} />
       </div>
     </div>
   </header>
@@ -220,8 +216,9 @@ const Footer: React.FC = () => (
 
 export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => {
   const felix = useFelix();
+  const rootRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
-  const progress = useScrollProgress(railRef);
+  useScrollProgress(railRef, rootRef);
   const active = useActiveChapter(CHAPTER_IDS);
   const activeIndex = active ? CHAPTER_IDS.indexOf(active) : -1;
 
@@ -310,12 +307,13 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
   ];
 
   return (
-    <>
-      <CompanyNav onLogoClick={onLogoClick} active={active} progress={progress} />
+    // Holds --progress for the rail and the phone progress line
+    <div ref={rootRef}>
+      <CompanyNav onLogoClick={onLogoClick} active={active} />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
         <Intro />
         <div ref={railRef} className="relative lg:pl-16 flex flex-col gap-28 sm:gap-40 py-24 sm:py-32">
-          <TimelineRail progress={progress} />
+          <TimelineRail />
           {chapters.map((c, i) => (
             <Chapter key={c.id} {...c} state={i === activeIndex ? 'active' : i < activeIndex ? 'past' : 'next'} />
           ))}
@@ -323,6 +321,6 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
         <Contact />
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
