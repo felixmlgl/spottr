@@ -1,13 +1,12 @@
 /**
  * Welcome page ("/").
  * Twenty-four 2.4s gym clips play back-to-back on a loop with quick cuts, while the
- * Spottr logo and the two entry points (member app, gyms) stay fixed on top. The pitch lives in the company section below.
+ * Spottr logo and one button that scrolls into the story below stay fixed on top. The story lives in the company section.
  * Below the hero sits the company site for gym owners ("/#gyms", see Company.tsx).
  */
 
 import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Pause, Play } from 'lucide-react';
-import { Link } from './router';
 
 // Only fetched once the page renders, so the video hero isn't held up by the gym mocks it pulls in
 const Company = lazy(() => import('./Company.tsx').then((m) => ({ default: m.Company })));
@@ -30,25 +29,17 @@ const CLIPS = [1, 2, 3, 4].flatMap((part) =>
 // Near-hard cut: just enough blend to hide a dropped frame between clips
 const FADE_MS = 120;
 
-const DemoButton: React.FC = () => (
-  <Link
-    to="/demo"
-    className="whitespace-nowrap rounded-full bg-lime px-6 py-3 text-[14px] font-semibold text-ink shadow-[0_8px_30px_rgba(199,255,106,0.35)] transition-transform hover:scale-[1.03]"
-  >
-    Try the member app
-  </Link>
-);
-
-const GymsLink: React.FC = () => (
+/** The one hero action: scroll into the story below instead of leaving the page. */
+const StoryButton: React.FC = () => (
   <a
     href="#gyms"
     onClick={(e) => {
       e.preventDefault();
       scrollToGyms(scrollBehavior());
     }}
-    className="glass whitespace-nowrap rounded-full px-5 py-3 text-[14px] font-medium text-ink transition-colors hover:bg-white/80"
+    className="whitespace-nowrap rounded-full bg-lime px-6 py-3 text-[14px] font-semibold text-ink shadow-[0_8px_30px_rgba(199,255,106,0.35)] transition-transform hover:scale-[1.03]"
   >
-    For gym owners ↓
+    See how it works ↓
   </a>
 );
 
@@ -136,8 +127,7 @@ export const Welcome: React.FC = () => {
           </div>
 
           <div className="absolute bottom-[calc(9vh+3rem)] left-1/2 -translate-x-1/2 flex flex-col sm:flex-row items-center gap-2">
-            <DemoButton />
-            <GymsLink />
+            <StoryButton />
           </div>
 
           <button

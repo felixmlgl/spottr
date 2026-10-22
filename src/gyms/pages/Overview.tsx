@@ -11,15 +11,11 @@ import {
   INSIGHTS,
   Kpi,
   KPIS,
-  NOW_DAY,
-  NOW_HOUR,
   PEAK_HOURS,
-  weekdayOf,
   WEEKLY_VISITS,
-  zoneOccupancy,
-  ZONES,
 } from '../../mocks/gym';
-import { TickGauge } from '../../components/TickGauge';
+import { InfoTip } from '../../components/Disclosure';
+import { FloorStatus, NOW_SLOT_LABEL, ZONES_NOW } from '../components/FloorNow';
 import { IconDot, OpenArrow, TILE_TONES, TileTone } from '../../components/Tile';
 import {
   axisProps,
@@ -45,46 +41,7 @@ const INSIGHT_ICONS: Record<Insight['id'], LucideIcon> = { capacity: Gauge, rete
 const formatKpi = (kpi: Kpi) => (kpi.format === 'decimal' ? kpi.value.toFixed(1) : kpi.value.toLocaleString('en-US'));
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 
-// Floor right now: zone use is the 4-week average for this weekday and hour (same numbers as the Floor page)
-const NOW_WEEKDAY = weekdayOf(NOW_DAY);
-const NOW_SLOT = Math.floor(NOW_HOUR);
-const ZONES_NOW = ZONES.map((zone) => ({ zone, occ: zoneOccupancy(zone.id, NOW_WEEKDAY, NOW_SLOT) })).sort((a, b) => b.occ - a.occ);
-const UNITS = ZONES.reduce((sum, z) => sum + z.units.length, 0);
-const FLOOR_NOW = ZONES_NOW.reduce((sum, r) => sum + r.occ * r.zone.units.length, 0) / UNITS;
-const ZONES_FULL = ZONES_NOW.filter((r) => r.occ >= 1).length;
-const NOW_SLOT_LABEL = `${DAY_LABELS[NOW_WEEKDAY]} ${formatHour(NOW_SLOT)}–${formatHour(NOW_SLOT + 1)}`;
 const KPI = Object.fromEntries(KPIS.map((k) => [k.id, k])) as Record<string, Kpi>;
-
-/** Floor status: three headline numbers over a tick gauge of how much equipment is in use. */
-const FloorStatus: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <Link to="/gyms/floor" className={`group panel p-6 sm:p-7 flex flex-col gap-6 ${className}`}>
-    <div className="flex items-center justify-between">
-      <div>
-        <h2 className="text-xl font-medium text-ink">Floor status</h2>
-        <p className="hud-label mt-0.5 flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-lime ring-1 ring-black/15 animate-pulse" />
-          Live members · equipment typical for {NOW_SLOT_LABEL}
-        </p>
-      </div>
-      <OpenArrow className="text-ink" />
-    </div>
-    <dl className="grid grid-cols-3 gap-3">
-      <div className="flex flex-col-reverse">
-        <dt className="text-sm text-ink-2 mt-1.5">members in</dt>
-        <dd className="num text-4xl text-ink">{KPI.now.value}</dd>
-      </div>
-      <div className="flex flex-col-reverse">
-        <dt className="text-sm text-ink-2 mt-1.5">equipment in use</dt>
-        <dd className="num text-4xl text-ink"><span className="marker">{pct(FLOOR_NOW)}</span></dd>
-      </div>
-      <div className="flex flex-col-reverse">
-        <dt className="text-sm text-ink-2 mt-1.5">{ZONES_FULL === 1 ? 'zone' : 'zones'} at capacity</dt>
-        <dd className={`num text-4xl ${ZONES_FULL ? 'text-[#D93636]' : 'text-ink'}`}>{ZONES_FULL}</dd>
-      </div>
-    </dl>
-    <TickGauge value={FLOOR_NOW} label={`${pct(FLOOR_NOW)} of equipment in use`} className="w-full mt-auto text-ink" />
-  </Link>
-);
 
 /** KPI tile in the reference's 2×2 style: icon top-left, open arrow top-right, number and label at the bottom. */
 const KpiTile: React.FC<{ kpi: Kpi; icon: LucideIcon; to?: string; tone: TileTone }> = ({ kpi, icon, to, tone }) => {
@@ -124,7 +81,10 @@ const ZoneScorecard: React.FC<{ className?: string }> = ({ className = '' }) => 
     <div className="flex items-start justify-between gap-4">
       <div>
         <h2 className="text-xl font-medium text-ink">Zones right now</h2>
-        <p className="hud-label mt-0.5">Equipment in use, typical for {NOW_SLOT_LABEL}</p>
+        <p className="hud-label mt-0.5 flex items-center gap-1">
+          In use, typical for this hour
+          <InfoTip label="How this is measured">4-week average for {NOW_SLOT_LABEL}.</InfoTip>
+        </p>
       </div>
       <Link to="/gyms/floor" aria-label="Open the floor" className="group">
         <OpenArrow className="text-ink" />
@@ -306,12 +266,12 @@ export const Overview: React.FC = () => (
       </div>
       <h1 className="text-5xl sm:text-6xl font-medium tracking-tight text-ink mt-2">Overview</h1>
       <p className="text-base text-ink-2 mt-3 max-w-xl">
-        Sunday, Sep 27, 10:45am. Everything below comes from the gym's existing cameras.
+        Sunday, Sep 27 · 10:45am · from your existing cameras
       </p>
     </header>
 
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-      <FloorStatus className="lg:col-span-5" />
+      <FloorStatus className="lg:col-span-5" to="/gyms/floor" />
       <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <KpiTile kpi={KPI.now} icon={Users} to="/gyms/floor" tone="blue" />
         <KpiTile kpi={KPI.visits} icon={DoorOpen} to="/gyms/members" tone="glass" />

@@ -19,7 +19,7 @@ interface SessionPlayerProps {
   repSound: boolean;
 }
 
-const BONES: [keyof PoseSkeleton, keyof PoseSkeleton][] = [
+export const BONES: [keyof PoseSkeleton, keyof PoseSkeleton][] = [
   ['left_shoulder', 'right_shoulder'],
   ['left_shoulder', 'left_hip'],
   ['right_shoulder', 'right_hip'],
