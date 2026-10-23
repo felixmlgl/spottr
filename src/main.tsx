@@ -6,6 +6,7 @@ import {Welcome} from './Welcome.tsx';
 import {NotFound} from './NotFound.tsx';
 import {usePathname} from './router.tsx';
 import {RequestDemoHost} from './requestDemo/RequestDemo.tsx';
+import {WaitlistHost} from './waitlist/Waitlist.tsx';
 import './index.css';
 
 // The member demo used to live at "/"; forward old shared links like "/?clip=…&person=…"
@@ -22,6 +23,10 @@ const MOVED: Record<string, string> = {'/gyms/pilot': '/pricing', '/gyms/privacy
 const moved = MOVED[window.location.pathname.replace(/\/+$/, '')];
 if (moved) {
   window.history.replaceState({}, '', `${moved}${window.location.search}${window.location.hash}`);
+}
+// Short link for flyers and for members to pass on: opens the waitlist popup over the welcome page (WaitlistHost)
+if (/^\/waitlist\/?$/.test(window.location.pathname)) {
+  window.history.replaceState({}, '', `/${window.location.search}#waitlist`);
 }
 
 // Gym operator demo is only loaded when visiting /gyms
@@ -59,6 +64,7 @@ function Root() {
     <>
       <Page pathname={pathname} />
       <RequestDemoHost />
+      <WaitlistHost />
       {/* Page views come from our router (pushState + popstate) rather than the script's
           auto-tracking, which only patches pushState and misses back/forward. */}
       <Analytics route={pathname} path={path} />

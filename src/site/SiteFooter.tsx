@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from '../router';
 import { Logo } from '../components/Logo';
+import { openWaitlist } from '../waitlist/Waitlist';
 import { ChapterLink } from './SiteNav';
 
 export const CONTACT_EMAIL = 'info@tryspottr.app';
@@ -23,6 +24,9 @@ export const SiteFooter: React.FC = () => (
       <ChapterLink to="privacy" className="hover:text-ink">
         Privacy
       </ChapterLink>
+      <button type="button" onClick={openWaitlist} className="hover:text-ink cursor-pointer">
+        Join the waitlist
+      </button>
       <a href={MAILTO} className="hover:text-ink">
         {CONTACT_EMAIL}
       </a>

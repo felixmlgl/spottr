@@ -9,6 +9,7 @@ import React, { useEffect, useRef } from 'react';
 import { ArrowDown, Cctv, Gift, LayoutDashboard, PersonStanding, Smartphone } from 'lucide-react';
 import { Link } from './router';
 import { openRequestDemo } from './requestDemo/RequestDemo';
+import { openWaitlist } from './waitlist/Waitlist';
 import { CONTACT_EMAIL, MAILTO, SiteFooter } from './site/SiteFooter';
 import { CHAPTER_IDS, ChapterLink, NAV, SiteNav } from './site/SiteNav';
 import { IconDot, OpenArrow, TILE_TONES } from './components/Tile';
@@ -67,7 +68,7 @@ const Intro: React.FC = () => (
   </Reveal>
 );
 
-/** The one action, then the two full demos for anyone who wants to click around. */
+/** The one action, the members' way to ask for Spottr at their gym, then the two full demos for anyone who wants to click around. */
 const Contact: React.FC = () => (
   <section id="contact" className="scroll-mt-28 flex flex-col gap-6">
     <Reveal className="panel relative isolate overflow-hidden p-8 sm:p-12 flex flex-col items-start gap-5">
@@ -92,6 +93,19 @@ const Contact: React.FC = () => (
           {CONTACT_EMAIL}
         </a>
       </p>
+    </Reveal>
+    {/* Members can't buy Spottr, but they can ask for it: their sign-ups are the list we bring to their gym */}
+    <Reveal className="panel p-6 sm:p-10 flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+      <div className="flex-1 flex flex-col items-start gap-3">
+        <span className="px-3 py-1 rounded-full bg-lime text-[13px] font-semibold text-ink">For members</span>
+        <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-ink leading-[1.1]">Want Spottr at your gym?</h2>
+        <p className="text-lg text-ink-2 max-w-lg">
+          Join the waitlist for the gym you train at. Once enough of its members ask, we take the list to them.
+        </p>
+      </div>
+      <button type="button" onClick={openWaitlist} className={`${primaryButton} shrink-0 self-start sm:self-auto`}>
+        Join the waitlist
+      </button>
     </Reveal>
     <Reveal className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {[
