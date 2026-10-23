@@ -1,18 +1,14 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
 import { Link } from '../router';
 import { Logo } from '../components/Logo';
 import { openRequestDemo } from '../requestDemo/RequestDemo';
 
-const LINKS: { to: string; label: string; external?: boolean }[] = [
+const LINKS: { to: string; label: string }[] = [
   { to: '/gyms/overview', label: 'Overview' },
   { to: '/gyms/locations', label: 'Locations' },
   { to: '/gyms/floor', label: 'Floor' },
   { to: '/gyms/world-map', label: 'Cameras' },
   { to: '/gyms/members', label: 'Members' },
-  { to: '/demo', label: 'Member app', external: true },
-  { to: '/gyms/privacy', label: 'Privacy' },
-  { to: '/gyms/pilot', label: 'Pricing' },
 ];
 
 export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
@@ -29,7 +25,6 @@ export const GymNav: React.FC<{ pathname: string }> = ({ pathname }) => {
           }`}
         >
           {link.label}
-          {link.external && <ArrowUpRight className="w-3.5 h-3.5 stroke-[1.75]" aria-hidden />}
         </Link>
       );
     });

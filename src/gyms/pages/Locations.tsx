@@ -117,7 +117,7 @@ export const Locations: React.FC = () => (
         </p>
       </div>
       <Link
-        to="/gyms/pilot"
+        to="/pricing"
         className="shrink-0 inline-flex items-center gap-1 px-5 py-2.5 rounded-full bg-accent-ink text-white text-sm font-semibold hover:bg-accent-deep transition-colors self-start sm:self-auto"
       >
         How a pilot works

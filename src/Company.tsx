@@ -5,15 +5,16 @@
  * (landing/Chapter.tsx) and shows the real product in place, so the page only links away at the very end.
  */
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowDown, Cctv, Gift, LayoutDashboard, PersonStanding, Smartphone } from 'lucide-react';
 import { Link } from './router';
 import { openRequestDemo } from './requestDemo/RequestDemo';
-import { Logo } from './components/Logo';
+import { CONTACT_EMAIL, MAILTO, SiteFooter } from './site/SiteFooter';
+import { CHAPTER_IDS, ChapterLink, NAV, SiteNav } from './site/SiteNav';
 import { IconDot, OpenArrow, TILE_TONES } from './components/Tile';
 import { FloorStatus } from './gyms/components/FloorNow';
 import { MEMBER_PROFILE } from './mocks/memberData';
-import { Chapter, ChapterProps, Reveal, scrollToId, TimelineRail, useActiveChapter, useScrollProgress } from './landing/Chapter';
+import { Chapter, ChapterProps, Reveal, TimelineRail, useActiveChapter, useScrollProgress } from './landing/Chapter';
 import {
   LiveReplay,
   NextWorkout,
@@ -27,102 +28,17 @@ import {
 } from './landing/previews';
 
 const NAME = MEMBER_PROFILE.name;
-const CONTACT_EMAIL = 'info@tryspottr.app';
-const MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Spottr pilot for our gym')}`;
 
 const primaryButton =
   'inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent-ink text-white font-semibold hover:bg-accent-deep transition-colors cursor-pointer';
 const quietButton =
   'inline-flex items-center gap-1.5 px-5 py-3 rounded-full text-ink font-medium hover:bg-white/60 transition-colors cursor-pointer';
 
-// In-page navigation: each link jumps to the first chapter of its group and lights up while any of them is on screen
-const NAV: { label: string; chapters: string[] }[] = [
-  { label: 'How it works', chapters: ['walk-in', 'set'] },
-  { label: 'Members', chapters: ['logged', 'morning'] },
-  { label: 'Gyms', chapters: ['floor', 'slipping'] },
-  { label: 'Privacy', chapters: ['privacy'] },
-  { label: 'Pricing', chapters: ['pays', 'start'] },
-];
-const CHAPTER_IDS = NAV.flatMap((n) => n.chapters);
-
 const FACTS: [typeof Cctv, string][] = [
   [Cctv, 'Uses your existing cameras'],
   [PersonStanding, 'Nothing for members to wear'],
   [Gift, 'Free for your members'],
 ];
-
-/** In-page link: scrolls to the section instead of jumping, and still works as a plain anchor without JS. */
-const JumpLink: React.FC<{ to: string; className: string; children: React.ReactNode; current?: boolean }> = ({
-  to,
-  className,
-  children,
-  current,
-}) => (
-  <a
-    href={`#${to}`}
-    aria-current={current ? 'location' : undefined}
-    onClick={(e) => {
-      e.preventDefault();
-      scrollToId(to);
-    }}
-    className={className}
-  >
-    {children}
-  </a>
-);
-
-/** Sticks to the top once the company section reaches it, so it never covers the video hero. */
-const CompanyNav: React.FC<{ onLogoClick: () => void; active: string | null; progress: number }> = ({
-  onLogoClick,
-  active,
-  progress,
-}) => (
-  <header className="sticky top-0 z-30 px-3 sm:px-4 pt-3">
-    <div className="glass max-w-[1100px] mx-auto rounded-full h-14 pl-5 pr-2 flex items-center justify-between gap-4">
-      <a
-        href="/"
-        aria-label="Spottr, back to top"
-        onClick={(e) => {
-          e.preventDefault();
-          onLogoClick();
-        }}
-        className="shrink-0"
-      >
-        <Logo />
-      </a>
-      <nav aria-label="Sections" className="hidden md:flex items-center gap-0.5">
-        {NAV.map((n) => {
-          const on = active !== null && n.chapters.includes(active);
-          return (
-            <JumpLink
-              key={n.label}
-              to={n.chapters[0]}
-              current={on}
-              className={`px-3.5 py-2 rounded-full text-sm font-medium transition-colors ${
-                on ? 'bg-ink text-white' : 'text-ink-2 hover:text-ink hover:bg-white/60'
-              }`}
-            >
-              {n.label}
-            </JumpLink>
-          );
-        })}
-      </nav>
-      <button
-        type="button"
-        onClick={() => openRequestDemo()}
-        className="shrink-0 inline-flex items-center h-10 px-5 rounded-full text-sm font-semibold bg-accent-ink text-white hover:bg-accent-deep transition-colors cursor-pointer"
-      >
-        Request a demo
-      </button>
-    </div>
-    {/* Phones have no rail: a thin progress line under the capsule does its job */}
-    <div aria-hidden className="lg:hidden max-w-[1100px] mx-auto px-8 mt-1.5">
-      <div className="h-0.5 rounded-full bg-line/70">
-        <div className="h-full rounded-full bg-accent" style={{ width: `${progress * 100}%` }} />
-      </div>
-    </div>
-  </header>
-);
 
 /** Who it's for and the one-line promise, before the story starts. */
 const Intro: React.FC = () => (
@@ -143,10 +59,10 @@ const Intro: React.FC = () => (
       <button type="button" onClick={() => openRequestDemo()} className={primaryButton}>
         Request a demo
       </button>
-      <JumpLink to="walk-in" className={quietButton}>
+      <ChapterLink to="walk-in" className={quietButton}>
         Follow one workout
         <ArrowDown className="w-4 h-4" aria-hidden />
-      </JumpLink>
+      </ChapterLink>
     </div>
   </Reveal>
 );
@@ -195,36 +111,23 @@ const Contact: React.FC = () => (
   </section>
 );
 
-const Footer: React.FC = () => (
-  <footer className="max-w-[1100px] mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-ink-2">
-    <Logo className="h-6" />
-    <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2">
-      <Link to="/demo" className="hover:text-ink">
-        Member demo
-      </Link>
-      <Link to="/gyms/overview" className="hover:text-ink">
-        Gym demo
-      </Link>
-      <Link to="/gyms/privacy" className="hover:text-ink">
-        Privacy
-      </Link>
-      <Link to="/gyms/pilot" className="hover:text-ink">
-        Pilot details
-      </Link>
-      <a href={MAILTO} className="hover:text-ink">
-        {CONTACT_EMAIL}
-      </a>
-    </nav>
-    <p className="text-xs text-ink-3">The demo gym and its data are fictional.</p>
-  </footer>
-);
-
 export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => {
   const felix = useFelix();
   const railRef = useRef<HTMLDivElement>(null);
   const progress = useScrollProgress(railRef);
   const active = useActiveChapter(CHAPTER_IDS);
   const activeIndex = active ? CHAPTER_IDS.indexOf(active) : -1;
+
+  // Links from other pages ("/#pays") land on their chapter. Once more after a moment: the clip data and fonts
+  // arriving can still shift the chapters above it.
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!CHAPTER_IDS.includes(id)) return;
+    const land = () => document.getElementById(id)?.scrollIntoView();
+    land();
+    const timer = window.setTimeout(land, 600);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const chapters: Omit<ChapterProps, 'state'>[] = [
     {
@@ -288,6 +191,7 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
       time: 'Every visit',
       title: "What the cameras don't do",
       line: "Spottr reads body pose. Here's what that means for your members, limits included.",
+      link: { to: '/privacy', label: 'Learn more about privacy' },
       visual: <PrivacyList />,
     },
     {
@@ -297,7 +201,7 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
       title: 'It pays for itself',
       line: 'Priced by the size of your gym, free for your members. Pick yours to see the price and the break-even.',
       note: "Pilot pricing hasn't been tested with paying gyms yet. Break-even is the price divided by typical monthly dues for that size.",
-      link: { to: '/gyms/pilot', label: 'See pilot details' },
+      link: { to: '/pricing', label: 'Learn more about pricing' },
       visual: <PricingCard />,
       flip: true,
     },
@@ -312,7 +216,7 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
 
   return (
     <>
-      <CompanyNav onLogoClick={onLogoClick} active={active} progress={progress} />
+      <SiteNav onLogoClick={onLogoClick} active={NAV.find((n) => active !== null && n.chapters.includes(active))?.label ?? null} progress={progress} />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
         <Intro />
         <div ref={railRef} className="relative lg:pl-16 flex flex-col gap-28 sm:gap-40 py-24 sm:py-32">
@@ -323,7 +227,7 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
         </div>
         <Contact />
       </div>
-      <Footer />
+      <SiteFooter />
     </>
   );
 };

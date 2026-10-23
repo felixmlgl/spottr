@@ -4,7 +4,8 @@ Automatic workout tracking from existing gym cameras.
 
 - `/`: welcome page (looping gym clips, one "See how it works" button, pause control). Below the hero: the landing story for gym owners (`/#gyms`; old `/gyms` links are forwarded here), told as one member's evening in chapters
 - `/demo`: member app (old `/?clip=…&person=…` links are forwarded here)
-- `/gyms/*`: gym operator demo (`/gyms/overview`, `/floor`, `/world-map`, `/members`, `/privacy`, `/pilot`)
+- `/pricing`, `/privacy`: subpages of the main website (old `/gyms/pilot` and `/gyms/privacy` links are forwarded here)
+- `/gyms/*`: gym operator demo (`/gyms/overview`, `/locations`, `/floor`, `/world-map`, `/members`)
 
 Stack: Vite + React + TypeScript + Tailwind v4. Deployed on Vercel (tryspottr.app) from `main`.
 Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs with the logo's Hoefler Text) for headings and big numerals, Instrument Sans for UI text. Accent `#4D80FF` (logo blue) for fills; `accent-ink` `#2A5CDB` for small text and filled buttons. Lime `#C7FF6A` means done / live / go: a fill with ink text, the `marker` highlighter, or a color on video; never text on white. Tokens and utilities (`glass`, `panel`, `num`, `marker`, `hatch`) live in `src/index.css`; the tick gauge is `src/components/TickGauge.tsx`. A CSS `mask`, `filter` or `opacity` on an ancestor stops `glass` from blurring the page behind it.
@@ -26,10 +27,11 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 
 ## Project structure
 
-- `src/main.tsx`: entry point. Picks the page by URL (`/`, `/gyms/*`, everything else = member app) and renders Vercel Analytics.
+- `src/main.tsx`: entry point. Picks the page by URL (`/`, `/pricing` and `/privacy`, `/gyms/*`, `/demo`, everything else = 404) and renders Vercel Analytics.
 - `src/router.tsx`: small pathname router (`usePathname`, `navigate`, `Link`). No router library.
 - `src/Welcome.tsx`: welcome page at `/`.
 - `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (the request-a-demo popup, plus mailto info@tryspottr.app), demos, footer. Lazy-loaded.
+- `src/site/`: the main website's subpages (`SitePages.tsx`, `Pricing.tsx`, `Privacy.tsx`) and the top bar and footer they share with the landing page (`SiteNav.tsx`, `SiteFooter.tsx`). Top bar and footer always lead to a landing chapter (`/#pays`); the chapters link on to the subpages ("Learn more").
 - `src/landing/`: `Chapter.tsx` (chapter template, timeline rail, active-chapter hook) and `previews.tsx` (chapter visuals built from the real clip and dashboard pieces).
 - `src/requestDemo/`: the "Request a demo" popup (gym size and price, then contact details). `openRequestDemo()` opens it from anywhere; `RequestDemoHost` is mounted once in `main.tsx`.
 - `api/request-demo.ts`: Vercel Function behind the popup; emails the request through Resend (`RESEND_API_KEY`, see `.env.example`). `vite.config.ts` serves the same handler in dev and prints the email when no key is set.

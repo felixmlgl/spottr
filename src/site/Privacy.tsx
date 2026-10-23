@@ -1,8 +1,8 @@
 import React from 'react';
 import { Check, Clock } from 'lucide-react';
-import { openRequestDemo } from '../../requestDemo/RequestDemo';
-import { Card, PageHeader } from '../components/ui';
-import { Disclosure } from '../../components/Disclosure';
+import { openRequestDemo } from '../requestDemo/RequestDemo';
+import { Card, PageHeader } from '../gyms/components/ui';
+import { Disclosure } from '../components/Disclosure';
 
 interface PrivacyItem {
   title: string;

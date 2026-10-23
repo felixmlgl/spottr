@@ -5,7 +5,6 @@
 
 import React, { useMemo, useState } from 'react';
 import { Check, Loader2, Send } from 'lucide-react';
-import { Link } from '../router';
 import { useClipData } from '../hooks/useClipData';
 import { getPipelineDetectionsAtTime, pipelinePersonToWorkoutSummary } from '../services/pipelineAdapter';
 import { defaultPersonId, spotlightTime, summaryToWorkout, trackedSeconds, workoutHistory, workoutMuscles } from '../services/memberSession';
@@ -18,7 +17,7 @@ import { CheckDot } from '../components/CheckDot';
 import { Disclosure } from '../components/Disclosure';
 import { TierPricing } from '../components/TierPricing';
 import { PILOT_STEPS } from '../gyms/components/BusinessCards';
-import { AVAILABLE_TODAY, BLUR_LIMITS } from '../gyms/pages/Privacy';
+import { AVAILABLE_TODAY, BLUR_LIMITS } from '../site/Privacy';
 import { MEMBER_PROFILE } from '../mocks/memberData';
 import { PoseSkeleton } from '../types/schema';
 
@@ -255,9 +254,6 @@ export const PrivacyList: React.FC = () => (
     <p className="text-sm text-ink-2">
       <span className="font-semibold text-ink">Today's limit:</span> {BLUR_LIMITS[0]}
     </p>
-    <Link to="/gyms/privacy" className="self-start text-sm font-semibold text-accent-ink hover:text-ink">
-      Everything we do and don't do yet ›
-    </Link>
   </div>
 );
 
