@@ -17,12 +17,27 @@ if (window.location.pathname === '/' && (initialParams.has('clip') || initialPar
 if (/^\/gyms\/?$/.test(window.location.pathname)) {
   window.history.replaceState({}, '', `/${window.location.search}#gyms`);
 }
+// Pricing and privacy used to be pages of the gym demo; they're now pages of the main website
+const MOVED: Record<string, string> = {'/gyms/pilot': '/pricing', '/gyms/privacy': '/privacy'};
+const moved = MOVED[window.location.pathname.replace(/\/+$/, '')];
+if (moved) {
+  window.history.replaceState({}, '', `${moved}${window.location.search}${window.location.hash}`);
+}
 
 // Gym operator demo is only loaded when visiting /gyms
 const GymsApp = lazy(() => import('./gyms/GymsApp.tsx').then((m) => ({default: m.GymsApp})));
+const SitePages = lazy(() => import('./site/SitePages.tsx').then((m) => ({default: m.SitePages})));
 
 function Page({pathname}: {pathname: string}) {
   if (pathname === '/') return <Welcome />;
+  const sitePage = pathname.replace(/\/+$/, '');
+  if (sitePage === '/pricing' || sitePage === '/privacy') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <SitePages pathname={sitePage} />
+      </Suspense>
+    );
+  }
   if (pathname === '/gyms' || pathname.startsWith('/gyms/')) {
     return (
       <Suspense fallback={<div className="min-h-screen bg-white" />}>
