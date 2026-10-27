@@ -8,6 +8,9 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 
 const OPEN_EVENT = 'spottr:waitlist';
 
+/** The waitlist section of the privacy page ("/privacy#member-waitlist"). Not "#waitlist": that opens the popup */
+export const PRIVACY_ANCHOR = 'member-waitlist';
+
 const WaitlistDialog = lazy(() => import('./WaitlistDialog').then((m) => ({ default: m.WaitlistDialog })));
 
 export interface WaitlistPrefill {

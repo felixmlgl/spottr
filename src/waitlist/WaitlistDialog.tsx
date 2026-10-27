@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { Check, Copy, Loader2, Share } from 'lucide-react';
 import { CheckDot } from '../components/CheckDot';
 import { Field, inputClass, Popup, PopupHeading, primaryButton } from '../components/Popup';
-import type { WaitlistPrefill } from './Waitlist';
+import { PRIVACY_ANCHOR, type WaitlistPrefill } from './Waitlist';
 
 const CONTACT_EMAIL = 'info@tryspottr.app';
 const TITLE_ID = 'waitlist-title';
@@ -28,8 +28,12 @@ const mailtoFor = (fields: Fields, shareName: boolean) => {
   return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Waitlist: ${fields.gym}`)}&body=${encodeURIComponent(body)}`;
 };
 
-/** Opens this popup with the gym already filled in (main.tsx forwards "/waitlist" to "/#waitlist"). */
-const linkFor = ({ gym, city }: Fields) => `${window.location.origin}/waitlist?${new URLSearchParams({ gym, city })}`;
+/**
+ * Opens this popup with the gym already filled in (main.tsx forwards "/waitlist" to "/#waitlist").
+ * "src=share" marks the sign-ups that came from members passing it on.
+ */
+const linkFor = ({ gym, city }: Fields) =>
+  `${window.location.origin}/waitlist?${new URLSearchParams({ gym, city, src: 'share' })}`;
 
 /** The link to pass on: the share sheet where there is one, else the clipboard. */
 const PassItOn: React.FC<{ fields: Fields }> = ({ fields }) => {
@@ -101,6 +105,8 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
           ...fields,
           shareName,
           page: `${window.location.pathname}${window.location.hash}`,
+          // Where the visit came from, e.g. "?src=flyer" on a QR code or "?src=share" on a member's link
+          source: new URLSearchParams(window.location.search).get('src') ?? '',
           // Honeypot: people never see this field, bots fill it in
           website: String(new FormData(e.currentTarget).get('website') ?? ''),
         }),
@@ -186,7 +192,13 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
         </p>
       )}
       <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3">
-        <p className="text-xs text-ink-2">We only email you about Spottr at your gym.</p>
+        <p className="text-xs text-ink-2">
+          We only email you about Spottr at your gym.{' '}
+          {/* A new tab, so the form stays filled in */}
+          <a href={`/privacy#${PRIVACY_ANCHOR}`} target="_blank" rel="noopener" className="font-semibold text-accent-ink hover:text-ink">
+            Privacy
+          </a>
+        </p>
         <button type="submit" disabled={status === 'sending'} className={primaryButton}>
           {status === 'sending' && <Loader2 className="w-4 h-4 animate-spin" aria-hidden />}
           Join the waitlist
