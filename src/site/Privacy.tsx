@@ -73,7 +73,7 @@ export const BLUR_LIMITS = [
   'The annotated review video the pipeline can export is not blurred.',
 ];
 
-// The members' waitlist: mirrors api/join-waitlist.ts and db/waitlist.sql
+// The members' waitlist: mirrors api/join-waitlist.ts, api/waitlist-link.ts and db/waitlist.sql
 const WAITLIST: PrivacyItem[] = [
   {
     title: 'What we store',
@@ -85,11 +85,11 @@ const WAITLIST: PrivacyItem[] = [
   },
   {
     title: 'What we use your email for',
-    body: 'To tell you when Spottr is at your gym. Confirming your email and unsubscribing by link aren\u2019t built yet.',
+    body: 'To send you a link that confirms your sign-up (the same email has a link to remove it), and later to tell you when Spottr is at your gym.',
   },
   {
     title: 'Where it\u2019s kept, and removal',
-    body: 'In a Postgres database hosted by Neon in the US (Washington, D.C.). Write to info@tryspottr.app and we\u2019ll delete your sign-up.',
+    body: 'In a Postgres database hosted by Neon in the US (Washington, D.C.); emails go out through Resend. The link in our email deletes your sign-up, or write to info@tryspottr.app.',
   },
 ];
 
