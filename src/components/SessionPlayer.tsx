@@ -75,12 +75,18 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
 
   const lastRepRef = useRef<number>(0);
 
-  const activeVideoUrl = data.videoUrl || '';
+  // Multi-camera clips: one camera at a time, same person id in each
+  const views = data.views ?? [];
+  const [viewIdx, setViewIdx] = useState(0);
+  const view = views[viewIdx];
+  const overlay = view ? view.overlay : data.overlay;
+
+  const activeVideoUrl = (view ? view.videoUrl : data.videoUrl) || '';
   const clipWidth = data.session.width || 1280;
   const clipHeight = data.session.height || 720;
   const hasSets = data.hasSets;
 
-  const detections: DetectionSnapshot[] = getPipelineDetectionsAtTime(data.session, data.overlay, currentTime);
+  const detections: DetectionSnapshot[] = getPipelineDetectionsAtTime(data.session, overlay, currentTime);
   const rawPerson = data.session.people.find((p) => String(p.id) === personId);
   const selectedDetection = detections.find((d) => d.person_id === personId);
   const sets = rawPerson?.sets || [];
@@ -125,6 +131,13 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
   const handleSpeedChange = (speed: number) => {
     setPlaybackSpeed(speed);
     if (videoRef.current) videoRef.current.playbackRate = speed;
+  };
+
+  // The new camera's video picks up at the same moment (see onLoadedMetadata)
+  const switchView = (i: number) => {
+    if (i === viewIdx) return;
+    setVideoLoadError(false);
+    setViewIdx(i);
   };
 
   // Keep the clock in sync with the video (or run an internal timer without one)
@@ -182,7 +195,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
       blurBystanders(
         ctx,
         video,
-        overlayRowsAtTime(data.overlay, video.currentTime),
+        overlayRowsAtTime(overlay, video.currentTime),
         Number(personId),
         data.session.width || w,
         data.session.height || h
@@ -193,7 +206,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
 
     if (overlayMode === 'raw') {
       // Same clock as the privacy blur above
-      drawRawOverlay(ctx, data.overlay, data.session, isVideoRenderable && video ? video.currentTime : currentTime);
+      drawRawOverlay(ctx, overlay, data.session, isVideoRenderable && video ? video.currentTime : currentTime);
       return;
     }
 
@@ -250,7 +263,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
         });
       }
     });
-  }, [detections, personId, activeVideoUrl, videoLoadError, currentTime, data, overlayMode, hasSets]);
+  }, [detections, personId, activeVideoUrl, videoLoadError, currentTime, data, overlay, overlayMode, hasSets]);
 
   useEffect(() => {
     let animId: number;
@@ -267,6 +280,27 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Camera switch (multi-camera clips) */}
+      {views.length > 1 && (
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center p-1 bg-surface rounded-full" role="group" aria-label="Camera">
+            {views.map((v, i) => (
+              <button
+                key={v.label}
+                onClick={() => switchView(i)}
+                aria-pressed={i === viewIdx}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer ${
+                  i === viewIdx ? 'bg-ink text-paper' : 'text-ink-2 hover:text-ink'
+                }`}
+              >
+                {v.label}
+              </button>
+            ))}
+          </div>
+          <span className="text-xs text-ink-2">Same moment, same Person {personId}, other angle.</span>
+        </div>
+      )}
+
       {/* Video */}
       <div
         className="w-full rounded-[24px] overflow-hidden bg-black relative shadow-lg"
@@ -284,6 +318,10 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
             onLoadedMetadata={(e) => {
               const target = e.target as HTMLVideoElement;
               if (target.duration && !isNaN(target.duration)) setDuration(target.duration);
+              // After a camera switch: continue where the other camera was
+              if (currentTime > 0) target.currentTime = Math.min(currentTime, target.duration || currentTime);
+              target.playbackRate = playbackSpeed;
+              if (isPlaying) target.play().catch(() => setIsPlaying(false));
             }}
             onError={() => setVideoLoadError(true)}
           />
@@ -414,7 +452,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
               </div>
               <p className="text-[11px] text-ink-3 leading-relaxed">
                 {overlayMode === 'raw'
-                  ? `Raw overlay.json${data.overlay?.fps ? ` · ${data.overlay.fps} fps` : ''}. Keypoints under 0.3 confidence were removed by the backend.`
+                  ? `Raw overlay.json${overlay?.fps ? ` · ${overlay.fps} fps` : ''}. Keypoints under 0.3 confidence were removed by the backend.`
                   : 'Styled overlay drawn from the same pipeline output.'}{' '}
                 {clipWidth}&times;{clipHeight}
               </p>

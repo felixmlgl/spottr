@@ -33,6 +33,8 @@ export interface PipelinePerson {
   exercises: Record<string, number>;
   muscle_load: Record<string, number>;
   sets: PipelineSet[];
+  /** Multi-camera clips: the cameras that saw this person */
+  cameras?: string[];
 }
 
 export interface PipelineSession {
@@ -57,6 +59,13 @@ export interface PipelineOverlay {
   height?: number;
 }
 
+/** One camera of a multi-camera clip, ready to play */
+export interface LoadedClipView {
+  label: string;
+  videoUrl: string;
+  overlay: PipelineOverlay | null;
+}
+
 export interface LoadedPipelineData {
   session: PipelineSession;
   overlay: PipelineOverlay | null;
@@ -65,6 +74,8 @@ export interface LoadedPipelineData {
   sourceType: 'pipeline' | 'local_sample' | 'mock_fallback';
   errorNote?: string;
   hasSets: boolean;
+  /** Multi-camera clips: every camera; `overlay` and `videoUrl` above are the first one's */
+  views?: LoadedClipView[];
 }
 
 /**
@@ -405,6 +416,13 @@ export async function loadPipelineClip(clip: PipelineClip): Promise<LoadedPipeli
   try {
     let sessionData: PipelineSession | null = null;
     let overlayData: PipelineOverlay | null = null;
+    let views: LoadedClipView[] | undefined;
+
+    // Overlay failure is non-fatal: continue without skeleton
+    const fetchOverlay = (path: string): Promise<PipelineOverlay | null> =>
+      fetch(`${dataBaseUrl}/${path}`)
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null);
 
     if (dataBaseUrl) {
       // Fetch session.json
@@ -413,14 +431,12 @@ export async function loadPipelineClip(clip: PipelineClip): Promise<LoadedPipeli
         sessionData = await sessionRes.json();
       }
 
-      // Fetch overlay.json (optional)
-      try {
-        const overlayRes = await fetch(`${dataBaseUrl}/overlay.json`);
-        if (overlayRes.ok) {
-          overlayData = await overlayRes.json();
-        }
-      } catch {
-        // Overlay failure is non-fatal: continue without skeleton
+      if (clip.views?.length) {
+        const overlays = await Promise.all(clip.views.map((v) => fetchOverlay(v.overlay)));
+        views = clip.views.map((v, i) => ({ label: v.label, videoUrl: `${BASE_URL}${v.video}`, overlay: overlays[i] }));
+        overlayData = overlays[0];
+      } else {
+        overlayData = await fetchOverlay('overlay.json');
       }
     }
 
@@ -473,6 +489,7 @@ export async function loadPipelineClip(clip: PipelineClip): Promise<LoadedPipeli
       videoUrl,
       sourceType: 'pipeline',
       hasSets,
+      views,
     };
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);

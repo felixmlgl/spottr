@@ -145,6 +145,7 @@ export default function App() {
             <MainTab
               person={person}
               history={history}
+              generatedClip={clip.generated}
               onWatchReplay={openReplay}
               onSelectTab={selectTab}
             />

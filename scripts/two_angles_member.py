@@ -1,0 +1,124 @@
+"""Member-app data for the "Two angles" demo clip: one session for both cameras, a pose overlay per camera.
+
+Inputs: the vision pipeline (backend/) run on each camera clip of public/world-demo-angles/, and the world
+service's identities for the same clips (public/world-demo-angles/, see scripts/gym_two_angles.py).
+Each camera's pipeline track is matched to the world identity whose boxes it overlaps, so "Person 2" is the
+same person in both cameras, as on the shared floor map.
+
+    PY=../world-service/.venv/bin/python
+    for c in cam1 cam2; do (cd backend && PYTHONDONTWRITEBYTECODE=1 $PY -m vision.run \
+        ../public/world-demo-angles/segments/session/$c.mp4 --out ../world-service/out/angles_member/$c \
+        --model ../world-service/models/yolo26s-pose.pt --no-gemini --no-render); done
+    python3 scripts/two_angles_member.py world-service/out/angles_member
+
+Output: public/demo-data/angles/ (session.json, cam1/overlay.json, cam2/overlay.json, people/).
+"""
+import json
+import shutil
+import sys
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+WORLD = ROOT / "public" / "world-demo-angles"
+OUT = ROOT / "public" / "demo-data" / "angles"
+CAMERAS = ["cam1", "cam2"]
+
+
+def iou(a, b):
+    w = min(a[2], b[2]) - max(a[0], b[0])
+    h = min(a[3], b[3]) - max(a[1], b[1])
+    if w <= 0 or h <= 0:
+        return 0.0
+    inter = w * h
+    return inter / ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
+
+
+def final_identity(timeline):
+    """World id -> the id it ends up as after the service merged two sightings into one person."""
+    merged = {e["absorbed"]: e["gid"] for e in timeline["events"] if e["type"] == "identities_merged"}
+
+    def resolve(gid):
+        while gid in merged:
+            gid = merged[gid]
+        return gid
+
+    return resolve
+
+
+def match_tracks(overlay, world_rows, resolve):
+    """Pipeline person id -> world person id, by box overlap with the world service's observations."""
+    votes = {}
+    for f in overlay["frames"]:
+        row = min(world_rows, key=lambda r: abs(r["t"] - f["t"]))
+        if abs(row["t"] - f["t"]) > 0.1:
+            continue
+        for p in f["p"]:
+            if p[0] < 0:
+                continue
+            best = max(row["observations"], key=lambda o: iou(p[1:5], o["bbox"]), default=None)
+            if best and best["global_person_id"] and iou(p[1:5], best["bbox"]) > 0.3:
+                gid = resolve(int(best["global_person_id"].lstrip("g")))
+                votes.setdefault(p[0], Counter())[gid] += 1
+    return {pid: c.most_common(1)[0][0] for pid, c in votes.items()}
+
+
+def box_height(overlay, pid):
+    hs = sorted(p[4] - p[2] for f in overlay["frames"] for p in f["p"] if p[0] == pid)
+    return hs[len(hs) // 2] if hs else 0
+
+
+def main():
+    src = Path(sys.argv[1])
+    timeline = json.loads((WORLD / "timeline.json").read_text())
+    seg = timeline["segments"][0]
+    resolve = final_identity(timeline)
+
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "people").mkdir(exist_ok=True)
+    sessions = {}
+    people = {}  # world id -> [(camera, pipeline person, box height)]
+    for cam in CAMERAS:
+        session = json.loads((src / cam / "session.json").read_text())
+        overlay = json.loads((src / cam / "overlay.json").read_text())
+        rows = json.loads((WORLD / seg["camera_urls"][cam]).read_text())["rows"]
+        ids = match_tracks(overlay, rows, resolve)
+        unmatched = [p["id"] for p in session["people"] if p["id"] not in ids]
+        if unmatched:
+            sys.exit(f"{cam}: no world identity for pipeline people {unmatched}")
+        for f in overlay["frames"]:
+            for p in f["p"]:
+                if p[0] > 0:
+                    p[0] = ids[p[0]]
+        (OUT / cam).mkdir(exist_ok=True)
+        (OUT / cam / "overlay.json").write_text(json.dumps(overlay, separators=(",", ":")))
+        sessions[cam] = session
+        for p in session["people"]:
+            people.setdefault(ids[p["id"]], []).append((cam, p, box_height(overlay, p["id"])))
+
+    merged = []
+    for gid, seen in sorted(people.items()):
+        # Sets come from the camera that counted the most reps (never summed: it's the same workout twice);
+        # the thumbnail from the camera where the person is largest.
+        counted = max(seen, key=lambda s: (s[1]["total_reps"], s[2]))[1]
+        cam, largest, _ = max(seen, key=lambda s: s[2])
+        if largest["thumbnail"]:
+            shutil.copy(src / cam / largest["thumbnail"], OUT / "people" / f"p{gid}.jpg")
+        merged.append({
+            **counted,
+            "id": gid,
+            "track_ids": [],
+            "first_seen_s": min(s[1]["first_seen_s"] for s in seen),
+            "last_seen_s": max(s[1]["last_seen_s"] for s in seen),
+            "thumbnail": f"people/p{gid}.jpg" if largest["thumbnail"] else None,
+            "cameras": sorted(s[0] for s in seen),
+        })
+
+    base = sessions[CAMERAS[0]]
+    session = {**base, "video": "two angles", "people": merged}
+    (OUT / "session.json").write_text(json.dumps(session, indent=1))
+    print(f"-> {OUT.relative_to(ROOT)}: " + ", ".join(f"Person {p['id']} ({' + '.join(p['cameras'])}, {p['total_reps']} reps)" for p in merged))
+
+
+if __name__ == "__main__":
+    main()
