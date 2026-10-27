@@ -6,6 +6,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import { handleDemoRequest } from './api/request-demo.ts';
 import { handleWaitlistSignup } from './api/join-waitlist.ts';
 import { handleWaitlistLink } from './api/waitlist-link.ts';
+import { handleWaitlistGyms } from './api/waitlist-gyms.ts';
 
 /** Dev middleware for a JSON POST route served by one of the api/ handlers. */
 function postRoute(handle: (input: unknown, req: IncomingMessage) => Promise<{ status: number; body: unknown }>) {
@@ -49,6 +50,13 @@ function apiPlugin(env: Record<string, string>): Plugin {
         postRoute((input, req) => handleWaitlistSignup(input, env, { origin: `http://${req.headers.host}`, dryRunWithoutKey: true })),
       );
       server.middlewares.use('/api/waitlist-link', postRoute((input) => handleWaitlistLink(input, env)));
+      // Not cached here, unlike on Vercel: new confirmations show up right away
+      server.middlewares.use('/api/waitlist-gyms', async (_req, res) => {
+        const result = await handleWaitlistGyms(env);
+        res.setHeader('Content-Type', 'application/json');
+        res.statusCode = result.status;
+        res.end(JSON.stringify(result.body));
+      });
 
       server.middlewares.use('/api/recap', async (req, res) => {
         if (req.method !== 'POST') {

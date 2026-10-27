@@ -11,6 +11,7 @@ import { Check, Copy, Loader2, MailCheck, Share } from 'lucide-react';
 import { CheckDot } from '../components/CheckDot';
 import { Field, inputClass, Popup, PopupHeading, primaryButton } from '../components/Popup';
 import { PRIVACY_ANCHOR, type WaitlistLink, type WaitlistPrefill } from './Waitlist';
+import { findGym, GymPicker, useWaitlistGyms } from './GymPicker';
 import type { WaitlistStatus } from '../../api/join-waitlist';
 
 const CONTACT_EMAIL = 'info@tryspottr.app';
@@ -103,6 +104,9 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
   const [shareName, setShareName] = useState(false);
   const [status, setStatus] = useState<'idle' | 'sending' | 'error' | WaitlistStatus>('idle');
   const [dryRun, setDryRun] = useState(false);
+  const gyms = useWaitlistGyms();
+  // The gym these fields name, if other members confirmed it: its member count (from 3) makes the case
+  const known = findGym(gyms, fields.gym, fields.city);
 
   const update = (key: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement>) => setFields((f) => ({ ...f, [key]: e.target.value }));
 
@@ -153,7 +157,10 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
           <PopupHeading id={TITLE_ID} label="Join the waitlist" title={`Check your inbox, ${firstName}.`}>
             {status === 'sent' ? (
               <>
-                We sent a link to {email}. Confirm it so your sign-up counts for {fields.gym}.
+                We sent a link to {email}.{' '}
+                {known?.members
+                  ? `Confirm it to join the ${known.members} members from ${known.gym} who already asked.`
+                  : `Confirm it so your sign-up counts for ${fields.gym}.`}
               </>
             ) : (
               <>
@@ -178,9 +185,13 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
         it&rsquo;s there.
       </PopupHeading>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Your gym">
-          <input value={fields.gym} onChange={update('gym')} required maxLength={150} autoComplete="off" className={inputClass} placeholder="Iron District Fitness" />
-        </Field>
+        <GymPicker
+          label="Your gym"
+          gyms={gyms}
+          value={fields.gym}
+          onChange={(gym) => setFields((f) => ({ ...f, gym }))}
+          onPick={({ gym, city }) => setFields((f) => ({ ...f, gym, city }))}
+        />
         <Field label="City">
           <input value={fields.city} onChange={update('city')} required maxLength={100} autoComplete="address-level2" className={inputClass} placeholder="Oakland" />
         </Field>
@@ -200,6 +211,11 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
           />
         </Field>
       </div>
+      {known?.members && (
+        <p className="-mt-1 text-sm text-ink">
+          <span className="marker font-semibold">{known.members} members</span> of {known.gym} already asked. Add yours.
+        </p>
+      )}
       <label className="flex items-start gap-3 text-sm text-ink leading-relaxed cursor-pointer">
         <input
           type="checkbox"
