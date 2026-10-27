@@ -25,8 +25,8 @@ export interface PipelineClip {
 export const BASE_URL = "";
 
 const ANGLES_VIEWS: ClipView[] = [
-  { label: "Camera 1", video: "/world-demo-angles/segments/session/cam1.mp4", overlay: "cam1/overlay.json" },
-  { label: "Camera 2", video: "/world-demo-angles/segments/session/cam2.mp4", overlay: "cam2/overlay.json" },
+  { label: "Camera 1", video: "/videosCorrect/angles-cam1.mp4", overlay: "cam1/overlay.json" },
+  { label: "Camera 2", video: "/videosCorrect/angles-cam2.mp4", overlay: "cam2/overlay.json" },
 ];
 
 export const PIPELINE_CLIPS: PipelineClip[] = [

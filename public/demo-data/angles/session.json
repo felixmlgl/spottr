@@ -1,21 +1,21 @@
 {
  "video": "two angles",
- "duration_s": 5.83,
+ "duration_s": 7.29,
  "width": 854,
  "height": 480,
- "fps": 30.0,
+ "fps": 24.0,
  "pipeline": {
   "pose_model": "yolo26s-pose.pt",
   "imgsz": 960,
   "tracker": "botsort+reid",
-  "processing_fps": 10.8
+  "processing_fps": 9.6
  },
  "people": [
   {
    "id": 1,
    "track_ids": [],
    "first_seen_s": 0.0,
-   "last_seen_s": 5.83,
+   "last_seen_s": 7.29,
    "thumbnail": "people/p1.jpg",
    "total_reps": 0,
    "exercises": {},
@@ -30,7 +30,7 @@
    "id": 2,
    "track_ids": [],
    "first_seen_s": 0.0,
-   "last_seen_s": 5.83,
+   "last_seen_s": 7.29,
    "thumbnail": "people/p2.jpg",
    "total_reps": 0,
    "exercises": {},

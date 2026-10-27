@@ -1,15 +1,19 @@
 """Member-app data for the "Two angles" demo clip: one session for both cameras, a pose overlay per camera.
 
-Inputs: the vision pipeline (backend/) run on each camera clip of public/world-demo-angles/, and the world
-service's identities for the same clips (public/world-demo-angles/, see scripts/gym_two_angles.py).
-Each camera's pipeline track is matched to the world identity whose boxes it overlaps, so "Person 2" is the
-same person in both cameras, as on the shared floor map.
+1. clips: the segment of videosCorrect/GymAngle1.mp4 / GymAngle2.mp4 that the world map shows, without the
+   world export's face pixelation (the member app pixelates everyone but the member itself, like the other
+   demo clips): public/videosCorrect/angles-cam1.mp4, angles-cam2.mp4.
+2. The vision pipeline (backend/) on each of those clips.
+3. merge: each camera's pipeline track is matched to the world identity whose boxes it overlaps
+   (public/world-demo-angles/, see scripts/gym_two_angles.py), so "Person 2" is the same person in both
+   cameras, as on the shared floor map.
 
-    PY=../world-service/.venv/bin/python
-    for c in cam1 cam2; do (cd backend && PYTHONDONTWRITEBYTECODE=1 $PY -m vision.run \
-        ../public/world-demo-angles/segments/session/$c.mp4 --out ../world-service/out/angles_member/$c \
+    PY=world-service/.venv/bin/python
+    $PY scripts/two_angles_member.py clips
+    for c in cam1 cam2; do (cd backend && PYTHONDONTWRITEBYTECODE=1 ../$PY -m vision.run \
+        ../public/videosCorrect/angles-$c.mp4 --out ../world-service/out/angles_member/$c \
         --model ../world-service/models/yolo26s-pose.pt --no-gemini --no-render); done
-    python3 scripts/two_angles_member.py world-service/out/angles_member
+    python3 scripts/two_angles_member.py merge world-service/out/angles_member
 
 Output: public/demo-data/angles/ (session.json, cam1/overlay.json, cam2/overlay.json, people/).
 """
@@ -17,12 +21,46 @@ import json
 import shutil
 import sys
 from collections import Counter
+from fractions import Fraction
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 WORLD = ROOT / "public" / "world-demo-angles"
 OUT = ROOT / "public" / "demo-data" / "angles"
 CAMERAS = ["cam1", "cam2"]
+SOURCES = {"cam1": ROOT / "videosCorrect" / "GymAngle1.mp4", "cam2": ROOT / "videosCorrect" / "GymAngle2.mp4"}
+CLIPS = {c: ROOT / "public" / "videosCorrect" / f"angles-{c}.mp4" for c in CAMERAS}
+
+
+def cut_clips():
+    """Same time window as the world export's clips (both cameras start together), source frame rate."""
+    import av
+
+    seg = json.loads((WORLD / "timeline.json").read_text())["segments"][0]
+    for cam in CAMERAS:
+        inp = av.open(str(SOURCES[cam]))
+        vs = inp.streams.video[0]
+        rate = Fraction(vs.average_rate)
+        out = av.open(str(CLIPS[cam]), "w", options={"movflags": "faststart"})
+        st = out.add_stream("libx264", rate=rate)
+        st.width, st.height, st.pix_fmt = vs.codec_context.width, vs.codec_context.height, "yuv420p"
+        st.options = {"crf": "26", "preset": "slow", "g": "24"}
+        n = 0
+        for f in inp.decode(vs):
+            t = float(f.pts * vs.time_base)
+            if t < seg["from_s"] - 1e-3:
+                continue
+            if t > seg["to_s"]:
+                break
+            g = f.reformat(format="yuv420p")
+            g.pts, g.time_base = n, 1 / rate
+            n += 1
+            for p in st.encode(g):
+                out.mux(p)
+        for p in st.encode():
+            out.mux(p)
+        out.close()
+        print(f"-> {CLIPS[cam].relative_to(ROOT)}: {n} frames, {CLIPS[cam].stat().st_size / 1e6:.1f} MB")
 
 
 def iou(a, b):
@@ -68,8 +106,7 @@ def box_height(overlay, pid):
     return hs[len(hs) // 2] if hs else 0
 
 
-def main():
-    src = Path(sys.argv[1])
+def merge(src: Path):
     timeline = json.loads((WORLD / "timeline.json").read_text())
     seg = timeline["segments"][0]
     resolve = final_identity(timeline)
@@ -121,4 +158,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:2] == ["clips"]:
+        cut_clips()
+    elif sys.argv[1:2] == ["merge"] and len(sys.argv) == 3:
+        merge(Path(sys.argv[2]))
+    else:
+        sys.exit(__doc__)
