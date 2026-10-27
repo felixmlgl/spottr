@@ -4,6 +4,7 @@ Automatic workout tracking from existing gym cameras.
 
 - `/`: welcome page (looping gym clips, one "See how it works" button, pause control). Below the hero: the landing story for gym owners (`/#gyms`; old `/gyms` links are forwarded here), told as one member's evening in chapters
 - `/demo`: member app (old `/?clip=…&person=…` links are forwarded here)
+- `/waitlist`: short link that opens the members' waitlist popup over the welcome page (forwarded to `/#waitlist`; `?gym=…&city=…` fills it in)
 - `/pricing`, `/privacy`: subpages of the main website (old `/gyms/pilot` and `/gyms/privacy` links are forwarded here)
 - `/gyms/*`: gym operator demo (`/gyms/overview`, `/locations`, `/floor`, `/world-map`, `/members`)
 
@@ -16,6 +17,7 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - Always work on a new branch. Push the branch, never merge into `main` (`main` deploys live).
 - Before every push: `npm run build` and `npm run lint` must pass.
 - Never commit `.env` files, API keys or secrets.
+- Local work uses the Neon `dev` branch; never point `.env.local` at production's database.
 - Never claim more on privacy pages than the code actually does.
 - Keep commits small with clear messages.
 
@@ -30,11 +32,14 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - `src/main.tsx`: entry point. Picks the page by URL (`/`, `/pricing` and `/privacy`, `/gyms/*`, `/demo`, everything else = 404) and renders Vercel Analytics.
 - `src/router.tsx`: small pathname router (`usePathname`, `navigate`, `Link`). No router library.
 - `src/Welcome.tsx`: welcome page at `/`.
-- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (the request-a-demo popup, plus mailto info@tryspottr.app), demos, footer. Lazy-loaded.
+- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (the request-a-demo popup, plus mailto info@tryspottr.app), the members' waitlist, demos, footer. Lazy-loaded.
 - `src/site/`: the main website's subpages (`SitePages.tsx`, `Pricing.tsx`, `Privacy.tsx`) and the top bar and footer they share with the landing page (`SiteNav.tsx`, `SiteFooter.tsx`). Top bar and footer always lead to a landing chapter (`/#pays`); the chapters link on to the subpages ("Learn more").
 - `src/landing/`: `Chapter.tsx` (chapter template, timeline rail, active-chapter hook) and `previews.tsx` (chapter visuals built from the real clip and dashboard pieces).
 - `src/requestDemo/`: the "Request a demo" popup (gym size and price, then contact details). `openRequestDemo()` opens it from anywhere; `RequestDemoHost` is mounted once in `main.tsx`.
 - `api/request-demo.ts`: Vercel Function behind the popup; emails the request through Resend (`RESEND_API_KEY`, see `.env.example`). `vite.config.ts` serves the same handler in dev and prints the email when no key is set.
+- `src/waitlist/`: the "Join the waitlist" popup for gym members (gym, city, first name, email, then a link to pass on to their gym). `openWaitlist()` opens it from anywhere; `WaitlistHost` is mounted once in `main.tsx`. Shares its dialog shell and form fields with the demo popup (`src/components/Popup.tsx`).
+- `api/join-waitlist.ts`: Vercel Function behind the waitlist popup; stores sign-ups in Postgres at Neon (`DATABASE_URL`, see `.env.example`). Signing up twice for the same gym updates the row. Without `DATABASE_URL`, `npm run dev` prints the sign-up.
+- `db/waitlist.sql`: the waitlist table and the `waitlist_by_gym` view (sign-ups per gym, first names only of members who agreed). Run once per Neon branch (`main` is production, `dev` is for local work); preview deployments get their own copy of `main`.
 - `src/gyms/pricing.ts`: the four price tiers by gym size (keep in sync with the pitch deck); `src/components/TierPricing.tsx` shows them.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.

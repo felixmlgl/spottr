@@ -2,38 +2,47 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig, loadEnv, Plugin } from 'vite';
+import type { IncomingMessage, ServerResponse } from 'http';
 import { handleDemoRequest } from './api/request-demo.ts';
+import { handleWaitlistSignup } from './api/join-waitlist.ts';
+
+/** Dev middleware for a JSON POST route served by one of the api/ handlers. */
+function postRoute(handle: (input: unknown) => Promise<{ status: number; body: unknown }>) {
+  return (req: IncomingMessage, res: ServerResponse) => {
+    res.setHeader('Content-Type', 'application/json');
+    if (req.method !== 'POST') {
+      res.statusCode = 405;
+      res.end(JSON.stringify({ ok: false, error: 'Method Not Allowed' }));
+      return;
+    }
+
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk;
+    });
+
+    req.on('end', async () => {
+      let input: unknown = null;
+      try {
+        input = JSON.parse(body || '{}');
+      } catch {
+        // Handled as missing fields
+      }
+      const result = await handle(input);
+      res.statusCode = result.status;
+      res.end(JSON.stringify(result.body));
+    });
+  };
+}
 
 function apiPlugin(env: Record<string, string>): Plugin {
   return {
     name: 'spottr-api-routes',
     configureServer(server) {
-      // Same handler as the Vercel Function; without RESEND_API_KEY it prints the email to this terminal instead
-      server.middlewares.use('/api/request-demo', (req, res) => {
-        res.setHeader('Content-Type', 'application/json');
-        if (req.method !== 'POST') {
-          res.statusCode = 405;
-          res.end(JSON.stringify({ ok: false, error: 'Method Not Allowed' }));
-          return;
-        }
-
-        let body = '';
-        req.on('data', (chunk) => {
-          body += chunk;
-        });
-
-        req.on('end', async () => {
-          let input: unknown = null;
-          try {
-            input = JSON.parse(body || '{}');
-          } catch {
-            // Handled as missing fields
-          }
-          const result = await handleDemoRequest(input, env, { dryRunWithoutKey: true });
-          res.statusCode = result.status;
-          res.end(JSON.stringify(result.body));
-        });
-      });
+      // Same handlers as the Vercel Functions; without RESEND_API_KEY the demo request is printed to this terminal instead
+      server.middlewares.use('/api/request-demo', postRoute((input) => handleDemoRequest(input, env, { dryRunWithoutKey: true })));
+      // Stores to DATABASE_URL from .env.local (the Neon dev branch); without it the sign-up is printed here
+      server.middlewares.use('/api/join-waitlist', postRoute((input) => handleWaitlistSignup(input, env, { dryRunWithoutDatabase: true })));
 
       server.middlewares.use('/api/recap', async (req, res) => {
         if (req.method !== 'POST') {
