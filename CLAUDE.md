@@ -17,6 +17,7 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - Always work on a new branch. Push the branch, never merge into `main` (`main` deploys live).
 - Before every push: `npm run build` and `npm run lint` must pass.
 - Never commit `.env` files, API keys or secrets.
+- Local work uses the Neon `dev` branch; never point `.env.local` at production's database.
 - Never claim more on privacy pages than the code actually does.
 - Keep commits small with clear messages.
 
@@ -37,7 +38,8 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - `src/requestDemo/`: the "Request a demo" popup (gym size and price, then contact details). `openRequestDemo()` opens it from anywhere; `RequestDemoHost` is mounted once in `main.tsx`.
 - `api/request-demo.ts`: Vercel Function behind the popup; emails the request through Resend (`RESEND_API_KEY`, see `.env.example`). `vite.config.ts` serves the same handler in dev and prints the email when no key is set.
 - `src/waitlist/`: the "Join the waitlist" popup for gym members (gym, city, first name, email, then a link to pass on to their gym). `openWaitlist()` opens it from anywhere; `WaitlistHost` is mounted once in `main.tsx`. Shares its dialog shell and form fields with the demo popup (`src/components/Popup.tsx`).
-- `api/join-waitlist.ts`: Vercel Function behind the waitlist popup. Only validates so far: sign-ups aren't stored yet, so the live site answers 503 (the popup offers email instead) and `npm run dev` prints them.
+- `api/join-waitlist.ts`: Vercel Function behind the waitlist popup; stores sign-ups in Postgres at Neon (`DATABASE_URL`, see `.env.example`). Signing up twice for the same gym updates the row. Without `DATABASE_URL`, `npm run dev` prints the sign-up.
+- `db/waitlist.sql`: the waitlist table and the `waitlist_by_gym` view (sign-ups per gym, first names only of members who agreed). Run once per Neon branch (`main` is production, `dev` is for local work); preview deployments get their own copy of `main`.
 - `src/gyms/pricing.ts`: the four price tiers by gym size (keep in sync with the pitch deck); `src/components/TierPricing.tsx` shows them.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.

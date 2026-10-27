@@ -41,8 +41,8 @@ function apiPlugin(env: Record<string, string>): Plugin {
     configureServer(server) {
       // Same handlers as the Vercel Functions; without RESEND_API_KEY the demo request is printed to this terminal instead
       server.middlewares.use('/api/request-demo', postRoute((input) => handleDemoRequest(input, env, { dryRunWithoutKey: true })));
-      // The waitlist isn't stored yet: sign-ups are printed here
-      server.middlewares.use('/api/join-waitlist', postRoute((input) => handleWaitlistSignup(input, { dryRun: true })));
+      // Stores to DATABASE_URL from .env.local (the Neon dev branch); without it the sign-up is printed here
+      server.middlewares.use('/api/join-waitlist', postRoute((input) => handleWaitlistSignup(input, env, { dryRunWithoutDatabase: true })));
 
       server.middlewares.use('/api/recap', async (req, res) => {
         if (req.method !== 'POST') {
