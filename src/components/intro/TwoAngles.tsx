@@ -157,8 +157,9 @@ export const TwoAngles: React.FC = () => {
             <span className="text-sm font-semibold tabular-nums">{fmtTime(t - seg.from_s)}</span>
           </div>
           <p className="text-[11px] text-ink-3 -mt-1">
-            Green ticks: the moment the service matched one person across both cameras. It decides with a{' '}
-            {data.config.decision_lag_s.toFixed(0)} s look-ahead, so the merge shows up on the map slightly earlier.
+            Blue ticks: the moments the service had enough evidence to match one person across both cameras. It decides with{' '}
+            {data.config.decision_lag_s.toFixed(0)} s of look-ahead (this whole recording), so each person is one identity on the map
+            from the start.
           </p>
         </div>
 
