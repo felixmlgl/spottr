@@ -40,3 +40,21 @@ select
   max(created_at) as last_signup
 from waitlist_signups
 group by gym_key;
+
+-- Gyms the popup never suggests, e.g. a joke name someone confirmed. Hide one (key as in waitlist_by_gym) with:
+--   insert into waitlist_hidden_gyms (gym_key) values ('golds gym | oakland');
+create table if not exists waitlist_hidden_gyms (
+  gym_key text primary key,
+  hidden_at timestamptz not null default now()
+);
+
+-- What the popup suggests while typing (api/waitlist-gyms.ts): gyms with at least one confirmed member, spelled as
+-- their confirmed members spell them. The number of members only from 3, so small numbers never leave the database
+create or replace view waitlist_suggestions as
+select
+  mode() within group (order by gym_name) as gym,
+  mode() within group (order by city) as city,
+  case when count(*) >= 3 then count(*)::int end as members
+from waitlist_signups
+where confirmed_at is not null and gym_key not in (select gym_key from waitlist_hidden_gyms)
+group by gym_key;
