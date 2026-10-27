@@ -1,14 +1,17 @@
 /**
  * The join-the-waitlist popup for gym members: where they train and how to reach them, then a link to pass on to people
  * from the same gym. The more members of one gym sign up, the stronger the case we bring to that gym.
- * The sign-up POSTs to /api/join-waitlist (api/join-waitlist.ts). Opened through openWaitlist() (Waitlist.tsx).
+ * The sign-up POSTs to /api/join-waitlist (api/join-waitlist.ts), which emails a link to confirm it. That link and the
+ * one to remove the sign-up open this popup again (LinkFlow), which posts to /api/waitlist-link.
+ * Opened through openWaitlist() (Waitlist.tsx).
  */
 
-import React, { useState } from 'react';
-import { Check, Copy, Loader2, Share } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Check, Copy, Loader2, MailCheck, Share } from 'lucide-react';
 import { CheckDot } from '../components/CheckDot';
 import { Field, inputClass, Popup, PopupHeading, primaryButton } from '../components/Popup';
-import { PRIVACY_ANCHOR, type WaitlistPrefill } from './Waitlist';
+import { PRIVACY_ANCHOR, type WaitlistLink, type WaitlistPrefill } from './Waitlist';
+import type { WaitlistStatus } from '../../api/join-waitlist';
 
 const CONTACT_EMAIL = 'info@tryspottr.app';
 const TITLE_ID = 'waitlist-title';
@@ -32,11 +35,20 @@ const mailtoFor = (fields: Fields, shareName: boolean) => {
  * Opens this popup with the gym already filled in (main.tsx forwards "/waitlist" to "/#waitlist").
  * "src=share" marks the sign-ups that came from members passing it on.
  */
-const linkFor = ({ gym, city }: Fields) =>
+const linkFor = ({ gym, city }: WaitlistPrefill) =>
   `${window.location.origin}/waitlist?${new URLSearchParams({ gym, city, src: 'share' })}`;
 
+const quietButton =
+  'inline-flex items-center justify-center px-5 py-3 rounded-full text-ink font-medium hover:bg-black/[0.05] transition-colors cursor-pointer';
+
+const devNote = (
+  <p className="text-xs text-ink-2 rounded-xl bg-white/70 ring-1 ring-black/[0.06] px-3 py-2">
+    Local dev: no email was sent. It&rsquo;s printed in the terminal running the dev server, with its links.
+  </p>
+);
+
 /** The link to pass on: the share sheet where there is one, else the clipboard. */
-const PassItOn: React.FC<{ fields: Fields }> = ({ fields }) => {
+const PassItOn: React.FC<{ fields: WaitlistPrefill }> = ({ fields }) => {
   const url = linkFor(fields);
   const [copied, setCopied] = useState(false);
   const canShare = 'share' in navigator;
@@ -89,7 +101,7 @@ const PassItOn: React.FC<{ fields: Fields }> = ({ fields }) => {
 const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> = ({ prefill, onDone }) => {
   const [fields, setFields] = useState<Fields>({ ...EMPTY_FIELDS, ...prefill });
   const [shareName, setShareName] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'error' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error' | WaitlistStatus>('idle');
   const [dryRun, setDryRun] = useState(false);
 
   const update = (key: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement>) => setFields((f) => ({ ...f, [key]: e.target.value }));
@@ -111,27 +123,46 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
           website: String(new FormData(e.currentTarget).get('website') ?? ''),
         }),
       });
-      const data = (await res.json().catch(() => null)) as { ok?: boolean; dryRun?: boolean } | null;
+      const data = (await res.json().catch(() => null)) as { ok?: boolean; status?: WaitlistStatus; dryRun?: boolean } | null;
       if (!res.ok || !data?.ok) throw new Error(`Sign-up failed (${res.status})`);
       setDryRun(Boolean(data.dryRun));
-      setStatus('sent');
+      setStatus(data.status ?? 'sent');
     } catch {
       setStatus('error');
     }
   };
 
-  if (status === 'sent') {
+  if (status === 'sent' || status === 'recently-sent' || status === 'confirmed') {
+    const firstName = fields.name.split(' ')[0];
+    const email = <span className="font-semibold text-ink">{fields.email}</span>;
     return (
       <div className="flex flex-col items-start gap-5">
-        <CheckDot className="w-12 h-12" />
-        <PopupHeading id={TITLE_ID} label="Join the waitlist" title={`You're on the list, ${fields.name.split(' ')[0]}.`}>
-          We&rsquo;ll email you at <span className="font-semibold text-ink">{fields.email}</span> once Spottr is at {fields.gym}.
-        </PopupHeading>
-        {dryRun && (
-          <p className="text-xs text-ink-2 rounded-xl bg-white/70 ring-1 ring-black/[0.06] px-3 py-2">
-            Local dev: nothing was stored. The sign-up is printed in the terminal running the dev server.
-          </p>
+        {status === 'confirmed' ? (
+          <CheckDot className="w-12 h-12" />
+        ) : (
+          // Not done yet: the sign-up only counts once the email is confirmed
+          <span className="w-12 h-12 rounded-full bg-accent/10 text-accent-ink flex items-center justify-center">
+            <MailCheck className="w-6 h-6" aria-hidden />
+          </span>
         )}
+        {status === 'confirmed' ? (
+          <PopupHeading id={TITLE_ID} label="Join the waitlist" title={`You're on the list, ${firstName}.`}>
+            We&rsquo;ll email you at {email} once Spottr is at {fields.gym}.
+          </PopupHeading>
+        ) : (
+          <PopupHeading id={TITLE_ID} label="Join the waitlist" title={`Check your inbox, ${firstName}.`}>
+            {status === 'sent' ? (
+              <>
+                We sent a link to {email}. Confirm it so your sign-up counts for {fields.gym}.
+              </>
+            ) : (
+              <>
+                We emailed {email} a few minutes ago. The link in that email confirms this sign-up too.
+              </>
+            )}
+          </PopupHeading>
+        )}
+        {dryRun && devNote}
         <PassItOn fields={fields} />
         <button type="button" onClick={onDone} className={primaryButton}>
           Done
@@ -208,8 +239,137 @@ const WaitlistFlow: React.FC<{ prefill?: WaitlistPrefill; onDone: () => void }> 
   );
 };
 
-export const WaitlistDialog: React.FC<{ prefill?: WaitlistPrefill; onClose: () => void }> = ({ prefill, onClose }) => (
-  <Popup labelledBy={TITLE_ID} onClose={onClose}>
-    {(close) => <WaitlistFlow prefill={prefill} onDone={close} />}
-  </Popup>
-);
+type LinkResult = WaitlistPrefill & { name: string };
+
+/** A link from the confirmation email: confirming starts right away, removing waits for the member to say so. */
+const LinkFlow: React.FC<{ link: WaitlistLink; onDone: () => void; onSignUp: () => void }> = ({ link, onDone, onSignUp }) => {
+  const confirming = link.action === 'confirm';
+  const [state, setState] = useState<'ask' | 'working' | 'done' | 'invalid' | 'error'>(confirming ? 'working' : 'ask');
+  const [result, setResult] = useState<LinkResult | null>(null);
+
+  const run = async () => {
+    setState('working');
+    try {
+      const res = await fetch('/api/waitlist-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(link),
+      });
+      const data = (await res.json().catch(() => null)) as ({ ok: true } & LinkResult) | { ok: false } | null;
+      if (data?.ok) {
+        setResult(data);
+        setState('done');
+      } else {
+        setState(res.status === 400 || res.status === 404 ? 'invalid' : 'error');
+      }
+    } catch {
+      setState('error');
+    }
+  };
+
+  useEffect(() => {
+    // Confirming twice is harmless (React runs this twice in dev)
+    if (confirming) run();
+  }, []);
+
+  const heading = (title: string, children?: React.ReactNode) => (
+    <PopupHeading id={TITLE_ID} label="Waitlist" title={title}>
+      {children}
+    </PopupHeading>
+  );
+
+  if (state === 'working') {
+    return (
+      <div className="flex flex-col items-start gap-5">
+        <Loader2 className="w-8 h-8 text-accent-ink animate-spin" aria-hidden />
+        {heading(confirming ? 'Confirming your sign-up…' : 'Removing your sign-up…')}
+      </div>
+    );
+  }
+
+  if (state === 'ask') {
+    return (
+      <div className="flex flex-col items-start gap-5">
+        {heading('Remove your sign-up?', "We'll take you off the waitlist for this gym and won't email you about it.")}
+        <div className="flex flex-wrap gap-2">
+          <button type="button" onClick={run} className={primaryButton}>
+            Remove my sign-up
+          </button>
+          <button type="button" onClick={onDone} className={quietButton}>
+            Keep it
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (state === 'done' && result) {
+    return (
+      <div className="flex flex-col items-start gap-5">
+        <CheckDot className="w-12 h-12" />
+        {confirming ? (
+          <>
+            {heading(
+              `You're confirmed, ${result.name.split(' ')[0]}.`,
+              `Your sign-up now counts for ${result.gym}. We'll email you once Spottr is there.`,
+            )}
+            <PassItOn fields={result} />
+          </>
+        ) : (
+          heading("You're off the list.", `Your sign-up for ${result.gym} is deleted.`)
+        )}
+        <button type="button" onClick={onDone} className={primaryButton}>
+          Done
+        </button>
+      </div>
+    );
+  }
+
+  if (state === 'invalid') {
+    return (
+      <div className="flex flex-col items-start gap-5">
+        {confirming
+          ? heading(
+              "This link doesn't work anymore",
+              "It may be from an older email, or the sign-up was removed. Sign up again and we'll send you a new link.",
+            )
+          : heading(
+              "This link doesn't work anymore",
+              `The sign-up may already be removed. If you still get emails from us, write to ${CONTACT_EMAIL}.`,
+            )}
+        <button type="button" onClick={confirming ? onSignUp : onDone} className={primaryButton}>
+          {confirming ? 'Sign up again' : 'Done'}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-5">
+      {heading('Something went wrong', `Try again in a moment, or write to ${CONTACT_EMAIL}.`)}
+      <button type="button" onClick={run} className={primaryButton}>
+        Try again
+      </button>
+    </div>
+  );
+};
+
+export const WaitlistDialog: React.FC<{ prefill?: WaitlistPrefill; link?: WaitlistLink; onClose: () => void }> = ({
+  prefill,
+  link,
+  onClose,
+}) => {
+  // An email link that no longer works can lead back to the form
+  const [activeLink, setActiveLink] = useState(link);
+  return (
+    <Popup labelledBy={TITLE_ID} onClose={onClose}>
+      {(close) =>
+        activeLink ? (
+          <LinkFlow link={activeLink} onDone={close} onSignUp={() => setActiveLink(undefined)} />
+        ) : (
+          <WaitlistFlow prefill={prefill} onDone={close} />
+        )
+      }
+    </Popup>
+  );
+};

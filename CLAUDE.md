@@ -4,7 +4,7 @@ Automatic workout tracking from existing gym cameras.
 
 - `/`: welcome page (looping gym clips, one "See how it works" button, pause control). Below the hero: the landing story for gym owners (`/#gyms`; old `/gyms` links are forwarded here), told as one member's evening in chapters
 - `/demo`: member app (old `/?clip=…&person=…` links are forwarded here)
-- `/waitlist`: short link that opens the members' waitlist popup over the welcome page (forwarded to `/#waitlist`; `?gym=…&city=…` fills it in)
+- `/waitlist`: short link that opens the members' waitlist popup over the welcome page (forwarded to `/#waitlist`; `?gym=…&city=…` fills it in, `?confirm=…` / `?leave=…` are the confirmation email's links)
 - `/pricing`, `/privacy`: subpages of the main website (old `/gyms/pilot` and `/gyms/privacy` links are forwarded here)
 - `/gyms/*`: gym operator demo (`/gyms/overview`, `/locations`, `/floor`, `/world-map`, `/members`)
 
@@ -38,8 +38,9 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - `src/requestDemo/`: the "Request a demo" popup (gym size and price, then contact details). `openRequestDemo()` opens it from anywhere; `RequestDemoHost` is mounted once in `main.tsx`.
 - `api/request-demo.ts`: Vercel Function behind the popup; emails the request through Resend (`RESEND_API_KEY`, see `.env.example`). `vite.config.ts` serves the same handler in dev and prints the email when no key is set.
 - `src/waitlist/`: the "Join the waitlist" popup for gym members (gym, city, first name, email, then a link to pass on to their gym). `openWaitlist()` opens it from anywhere; `WaitlistHost` is mounted once in `main.tsx`. Shares its dialog shell and form fields with the demo popup (`src/components/Popup.tsx`).
-- `api/join-waitlist.ts`: Vercel Function behind the waitlist popup; stores sign-ups in Postgres at Neon (`DATABASE_URL`, see `.env.example`). Signing up twice for the same gym updates the row. Without `DATABASE_URL`, `npm run dev` prints the sign-up.
-- `db/waitlist.sql`: the waitlist table and the `waitlist_by_gym` view (sign-ups per gym, first names only of members who agreed). Run once per Neon branch (`main` is production, `dev` is for local work); preview deployments get their own copy of `main`.
+- `api/join-waitlist.ts`: Vercel Function behind the waitlist popup; stores sign-ups in Postgres at Neon (`DATABASE_URL`, see `.env.example`) and emails a confirmation link through Resend (at most one per address every 10 minutes). Signing up twice for the same gym updates the row; confirming an email confirms all its gyms. Without `DATABASE_URL` or `RESEND_API_KEY`, `npm run dev` prints instead.
+- `api/waitlist-link.ts`: what the email's links do once the popup opens them: confirm, or remove the sign-up. The links open the site, not this endpoint, so mail scanners that open every link can't confirm or remove anything.
+- `db/waitlist.sql`: the waitlist table (tokens only as SHA-256 hashes) and the `waitlist_by_gym` view (sign-ups per gym, first names only of members who agreed). Run once per Neon branch (`main` is production, `dev` is for local work); preview deployments get their own copy of `main`.
 - `src/gyms/pricing.ts`: the four price tiers by gym size (keep in sync with the pitch deck); `src/components/TierPricing.tsx` shows them.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.

@@ -5,9 +5,10 @@ import { defineConfig, loadEnv, Plugin } from 'vite';
 import type { IncomingMessage, ServerResponse } from 'http';
 import { handleDemoRequest } from './api/request-demo.ts';
 import { handleWaitlistSignup } from './api/join-waitlist.ts';
+import { handleWaitlistLink } from './api/waitlist-link.ts';
 
 /** Dev middleware for a JSON POST route served by one of the api/ handlers. */
-function postRoute(handle: (input: unknown) => Promise<{ status: number; body: unknown }>) {
+function postRoute(handle: (input: unknown, req: IncomingMessage) => Promise<{ status: number; body: unknown }>) {
   return (req: IncomingMessage, res: ServerResponse) => {
     res.setHeader('Content-Type', 'application/json');
     if (req.method !== 'POST') {
@@ -28,7 +29,7 @@ function postRoute(handle: (input: unknown) => Promise<{ status: number; body: u
       } catch {
         // Handled as missing fields
       }
-      const result = await handle(input);
+      const result = await handle(input, req);
       res.statusCode = result.status;
       res.end(JSON.stringify(result.body));
     });
@@ -41,8 +42,13 @@ function apiPlugin(env: Record<string, string>): Plugin {
     configureServer(server) {
       // Same handlers as the Vercel Functions; without RESEND_API_KEY the demo request is printed to this terminal instead
       server.middlewares.use('/api/request-demo', postRoute((input) => handleDemoRequest(input, env, { dryRunWithoutKey: true })));
-      // Stores to DATABASE_URL from .env.local (the Neon dev branch); without it the sign-up is printed here
-      server.middlewares.use('/api/join-waitlist', postRoute((input) => handleWaitlistSignup(input, env, { dryRunWithoutDatabase: true })));
+      // Store to DATABASE_URL from .env.local (the Neon dev branch); without it the sign-up is printed here. Without
+      // RESEND_API_KEY the confirmation email is printed too, with links back to this dev server
+      server.middlewares.use(
+        '/api/join-waitlist',
+        postRoute((input, req) => handleWaitlistSignup(input, env, { origin: `http://${req.headers.host}`, dryRunWithoutKey: true })),
+      );
+      server.middlewares.use('/api/waitlist-link', postRoute((input) => handleWaitlistLink(input, env)));
 
       server.middlewares.use('/api/recap', async (req, res) => {
         if (req.method !== 'POST') {
