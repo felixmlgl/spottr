@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Check, Clock } from 'lucide-react';
 import { openRequestDemo } from '../requestDemo/RequestDemo';
+import { PRIVACY_ANCHOR } from '../waitlist/Waitlist';
 import { Card, PageHeader } from '../gyms/components/ui';
 import { Disclosure } from '../components/Disclosure';
 
@@ -72,6 +73,26 @@ export const BLUR_LIMITS = [
   'The annotated review video the pipeline can export is not blurred.',
 ];
 
+// The members' waitlist: mirrors api/join-waitlist.ts and db/waitlist.sql
+const WAITLIST: PrivacyItem[] = [
+  {
+    title: 'What we store',
+    body: 'The gym and city you name, your first name and email, whether you ticked the box about your name, when you signed up and which page or link you came from.',
+  },
+  {
+    title: 'What your gym hears',
+    body: 'How many of its members asked. Your first name only if you ticked the box. We don\u2019t give gyms the list or your email.',
+  },
+  {
+    title: 'What we use your email for',
+    body: 'To tell you when Spottr is at your gym. Confirming your email and unsubscribing by link aren\u2019t built yet.',
+  },
+  {
+    title: 'Where it\u2019s kept, and removal',
+    body: 'In a Postgres database hosted by Neon in the US (Washington, D.C.). Write to info@tryspottr.app and we\u2019ll delete your sign-up.',
+  },
+];
+
 const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyItem[] }> = ({ status, items }) => {
   const available = status === 'available';
   const Icon = available ? Check : Clock;
@@ -108,6 +129,34 @@ const Section: React.FC<{ status: 'available' | 'development'; items: PrivacyIte
   );
 };
 
+const WaitlistSection: React.FC = () => {
+  // The waitlist popup links here; the page loads lazily, so the browser can't jump to the section on its own
+  useEffect(() => {
+    if (window.location.hash === `#${PRIVACY_ANCHOR}`) document.getElementById(PRIVACY_ANCHOR)?.scrollIntoView();
+  }, []);
+
+  return (
+    <section id={PRIVACY_ANCHOR} className="scroll-mt-24 flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-2xl font-bold tracking-tight text-ink">Waitlist for members</h2>
+        <p className="text-sm text-ink-2 max-w-3xl">
+          Members can ask for Spottr at the gym they train at. This is what happens with those sign-ups.
+        </p>
+      </div>
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {WAITLIST.map((item) => (
+          <li key={item.title}>
+            <Card className="h-full flex flex-col gap-2 !p-6">
+              <h3 className="text-base font-semibold text-ink">{item.title}</h3>
+              <p className="text-sm text-ink-2 leading-relaxed">{item.body}</p>
+            </Card>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+};
+
 export const Privacy: React.FC = () => (
   <div className="flex flex-col gap-12 pb-16">
     <PageHeader
@@ -124,6 +173,7 @@ export const Privacy: React.FC = () => (
       </ul>
     </section>
     <Section status="development" items={IN_DEVELOPMENT} />
+    <WaitlistSection />
     <p className="text-sm text-ink-2">
       Questions about data handling for your gym?{' '}
       <button type="button" onClick={() => openRequestDemo()} className="font-medium text-accent-ink hover:text-ink cursor-pointer">
