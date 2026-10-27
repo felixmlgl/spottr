@@ -67,31 +67,122 @@ const hashToken = (token: string) => createHash('sha256').update(token).digest('
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-/** The confirmation email, with its two links on `origin` (the site that served the form). */
-const confirmationEmail = (signup: WaitlistSignup, token: string, origin: string) => {
+/** Images always come from the live site: emails sent from a preview link there too, and previews need a Vercel login */
+const SITE = 'https://tryspottr.app';
+
+// The site's tokens (src/index.css). Email clients ignore stylesheets and web fonts, so everything is inline, and the
+// serif falls back from Hoefler Text (Apple Mail; it pairs with the logo) to Georgia
+const INK = '#0E1117';
+// The night of the site's replay, and the background of og.png, which heads the email
+const NIGHT = '#090B10';
+const INK_2 = '#4B5262';
+const INK_3 = '#636B7E';
+const CANVAS = '#F2F4F8';
+const LINE = '#D9DEE7';
+const ACCENT_INK = '#2A5CDB';
+const LIME = '#C7FF6A';
+const SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
+const SERIF = "'Hoefler Text',Georgia,'Times New Roman',serif";
+
+/**
+ * The confirmation email, with its two links on `origin` (the site that served the form). `members` is how many other
+ * members of the gym confirmed; like in the popup it's only mentioned from 3.
+ */
+export const confirmationEmail = (
+  signup: Pick<WaitlistSignup, 'name' | 'email' | 'gym' | 'city'>,
+  token: string,
+  origin: string,
+  members = 0,
+) => {
   const confirmUrl = `${origin}/waitlist?confirm=${token}`;
   const leaveUrl = `${origin}/waitlist?leave=${token}`;
   const firstName = signup.name.split(' ')[0];
-  const where = `${signup.gym}, ${signup.city}`;
+  const others = members >= 3 ? members : 0;
+  const steps: [string, string][] = [
+    ['You confirm.', "One tap on the button. Until then, your sign-up doesn't count."],
+    ['We take the list to your gym.', `Once enough members of ${signup.gym} ask, we show them how many want Spottr.`],
+    ['Spottr arrives.', "We email you once it's at your gym."],
+  ];
+
   const text = [
     `Hi ${firstName},`,
     '',
-    `Confirm that you want Spottr at ${where}:`,
+    `you asked for Spottr at ${signup.gym}, ${signup.city}. Confirm your email so your sign-up counts:`,
     confirmUrl,
+    ...(others ? ['', `You'd join ${others} members from ${signup.gym} who already confirmed.`] : []),
     '',
-    "Confirmed sign-ups are what we take to your gym. We'll email you once Spottr is there.",
+    'What happens next',
+    ...steps.map(([title, body], i) => `${i + 1}. ${title} ${body}`),
+    '',
+    'Spottr counts your sets and reps from the cameras your gym already has. Nothing to wear, nothing to type, free for members.',
     '',
     "Didn't sign up? Ignore this email.",
     `Remove my sign-up: ${leaveUrl}`,
   ].join('\n');
-  const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.5;color:#0E1117;max-width:480px">
-<p>Hi ${escapeHtml(firstName)},</p>
-<p>Confirm that you want Spottr at <strong>${escapeHtml(where)}</strong>.</p>
-<p><a href="${confirmUrl}" style="display:inline-block;padding:12px 24px;border-radius:999px;background:#2A5CDB;color:#FFFFFF;font-weight:600;text-decoration:none">Confirm</a></p>
-<p>Confirmed sign-ups are what we take to your gym. We'll email you once Spottr is there.</p>
-<p style="font-size:13px;color:#4B5262">Didn't sign up? Ignore this email. <a href="${leaveUrl}" style="color:#4B5262">Remove my sign-up</a></p>
-</div>`;
-  return { from: FROM, to: [signup.email], reply_to: REPLY_TO, subject: `Confirm: you want Spottr at ${signup.gym}`, text, html };
+
+  const p = (style: string, content: string) => `<p style="margin:0;font-family:${SANS};${style}">${content}</p>`;
+  const divider = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:28px 0 0;border-bottom:1px solid ${LINE};font-size:0;line-height:0">&nbsp;</td></tr></table>`;
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>Confirm your sign-up</title>
+</head>
+<body style="margin:0;padding:0;background:${CANVAS}">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">One tap, and your sign-up counts for ${escapeHtml(signup.gym)}.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${CANVAS}" style="background:${CANVAS}">
+<tr><td align="center" style="padding:32px 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px">
+<tr><td bgcolor="${NIGHT}" style="background:${NIGHT};border-radius:24px 24px 0 0;font-size:0;line-height:0">
+<!-- One cell for logo and image: two rows can show a hairline between them on phones -->
+<div style="padding:28px 32px 0"><img src="${SITE}/brand/spottr-logo.png" width="112" alt="Spottr" style="display:block;border:0;width:112px;height:auto;color:#FFFFFF;font-family:${SANS};font-size:16px"></div>
+<img src="${SITE}/og.png" width="560" alt="Your gym's cameras count every rep." style="display:block;border:0;width:100%;max-width:560px;height:auto;color:#FFFFFF;font-family:${SERIF};font-size:24px">
+</td></tr>
+<tr><td bgcolor="#FFFFFF" style="background:#FFFFFF;border-radius:0 0 24px 24px;padding:32px">
+<span style="display:inline-block;padding:4px 12px;border-radius:999px;background:${LIME};font-family:${SANS};font-size:13px;font-weight:600;color:${INK}">Waitlist</span>
+<h1 style="margin:20px 0 0;font-family:${SERIF};font-size:32px;font-weight:400;line-height:1.15;letter-spacing:-0.01em;color:${INK}">One tap, and you count for ${escapeHtml(signup.gym)}.</h1>
+${p(`margin-top:16px;font-size:16px;line-height:1.55;color:${INK_2}`, `Hi ${escapeHtml(firstName)}, you asked for Spottr at <strong style="color:${INK}">${escapeHtml(`${signup.gym}, ${signup.city}`)}</strong>. Confirm your email so your sign-up counts: confirmed sign-ups are the list we take to your gym.`)}
+${others ? p(`margin-top:16px;font-size:16px;line-height:1.55;color:${INK}`, `You'd join <span style="background:${LIME};padding:0 4px;border-radius:4px;font-weight:600">${others} members</span> from ${escapeHtml(signup.gym)} who already confirmed.`) : ''}
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:28px"><tr><td bgcolor="${ACCENT_INK}" style="background:${ACCENT_INK};border-radius:999px">
+<a href="${confirmUrl}" style="display:inline-block;padding:14px 28px;border-radius:999px;font-family:${SANS};font-size:16px;font-weight:600;color:#FFFFFF;text-decoration:none">Confirm my sign-up</a>
+</td></tr></table>
+${p(`margin-top:16px;font-size:13px;line-height:1.5;color:${INK_3}`, `Button not working? Open <a href="${confirmUrl}" style="color:${ACCENT_INK};word-break:break-all">${confirmUrl}</a>`)}
+${divider}
+${p(`margin-top:24px;font-size:13px;font-weight:600;color:${INK_2}`, 'What happens next')}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:8px">
+${steps
+  .map(
+    ([title, body], i) => `<tr>
+<td width="36" valign="top" style="padding:8px 0"><div style="width:24px;height:24px;border-radius:999px;background:${LIME};font-family:${SANS};font-size:13px;font-weight:600;line-height:24px;text-align:center;color:${INK}">${i + 1}</div></td>
+<td valign="top" style="padding:8px 0;font-family:${SANS};font-size:15px;line-height:1.5;color:${INK_2}"><strong style="color:${INK}">${title}</strong> ${escapeHtml(body)}</td>
+</tr>`,
+  )
+  .join('\n')}
+</table>
+${divider}
+${p(`margin-top:24px;font-size:15px;line-height:1.55;color:${INK_2}`, `Spottr counts your sets and reps from the cameras your gym already has. Nothing to wear, nothing to type, free for members. <a href="${SITE}" style="color:${ACCENT_INK};font-weight:600;text-decoration:none">See how it works&nbsp;›</a>`)}
+</td></tr>
+<tr><td align="center" style="padding:24px 32px 0;font-family:${SANS};font-size:13px;line-height:1.6;color:${INK_3}">
+Didn't sign up? Ignore this email.<br>
+<a href="${leaveUrl}" style="color:${INK_3};text-decoration:underline">Remove my sign-up</a> &middot; <a href="${SITE}" style="color:${INK_3};text-decoration:none">tryspottr.app</a>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+
+  return {
+    from: FROM,
+    to: [signup.email],
+    reply_to: REPLY_TO,
+    subject: `Confirm your sign-up: Spottr at ${signup.gym}`,
+    text,
+    html,
+  };
 };
 
 /**
@@ -168,7 +259,18 @@ export async function handleWaitlistSignup(
   }
   if (status !== 'sent') return { status: 200, body: { ok: true, status } };
 
-  const email = confirmationEmail(signup, token, origin);
+  // Other members of this gym who confirmed, for the email to mention (from 3)
+  let members = 0;
+  try {
+    const [gym] = await sql`
+      select count(*)::int as members from waitlist_signups
+      where gym_key = ${gymKey(signup.gym, signup.city)} and confirmed_at is not null`;
+    members = gym.members;
+  } catch (err) {
+    // Only a nice-to-have: the email goes out without it
+    console.error('[join-waitlist] Could not count the gym\'s members:', err);
+  }
+  const email = confirmationEmail(signup, token, origin, members);
   if (!env.RESEND_API_KEY) {
     console.info(`\n[join-waitlist] RESEND_API_KEY is not set, so nothing was sent. The email to ${signup.email} would be:\n\n${email.text}\n`);
   } else {

@@ -73,7 +73,7 @@ export const BLUR_LIMITS = [
   'The annotated review video the pipeline can export is not blurred.',
 ];
 
-// The members' waitlist: mirrors api/join-waitlist.ts, api/waitlist-link.ts and db/waitlist.sql
+// The members' waitlist: mirrors api/join-waitlist.ts, api/waitlist-link.ts, api/waitlist-gyms.ts and db/waitlist.sql
 const WAITLIST: PrivacyItem[] = [
   {
     title: 'What we store',
@@ -82,6 +82,10 @@ const WAITLIST: PrivacyItem[] = [
   {
     title: 'What your gym hears',
     body: 'How many of its members asked. Your first name only if you ticked the box. We don\u2019t give gyms the list or your email.',
+  },
+  {
+    title: 'What other visitors see',
+    body: 'While typing their gym, people see gyms that have confirmed members, and how many once there are at least 3. Never names or emails.',
   },
   {
     title: 'What we use your email for',
