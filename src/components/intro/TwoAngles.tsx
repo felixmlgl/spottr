@@ -3,36 +3,8 @@ import { Pause, Play } from 'lucide-react';
 import { CameraCard } from '../../gyms/world/CameraCard';
 import { WorldMap } from '../../gyms/world/WorldMap';
 import { evidenceSentences, fmtTime, observationsAt, peopleAt, personColor, STATE_STYLE, trails } from '../../gyms/world/display';
-import type { CameraRange, Timeline, WorldMapConfig, WorldRange } from '../../gyms/world/types';
 import { usePlayback } from '../../gyms/world/usePlayback';
-
-/** World-service export of the two-camera test room (scripts/gym_two_angles.py). */
-const BASE = '/world-demo-angles/';
-
-interface Data {
-  config: WorldMapConfig;
-  timeline: Timeline;
-  world: WorldRange;
-  cams: Record<string, CameraRange>;
-}
-
-const getJson = <T,>(path: string): Promise<T> =>
-  fetch(BASE + path).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(`${r.status} ${path}`))));
-
-async function load(): Promise<Data> {
-  const [config, timeline] = await Promise.all([getJson<WorldMapConfig>('config.json'), getJson<Timeline>('timeline.json')]);
-  const seg = timeline.segments[0];
-  const [world, ...rows] = await Promise.all([
-    getJson<WorldRange>(seg.world_url),
-    ...config.cameras.map((c) => getJson<CameraRange>(seg.camera_urls[c.camera_id])),
-  ]);
-  return {
-    config: { ...config, cameras: config.cameras.map((c) => ({ ...c, plate_url: BASE + c.plate_url })) },
-    timeline,
-    world,
-    cams: Object.fromEntries(rows.map((r) => [r.camera_id, r])),
-  };
-}
+import { ANGLES_BASE, type AnglesData, loadAngles } from './twoAnglesData';
 
 const STEPS = [
   ['Calibrate', 'Both cameras are mapped to one floor plan.'],
@@ -41,7 +13,7 @@ const STEPS = [
 ];
 
 export const TwoAngles: React.FC = () => {
-  const [data, setData] = useState<Data | null>(null);
+  const [data, setData] = useState<AnglesData | null>(null);
   const [error, setError] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
   const [hoverCam, setHoverCam] = useState<string | null>(null);
@@ -49,7 +21,7 @@ export const TwoAngles: React.FC = () => {
   const { t, playing, setPlaying, seek } = usePlayback(seg?.from_s ?? 0, seg?.to_s ?? 1);
 
   useEffect(() => {
-    load().then(setData, () => setError(true));
+    loadAngles().then(setData, () => setError(true));
   }, []);
   // Muted clips may autoplay; start once the data is in
   useEffect(() => {
@@ -93,7 +65,7 @@ export const TwoAngles: React.FC = () => {
           <CameraCard
             key={c.camera_id}
             camera={c}
-            videoUrl={BASE + seg.clip_urls[c.camera_id]}
+            videoUrl={ANGLES_BASE + seg.clip_urls[c.camera_id]}
             videoStartsAt={seg.clip_start_s}
             t={t}
             playing={playing}

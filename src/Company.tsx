@@ -17,14 +17,14 @@ import { FloorStatus } from './gyms/components/FloorNow';
 import { MEMBER_PROFILE } from './mocks/memberData';
 import { Chapter, ChapterProps, Reveal, TimelineRail, useActiveChapter, useScrollProgress } from './landing/Chapter';
 import {
-  LiveReplay,
   NextWorkout,
   PilotSteps,
-  PoseFrame,
   PricingCard,
   PrivacyList,
   SlippingExample,
+  TwoCameras,
   useFelix,
+  WalkInPhoto,
   WorkoutCard,
 } from './landing/previews';
 
@@ -145,18 +145,19 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
     {
       id: 'walk-in',
       time: '6:02 pm',
-      source: 'Real footage',
+      source: 'Stock photo',
       title: `${NAME} walks in`,
       line: 'No check-in, nothing to wear. The cameras follow his body pose, not his face.',
-      visual: <PoseFrame felix={felix} />,
+      visual: <WalkInPhoto />,
     },
     {
       id: 'set',
       time: '6:05 pm',
-      source: 'Real footage',
-      title: 'Every rep, counted live',
-      line: 'The real clip and the real pipeline output: reps tick up as he squats.',
-      visual: <LiveReplay felix={felix} />,
+      source: 'Test scene',
+      title: 'Two cameras, one person',
+      line: 'Most gym floors are covered by more than one camera. Spottr matches every view of a member to one person, so nobody is counted twice.',
+      note: "A generated test scene: one room filmed from two corners. The boxes, labels and matches are the real output of Spottr's multi-camera tracking.",
+      visual: <TwoCameras />,
       flip: true,
     },
     {
