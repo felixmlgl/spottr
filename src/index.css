@@ -30,16 +30,18 @@
 }
 
 @layer base {
-  body {
-    font-family: var(--font-sans);
-    color: var(--color-ink);
+  :root {
     /* Color wash behind the glass: blue top-left, lilac top-right, a hint of lime bottom-right */
-    background:
+    --wash:
       radial-gradient(55vw 45vw at -5% -10%, rgb(77 128 255 / 0.22), transparent 70%),
       radial-gradient(45vw 40vw at 105% 0%, rgb(169 155 255 / 0.24), transparent 70%),
       radial-gradient(50vw 40vw at 100% 105%, rgb(199 255 106 / 0.18), transparent 70%),
-      radial-gradient(40vw 35vw at 0% 100%, rgb(77 128 255 / 0.1), transparent 70%),
-      #F5F6FA;
+      radial-gradient(40vw 35vw at 0% 100%, rgb(77 128 255 / 0.1), transparent 70%);
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--wash), #F5F6FA;
     background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -100,6 +102,15 @@
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
     pointer-events: none;
   }
+}
+
+/* The landing sheet that rises over the welcome video (Welcome.tsx). Its wash is one viewport tall at its bottom,
+   so once the sheet fills the screen it matches the fixed wash on body exactly and can hand over to it. */
+@utility sheet {
+  background: var(--wash), #F5F6FA;
+  background-size: 100% 100dvh;
+  background-position: bottom;
+  background-repeat: no-repeat;
 }
 
 /* Standard content panel: a big rounded glass card */

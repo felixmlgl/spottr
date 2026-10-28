@@ -1,27 +1,32 @@
 /**
  * The visuals in the landing page's chapters. Member chapters reuse the real squat clip and the member app's own
- * logic (workout card, recovery suggestion); gym chapters reuse dashboard pieces. Nothing here links away.
+ * logic (workout card, recovery suggestion); the two-camera chapter plays the world service's test scene in the gym
+ * dashboard's camera cards; gym chapters reuse dashboard pieces. Nothing here links away.
  */
 
-import React, { useMemo, useState } from 'react';
-import { Check, Loader2, Send } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Check, Loader2, Pause, Play, Send } from 'lucide-react';
 import { useClipData } from '../hooks/useClipData';
-import { getPipelineDetectionsAtTime, pipelinePersonToWorkoutSummary } from '../services/pipelineAdapter';
-import { defaultPersonId, spotlightTime, summaryToWorkout, trackedSeconds, workoutHistory, workoutMuscles } from '../services/memberSession';
+import { pipelinePersonToWorkoutSummary } from '../services/pipelineAdapter';
+import { defaultPersonId, summaryToWorkout, trackedSeconds, workoutHistory, workoutMuscles } from '../services/memberSession';
 import { musclesWorkedTitle, suggestNextSession } from '../services/nextSession';
 import { calculateMuscleRecovery } from '../services/recovery';
 import { summaryService } from '../services/summary';
 import { BodyMap, recoveryMapProps } from '../components/BodyMap';
-import { BONES, SessionPlayer } from '../components/SessionPlayer';
 import { CheckDot } from '../components/CheckDot';
+import { ANGLES_BASE, type AnglesData, loadAngles } from '../components/intro/twoAnglesData';
 import { Disclosure } from '../components/Disclosure';
 import { TierPricing } from '../components/TierPricing';
 import { PILOT_STEPS } from '../gyms/components/BusinessCards';
+import { CameraCard } from '../gyms/world/CameraCard';
+import { observationsAt, peopleAt } from '../gyms/world/display';
+import { usePlayback } from '../gyms/world/usePlayback';
 import { AVAILABLE_TODAY, BLUR_LIMITS } from '../site/Privacy';
 import { MEMBER_PROFILE } from '../mocks/memberData';
-import { PoseSkeleton } from '../types/schema';
 
 const NAME = MEMBER_PROFILE.name;
+
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** Felix: the person the squat clip follows by default, with the member app's workout history built on top. */
 export function useFelix() {
@@ -46,64 +51,115 @@ const Loading: React.FC<{ className?: string }> = ({ className = 'aspect-video' 
   </div>
 );
 
-/** 6:02 pm: one real frame of Felix as Spottr sees him, drawn as body joints only. */
-export const PoseFrame: React.FC<{ felix: Felix | null }> = ({ felix }) => {
-  const skeleton = useMemo<PoseSkeleton | null>(() => {
-    if (!felix) return null;
-    const { data, person, personId } = felix;
-    const det = getPipelineDetectionsAtTime(data.session, data.overlay, spotlightTime(person)).find((d) => d.person_id === personId);
-    return det?.skeleton ?? null;
-  }, [felix]);
-  if (!felix) return <Loading className="aspect-[4/3]" />;
-  if (!skeleton) return null;
+/** 6:02 pm: he walks in. A stock photo whose edges fade into the page, so it reads as a mood rather than a camera view. */
+export const WalkInPhoto: React.FC = () => (
+  <img
+    src="/landing/walk-in.jpg"
+    alt="Someone walking into a gym with a sports bag, seen from behind at floor level"
+    width={683}
+    height={360}
+    loading="lazy"
+    decoding="async"
+    // A taller crop than the photo: the sides it loses would fade out anyway. The top fades least, where the bag is.
+    className="w-full aspect-[4/3] object-cover object-[58%_50%] [mask-image:linear-gradient(to_right,transparent,#000_20%,#000_80%,transparent),linear-gradient(to_bottom,transparent,#000_12%,#000_72%,transparent)] [mask-composite:intersect]"
+  />
+);
 
-  // Fit the joints into a 100×100 box, keeping the video's 16:9 proportions
-  const pts = Object.entries(skeleton).map(([k, p]) => [k, p!.x * 16, p!.y * 9] as const);
-  const xs = pts.map((p) => p[1]);
-  const ys = pts.map((p) => p[2]);
-  const [minX, minY] = [Math.min(...xs), Math.min(...ys)];
-  const s = 76 / Math.max(Math.max(...xs) - minX, Math.max(...ys) - minY);
-  const ox = 50 - ((Math.max(...xs) - minX) * s) / 2;
-  const oy = 50 - ((Math.max(...ys) - minY) * s) / 2;
-  const at = (name: keyof PoseSkeleton) => {
-    const p = skeleton[name];
-    return p ? [ox + (p.x * 16 - minX) * s, oy + (p.y * 9 - minY) * s] : null;
-  };
+/** 6:05 pm: one room from two corners. The multi-camera tracking turns every sighting of a person into one identity. */
+export const TwoCameras: React.FC = () => {
+  const [data, setData] = useState<AnglesData | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [inView, setInView] = useState(false);
+  // Pressing pause wins over scrolling back into view; reduced motion starts paused
+  const [held, setHeld] = useState(prefersReducedMotion);
+  const ref = useRef<HTMLElement>(null);
+  const seg = data?.timeline.segments[0];
+  // The clips stop before the tracking data does: loop where they end, so the picture never stands still
+  const [clipEnd, setClipEnd] = useState<number | null>(null);
+  const end = Math.min(seg?.to_s ?? 1, clipEnd ?? Infinity);
+  const { t, playing, setPlaying } = usePlayback(seg?.from_s ?? 0, end);
+
+  useEffect(() => {
+    loadAngles().then(setData, () => setFailed(true));
+  }, []);
+  useEffect(() => {
+    if (!seg) return;
+    const probe = document.createElement('video');
+    probe.preload = 'metadata';
+    probe.onloadedmetadata = () => setClipEnd(seg.clip_start_s + probe.duration);
+    probe.src = ANGLES_BASE + Object.values(seg.clip_urls)[0];
+    return () => {
+      probe.onloadedmetadata = null;
+    };
+  }, [seg]);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  // The muted clips only run while they're on screen, and only once their length is known (a new end resets usePlayback)
+  useEffect(() => {
+    setPlaying(clipEnd !== null && inView && !held);
+  }, [clipEnd, inView, held, setPlaying]);
+
+  const people = data ? peopleAt(data.world.frames, t).filter((p) => p.camera_ids.length) : [];
+  const obs = Object.fromEntries(Object.entries(data?.cams ?? {}).map(([c, r]) => [c, observationsAt(r.rows, t)]));
+  const sightings = Object.values(obs).reduce((n, o) => n + o.length, 0);
+  const matched = people.some((p) => p.camera_ids.length > 1);
 
   return (
-    <figure className="panel p-5 sm:p-6">
-      <div className="aspect-[4/3] rounded-[20px] bg-white/70 bg-[radial-gradient(var(--color-line)_1px,transparent_1px)] [background-size:14px_14px] flex items-center justify-center">
-        <svg viewBox="0 0 100 100" className="h-[85%]" role="img" aria-label={`${NAME}'s body joints from one frame of the clip`}>
-          {BONES.map(([a, b]) => {
-            const pa = at(a);
-            const pb = at(b);
-            return pa && pb ? (
-              <line key={`${a}-${b}`} x1={pa[0]} y1={pa[1]} x2={pb[0]} y2={pb[1]} stroke="#4D80FF" strokeWidth={1.6} strokeLinecap="round" />
-            ) : null;
-          })}
-          {BONES.flat()
-            .filter((n, i, all) => all.indexOf(n) === i)
-            .map((n) => {
-              const p = at(n);
-              return p ? <circle key={n} cx={p[0]} cy={p[1]} r={1.8} fill="#C7FF6A" stroke="#0E1117" strokeWidth={0.6} /> : null;
-            })}
-        </svg>
-      </div>
-      <figcaption className="hud-label mt-3">One frame of the real clip: the body joints Spottr follows. No face, no name.</figcaption>
+    <figure ref={ref} className="panel p-3 sm:p-4 flex flex-col gap-3">
+      {data && seg ? (
+        <>
+          {data.config.cameras.map((c) => (
+            <CameraCard
+              key={c.camera_id}
+              camera={c}
+              videoUrl={ANGLES_BASE + seg.clip_urls[c.camera_id]}
+              videoStartsAt={seg.clip_start_s}
+              t={t}
+              playing={playing}
+              observations={obs[c.camera_id] ?? []}
+              selected={selected}
+              onSelect={setSelected}
+              debug={false}
+            />
+          ))}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-1">
+            <button
+              onClick={() => setHeld(playing)}
+              aria-label={playing ? 'Pause' : 'Play'}
+              className="w-9 h-9 shrink-0 rounded-full bg-accent-ink text-white flex items-center justify-center hover:bg-accent-deep cursor-pointer"
+            >
+              {playing ? <Pause className="w-4 h-4" aria-hidden /> : <Play className="w-4 h-4 ml-0.5" aria-hidden />}
+            </button>
+            <p className="flex-1 whitespace-nowrap text-sm text-ink tabular-nums">
+              <span className="font-semibold">{sightings}</span> sightings <span className="text-ink-3">→</span>{' '}
+              <span className="font-semibold">{people.length}</span> {people.length === 1 ? 'person' : 'people'}
+            </p>
+            <span
+              className={`px-2.5 py-0.5 rounded-full bg-lime text-xs font-semibold text-ink transition-opacity duration-300 ${
+                matched ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              Matched across cameras
+            </span>
+          </div>
+        </>
+      ) : failed ? (
+        <p className="p-4 text-sm text-ink-2">Could not load the two-camera clip.</p>
+      ) : (
+        <div className="aspect-[4/5] rounded-[20px] bg-white/60 flex items-center justify-center">
+          <Loader2 className="w-6 h-6 animate-spin text-ink-3" aria-label="Loading" />
+        </div>
+      )}
+      <figcaption className="hud-label px-1">One room, two corners. Each person counts once, whichever camera sees them.</figcaption>
     </figure>
   );
 };
-
-/** 6:05 pm: the real squat clip with the pipeline's live rep count. */
-export const LiveReplay: React.FC<{ felix: Felix | null }> = ({ felix }) =>
-  felix ? (
-    <figure className="panel p-3 sm:p-4 flex flex-col gap-3">
-      <SessionPlayer data={felix.data} personId={felix.personId} defaultOverlayMode="styled" repSound={false} />
-      <figcaption className="hud-label px-1">Real gym clip. Everyone else is pixelated.</figcaption>
-    </figure>
-  ) : (
-    <Loading />
-  );
 
 const formatSeconds = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 

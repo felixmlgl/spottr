@@ -17,14 +17,14 @@ import { FloorStatus } from './gyms/components/FloorNow';
 import { MEMBER_PROFILE } from './mocks/memberData';
 import { Chapter, ChapterProps, Reveal, TimelineRail, useActiveChapter, useScrollProgress } from './landing/Chapter';
 import {
-  LiveReplay,
   NextWorkout,
   PilotSteps,
-  PoseFrame,
   PricingCard,
   PrivacyList,
   SlippingExample,
+  TwoCameras,
   useFelix,
+  WalkInPhoto,
   WorkoutCard,
 } from './landing/previews';
 
@@ -72,12 +72,10 @@ const Intro: React.FC = () => (
 const Contact: React.FC = () => (
   <section id="contact" className="scroll-mt-28 flex flex-col gap-6">
     <Reveal className="panel relative isolate overflow-hidden p-8 sm:p-12 flex flex-col items-start gap-5">
-      {/* Halftone gym floor on the right, fading out behind the text (scripts/halftone.py) */}
-      <img
-        src="/halftone/texture.svg"
-        alt=""
+      {/* A calm glow of logo blue and lime on the right, clear of the text */}
+      <div
         aria-hidden
-        className="pointer-events-none absolute -z-10 right-0 top-1/2 -translate-y-1/2 h-[130%] max-w-none opacity-35 [mask-image:linear-gradient(to_bottom,transparent_55%,black)] sm:[mask-image:linear-gradient(to_right,transparent,black_55%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_95%_at_100%_0%,rgb(77_128_255/0.2),transparent_70%),radial-gradient(45%_80%_at_95%_100%,rgb(199_255_106/0.35),transparent_70%)]"
       />
       <span className="glass rounded-full px-3 py-1 text-sm font-semibold text-ink">Your turn</span>
       <h2 className="text-4xl sm:text-6xl font-medium tracking-tight text-ink leading-[1.05] max-w-2xl">
@@ -147,18 +145,19 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
     {
       id: 'walk-in',
       time: '6:02 pm',
-      source: 'Real footage',
+      source: 'Stock photo',
       title: `${NAME} walks in`,
       line: 'No check-in, nothing to wear. The cameras follow his body pose, not his face.',
-      visual: <PoseFrame felix={felix} />,
+      visual: <WalkInPhoto />,
     },
     {
       id: 'set',
       time: '6:05 pm',
-      source: 'Real footage',
-      title: 'Every rep, counted live',
-      line: 'The real clip and the real pipeline output: reps tick up as he squats.',
-      visual: <LiveReplay felix={felix} />,
+      source: 'Test scene',
+      title: 'Two cameras, one person',
+      line: 'Most gym floors are covered by more than one camera. Spottr matches every view of a member to one person, so nobody is counted twice.',
+      note: "A generated test scene: one room filmed from two corners. The boxes, labels and matches are the real output of Spottr's multi-camera tracking.",
+      visual: <TwoCameras />,
       flip: true,
     },
     {
