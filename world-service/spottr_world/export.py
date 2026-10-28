@@ -50,7 +50,8 @@ def pixelate(img, boxes):
     return img
 inp = av.open(src); vs = inp.streams.video[0]
 out = av.open(dst, "w", options={"movflags": "faststart"})
-os_ = out.add_stream("libx264", rate=30)
+rate = vs.average_rate or 30  # keep the source's frame rate, or 24 fps footage plays 1.25x too fast
+os_ = out.add_stream("libx264", rate=rate)
 h = int(round(vs.codec_context.height * w / vs.codec_context.width / 2) * 2)
 os_.width, os_.height, os_.pix_fmt = w, h, "yuv420p"
 os_.options = {"crf": "28", "preset": "slow", "g": "30"}
@@ -67,7 +68,7 @@ for f in inp.decode(vs):
         if abs(ht[i] - t) <= 0.07:
             f = av.VideoFrame.from_ndarray(pixelate(f.to_ndarray(format="rgb24"), heads[i][1]), format="rgb24")
     g = f.reformat(width=w, height=h, format="yuv420p")
-    g.pts = n; g.time_base = __import__("fractions").Fraction(1, 30); n += 1
+    g.pts = n; g.time_base = 1 / __import__("fractions").Fraction(rate); n += 1
     for p in os_.encode(g):
         out.mux(p)
 for p in os_.encode():

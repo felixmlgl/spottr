@@ -1,7 +1,8 @@
 /**
  * Data source for the world map: the shared-world service (world-service/) when VITE_WORLD_API_URL is set,
- * otherwise the static export of the same API in public/world-demo/ (Vercel has no Python runtime).
- * Both return identical payloads (world-service/spottr_world/views.py builds both).
+ * otherwise the static export of the same API for the two-camera gym scene in public/world-demo-angles/
+ * (scripts/gym_two_angles.py; Vercel has no Python runtime). The member demo's "Two angles" clip is the same
+ * scene. Both return identical payloads (world-service/spottr_world/views.py builds both).
  */
 
 import type {
@@ -16,7 +17,7 @@ import type {
 } from './types';
 
 const LIVE = (import.meta.env.VITE_WORLD_API_URL as string | undefined)?.replace(/\/+$/, '') || null;
-const STATIC_BASE = '/world-demo/';
+const STATIC_BASE = '/world-demo-angles/';
 
 export const isLive = LIVE !== null;
 

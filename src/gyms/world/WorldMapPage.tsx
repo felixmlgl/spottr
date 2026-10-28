@@ -117,7 +117,7 @@ export const WorldMapPage: React.FC = () => {
       <PageHeader
         eyebrow={
           <>
-            <span>Great Hall · two-camera pilot demo</span>
+            <span>{config?.site.label ?? 'Gym'} · two-camera demo</span>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-ink bg-surface ring-1 ring-black/[0.06]">
               <span className="w-1.5 h-1.5 rounded-full bg-accent" />
               {isLive ? 'Live service' : 'Recorded footage'}
@@ -232,12 +232,16 @@ const Demo: React.FC<{ config: WorldMapConfig; timeline: Timeline; metrics: Metr
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
           <Card className="!p-4 sm:!p-6 flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <Segmented
-                ariaLabel="Demo clip"
-                options={segments.map((s) => ({ id: s.id, label: s.title }))}
-                value={seg.id}
-                onChange={setSegId}
-              />
+              {segments.length > 1 ? (
+                <Segmented
+                  ariaLabel="Demo clip"
+                  options={segments.map((s) => ({ id: s.id, label: s.title }))}
+                  value={seg.id}
+                  onChange={setSegId}
+                />
+              ) : (
+                <h2 className="text-lg font-semibold text-ink">{seg.title}</h2>
+              )}
               <div className="flex items-center gap-2 flex-wrap">
                 {(['Confirmed', 'Tracking', 'Needs confirmation'] as const).map((s) => (
                   <span key={s} title={STATE_STYLE[s].hint} className="inline-flex items-center gap-1 text-[11px] text-ink-2">
@@ -447,7 +451,7 @@ const Demo: React.FC<{ config: WorldMapConfig; timeline: Timeline; metrics: Metr
             })}
           </div>
           <p className="text-xs text-ink-2 -mt-2 flex items-center gap-1">
-            Recorded in a public lounge, not a gym. Detected faces are pixelated.
+            {isLive ? 'Footage from the connected service.' : 'Generated two-camera test scene.'} Detected faces are pixelated.
             <InfoTip label="About this footage">
               Anyone the detector missed is not pixelated. Labels are anonymous and only valid inside this recording.
             </InfoTip>
@@ -494,7 +498,25 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
         </Disclosure>
       </Card>
       <Card className="self-start w-full !p-5">
-        <Disclosure label="Accuracy on this footage">
+        <Disclosure label={held ? 'Accuracy on this footage' : 'Calibration of this footage'}>
+        {/* Scenes without hand-checked labels (the two-camera test room) only have the calibration grade */}
+        {!held ? (
+          <div className="flex flex-col gap-2 text-[12px] text-ink-2 leading-relaxed">
+            <p>Nobody hand-labelled this scene, so identity accuracy is not measured on it.</p>
+            <p>
+              Calibration is graded <span className="font-semibold text-ink">{q.grade ?? 'n/a'}</span>:
+            </p>
+            <ul className="flex flex-col gap-1">
+              {(q.reasons ?? []).map((r) => (
+                <li key={r}>· {r}</li>
+              ))}
+            </ul>
+            <p>
+              Time sync: {config.sync.method} ({config.sync.confidence}). Uncertain identities are shown as “Needs confirmation”
+              rather than merged.
+            </p>
+          </div>
+        ) : (
         <div className="flex flex-col gap-4">
         <span className="text-xs text-ink-2">
           {held ? `${held.gt_people} people · ${heldSeconds} s · one reviewer` : 'vs. hand-checked labels'}
@@ -544,6 +566,7 @@ const HowItWorks: React.FC<{ config: WorldMapConfig; metrics: MetricsPayload | n
           “Needs confirmation” rather than merged.
         </p>
         </div>
+        )}
         </Disclosure>
       </Card>
     </section>
