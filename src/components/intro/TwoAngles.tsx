@@ -40,10 +40,23 @@ const STEPS = [
   ['Resolve', 'Two sightings of one person become one identity.'],
 ];
 
-export const TwoAngles: React.FC = () => {
+/** The member clip numbers each person like their world identity (scripts/two_angles_member.py): g002 is Person 2. */
+const worldId = (personId: string) => `g${personId.padStart(3, '0')}`;
+const memberId = (globalId: string) => String(Number(globalId.replace(/\D/g, '')));
+
+interface TwoAnglesProps {
+  /** The member chosen in the picker below; picking someone here picks them there too */
+  selectedPersonId: string | null;
+  onSelectPerson: (personId: string) => void;
+}
+
+export const TwoAngles: React.FC<TwoAnglesProps> = ({ selectedPersonId, onSelectPerson }) => {
   const [data, setData] = useState<Data | null>(null);
   const [error, setError] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
+  const selected = selectedPersonId ? worldId(selectedPersonId) : null;
+  const setSelected = (globalId: string | null) => {
+    if (globalId) onSelectPerson(memberId(globalId));
+  };
   const [hoverCam, setHoverCam] = useState<string | null>(null);
   const seg = data?.timeline.segments[0];
   const { t, playing, setPlaying, seek } = usePlayback(seg?.from_s ?? 0, seg?.to_s ?? 1);
@@ -174,7 +187,7 @@ export const TwoAngles: React.FC = () => {
               return (
                 <button
                   key={p.global_person_id}
-                  onClick={() => setSelected(isSel ? null : p.global_person_id)}
+                  onClick={() => setSelected(p.global_person_id)}
                   aria-pressed={isSel}
                   className={`text-left rounded-2xl p-3 flex flex-col gap-1.5 cursor-pointer transition-colors ${
                     isSel ? 'bg-white ring-2 ring-accent' : 'bg-white/70 hover:bg-white'
@@ -208,7 +221,7 @@ export const TwoAngles: React.FC = () => {
             })}
           <p className="text-[11px] text-ink-3">
             One position and one identity per person, whichever camera sees them. Zones, sessions and workouts read from this single
-            record instead of from each camera separately.
+            record instead of from each camera separately. The person you pick here is the one you follow below.
           </p>
         </div>
       </div>

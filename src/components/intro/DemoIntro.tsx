@@ -217,7 +217,7 @@ export const DemoIntro: React.FC<DemoIntroProps> = ({ initialClipId, initialPers
           <section ref={step2Ref} className="flex flex-col gap-4 scroll-mt-4 animate-in fade-in duration-200">
             <h2 className="hud-label">2 · Two cameras, one floor map</h2>
             <Suspense fallback={<div className="h-[420px] rounded-[22px] bg-surface animate-pulse" aria-label="Loading" />}>
-              <TwoAngles />
+              <TwoAngles selectedPersonId={personId} onSelectPerson={setPersonId} />
             </Suspense>
           </section>
         )}
