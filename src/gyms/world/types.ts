@@ -28,7 +28,8 @@ export interface CameraConfig {
   landmarks_px: { landmark_id: string; pixel: Vec2 }[];
   homography_image_to_world: number[][];
   calibration_quality: 'good' | 'fair' | 'weak' | null;
-  camera_model: { fx: number; pitch_deg: number; roll_deg: number; height_m: number };
+  /** null when the calibration had no lens model (e.g. landmark-only homography) */
+  camera_model: { fx: number | null; pitch_deg: number | null; roll_deg: number | null; height_m: number | null };
 }
 
 export interface WorldMapConfig {

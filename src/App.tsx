@@ -105,6 +105,7 @@ export default function App() {
       <ReplayView
         data={data}
         personId={personParam}
+        clipNote={clip.note}
         settings={settings}
         onBack={() => {
           if (replayOpenedInApp) {
@@ -145,6 +146,7 @@ export default function App() {
             <MainTab
               person={person}
               history={history}
+              clipNote={clip.note}
               onWatchReplay={openReplay}
               onSelectTab={selectTab}
             />

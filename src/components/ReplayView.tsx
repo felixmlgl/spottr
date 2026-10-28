@@ -7,12 +7,14 @@ import { SessionPlayer } from './SessionPlayer';
 interface ReplayViewProps {
   data: LoadedPipelineData | null;
   personId: string;
+  /** What the footage is, when it isn't a plain real gym clip */
+  clipNote?: string;
   settings: AppSettings;
   onBack: () => void;
 }
 
 /** Proof view: the footage the member's stats came from. Opened from Main or History, never a tab. */
-export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings, onBack }) => (
+export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, clipNote, settings, onBack }) => (
   <div className="min-h-screen theme-night">
     <div className="max-w-[1000px] mx-auto px-4 sm:px-6 py-6 flex flex-col gap-6">
       <div className="flex items-center gap-3">
@@ -31,6 +33,7 @@ export const ReplayView: React.FC<ReplayViewProps> = ({ data, personId, settings
         <p className="text-base text-ink-2 mt-1.5">
           The footage your stats came from. Everyone the pose model detects, except you (Person {personId}), is pixelated.
         </p>
+        {clipNote && <p className="text-sm text-ink-3 mt-1">{clipNote}</p>}
       </div>
 
       {data?.errorNote && (

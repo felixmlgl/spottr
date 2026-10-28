@@ -32,6 +32,9 @@ world-service/out/
 world-service/.venv/
 # Exported, face-pixelated demo clips for /gyms/world-map
 !/public/world-demo/**/*.mp4
+!/public/world-demo-angles/**/*.mp4
+# Member demo clips (src/config.ts)
+!/public/videosCorrect/*.mp4
 
 # Jev vs Gemini eval runs (scripts/jev_vs_gemini.py)
 jev-eval/

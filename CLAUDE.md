@@ -45,15 +45,15 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - `src/gyms/pricing.ts`: the four price tiers by gym size (keep in sync with the pitch deck); `src/components/TierPricing.tsx` shows them.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.
-- `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo/`.
+- `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo-angles/` (the two-camera gym test room, the same scene as the member demo's "Two angles" clip).
 - `src/services/`: app logic, e.g. `pipelineAdapter.ts` (loads the vision pipeline output), `privacyBlur.ts` (pixelates bystanders in the replay), `rawOverlay.ts` (draws the raw pose overlay), rep counting, recovery, plan and settings.
 - `src/mocks/`: demo data. `mocks/gym/` is the seeded simulation behind `/gyms` (fictional "Iron District Fitness"); `memberData.ts`, `scenarios.ts`, `pipeline/` feed the member app.
 - `src/hooks/`, `src/data/`, `src/types/schema.ts`: shared hooks, exercise/muscle data, shared types.
-- `public/`: static files served as-is: `demo-data/` (pipeline output per clip: `session.json`, `overlay.json`, thumbnails), `videosCorrect/` (demo clips), `welcome/` (welcome-page clips and logos).
+- `public/`: static files served as-is: `demo-data/` (pipeline output per clip: `session.json`, `overlay.json`, thumbnails; `angles/` has one overlay per camera and the same person ids in both, built by `scripts/two_angles_member.py`), `videosCorrect/` (demo clips), `welcome/` (welcome-page clips and logos).
 - `backend/`: Python vision pipeline (pose tracking, rep counting, exercise labels). Teammates' code; do not touch.
 - `world-service/`: separate Python service for multi-camera shared-world tracking (calibration, sync, cross-camera identities, world state, FastAPI + static export). Docs in `world-service/docs/`. `models/` and `out/` are gitignored.
-- `public/world-demo/`: static export of the world-service API for the world map (regenerate with `python -m spottr_world.export`).
-- `public/world-demo-angles/`: the same export for the two-camera scene behind the "Two angles" demo option.
+- `public/world-demo-angles/`: static export of the world-service API for the two-camera gym test room (`scripts/gym_two_angles.py`): the world map at `/gyms/world-map` and the "Two angles" demo option.
+- `public/world-demo/`: the older Great Hall export (lounge footage, regenerate with `python -m spottr_world.export`). Not shown anywhere on the site any more.
 - `docs/media/`: README images and videos.
 - `vite.config.ts`: Vite config, plus the dev-only `/api/recap` route (Gemini). It doesn't exist on Vercel; the app falls back to a local recap.
 - `vercel.json`: install/build settings and the SPA rewrite to `index.html`.
