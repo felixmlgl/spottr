@@ -19,7 +19,7 @@
    "thumbnail": "people/p1.jpg",
    "total_reps": 5,
    "exercises": {
-    "other": 5
+    "sit_up": 5
    },
    "muscle_load": {
     "chest": 0.0,
@@ -33,8 +33,8 @@
     "biceps": 0.0,
     "triceps": 0.0,
     "forearms": 0.0,
-    "abs": 0.0,
-    "obliques": 0.0,
+    "abs": 1.0,
+    "obliques": 0.3,
     "glutes": 0.0,
     "quads": 0.0,
     "hamstrings": 0.0,
@@ -85,9 +85,9 @@
       "right_wrist",
       "left_elbow"
      ],
-     "exercise": "other",
-     "confidence": 0.2,
-     "exercise_source": "heuristic"
+     "exercise": "sit_up",
+     "confidence": 1.0,
+     "exercise_source": "manual"
     }
    ],
    "cameras": [
@@ -103,14 +103,14 @@
    "thumbnail": "people/p2.jpg",
    "total_reps": 6,
    "exercises": {
-    "shoulder_press": 6
+    "dumbbell_bench_press": 6
    },
    "muscle_load": {
-    "chest": 0.0,
-    "front_delts": 1.0,
-    "side_delts": 0.5,
+    "chest": 1.0,
+    "front_delts": 0.5,
+    "side_delts": 0.0,
     "rear_delts": 0.0,
-    "traps": 0.2,
+    "traps": 0.0,
     "lats": 0.0,
     "upper_back": 0.0,
     "lower_back": 0.0,
@@ -173,9 +173,9 @@
       "left_elbow",
       "right_elbow"
      ],
-     "exercise": "shoulder_press",
-     "confidence": 0.35,
-     "exercise_source": "heuristic"
+     "exercise": "dumbbell_bench_press",
+     "confidence": 1.0,
+     "exercise_source": "manual"
     }
    ],
    "cameras": [

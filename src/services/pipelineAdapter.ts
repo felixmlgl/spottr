@@ -87,6 +87,7 @@ export function prettifyExerciseName(raw: string): string {
   if (clean === 'dip' || clean === 'dips') return 'Dips';
   if (clean === 'squat' || clean === 'squats') return 'Squat';
   if (clean === 'bicep_curl' || clean === 'curl' || clean === 'bicep_curls') return 'Bicep curl';
+  if (clean === 'sit_up' || clean === 'sit_ups') return 'Sit-ups';
   return raw
     .split(/[_\s-]+/)
     .map((word, idx) => {

@@ -33,6 +33,13 @@ SOURCES = {"cam1": ROOT / "videosCorrect" / "GymAngle1.mp4", "cam2": ROOT / "vid
 CLIPS = {c: ROOT / "public" / "videosCorrect" / f"angles-{c}.mp4" for c in CAMERAS}
 PASSES = 4  # forward, back, forward, back: ~29 s
 
+# Exercise labels by world identity. Without Gemini the pipeline guesses from joint ranges (it called the dumbbell
+# bench press a shoulder press and the sit-ups "other"), and its vocabulary has neither exercise; this is a known
+# test scene, so they are set by hand (exercise_source "manual"). Rep counts stay the pipeline's.
+EXERCISE = {1: "sit_up", 2: "dumbbell_bench_press"}
+# Muscle weights: the closest exercise in the pipeline's vocabulary (backend/vision/exercises.py)
+MUSCLES_LIKE = {"sit_up": "crunch", "dumbbell_bench_press": "bench_press"}
+
 
 def cut_clips():
     """Same time window as the world export's clips (both cameras start together), source frame rate."""
@@ -114,6 +121,23 @@ def box_height(overlay, pid):
     return hs[len(hs) // 2] if hs else 0
 
 
+def label_sets(person: dict, gid: int) -> dict:
+    """The person's sets with the hand-set exercise label, and the muscle load that goes with it."""
+    sys.dont_write_bytecode = True  # read-only use of backend/
+    sys.path.insert(0, str(ROOT / "backend"))
+    from vision.exercises import muscle_load
+
+    ex = EXERCISE.get(gid)
+    if not ex or not person["sets"]:
+        return {}
+    sets = [{**s, "exercise": ex, "exercise_source": "manual", "confidence": 1.0} for s in person["sets"]]
+    return {
+        "sets": sets,
+        "exercises": {ex: sum(s["reps"] for s in sets)},
+        "muscle_load": muscle_load([{**s, "exercise": MUSCLES_LIKE[ex]} for s in sets]),
+    }
+
+
 def merge(src: Path):
     timeline = json.loads((WORLD / "timeline.json").read_text())
     seg = timeline["segments"][0]
@@ -151,6 +175,7 @@ def merge(src: Path):
             shutil.copy(src / cam / largest["thumbnail"], OUT / "people" / f"p{gid}.jpg")
         merged.append({
             **counted,
+            **label_sets(counted, gid),
             "id": gid,
             "track_ids": [],
             "first_seen_s": min(s[1]["first_seen_s"] for s in seen),
