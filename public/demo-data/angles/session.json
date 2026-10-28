@@ -1,6 +1,6 @@
 {
  "video": "two angles",
- "duration_s": 7.29,
+ "duration_s": 29.17,
  "width": 854,
  "height": 480,
  "fps": 24.0,
@@ -8,19 +8,88 @@
   "pose_model": "yolo26s-pose.pt",
   "imgsz": 960,
   "tracker": "botsort+reid",
-  "processing_fps": 9.6
+  "processing_fps": 11.6
  },
  "people": [
   {
    "id": 1,
    "track_ids": [],
    "first_seen_s": 0.0,
-   "last_seen_s": 7.29,
+   "last_seen_s": 29.17,
    "thumbnail": "people/p1.jpg",
-   "total_reps": 0,
-   "exercises": {},
-   "muscle_load": {},
-   "sets": [],
+   "total_reps": 5,
+   "exercises": {
+    "other": 5
+   },
+   "muscle_load": {
+    "chest": 0.0,
+    "front_delts": 0.0,
+    "side_delts": 0.0,
+    "rear_delts": 0.0,
+    "traps": 0.0,
+    "lats": 0.0,
+    "upper_back": 0.0,
+    "lower_back": 0.0,
+    "biceps": 0.0,
+    "triceps": 0.0,
+    "forearms": 0.0,
+    "abs": 0.0,
+    "obliques": 0.0,
+    "glutes": 0.0,
+    "quads": 0.0,
+    "hamstrings": 0.0,
+    "calves": 0.0,
+    "adductors": 0.0
+   },
+   "sets": [
+    {
+     "start_s": 3.35,
+     "end_s": 25.75,
+     "reps": 5,
+     "rep_times_s": [
+      5.9,
+      11.6,
+      15.5,
+      20.5,
+      25.75
+     ],
+     "rep_peak_s": [
+      5.1,
+      9.5,
+      14.6,
+      19.25,
+      24.1
+     ],
+     "rep_rest_s": [
+      2.0,
+      7.3,
+      12.5,
+      16.6,
+      21.9
+     ],
+     "rep_mid_s": [
+      3.35,
+      8.5,
+      13.65,
+      17.95,
+      23.3
+     ],
+     "period_s": 4.75,
+     "amplitude": 0.428,
+     "regularity": 0.95,
+     "periodicity": 0.59,
+     "joint_range": 0.189,
+     "moving_joints": [
+      "right_elbow",
+      "nose",
+      "right_wrist",
+      "left_elbow"
+     ],
+     "exercise": "other",
+     "confidence": 0.2,
+     "exercise_source": "heuristic"
+    }
+   ],
    "cameras": [
     "cam1",
     "cam2"
@@ -30,12 +99,85 @@
    "id": 2,
    "track_ids": [],
    "first_seen_s": 0.0,
-   "last_seen_s": 7.29,
+   "last_seen_s": 29.17,
    "thumbnail": "people/p2.jpg",
-   "total_reps": 0,
-   "exercises": {},
-   "muscle_load": {},
-   "sets": [],
+   "total_reps": 6,
+   "exercises": {
+    "shoulder_press": 6
+   },
+   "muscle_load": {
+    "chest": 0.0,
+    "front_delts": 1.0,
+    "side_delts": 0.5,
+    "rear_delts": 0.0,
+    "traps": 0.2,
+    "lats": 0.0,
+    "upper_back": 0.0,
+    "lower_back": 0.0,
+    "biceps": 0.0,
+    "triceps": 0.6,
+    "forearms": 0.0,
+    "abs": 0.0,
+    "obliques": 0.0,
+    "glutes": 0.0,
+    "quads": 0.0,
+    "hamstrings": 0.0,
+    "calves": 0.0,
+    "adductors": 0.0
+   },
+   "sets": [
+    {
+     "start_s": 1.0,
+     "end_s": 28.15,
+     "reps": 6,
+     "rep_times_s": [
+      2.55,
+      8.25,
+      13.35,
+      17.2,
+      22.85,
+      28.15
+     ],
+     "rep_peak_s": [
+      2.05,
+      7.3,
+      12.5,
+      16.65,
+      21.85,
+      27.15
+     ],
+     "rep_rest_s": [
+      0.15,
+      4.7,
+      10.85,
+      14.6,
+      19.3,
+      24.6
+     ],
+     "rep_mid_s": [
+      1.0,
+      6.35,
+      11.95,
+      15.85,
+      20.9,
+      26.65
+     ],
+     "period_s": 5.2,
+     "amplitude": 0.399,
+     "regularity": 0.91,
+     "periodicity": 0.5,
+     "joint_range": 0.254,
+     "moving_joints": [
+      "left_wrist",
+      "right_wrist",
+      "left_elbow",
+      "right_elbow"
+     ],
+     "exercise": "shoulder_press",
+     "confidence": 0.35,
+     "exercise_source": "heuristic"
+    }
+   ],
    "cameras": [
     "cam1",
     "cam2"

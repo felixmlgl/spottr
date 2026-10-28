@@ -2,7 +2,8 @@
 
 1. clips: the segment of videosCorrect/GymAngle1.mp4 / GymAngle2.mp4 that the world map shows, without the
    world export's face pixelation (the member app pixelates everyone but the member itself, like the other
-   demo clips): public/videosCorrect/angles-cam1.mp4, angles-cam2.mp4.
+   demo clips): public/videosCorrect/angles-cam1.mp4, angles-cam2.mp4. The 7 s segment holds about one rep
+   per person and a set needs 3, so it is played forward and back (no jump cut) PASSES times.
 2. The vision pipeline (backend/) on each of those clips.
 3. merge: each camera's pipeline track is matched to the world identity whose boxes it overlaps
    (public/world-demo-angles/, see scripts/gym_two_angles.py), so "Person 2" is the same person in both
@@ -30,6 +31,7 @@ OUT = ROOT / "public" / "demo-data" / "angles"
 CAMERAS = ["cam1", "cam2"]
 SOURCES = {"cam1": ROOT / "videosCorrect" / "GymAngle1.mp4", "cam2": ROOT / "videosCorrect" / "GymAngle2.mp4"}
 CLIPS = {c: ROOT / "public" / "videosCorrect" / f"angles-{c}.mp4" for c in CAMERAS}
+PASSES = 4  # forward, back, forward, back: ~29 s
 
 
 def cut_clips():
@@ -41,26 +43,31 @@ def cut_clips():
         inp = av.open(str(SOURCES[cam]))
         vs = inp.streams.video[0]
         rate = Fraction(vs.average_rate)
-        out = av.open(str(CLIPS[cam]), "w", options={"movflags": "faststart"})
-        st = out.add_stream("libx264", rate=rate)
-        st.width, st.height, st.pix_fmt = vs.codec_context.width, vs.codec_context.height, "yuv420p"
-        st.options = {"crf": "26", "preset": "slow", "g": "24"}
-        n = 0
+        frames = []
         for f in inp.decode(vs):
             t = float(f.pts * vs.time_base)
             if t < seg["from_s"] - 1e-3:
                 continue
             if t > seg["to_s"]:
                 break
-            g = f.reformat(format="yuv420p")
+            frames.append(f.to_ndarray(format="yuv420p"))
+        seq = list(frames)
+        for k in range(1, PASSES):
+            seq += (frames[::-1] if k % 2 else frames)[1:]  # the turning frame isn't shown twice
+        out = av.open(str(CLIPS[cam]), "w", options={"movflags": "faststart"})
+        st = out.add_stream("libx264", rate=rate)
+        st.width, st.height, st.pix_fmt = vs.codec_context.width, vs.codec_context.height, "yuv420p"
+        st.options = {"crf": "26", "preset": "slow", "g": "24"}
+        for n, img in enumerate(seq):
+            g = av.VideoFrame.from_ndarray(img, format="yuv420p")
             g.pts, g.time_base = n, 1 / rate
-            n += 1
             for p in st.encode(g):
                 out.mux(p)
         for p in st.encode():
             out.mux(p)
         out.close()
-        print(f"-> {CLIPS[cam].relative_to(ROOT)}: {n} frames, {CLIPS[cam].stat().st_size / 1e6:.1f} MB")
+        print(f"-> {CLIPS[cam].relative_to(ROOT)}: {len(frames)} frames x {PASSES}, {len(seq) / rate:.1f} s, "
+              f"{CLIPS[cam].stat().st_size / 1e6:.1f} MB")
 
 
 def iou(a, b):
@@ -85,7 +92,8 @@ def final_identity(timeline):
 
 
 def match_tracks(overlay, world_rows, resolve):
-    """Pipeline person id -> world person id, by box overlap with the world service's observations."""
+    """Pipeline person id -> world person id, by box overlap with the world service's observations
+    (first pass of the looped clip only; the world export covers the segment once)."""
     votes = {}
     for f in overlay["frames"]:
         row = min(world_rows, key=lambda r: abs(r["t"] - f["t"]))

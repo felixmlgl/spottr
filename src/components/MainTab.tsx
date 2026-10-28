@@ -15,8 +15,8 @@ interface MainTabProps {
   person: PipelinePerson;
   /** Today's camera-tracked session first, then older workouts */
   history: PastWorkout[];
-  /** Today's clip is generated test footage rather than a real gym recording */
-  generatedClip?: boolean;
+  /** What today's footage is, when it isn't a plain real gym clip */
+  clipNote?: string;
   onWatchReplay: () => void;
   onSelectTab: (tab: TabId) => void;
 }
@@ -47,7 +47,7 @@ const Tile: React.FC<{
   </button>
 );
 
-export const MainTab: React.FC<MainTabProps> = ({ person, history, generatedClip, onWatchReplay, onSelectTab }) => {
+export const MainTab: React.FC<MainTabProps> = ({ person, history, clipNote, onWatchReplay, onSelectTab }) => {
   const latest = history[0];
   const latestMuscles = workoutMuscles(latest);
   const daysAgo = Math.round(
@@ -82,7 +82,7 @@ export const MainTab: React.FC<MainTabProps> = ({ person, history, generatedClip
         </h1>
         <p className="glass mt-5 inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-xs text-ink-2">
           <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-          Today is a {generatedClip ? 'generated test clip' : 'real gym clip'}. Older history is sample data.
+          {clipNote ?? 'Today is a real gym clip.'} Older history is sample data.
         </p>
       </header>
 
