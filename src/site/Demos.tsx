@@ -107,8 +107,6 @@ export const Demos: React.FC = () => {
           .
         </p>
       </main>
-
-      <p className="pb-8 text-center text-xs text-ink-3">The demo gym and its data are fictional.</p>
     </div>
   );
 };
