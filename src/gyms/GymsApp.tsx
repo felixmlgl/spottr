@@ -10,8 +10,6 @@ import { Overview } from './pages/Overview';
 import { Locations } from './pages/Locations';
 import { Floor } from './pages/Floor';
 import { Members } from './pages/Members';
-import { Privacy } from './pages/Privacy';
-import { RequestPilot } from './pages/RequestPilot';
 import { WorldMapPage } from './world/WorldMapPage';
 import { NotFoundContent } from '../NotFound';
 
@@ -21,8 +19,6 @@ const PAGES: Record<string, { title: string; component: React.FC }> = {
   '/gyms/floor': { title: 'Floor · Spottr for Gyms', component: Floor },
   '/gyms/world-map': { title: 'Cameras · Spottr for Gyms', component: WorldMapPage },
   '/gyms/members': { title: 'Members · Spottr for Gyms', component: Members },
-  '/gyms/privacy': { title: 'Privacy · Spottr for Gyms', component: Privacy },
-  '/gyms/pilot': { title: 'Pilot & pricing · Spottr for Gyms', component: RequestPilot },
 };
 
 const NOT_FOUND = { title: 'Page not found · Spottr for Gyms', component: NotFoundContent };

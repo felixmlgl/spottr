@@ -4,7 +4,9 @@ Automatic workout tracking from existing gym cameras.
 
 - `/`: welcome page (looping gym clips, one "See how it works" button, pause control). Below the hero: the landing story for gym owners (`/#gyms`; old `/gyms` links are forwarded here), told as one member's evening in chapters
 - `/demo`: member app (old `/?clip=…&person=…` links are forwarded here)
-- `/gyms/*`: gym operator demo (`/gyms/overview`, `/floor`, `/world-map`, `/members`, `/privacy`, `/pilot`)
+- `/waitlist`: short link that opens the members' waitlist popup over the welcome page (forwarded to `/#waitlist`; `?gym=…&city=…` fills it in, `?confirm=…` / `?leave=…` are the confirmation email's links)
+- `/pricing`, `/privacy`: subpages of the main website (old `/gyms/pilot` and `/gyms/privacy` links are forwarded here)
+- `/gyms/*`: gym operator demo (`/gyms/overview`, `/locations`, `/floor`, `/world-map`, `/members`)
 
 Stack: Vite + React + TypeScript + Tailwind v4. Deployed on Vercel (tryspottr.app) from `main`.
 Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs with the logo's Hoefler Text) for headings and big numerals, Instrument Sans for UI text. Accent `#4D80FF` (logo blue) for fills; `accent-ink` `#2A5CDB` for small text and filled buttons. Lime `#C7FF6A` means done / live / go: a fill with ink text, the `marker` highlighter, or a color on video; never text on white. Tokens and utilities (`glass`, `panel`, `num`, `marker`, `hatch`) live in `src/index.css`; the tick gauge is `src/components/TickGauge.tsx`. A CSS `mask`, `filter` or `opacity` on an ancestor stops `glass` from blurring the page behind it.
@@ -15,6 +17,7 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 - Always work on a new branch. Push the branch, never merge into `main` (`main` deploys live).
 - Before every push: `npm run build` and `npm run lint` must pass.
 - Never commit `.env` files, API keys or secrets.
+- Local work uses the Neon `dev` branch; never point `.env.local` at production's database.
 - Never claim more on privacy pages than the code actually does.
 - Keep commits small with clear messages.
 
@@ -26,22 +29,31 @@ Design: light liquid glass on a soft color-washed canvas. Fraunces (serif, pairs
 
 ## Project structure
 
-- `src/main.tsx`: entry point. Picks the page by URL (`/`, `/gyms/*`, everything else = member app) and renders Vercel Analytics.
+- `src/main.tsx`: entry point. Picks the page by URL (`/`, `/pricing` and `/privacy`, `/gyms/*`, `/demo`, everything else = 404) and renders Vercel Analytics.
 - `src/router.tsx`: small pathname router (`usePathname`, `navigate`, `Link`). No router library.
 - `src/Welcome.tsx`: welcome page at `/`.
-- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (mailto info@tryspottr.app), demos, footer. Lazy-loaded.
+- `src/Company.tsx`: landing story below the welcome hero: intro, nine chapters on a timeline, contact (the request-a-demo popup, plus mailto info@tryspottr.app), the members' waitlist, demos, footer. Lazy-loaded.
+- `src/site/`: the main website's subpages (`SitePages.tsx`, `Pricing.tsx`, `Privacy.tsx`) and the top bar and footer they share with the landing page (`SiteNav.tsx`, `SiteFooter.tsx`). Top bar and footer always lead to a landing chapter (`/#pays`); the chapters link on to the subpages ("Learn more").
 - `src/landing/`: `Chapter.tsx` (chapter template, timeline rail, active-chapter hook) and `previews.tsx` (chapter visuals built from the real clip and dashboard pieces).
+- `src/requestDemo/`: the "Request a demo" popup (gym size and price, then contact details). `openRequestDemo()` opens it from anywhere; `RequestDemoHost` is mounted once in `main.tsx`.
+- `api/request-demo.ts`: Vercel Function behind the popup; emails the request through Resend (`RESEND_API_KEY`, see `.env.example`). `vite.config.ts` serves the same handler in dev and prints the email when no key is set.
+- `src/waitlist/`: the "Join the waitlist" popup for gym members (gym, city, first name, email, then a link to pass on to their gym). `openWaitlist()` opens it from anywhere; `WaitlistHost` is mounted once in `main.tsx`. Shares its dialog shell and form fields with the demo popup (`src/components/Popup.tsx`).
+- `api/join-waitlist.ts`: Vercel Function behind the waitlist popup; stores sign-ups in Postgres at Neon (`DATABASE_URL`, see `.env.example`) and emails a confirmation link through Resend (at most one per address every 10 minutes). Signing up twice for the same gym updates the row; confirming an email confirms all its gyms. Without `DATABASE_URL` or `RESEND_API_KEY`, `npm run dev` prints instead.
+- `api/waitlist-gyms.ts`: the gyms the popup suggests while typing (`src/waitlist/GymPicker.tsx`), with their confirmed member count from 3. Cached 5 minutes on Vercel's CDN. In dev, `/__dev/waitlist-email?gym=…&members=12` shows the confirmation email.
+- `api/waitlist-link.ts`: what the email's links do once the popup opens them: confirm, or remove the sign-up. The links open the site, not this endpoint, so mail scanners that open every link can't confirm or remove anything.
+- `db/waitlist.sql`: the waitlist table (tokens only as SHA-256 hashes), the `waitlist_by_gym` view (sign-ups per gym, first names only of confirmed members who agreed), `waitlist_suggestions` (what the popup may show) and `waitlist_hidden_gyms` (gyms never suggested). Run once per Neon branch (`main` is production, `dev` is for local work); preview deployments get their own copy of `main`.
+- `src/gyms/pricing.ts`: the four price tiers by gym size (keep in sync with the pitch deck); `src/components/TierPricing.tsx` shows them.
 - `src/App.tsx`, `src/components/`: member app (tabs, session replay, body map, weekly plan, settings; `components/intro/` is the demo intro).
 - `src/gyms/`: gym operator demo (`GymsApp.tsx`, `GymNav.tsx`, `pages/`, `components/`). Lazy-loaded.
-- `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo/`.
+- `src/gyms/world/`: `/gyms/world-map` (two-camera shared floor map + pilot setup). Renders world-service output only: live API via `VITE_WORLD_API_URL`, else `public/world-demo-angles/` (the two-camera gym test room, the same scene as the member demo's "Two angles" clip).
 - `src/services/`: app logic, e.g. `pipelineAdapter.ts` (loads the vision pipeline output), `privacyBlur.ts` (pixelates bystanders in the replay), `rawOverlay.ts` (draws the raw pose overlay), rep counting, recovery, plan and settings.
 - `src/mocks/`: demo data. `mocks/gym/` is the seeded simulation behind `/gyms` (fictional "Iron District Fitness"); `memberData.ts`, `scenarios.ts`, `pipeline/` feed the member app.
 - `src/hooks/`, `src/data/`, `src/types/schema.ts`: shared hooks, exercise/muscle data, shared types.
-- `public/`: static files served as-is: `demo-data/` (pipeline output per clip: `session.json`, `overlay.json`, thumbnails), `videosCorrect/` (demo clips), `welcome/` (welcome-page clips and logos).
+- `public/`: static files served as-is: `demo-data/` (pipeline output per clip: `session.json`, `overlay.json`, thumbnails; `angles/` has one overlay per camera and the same person ids in both, built by `scripts/two_angles_member.py`), `videosCorrect/` (demo clips), `welcome/` (welcome-page clips and logos).
 - `backend/`: Python vision pipeline (pose tracking, rep counting, exercise labels). Teammates' code; do not touch.
 - `world-service/`: separate Python service for multi-camera shared-world tracking (calibration, sync, cross-camera identities, world state, FastAPI + static export). Docs in `world-service/docs/`. `models/` and `out/` are gitignored.
-- `public/world-demo/`: static export of the world-service API for the world map (regenerate with `python -m spottr_world.export`).
-- `public/world-demo-angles/`: the same export for the two-camera scene behind the "Two angles" demo option.
+- `public/world-demo-angles/`: static export of the world-service API for the two-camera gym test room (`scripts/gym_two_angles.py`): the world map at `/gyms/world-map` and the "Two angles" demo option.
+- `public/world-demo/`: the older Great Hall export (lounge footage, regenerate with `python -m spottr_world.export`). Not shown anywhere on the site any more.
 - `docs/media/`: README images and videos.
 - `vite.config.ts`: Vite config, plus the dev-only `/api/recap` route (Gemini). It doesn't exist on Vercel; the app falls back to a local recap.
 - `vercel.json`: install/build settings and the SPA rewrite to `index.html`.

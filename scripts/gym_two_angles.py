@@ -1,8 +1,8 @@
 """Run the world service on the two-camera gym test scene and export it for the demo's "Two angles" option.
 
 Inputs: videosCorrect/GymAngle1.mp4 (cam 1, southwest) and GymAngle2.mp4 (cam 2, southeast), the same room
-and the same two people seen from two corners. Output: public/world-demo-angles/ (same files as the
-/gyms/world-map export).
+and the same two people seen from two corners: the two halves of one generated 24 fps clip, cut at the camera
+switch (frame 178). Output: public/world-demo-angles/ (same files as the /gyms/world-map export).
 
 Calibration is the operator workflow from world-service/docs/CALIBRATION_GUIDE.md, done by hand with no
 surveyed plan: cam 1 is fitted to the room's back corners, both side walls and the yoga mat's size
@@ -25,6 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "world-service"))
 from spottr_world import association, calibration as cal  # noqa: E402
 from spottr_world import export as ex  # noqa: E402
+from spottr_world import identity, pipeline  # noqa: E402
 from spottr_world.pipeline import run  # noqa: E402
 
 RUN = ROOT / "world-service" / "out" / "gym_two_angles"
@@ -144,6 +145,24 @@ def calibration() -> dict:
     }
 
 
+def face_boxes(obs: list[dict]) -> list:
+    """Like export.head_boxes_for, but sized by the face keypoints (nose, eyes, ears) or the box height."""
+    out = []
+    for o in obs:
+        x1, y1, x2, y2 = o["bbox"]
+        bh = y2 - y1
+        pts = [k for k in (o["keypoints"] or [])[:5] if k[2] >= 0.3]
+        if len(pts) >= 2:
+            cx = sum(k[0] for k in pts) / len(pts)
+            cy = sum(k[1] for k in pts) / len(pts)
+            spread = max(max(k[0] for k in pts) - min(k[0] for k in pts), max(k[1] for k in pts) - min(k[1] for k in pts))
+            r = max(1.1 * spread, 0.07 * bh, 8)
+        else:
+            cx, cy, r = (x1 + x2) / 2, y1 + 0.1 * bh, 0.1 * bh
+        out.append([round(cx - r), round(cy - r * 1.1), round(cx + r), round(cy + r)])
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--track", action="store_true", help="run detection + tracking first (slow)")
@@ -163,7 +182,14 @@ def main() -> None:
     # of standing still) the evidence for the right match (+3.7, wrong pairing -5) can't pass the link bar
     # before the clip ends. Drop this for recordings longer than ~15 s.
     association.STILL_TAU_S = 4.0
+    # A recording, not a live feed: decide identities with the whole clip in view, so each person carries one
+    # label in both cameras from the first frame (with the live 3 s look-ahead, camera 2's sightings showed as
+    # Persons 03 and 04 until the links were confirmed, most of this 7 s clip).
+    identity.LAG_S = pipeline.LAG_S = 8.0
     run(RUN, CAMERAS, doc)
+    # Face-sized pixelation: the default radius grows with the box width, so the bench presser's raised arms
+    # made it cover the whole press.
+    ex.head_boxes_for = face_boxes
     ex.SEGMENTS = [{"id": "session", "title": "Two cameras, one room", "from_s": 0.0, "to_s": 7.3,  # GymAngle1 is the shorter clip (7.36 s)
                     "summary": "A bench press and sit-ups, seen from two corners of the same room."}]
     ex.export(RUN, OUT, {c["camera_id"]: c["video"] for c in CAMERAS})

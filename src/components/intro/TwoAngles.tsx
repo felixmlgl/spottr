@@ -3,36 +3,8 @@ import { Pause, Play } from 'lucide-react';
 import { CameraCard } from '../../gyms/world/CameraCard';
 import { WorldMap } from '../../gyms/world/WorldMap';
 import { evidenceSentences, fmtTime, observationsAt, peopleAt, personColor, STATE_STYLE, trails } from '../../gyms/world/display';
-import type { CameraRange, Timeline, WorldMapConfig, WorldRange } from '../../gyms/world/types';
 import { usePlayback } from '../../gyms/world/usePlayback';
-
-/** World-service export of the two-camera test room (scripts/gym_two_angles.py). */
-const BASE = '/world-demo-angles/';
-
-interface Data {
-  config: WorldMapConfig;
-  timeline: Timeline;
-  world: WorldRange;
-  cams: Record<string, CameraRange>;
-}
-
-const getJson = <T,>(path: string): Promise<T> =>
-  fetch(BASE + path).then((r) => (r.ok ? (r.json() as Promise<T>) : Promise.reject(new Error(`${r.status} ${path}`))));
-
-async function load(): Promise<Data> {
-  const [config, timeline] = await Promise.all([getJson<WorldMapConfig>('config.json'), getJson<Timeline>('timeline.json')]);
-  const seg = timeline.segments[0];
-  const [world, ...rows] = await Promise.all([
-    getJson<WorldRange>(seg.world_url),
-    ...config.cameras.map((c) => getJson<CameraRange>(seg.camera_urls[c.camera_id])),
-  ]);
-  return {
-    config: { ...config, cameras: config.cameras.map((c) => ({ ...c, plate_url: BASE + c.plate_url })) },
-    timeline,
-    world,
-    cams: Object.fromEntries(rows.map((r) => [r.camera_id, r])),
-  };
-}
+import { ANGLES_BASE, type AnglesData, loadAngles } from './twoAnglesData';
 
 const STEPS = [
   ['Calibrate', 'Both cameras are mapped to one floor plan.'],
@@ -40,16 +12,29 @@ const STEPS = [
   ['Resolve', 'Two sightings of one person become one identity.'],
 ];
 
-export const TwoAngles: React.FC = () => {
-  const [data, setData] = useState<Data | null>(null);
+/** The member clip numbers each person like their world identity (scripts/two_angles_member.py): g002 is Person 2. */
+const worldId = (personId: string) => `g${personId.padStart(3, '0')}`;
+const memberId = (globalId: string) => String(Number(globalId.replace(/\D/g, '')));
+
+interface TwoAnglesProps {
+  /** The member chosen in the picker below; picking someone here picks them there too */
+  selectedPersonId: string | null;
+  onSelectPerson: (personId: string) => void;
+}
+
+export const TwoAngles: React.FC<TwoAnglesProps> = ({ selectedPersonId, onSelectPerson }) => {
+  const [data, setData] = useState<AnglesData | null>(null);
   const [error, setError] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
+  const selected = selectedPersonId ? worldId(selectedPersonId) : null;
+  const setSelected = (globalId: string | null) => {
+    if (globalId) onSelectPerson(memberId(globalId));
+  };
   const [hoverCam, setHoverCam] = useState<string | null>(null);
   const seg = data?.timeline.segments[0];
   const { t, playing, setPlaying, seek } = usePlayback(seg?.from_s ?? 0, seg?.to_s ?? 1);
 
   useEffect(() => {
-    load().then(setData, () => setError(true));
+    loadAngles().then(setData, () => setError(true));
   }, []);
   // Muted clips may autoplay; start once the data is in
   useEffect(() => {
@@ -93,7 +78,7 @@ export const TwoAngles: React.FC = () => {
           <CameraCard
             key={c.camera_id}
             camera={c}
-            videoUrl={BASE + seg.clip_urls[c.camera_id]}
+            videoUrl={ANGLES_BASE + seg.clip_urls[c.camera_id]}
             videoStartsAt={seg.clip_start_s}
             t={t}
             playing={playing}
@@ -157,8 +142,9 @@ export const TwoAngles: React.FC = () => {
             <span className="text-sm font-semibold tabular-nums">{fmtTime(t - seg.from_s)}</span>
           </div>
           <p className="text-[11px] text-ink-3 -mt-1">
-            Green ticks: the moment the service matched one person across both cameras. It decides with a{' '}
-            {data.config.decision_lag_s.toFixed(0)} s look-ahead, so the merge shows up on the map slightly earlier.
+            Blue ticks: the moments the service had enough evidence to match one person across both cameras. It decides with{' '}
+            {data.config.decision_lag_s.toFixed(0)} s of look-ahead (this whole recording), so each person is one identity on the map
+            from the start.
           </p>
         </div>
 
@@ -173,7 +159,7 @@ export const TwoAngles: React.FC = () => {
               return (
                 <button
                   key={p.global_person_id}
-                  onClick={() => setSelected(isSel ? null : p.global_person_id)}
+                  onClick={() => setSelected(p.global_person_id)}
                   aria-pressed={isSel}
                   className={`text-left rounded-2xl p-3 flex flex-col gap-1.5 cursor-pointer transition-colors ${
                     isSel ? 'bg-white ring-2 ring-accent' : 'bg-white/70 hover:bg-white'
@@ -207,7 +193,7 @@ export const TwoAngles: React.FC = () => {
             })}
           <p className="text-[11px] text-ink-3">
             One position and one identity per person, whichever camera sees them. Zones, sessions and workouts read from this single
-            record instead of from each camera separately.
+            record instead of from each camera separately. The person you pick here is the one you follow below.
           </p>
         </div>
       </div>

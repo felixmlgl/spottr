@@ -1,27 +1,18 @@
 /**
  * The business side of the pitch, shared by the landing page and the pilot page:
- * how a pilot runs, what it costs, and when it pays for itself.
+ * how a pilot runs and what it costs at each gym size.
  */
 
-import React, { useState } from 'react';
-import { CheckDot } from '../../components/CheckDot';
-import { AT_RISK_MEMBERS, GYM } from '../../mocks/gym';
-import { breakEvenMembers, DEFAULT_DUES, DUES_OPTIONS, formatUsd, PRICE_PER_LOCATION_MONTH } from '../pricing';
-import { Card, Eyebrow, Segmented } from './ui';
+import React from 'react';
+import { TierPricing } from '../../components/TierPricing';
+import { Card, Eyebrow } from './ui';
 
 export const PILOT_STEPS = [
   ['Intro call', 'We look at your floor plan and the cameras you already have.'],
-  ['Install', 'One or two Spottr boxes per location, hardware included. They read your existing camera streams.'],
+  ['Install', 'We set up the Spottr boxes your location needs, hardware included. They read your existing camera streams.'],
   ['Pilot', 'Your members use the app for free. You get the gym dashboard and alerts for slipping members.'],
   ['Rollout', 'If the pilot works for you, we agree on a rollout across your locations.'],
 ] as const;
-
-const INCLUDED = [
-  'One or two Spottr boxes per location, hardware included',
-  'Works with the cameras you already have',
-  'Gym dashboard and alerts for slipping members',
-  'Member app, free for your members',
-];
 
 export const PilotStepsCard: React.FC<{ className?: string }> = ({ className = '' }) => (
   <Card className={`flex flex-col gap-5 ${className}`}>
@@ -47,57 +38,11 @@ export const PriceCard: React.FC<{ className?: string }> = ({ className = '' }) 
   <Card className={`flex flex-col gap-5 ${className}`}>
     <div>
       <Eyebrow>Pricing</Eyebrow>
-      <p className="mt-2 flex items-baseline gap-2 flex-wrap">
-        <span className="num text-5xl text-ink">{formatUsd(PRICE_PER_LOCATION_MONTH)}</span>
-        <span className="text-sm text-ink-2">per location / month</span>
-      </p>
+      <h2 className="text-xl font-bold tracking-tight text-ink mt-0.5">Priced by the size of your gym</h2>
       <span className="inline-flex mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-ink-2 bg-white ring-1 ring-black/[0.06] whitespace-nowrap">
         Pilot pricing
       </span>
     </div>
-    <ul className="flex flex-col gap-2">
-      {INCLUDED.map((item) => (
-        <li key={item} className="text-sm text-ink flex gap-2">
-          <CheckDot className="w-[18px] h-[18px] mt-0.5" />
-          {item}
-        </li>
-      ))}
-    </ul>
+    <TierPricing />
   </Card>
 );
-
-export const BreakEvenCard: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const [dues, setDues] = useState<number>(DEFAULT_DUES);
-  const members = breakEvenMembers(dues);
-  return (
-    <Card className={`flex flex-col gap-5 ${className}`}>
-      <div>
-        <Eyebrow>Break-even</Eyebrow>
-        <h2 className="text-xl font-bold tracking-tight text-ink mt-0.5">
-          Pays for itself from
-        </h2>
-        <p className="mt-1 flex items-baseline gap-2">
-          <span className="num marker text-5xl text-ink">{members}</span>
-          <span className="text-base font-semibold text-ink">retained members</span>
-        </p>
-        <p className="text-sm text-ink-2 mt-1.5 leading-relaxed">
-          per location and month: members who stay instead of cancelling. {formatUsd(PRICE_PER_LOCATION_MONTH)} ÷{' '}
-          {formatUsd(dues)} average monthly dues = {members}.
-        </p>
-      </div>
-      <div className="flex flex-col gap-2">
-        <span className="text-xs font-medium text-ink-2">Your average monthly dues</span>
-        <Segmented
-          ariaLabel="Average monthly dues"
-          options={DUES_OPTIONS.map((d) => ({ id: d, label: formatUsd(d) }))}
-          value={dues}
-          onChange={setDues}
-          className="self-start"
-        />
-      </div>
-      <p className="text-xs text-ink-2 leading-relaxed">
-        For scale: this week Spottr flagged {AT_RISK_MEMBERS.length} slipping members at {GYM.name} Oakland (simulated).
-      </p>
-    </Card>
-  );
-};

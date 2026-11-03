@@ -214,7 +214,8 @@ Everything after pose tracking is numpy/scipy only. See [`backend/README.md`](ba
 │   └── render.py          #   annotated.mp4 + overlay.json for the web replay
 ├── backend/tests/         # synthetic rep-counter test suite
 ├── world-service/         # two-camera shared floor map: one identity per person across views (see its README)
-├── public/world-demo/     # exported world-service output + face-pixelated clips for /gyms/world-map
+├── public/world-demo-angles/ # exported world-service output + face-pixelated clips for /gyms/world-map and the "Two angles" demo
+├── public/world-demo/     # older Great Hall export (no longer shown)
 ├── public/demo-data/      # pipeline output for the demo clips (sessions, skeletons, thumbnails)
 ├── public/videosCorrect/  # demo clips (squat, dip)
 ├── docs/media/            # README videos, GIFs and Gemini input snapshots

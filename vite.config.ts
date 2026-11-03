@@ -1,12 +1,71 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig, loadEnv, Plugin } from 'vite';
+import type { IncomingMessage, ServerResponse } from 'http';
+import { handleDemoRequest } from './api/request-demo.ts';
+import { confirmationEmail, handleWaitlistSignup } from './api/join-waitlist.ts';
+import { handleWaitlistLink } from './api/waitlist-link.ts';
+import { handleWaitlistGyms } from './api/waitlist-gyms.ts';
 
-function apiPlugin(): Plugin {
+/** Dev middleware for a JSON POST route served by one of the api/ handlers. */
+function postRoute(handle: (input: unknown, req: IncomingMessage) => Promise<{ status: number; body: unknown }>) {
+  return (req: IncomingMessage, res: ServerResponse) => {
+    res.setHeader('Content-Type', 'application/json');
+    if (req.method !== 'POST') {
+      res.statusCode = 405;
+      res.end(JSON.stringify({ ok: false, error: 'Method Not Allowed' }));
+      return;
+    }
+
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk;
+    });
+
+    req.on('end', async () => {
+      let input: unknown = null;
+      try {
+        input = JSON.parse(body || '{}');
+      } catch {
+        // Handled as missing fields
+      }
+      const result = await handle(input, req);
+      res.statusCode = result.status;
+      res.end(JSON.stringify(result.body));
+    });
+  };
+}
+
+function apiPlugin(env: Record<string, string>): Plugin {
   return {
     name: 'spottr-api-routes',
     configureServer(server) {
+      // Same handlers as the Vercel Functions; without RESEND_API_KEY the demo request is printed to this terminal instead
+      server.middlewares.use('/api/request-demo', postRoute((input) => handleDemoRequest(input, env, { dryRunWithoutKey: true })));
+      // Store to DATABASE_URL from .env.local (the Neon dev branch); without it the sign-up is printed here. Without
+      // RESEND_API_KEY the confirmation email is printed too, with links back to this dev server
+      server.middlewares.use(
+        '/api/join-waitlist',
+        postRoute((input, req) => handleWaitlistSignup(input, env, { origin: `http://${req.headers.host}`, dryRunWithoutKey: true })),
+      );
+      server.middlewares.use('/api/waitlist-link', postRoute((input) => handleWaitlistLink(input, env)));
+      // The confirmation email as a page, to work on its design: /__dev/waitlist-email?gym=…&city=…&members=12
+      server.middlewares.use('/__dev/waitlist-email', (req, res) => {
+        const q = new URL(req.url ?? '', 'http://dev').searchParams;
+        const signup = { name: 'Jordan Lee', email: 'jordan@example.com', gym: q.get('gym') || "Gold's Gym", city: q.get('city') || 'Oakland' };
+        const email = confirmationEmail(signup, 'preview-token', `http://${req.headers.host}`, Number(q.get('members')) || 0);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end(email.html);
+      });
+      // Not cached here, unlike on Vercel: new confirmations show up right away
+      server.middlewares.use('/api/waitlist-gyms', async (_req, res) => {
+        const result = await handleWaitlistGyms(env);
+        res.setHeader('Content-Type', 'application/json');
+        res.statusCode = result.status;
+        res.end(JSON.stringify(result.body));
+      });
+
       server.middlewares.use('/api/recap', async (req, res) => {
         if (req.method !== 'POST') {
           res.statusCode = 405;
@@ -70,9 +129,11 @@ Tone: Athletic, motivating, concise (like Whoop / Strava). The app already shows
   };
 }
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  // Every variable from .env / .env.local, not only VITE_*: the dev API routes run on the server
+  const env = loadEnv(mode, process.cwd(), '');
   return {
-    plugins: [react(), tailwindcss(), apiPlugin()],
+    plugins: [react(), tailwindcss(), apiPlugin(env)],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

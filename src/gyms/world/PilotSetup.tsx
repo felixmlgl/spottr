@@ -183,6 +183,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
   const camPairs = pairs[activeCam] ?? [];
   const complete = camPairs.filter((p) => p.pixel && p.world);
   const serviceQuality = config.calibration.quality;
+  const site = config.site.label;
 
   const updatePair = (id: string, patch: Partial<Pair>) =>
     setPairs((all) => ({ ...all, [activeCam]: all[activeCam].map((p) => (p.id === id ? { ...p, ...patch } : p)) }));
@@ -228,7 +229,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
             <Eyebrow>Pilot setup · target: about 20 minutes per site</Eyebrow>
             <h2 className="text-2xl font-bold tracking-tight text-ink mt-1">Connect your cameras to one floor map</h2>
             <p className="text-sm text-ink-2 mt-1 max-w-2xl">
-              Prefilled with the Great Hall example. Every step works on your own floor plan; the calibration itself is fitted and
+              Prefilled with the {site} example. Every step works on your own floor plan; the calibration itself is fitted and
               graded by the Spottr service, never in the browser.
             </p>
           </div>
@@ -285,7 +286,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
             </button>
             {planImage && (
               <button onClick={() => setPlanImage(null)} className="text-xs text-ink-2 hover:text-ink cursor-pointer self-start">
-                Use the Great Hall outline instead
+                Use the {site} outline instead
               </button>
             )}
             <div className="grid grid-cols-2 gap-3">
@@ -308,8 +309,8 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
               ))}
             </div>
             <p className="text-[12px] text-ink-3">
-              Great Hall: no surveyed plan existed, so the outline shown is the one Spottr measured from both cameras (about{' '}
-              {config.floor_map.width_m.toFixed(0)} × {config.floor_map.height_m.toFixed(0)} m).
+              {site}: about {config.floor_map.width_m.toFixed(0)} × {config.floor_map.height_m.toFixed(0)} m
+              {config.floor_map.scale_note ? `, ${config.floor_map.scale_note}` : ''}.
             </p>
           </Card>
         </div>
@@ -457,7 +458,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
               <p className="text-[12px] text-ink-3 mt-3">
                 Use marks that sit on the floor and never move: tile corners, rug corners, door thresholds, machine feet. 6–8 points spread
                 over the whole visible floor work best. For a pilot, removable tape crosses that every camera can see make this
-                faster and more accurate. In the Great Hall only a few features were visible from both sides.
+                faster and more accurate.
               </p>
             </Card>
 
@@ -492,7 +493,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
                 <>
                   <p className="text-sm text-ink-2">
                     The Spottr service fits each camera to the floor and grades it. This hosted demo has no service attached, so here is
-                    the grade the service produced for the Great Hall:
+                    the grade the service produced for the {site}:
                   </p>
                   <p className="text-sm text-ink">
                     Grade <span className="font-semibold">{serviceQuality.grade ?? 'n/a'}</span>
@@ -508,7 +509,7 @@ export const PilotSetup: React.FC<{ config: WorldMapConfig }> = ({ config }) => 
                   </ul>
                 </>
               )}
-              {camConfig && (
+              {camConfig?.camera_model.height_m != null && camConfig.camera_model.pitch_deg != null && (
                 <p className="text-[11px] text-ink-3">
                   Camera model estimated by the service: mounted ~{camConfig.camera_model.height_m.toFixed(1)} m high, tilted{' '}
                   {camConfig.camera_model.pitch_deg.toFixed(0)}° down.
