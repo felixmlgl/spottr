@@ -1,5 +1,5 @@
 /**
- * Subpages of the main website ("/pricing", "/privacy", "/demos"), with the landing page's top bar and footer.
+ * Subpages of the main website ("/pricing", "/privacy"), with the landing page's top bar and footer.
  * The landing page's chapters link here ("Learn more"). Lazy-loaded by main.tsx.
  */
 
@@ -8,13 +8,11 @@ import { SiteFooter } from './SiteFooter';
 import { SiteNav } from './SiteNav';
 import { Pricing } from './Pricing';
 import { Privacy } from './Privacy';
-import { Demos } from './Demos';
 
 /** `nav` is the top-bar entry this page belongs to. */
-const SITE_PAGES: Record<string, { nav: string | null; title: string; component: React.FC }> = {
+const SITE_PAGES: Record<string, { nav: string; title: string; component: React.FC }> = {
   '/pricing': { nav: 'Pricing', title: 'Pricing · Spottr', component: Pricing },
   '/privacy': { nav: 'Privacy', title: 'Privacy · Spottr', component: Privacy },
-  '/demos': { nav: null, title: 'Demos · Spottr', component: Demos },
 };
 
 export const SitePages: React.FC<{ pathname: string }> = ({ pathname }) => {
