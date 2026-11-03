@@ -6,13 +6,14 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import { ArrowDown, Cctv, Gift, LayoutDashboard, PersonStanding, Smartphone } from 'lucide-react';
+import { ArrowDown, Cctv, Gift, PersonStanding } from 'lucide-react';
 import { Link } from './router';
 import { openRequestDemo } from './requestDemo/RequestDemo';
 import { openWaitlist } from './waitlist/Waitlist';
 import { CONTACT_EMAIL, MAILTO, SiteFooter } from './site/SiteFooter';
 import { CHAPTER_IDS, ChapterLink, NAV, SiteNav } from './site/SiteNav';
-import { IconDot, OpenArrow, TILE_TONES } from './components/Tile';
+import { IconDot } from './components/Tile';
+import { DemoCards } from './site/Demos';
 import { FloorStatus } from './gyms/components/FloorNow';
 import { MEMBER_PROFILE } from './mocks/memberData';
 import { Chapter, ChapterProps, Reveal, TimelineRail, useActiveChapter, useScrollProgress } from './landing/Chapter';
@@ -105,20 +106,8 @@ const Contact: React.FC = () => (
         Join the waitlist
       </button>
     </Reveal>
-    <Reveal className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {[
-        { to: '/demo', icon: Smartphone, label: 'Member app', title: `Be ${NAME} for a minute`, tone: 'lime' as const },
-        { to: '/gyms/overview', icon: LayoutDashboard, label: 'Gym dashboard', title: 'Run the demo gym', tone: 'blue' as const },
-      ].map((d) => (
-        <Link key={d.to} to={d.to} className={`group p-6 flex flex-col min-h-[180px] ${TILE_TONES[d.tone]}`}>
-          <span className="flex items-start justify-between text-ink">
-            <IconDot icon={d.icon} tone={d.tone} />
-            <OpenArrow />
-          </span>
-          <span className="mt-auto pt-6 text-sm font-medium text-ink-2">{d.label}</span>
-          <span className="font-display text-2xl leading-tight text-ink mt-1">{d.title}</span>
-        </Link>
-      ))}
+    <Reveal>
+      <DemoCards />
     </Reveal>
   </section>
 );

@@ -36,7 +36,7 @@ const SitePages = lazy(() => import('./site/SitePages.tsx').then((m) => ({defaul
 function Page({pathname}: {pathname: string}) {
   if (pathname === '/') return <Welcome />;
   const sitePage = pathname.replace(/\/+$/, '');
-  if (sitePage === '/pricing' || sitePage === '/privacy') {
+  if (sitePage === '/pricing' || sitePage === '/privacy' || sitePage === '/demos') {
     return (
       <Suspense fallback={<div className="min-h-screen" />}>
         <SitePages pathname={sitePage} />
