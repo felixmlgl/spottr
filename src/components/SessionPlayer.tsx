@@ -142,6 +142,7 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
 
   // Keep the clock in sync with the video (or run an internal timer without one)
   useEffect(() => {
+    if (!isPlaying) return;
     let animId: number;
     let lastTs = performance.now();
 
@@ -265,15 +266,9 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
     });
   }, [detections, personId, activeVideoUrl, videoLoadError, currentTime, data, overlay, overlayMode, hasSets]);
 
-  useEffect(() => {
-    let animId: number;
-    const render = () => {
-      drawFrame();
-      animId = requestAnimationFrame(render);
-    };
-    render();
-    return () => cancelAnimationFrame(animId);
-  }, [drawFrame]);
+  // Redraw only when something changed: the clock above re-renders every frame while playing,
+  // and the video's own load / seek events cover frames that arrive without a re-render
+  useEffect(drawFrame, [drawFrame]);
 
   const liveReps = selectedDetection?.current_reps ?? 0;
   const totalDuration = duration || 30;
@@ -323,6 +318,8 @@ export const SessionPlayer: React.FC<SessionPlayerProps> = ({ data, personId, de
               target.playbackRate = playbackSpeed;
               if (isPlaying) target.play().catch(() => setIsPlaying(false));
             }}
+            onLoadedData={drawFrame}
+            onSeeked={drawFrame}
             onError={() => setVideoLoadError(true)}
           />
         )}
