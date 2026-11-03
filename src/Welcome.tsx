@@ -147,24 +147,27 @@ export const Welcome: React.FC = () => {
           className="absolute inset-0"
           style={reduceMotion ? undefined : { transform: 'scale(calc(1 + var(--hero-scroll, 0) * 0.06))' }}
         >
-          {CLIPS.map((clip, i) => (
+          {CLIPS.map((clip, i) => {
+            // Only the current and upcoming clip load anything (poster included): the other 22 are invisible
+            const near = i === active || i === (active + 1) % CLIPS.length;
+            return (
             <video
               key={clip.src}
               ref={(el) => {
                 videoRefs.current[i] = el;
               }}
               src={clip.src}
-              poster={clip.poster}
+              poster={near ? clip.poster : undefined}
               muted
               playsInline
-              // Buffer only the current and upcoming clip
-              preload={i === active || i === (active + 1) % CLIPS.length ? 'auto' : 'metadata'}
+              preload={near ? 'auto' : 'none'}
               onEnded={i === active ? next : undefined}
               className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
               style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
               aria-hidden
             />
-          ))}
+            );
+          })}
         </div>
 
         {/* Light scrim so the logo stays legible on bright frames; it deepens under the rising sheet */}

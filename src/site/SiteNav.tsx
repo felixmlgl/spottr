@@ -44,9 +44,9 @@ export const ChapterLink: React.FC<{ to: string; className: string; children: Re
 
 /**
  * `active` is the label to highlight. On the landing page, `onLogoClick` scrolls back to the top and `progress`
- * draws the phone progress line; on a subpage the logo links home.
+ * draws the phone progress line from `--progress`; on a subpage the logo links home.
  */
-export const SiteNav: React.FC<{ active: string | null; progress?: number; onLogoClick?: () => void }> = ({
+export const SiteNav: React.FC<{ active: string | null; progress?: boolean; onLogoClick?: () => void }> = ({
   active,
   progress,
   onLogoClick,
@@ -95,11 +95,11 @@ export const SiteNav: React.FC<{ active: string | null; progress?: number; onLog
         Request a demo
       </button>
     </div>
-    {progress !== undefined && (
+    {progress && (
       // Phones have no rail: a thin progress line under the capsule does its job
       <div aria-hidden className="lg:hidden max-w-[1100px] mx-auto px-8 mt-1.5">
         <div className="h-0.5 rounded-full bg-line/70">
-          <div className="h-full rounded-full bg-accent" style={{ width: `${progress * 100}%` }} />
+          <div className="h-full rounded-full bg-accent" style={{ width: 'calc(var(--progress, 0) * 100%)' }} />
         </div>
       </div>
     )}

@@ -125,8 +125,9 @@ const Contact: React.FC = () => (
 
 export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) => {
   const felix = useFelix();
+  const rootRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
-  const progress = useScrollProgress(railRef);
+  useScrollProgress(railRef, rootRef);
   const active = useActiveChapter(CHAPTER_IDS);
   const activeIndex = active ? CHAPTER_IDS.indexOf(active) : -1;
 
@@ -228,12 +229,13 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
   ];
 
   return (
-    <>
-      <SiteNav onLogoClick={onLogoClick} active={NAV.find((n) => active !== null && n.chapters.includes(active))?.label ?? null} progress={progress} />
+    // Holds --progress for the rail and the phone progress line
+    <div ref={rootRef}>
+      <SiteNav onLogoClick={onLogoClick} active={NAV.find((n) => active !== null && n.chapters.includes(active))?.label ?? null} progress />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6">
         <Intro />
         <div ref={railRef} className="relative lg:pl-16 flex flex-col gap-28 sm:gap-40 py-24 sm:py-32">
-          <TimelineRail progress={progress} />
+          <TimelineRail />
           {chapters.map((c, i) => (
             <Chapter key={c.id} {...c} state={i === activeIndex ? 'active' : i < activeIndex ? 'past' : 'next'} />
           ))}
@@ -241,6 +243,6 @@ export const Company: React.FC<{ onLogoClick: () => void }> = ({ onLogoClick }) 
         <Contact />
       </div>
       <SiteFooter />
-    </>
+    </div>
   );
 };
