@@ -31,12 +31,13 @@ if (/^\/waitlist\/?$/.test(window.location.pathname)) {
 // The member demo and the gym operator demo are only loaded when visiting /demo or /gyms
 const App = lazy(() => import('./App.tsx'));
 const GymsApp = lazy(() => import('./gyms/GymsApp.tsx').then((m) => ({default: m.GymsApp})));
+const Demos = lazy(() => import('./site/Demos.tsx').then((m) => ({default: m.Demos})));
 const SitePages = lazy(() => import('./site/SitePages.tsx').then((m) => ({default: m.SitePages})));
 
 function Page({pathname}: {pathname: string}) {
   if (pathname === '/') return <Welcome />;
   const sitePage = pathname.replace(/\/+$/, '');
-  if (sitePage === '/pricing' || sitePage === '/privacy' || sitePage === '/demos') {
+  if (sitePage === '/pricing' || sitePage === '/privacy') {
     return (
       <Suspense fallback={<div className="min-h-screen" />}>
         <SitePages pathname={sitePage} />
@@ -50,7 +51,14 @@ function Page({pathname}: {pathname: string}) {
       </Suspense>
     );
   }
-  if (pathname.replace(/\/+$/, '') === '/demo') {
+  if (sitePage === '/demos') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" />}>
+        <Demos />
+      </Suspense>
+    );
+  }
+  if (sitePage === '/demo') {
     return (
       <Suspense fallback={<div className="min-h-screen" />}>
         <App />
