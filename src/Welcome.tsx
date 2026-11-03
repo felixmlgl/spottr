@@ -2,7 +2,8 @@
  * Welcome page ("/").
  * Twenty-four 2.4s gym clips play back-to-back on a loop with quick cuts, while the
  * Spottr logo and one button that scrolls into the story below stay fixed on top. The story lives in the company section.
- * Below the hero sits the company site for gym owners ("/#gyms", see Company.tsx).
+ * Below the hero sits the company site for gym owners ("/#gyms", see Company.tsx). It rises over the pinned video like a
+ * sheet, and every step of that hand-over follows the scroll position rather than a timer.
  */
 
 import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
@@ -38,11 +39,13 @@ const StoryButton: React.FC = () => (
       scrollToGyms(scrollBehavior());
     }}
     className="glass whitespace-nowrap rounded-full px-6 py-3 text-[14px] font-semibold text-ink transition-transform hover:scale-[1.03]"
-    // Liquid glass that picks up a little logo blue as the page scrolls (--hero-scroll is 0 → 1, set on the hero)
+    // Liquid glass that picks up a little logo blue as the page scrolls (--hero-scroll is 0 → 1, set on the hero),
+    // and fades out before the sheet reaches it. Opacity on the button itself: on an ancestor it would stop the glass blur.
     style={
       {
         '--glass-fill': 'color-mix(in srgb, #4D80FF calc(var(--hero-scroll, 0) * 35%), rgb(255 255 255 / 0.72))',
         '--glass-fill-2': 'color-mix(in srgb, #4D80FF calc(var(--hero-scroll, 0) * 35%), rgb(255 255 255 / 0.42))',
+        opacity: 'calc(1 - var(--hero-scroll, 0) * 4)',
       } as React.CSSProperties
     }
   >
@@ -52,17 +55,21 @@ const StoryButton: React.FC = () => (
 
 export const Welcome: React.FC = () => {
   const [active, setActive] = useState(0);
+  const [reduceMotion] = useState(prefersReducedMotion);
   // Reduced motion: start on a still frame; the visitor can still press play
-  const [paused, setPaused] = useState(prefersReducedMotion);
-  // The sheet's frosted edge stays hidden until the visitor starts scrolling; only its grab bar shows
-  const [scrolled, setScrolled] = useState(() => window.scrollY > 0);
+  const [paused, setPaused] = useState(reduceMotion);
+  // Once the sheet covers the screen the video is out of sight, so it stops too
+  const [covered, setCovered] = useState(false);
+  const stopped = paused || covered;
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const heroRef = useRef<HTMLElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const grabRef = useRef<HTMLSpanElement>(null);
 
-  // Play the active clip from the start (unless paused); pause the others once they've faded out.
+  // Play the active clip from the start (unless stopped); pause the others once they've faded out.
   useEffect(() => {
     const current = videoRefs.current[active];
-    if (current && !paused) {
+    if (current && !stopped) {
       current.currentTime = 0;
       current.play().catch(() => {
         // Autoplay blocked (e.g. low-power mode): the poster frame stays visible.
@@ -79,29 +86,50 @@ export const Welcome: React.FC = () => {
   // Pause / resume the current clip in place
   useEffect(() => {
     const current = videoRefs.current[active];
-    if (paused) current?.pause();
+    if (stopped) current?.pause();
     else current?.play().catch(() => {});
     // Only on pause toggles: clip changes are handled above
-  }, [paused]);
+  }, [stopped]);
 
+  // The sheet hand-over, in step with the scroll. Written straight to the elements so scrolling doesn't re-render the 24 videos.
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 0);
-      // Set directly on the element so scrolling doesn't re-render the 24 videos
-      heroRef.current?.style.setProperty('--hero-scroll', String(Math.min(window.scrollY / (window.innerHeight * 0.6), 1)));
+      const hero = heroRef.current;
+      if (!hero) return;
+      const y = window.scrollY;
+      const h = hero.offsetHeight;
+      // 0 at rest → 1 once the sheet fills the screen
+      hero.style.setProperty('--hero-scroll', String(Math.min(y / h, 1)));
+      // The sheet fades in over the first 80px, so at rest only its grab bar shows over the video
+      const edge = Math.min(y / 80, 1);
+      const sheet = sheetRef.current;
+      if (sheet) sheet.style.opacity = String(edge);
+      if (grabRef.current) {
+        grabRef.current.style.backgroundColor = `color-mix(in srgb, rgb(14 17 23 / 0.15) ${edge * 100}%, rgb(255 255 255 / 0.7))`;
+      }
+      // Sheet over the whole screen: its wash now matches the page's own, so the page takes over and the pinned video stops painting
+      const isCovered = y >= h;
+      hero.style.visibility = isCovered ? 'hidden' : '';
+      if (sheet) sheet.style.visibility = isCovered ? 'hidden' : '';
+      setCovered(isCovered);
     };
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, []);
 
   // Browsers can refuse playback while the tab is in the background; resume when it's shown.
   useEffect(() => {
     const resume = () => {
-      if (!document.hidden && !paused) videoRefs.current[active]?.play().catch(() => {});
+      if (!document.hidden && !stopped) videoRefs.current[active]?.play().catch(() => {});
     };
     document.addEventListener('visibilitychange', resume);
     return () => document.removeEventListener('visibilitychange', resume);
-  }, [active, paused]);
+  }, [active, stopped]);
 
   // Links to "/#gyms" (and the old "/gyms") land on the company section
   useEffect(() => {
@@ -112,32 +140,42 @@ export const Welcome: React.FC = () => {
 
   return (
     <main>
-      <section ref={heroRef} className="relative h-dvh w-full overflow-hidden bg-black">
-        {CLIPS.map((clip, i) => (
-          <video
-            key={clip.src}
-            ref={(el) => {
-              videoRefs.current[i] = el;
-            }}
-            src={clip.src}
-            poster={clip.poster}
-            muted
-            playsInline
-            // Buffer only the current and upcoming clip
-            preload={i === active || i === (active + 1) % CLIPS.length ? 'auto' : 'metadata'}
-            onEnded={i === active ? next : undefined}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
-            style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
-            aria-hidden
-          />
-        ))}
+      {/* Pinned: the sheet below slides up over it instead of pushing it away */}
+      <section ref={heroRef} className="sticky top-0 h-dvh w-full overflow-hidden bg-black">
+        {/* The footage leans in a little as the sheet comes up */}
+        <div
+          className="absolute inset-0"
+          style={reduceMotion ? undefined : { transform: 'scale(calc(1 + var(--hero-scroll, 0) * 0.06))' }}
+        >
+          {CLIPS.map((clip, i) => (
+            <video
+              key={clip.src}
+              ref={(el) => {
+                videoRefs.current[i] = el;
+              }}
+              src={clip.src}
+              poster={clip.poster}
+              muted
+              playsInline
+              // Buffer only the current and upcoming clip
+              preload={i === active || i === (active + 1) % CLIPS.length ? 'auto' : 'metadata'}
+              onEnded={i === active ? next : undefined}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
+              style={{ opacity: i === active ? 1 : 0, transitionDuration: `${FADE_MS}ms` }}
+              aria-hidden
+            />
+          ))}
+        </div>
 
-        {/* Light scrim so the logo stays legible on bright frames */}
-        <div className="absolute inset-0 bg-black/15" aria-hidden />
+        {/* Light scrim so the logo stays legible on bright frames; it deepens under the rising sheet */}
+        <div className="absolute inset-0 bg-black" style={{ opacity: 'calc(0.15 + var(--hero-scroll, 0) * 0.45)' }} aria-hidden />
 
         <div className="relative z-10 flex h-full flex-col items-center px-4">
-          <div className="flex flex-1 flex-col items-center justify-center gap-5 pt-[4vh] pb-[12vh]">
-            <h1>
+          <div
+            className="flex flex-1 flex-col items-center justify-center gap-5 pt-[4vh] pb-[12vh]"
+            style={reduceMotion ? undefined : { transform: 'translateY(calc(var(--hero-scroll, 0) * -10vh))' }}
+          >
+            <h1 style={{ opacity: 'calc(1 - var(--hero-scroll, 0) * 2)' }}>
               <img
                 src="/welcome/spottr-logo.png"
                 alt="Spottr"
@@ -155,22 +193,22 @@ export const Welcome: React.FC = () => {
             aria-label={paused ? 'Play background video' : 'Pause background video'}
             // Faint smoked glass so it doesn't compete with the logo and the story button; brightens on hover
             className="glass absolute right-4 bottom-[calc(1rem+3rem)] w-9 h-9 rounded-full flex items-center justify-center text-white/70 cursor-pointer transition-colors hover:text-white [--glass-fill:rgb(255_255_255/0.14)] [--glass-fill-2:rgb(255_255_255/0.06)] [--glass-rim:rgb(255_255_255/0.35)] hover:[--glass-fill:rgb(255_255_255/0.3)]"
+            style={{ opacity: 'calc(1 - var(--hero-scroll, 0) * 6)' }}
           >
             {paused ? <Play className="w-3.5 h-3.5 fill-current" aria-hidden /> : <Pause className="w-3.5 h-3.5 fill-current" aria-hidden />}
           </button>
         </div>
       </section>
 
-      {/* The company section rises over the video like a sheet: rounded frosted edge, video blurred through it */}
-      <section id="gyms" aria-label="For gym owners" className="relative z-10 isolate -mt-12 pt-10 text-ink">
+      {/* The company section rises over the pinned video like a sheet. Links land with its rounded top just off screen. */}
+      <section id="gyms" aria-label="For gym owners" className="relative z-10 isolate -mt-12 -scroll-mt-12 pt-10 text-ink">
+        {/* The sheet itself: opacity, and when the page takes over, set by the scroll effect above */}
         <div
+          ref={sheetRef}
           aria-hidden
-          className={`absolute inset-x-0 top-0 h-64 -z-10 rounded-t-[44px] bg-gradient-to-b from-[#F5F6FA]/80 to-[#F5F6FA]/0 backdrop-blur-2xl [mask-image:linear-gradient(black_40%,transparent)] transition-opacity duration-500 ${scrolled ? 'opacity-100' : 'opacity-0'}`}
+          className="sheet absolute inset-x-0 top-0 -z-10 h-[calc(100dvh+3rem)] rounded-t-[40px] opacity-0 shadow-[0_-24px_60px_-24px_rgb(0_0_0/0.55)]"
         />
-        <span
-          aria-hidden
-          className={`absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full transition-colors duration-500 ${scrolled ? 'bg-ink/15' : 'bg-white/70'}`}
-        />
+        <span ref={grabRef} aria-hidden className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1.5 rounded-full bg-white/70" />
         <Suspense fallback={<div className="min-h-screen" />}>
           <Company onLogoClick={() => window.scrollTo({ top: 0, behavior: scrollBehavior() })} />
         </Suspense>

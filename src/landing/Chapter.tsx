@@ -8,10 +8,12 @@ import { InfoTip } from '../components/Disclosure';
 import { Link } from '../router';
 
 /** Where a chapter's numbers come from. Shown on every chapter so real footage and demo data never blur together. */
-export type Source = 'Real footage' | 'Demo data' | 'Example' | 'Pilot pricing';
+export type Source = 'Real footage' | 'Stock photo' | 'Test scene' | 'Demo data' | 'Example' | 'Pilot pricing';
 
 const SOURCE_STYLE: Record<Source, string> = {
   'Real footage': 'bg-lime text-ink',
+  'Stock photo': 'bg-white/80 text-ink-2 ring-1 ring-black/[0.06]',
+  'Test scene': 'bg-white/80 text-ink-2 ring-1 ring-black/[0.06]',
   'Demo data': 'bg-white/80 text-ink-2 ring-1 ring-black/[0.06]',
   Example: 'bg-white/80 text-ink-2 ring-1 ring-black/[0.06]',
   'Pilot pricing': 'bg-white/80 text-ink-2 ring-1 ring-black/[0.06]',
