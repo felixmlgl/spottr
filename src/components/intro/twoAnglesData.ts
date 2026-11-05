@@ -1,6 +1,6 @@
 /**
- * Loader for the world-service export of the two-camera test room (scripts/gym_two_angles.py), shared by the demo's
- * "Two angles" option (TwoAngles.tsx) and the landing page (landing/previews.tsx).
+ * Loader for the world-service export of the two-camera test room (scripts/gym_two_angles.py), behind the demo's
+ * "Two angles" option (TwoAngles.tsx).
  */
 
 import type { CameraRange, Timeline, WorldMapConfig, WorldRange } from '../../gyms/world/types';

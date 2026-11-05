@@ -1,11 +1,10 @@
 /**
  * The visuals in the landing page's chapters. Member chapters reuse the real squat clip and the member app's own
- * logic (workout card, recovery suggestion); the two-camera chapter plays the world service's test scene in the gym
- * dashboard's camera cards; gym chapters reuse dashboard pieces. Nothing here links away.
+ * logic (workout card, recovery suggestion); gym chapters reuse dashboard pieces. Nothing here links away.
  */
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Loader2, Pause, Play, Send } from 'lucide-react';
+import { Check, Loader2, Send } from 'lucide-react';
 import { useClipData } from '../hooks/useClipData';
 import { pipelinePersonToWorkoutSummary } from '../services/pipelineAdapter';
 import { defaultPersonId, summaryToWorkout, trackedSeconds, workoutHistory, workoutMuscles } from '../services/memberSession';
@@ -13,20 +12,15 @@ import { musclesWorkedTitle, suggestNextSession } from '../services/nextSession'
 import { calculateMuscleRecovery } from '../services/recovery';
 import { summaryService } from '../services/summary';
 import { BodyMap, recoveryMapProps } from '../components/BodyMap';
+import { SessionPlayer } from '../components/SessionPlayer';
 import { CheckDot } from '../components/CheckDot';
-import { ANGLES_BASE, type AnglesData, loadAngles } from '../components/intro/twoAnglesData';
 import { Disclosure } from '../components/Disclosure';
 import { TierPricing } from '../components/TierPricing';
 import { PILOT_STEPS } from '../gyms/components/BusinessCards';
-import { CameraCard } from '../gyms/world/CameraCard';
-import { observationsAt, peopleAt } from '../gyms/world/display';
-import { usePlayback } from '../gyms/world/usePlayback';
 import { AVAILABLE_TODAY, BLUR_LIMITS } from '../site/Privacy';
 import { MEMBER_PROFILE } from '../mocks/memberData';
 
 const NAME = MEMBER_PROFILE.name;
-
-const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** Felix: the person the squat clip follows by default, with the member app's workout history built on top. */
 export function useFelix() {
@@ -65,99 +59,27 @@ export const WalkInPhoto: React.FC = () => (
   />
 );
 
-/** 6:05 pm: one room from two corners. The multi-camera tracking turns every sighting of a person into one identity. */
-export const TwoCameras: React.FC = () => {
-  const [data, setData] = useState<AnglesData | null>(null);
-  const [failed, setFailed] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [inView, setInView] = useState(false);
-  // Pressing pause wins over scrolling back into view; reduced motion starts paused
-  const [held, setHeld] = useState(prefersReducedMotion);
-  const ref = useRef<HTMLElement>(null);
-  const seg = data?.timeline.segments[0];
-  // The clips stop before the tracking data does: loop where they end, so the picture never stands still
-  const [clipEnd, setClipEnd] = useState<number | null>(null);
-  const end = Math.min(seg?.to_s ?? 1, clipEnd ?? Infinity);
-  const { t, playing, setPlaying } = usePlayback(seg?.from_s ?? 0, end);
-
-  useEffect(() => {
-    loadAngles().then(setData, () => setFailed(true));
-  }, []);
-  useEffect(() => {
-    if (!seg) return;
-    const probe = document.createElement('video');
-    probe.preload = 'metadata';
-    probe.onloadedmetadata = () => setClipEnd(seg.clip_start_s + probe.duration);
-    probe.src = ANGLES_BASE + Object.values(seg.clip_urls)[0];
-    return () => {
-      probe.onloadedmetadata = null;
-    };
-  }, [seg]);
+/** 6:05 pm: the real squat clip with the pipeline's live rep count. */
+export const LiveReplay: React.FC<{ felix: Felix | null }> = ({ felix }) => {
+  // The player buffers the whole 3 MB clip, so it mounts only once the chapter is about a screen away
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    if (!el || near) return;
+    const io = new IntersectionObserver(([entry]) => entry.isIntersecting && setNear(true), { rootMargin: '100% 0px' });
     io.observe(el);
     return () => io.disconnect();
-  }, []);
-  // The muted clips only run while they're on screen, and only once their length is known (a new end resets usePlayback)
-  useEffect(() => {
-    setPlaying(clipEnd !== null && inView && !held);
-  }, [clipEnd, inView, held, setPlaying]);
-
-  const people = data ? peopleAt(data.world.frames, t).filter((p) => p.camera_ids.length) : [];
-  const obs = Object.fromEntries(Object.entries(data?.cams ?? {}).map(([c, r]) => [c, observationsAt(r.rows, t)]));
-  const sightings = Object.values(obs).reduce((n, o) => n + o.length, 0);
-  const matched = people.some((p) => p.camera_ids.length > 1);
-
-  return (
-    <figure ref={ref} className="panel p-3 sm:p-4 flex flex-col gap-3">
-      {data && seg ? (
-        <>
-          {data.config.cameras.map((c) => (
-            <CameraCard
-              key={c.camera_id}
-              camera={c}
-              videoUrl={ANGLES_BASE + seg.clip_urls[c.camera_id]}
-              videoStartsAt={seg.clip_start_s}
-              t={t}
-              playing={playing}
-              observations={obs[c.camera_id] ?? []}
-              selected={selected}
-              onSelect={setSelected}
-              debug={false}
-            />
-          ))}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-1">
-            <button
-              onClick={() => setHeld(playing)}
-              aria-label={playing ? 'Pause' : 'Play'}
-              className="w-9 h-9 shrink-0 rounded-full bg-accent-ink text-white flex items-center justify-center hover:bg-accent-deep cursor-pointer"
-            >
-              {playing ? <Pause className="w-4 h-4" aria-hidden /> : <Play className="w-4 h-4 ml-0.5" aria-hidden />}
-            </button>
-            <p className="flex-1 whitespace-nowrap text-sm text-ink tabular-nums">
-              <span className="font-semibold">{sightings}</span> sightings <span className="text-ink-3">→</span>{' '}
-              <span className="font-semibold">{people.length}</span> {people.length === 1 ? 'person' : 'people'}
-            </p>
-            <span
-              className={`px-2.5 py-0.5 rounded-full bg-lime text-xs font-semibold text-ink transition-opacity duration-300 ${
-                matched ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              Matched across cameras
-            </span>
-          </div>
-        </>
-      ) : failed ? (
-        <p className="p-4 text-sm text-ink-2">Could not load the two-camera clip.</p>
-      ) : (
-        <div className="aspect-[4/5] rounded-[20px] bg-white/60 flex items-center justify-center">
-          <Loader2 className="w-6 h-6 animate-spin text-ink-3" aria-label="Loading" />
-        </div>
-      )}
-      <figcaption className="hud-label px-1">One room, two corners. Each person counts once, whichever camera sees them.</figcaption>
+  }, [near]);
+  return felix && near ? (
+    <figure className="panel p-3 sm:p-4 flex flex-col gap-3">
+      <SessionPlayer data={felix.data} personId={felix.personId} defaultOverlayMode="styled" repSound={false} />
+      <figcaption className="hud-label px-1">Real gym clip. Everyone else is pixelated.</figcaption>
     </figure>
+  ) : (
+    <div ref={ref}>
+      <Loading />
+    </div>
   );
 };
 
